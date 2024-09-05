@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.MasterContract" table="&quot;MasterContract&quot;"  >
+        <id name="MasterContractPK" column="&quot;MasterContractPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+        <property name="FilteredProductFK" column="&quot;FilteredProductFK&quot;" insert="false" update="false"/>
+        
+        <property name="MasterContractNumber" column="&quot;MasterContractNumber&quot;"/>
+        <property name="MasterContractName" column="&quot;MasterContractName&quot;"/>
+        <property name="StateCT" column="&quot;StateCT&quot;"/>
+        <property name="NoInterimCoverage" column="NoInterimCoverage" />
+        <property name="CreationOperator" column="&quot;CreationOperator&quot;"/>
+        <property name="CreationDate" column="&quot;CreationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="BrandingCompanyCT" column="&quot;BrandingCompanyCT&quot;"/>
+       
+        <property name="MasterContractEffectiveDate" column="&quot;MasterContractEffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="MasterContractTerminationDate" column="&quot;MasterContractTerminationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <set name="Segments" table="&quot;Segment&quot;" inverse="true"  cascade="all">
+            <key column="&quot;MasterContractFK&quot;"/>
+            <one-to-many class="contract.Segment"/>
+        </set>
+        <many-to-one
+            name="FilteredProduct"
+            column="&quot;FilteredProductFK&quot;"
+            class="contract.FilteredProduct"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	title="&lt;{RecordNode.DEFAULT_RECORD_NAME}&gt;"
+	cornerRadius="10" 
+	roundedBottomCorners="true" 
+	borderThickness="1"
+	borderStyle="solid"	
+	borderColor="#400040"		
+	width="100%"
+	height="100%"
+	layout="absolute" 
+	xmlns:conversion="com.segsoftware.view.conversion.*" 
+	backgroundColor="{ACTIVE_NODE_BACKGROUND_COLOR}"
+	headerHeight="12"
+	currentState="{(this.recordNode.header)?'isHeaderState':''}">
+	<mx:states>
+		<mx:State name="isHeaderState">
+			<mx:SetStyle name="borderColor" value="yellow"/>
+			<mx:SetStyle name="borderThickness" value="3"/>
+		</mx:State>
+	</mx:states>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.PropertyChangeEvent;
+			import com.segsoftware.utility.Util;
+			import mx.utils.ColorUtil;
+			import mx.collections.ArrayCollection;
+			import com.segsoftware.model.conversion.ColumnNode;
+			import com.segsoftware.model.conversion.RecordNode;
+			
+			/**
+			* Color for this Record when it is to be included in the transform template.
+			*/
+			public static var ACTIVE_NODE_BACKGROUND_COLOR:uint = 8755877;
+
+			/**
+			* Color for this Record when it is to be included in the transform template.
+			*/
+			public static var INACTIVE_NODE_BACKGROUND_COLOR:uint = 5;
+			
+			/**
+			* The explicit height of each column node.
+			*/
+			public static var COLUMNNODE_HEIGHT:int = 155;
+			
+			/**
+			* The explicit height of each column node.
+			*/
+			public static var COLUMNNODE_WIDTH:int = 255;							
+			
+			/**
+			* The RecordNode to be represented by this UI component.
+			*/
+			private var _recodeNode:RecordNode;
+			
+			/**
+			* @see #_recordNode
+			*/
+			[Bindable]
+			public function get recordNode():RecordNode
+			{
+				return this._recodeNode;
+			}
+			
+			/**
+			* @see #_recordNode
+			*/
+			public function set recordNode(recordNode:RecordNode):void
+			{
+				this._recodeNode = recordNode;
+				
+				this.skipCheckBox.selected = recordNode.skip;
+			}
+			
+			/**
+			* Adds a ColumnNode to the represented RecordNode of this UI.
+			*/
+			private function addColumnNode():void
+			{
+				var columnNode:ColumnNode = new ColumnNode();
+
+				this.recordNode.childNodes.addItem(columnNode);	
+			}
+			
+			/**
+			* Removes the selected ColumnNode from this RecordNode.
+			*/
+			private function removeSelectedColumnNode():void
+			{
+				if (columnNodeList.selectedItem)
+				{
+					var columnNodeIndex:int = columnNodeList.selectedIndex;
+					
+					this.recordNode.childNodes.removeItemAt(columnNodeIndex);
+					
+					this.columnNodeList.selectedItem = null;
+				}					
+			}		
+		]]>
+	</mx:Script>
+
+	<mx:Style source="../css/segSoftware.css"/>	
+
+	<!--
+	<mx:Validator id="recordNameValidator" source="{recordNameTextInput}" property="text" required="true" />
+	<mx:Validator id="typeValidator" source="{typeTextInput}" property="text" required="true" />	
+	-->
+	
+	<mx:HorizontalList 
+		id="columnNodeList" 
+		dataProvider="{this.recordNode.childNodes}"
+		width="100%" 
+		height="100%" 
+		paddingTop="5"
+		paddingBottom="5"
+		paddingLeft="5"
+		paddingRight="5" 		
+		borderColor="#000000" 
+		borderStyle="solid" 
+		borderThickness="1" 
+		dragEnabled="true"
+		dropEnabled="false"
+		dragMoveEnabled="true"
+		rowHeight="{COLUMNNODE_HEIGHT}"
+		columnWidth="{COLUMNNODE_WIDTH}"
+		backgroundColor="#859AA5" 
+		themeColor="#98E0DF" 
+		enabled="{!this.recordNode.skip}">
+		<mx:itemRenderer>
+			<mx:Component>
+				<mx:HBox horizontalScrollPolicy="off">
+					<conversion:ColumnDesign 
+						horizontalScrollPolicy="auto"
+						columnNode="{data as ColumnNode}" 
+						width="100%" 
+						height="100%"
+						/>
+				</mx:HBox>
+			</mx:Component>
+		</mx:itemRenderer>
+		
+	</mx:HorizontalList>
+
+	<mx:ControlBar 
+		horizontalAlign="right"
+		paddingBottom="0"
+		paddingLeft="0"
+		paddingRight="0"
+		paddingTop="0">
+		<mx:HBox width="33.33%" verticalAlign="middle" id="hbox1">
+			<mx:Label text="Type:"/>
+			<mx:TextInput 
+				id="typeTextInput"
+				text="{this.recordNode.type}"
+				maxChars="5"
+				change=
+				"
+					this.recordNode.type = typeTextInput.text;
+				"
+				/>
+			<mx:CheckBox 
+				id="skipCheckBox"
+				label="Skip:"
+				labelPlacement="left"
+				change=
+				"
+					if (skipCheckBox.selected)
+					{
+						this.recordNode.skip = true;	
+					}
+					else
+					{
+						this.recordNode.skip = false;
+					}
+				"/>
+		</mx:HBox>
+		<mx:HBox width="33.33%" horizontalAlign="center" verticalAlign="middle">
+			<mx:Label text="# Columns:"/>
+			<mx:TextInput 
+				id="numberOfColumnsTextInput" 
+				editable="false"
+				text="{this.recordNode.childNodes.length}"
+				maxChars="2"/>		
+			<mx:Label text="Total Length:"/>
+			<mx:TextInput 
+				id="totalLengthTextInput"
+				maxChars="5"
+				text="{this.recordNode.totalLength}" 
+				editable="false"
+				enabled="{!this.recordNode.skip}"/>
+		</mx:HBox>
+		<mx:HBox width="33.33%" horizontalAlign="right" verticalAlign="middle">
+			<mx:Button 
+				id="columnRemoveButton" 
+				label="Column -"
+				click="removeSelectedColumnNode()"
+				enabled="{!this.recordNode.skip}"/>
+			<mx:VRule height="20"/>
+			<mx:Button 
+				id="columnAddButton" 
+				label="Column +" 
+				click="addColumnNode()"
+				enabled="{!this.recordNode.skip}"/>
+		</mx:HBox>
+	</mx:ControlBar>
+
+</mx:Panel>

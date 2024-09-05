@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="agent.AgentContract" table="&quot;AgentContract&quot;" >
+        <id name="AgentContractPK" column="&quot;AgentContractPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="AgentFK" column="&quot;AgentFK&quot;" insert="false" update="false"/>
+
+        <property name="ContractEffectiveDate" column="&quot;ContractEffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ContractStopDate" column="&quot;ContractStopDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="CommissionProcessCT" column="&quot;CommissionProcessCT&quot;"/>
+        <property name="ContractCodeCT" column="&quot;ContractCodeCT&quot;"/>
+
+          <many-to-one
+            name="Agent"
+            column="&quot;AgentFK&quot;"
+            class="agent.Agent"
+            cascade="none"
+            />
+
+        <set name="PlacedAgents" table="&quot;PlacedAgent&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;AgentContractFK&quot;"/>
+            <one-to-many class="agent.PlacedAgent"/>
+        </set>
+
+        <set name="AdditionalCompensations" table="&quot;AdditionalCompensation&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;AgentContractFK&quot;"/>
+            <one-to-many class="agent.AdditionalCompensation"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

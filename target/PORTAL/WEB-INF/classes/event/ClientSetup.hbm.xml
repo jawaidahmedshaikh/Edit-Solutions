@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="event.ClientSetup" table="&quot;ClientSetup&quot;" >
+        <id name="ClientSetupPK" column="&quot;ClientSetupPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="TreatyFK" column="&quot;TreatyFK&quot;"/>
+
+        <property name="ContractSetupFK" column="&quot;ContractSetupFK&quot;" insert="false" update="false"/>
+        <property name="ClientRoleFK" column="&quot;ClientRoleFK&quot;" insert="false" update="false"/>
+        <property name="ContractClientFK" column="&quot;ContractClientFK&quot;" insert="false" update="false"/>
+
+
+        <many-to-one
+            name="ContractSetup"
+            column="&quot;ContractSetupFK&quot;"
+            class="event.ContractSetup"
+            cascade="none"
+            />
+
+        <many-to-one
+            name="ClientRole"
+            column="&quot;ClientRoleFK&quot;"
+            class="role.ClientRole"
+            cascade="none"
+            />
+
+        <many-to-one
+            name="ContractClient"
+            column="&quot;ContractClientFK&quot;"
+            class="contract.ContractClient"
+            cascade="none"
+            />
+
+        <set name="EDITTrxs" table="&quot;EDITTrx&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;ClientSetupFK&quot;"/>
+            <one-to-many class="event.EDITTrx"/>
+        </set>
+
+        <set name="WithholdingOverrides" table="&quot;WithholdingOverride&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;ClientSetupFK&quot;"/>
+            <one-to-many class="event.WithholdingOverride"/>
+        </set>
+
+        <set name="ContractClientAllocationOvrds" table="&quot;ContractClientAllocationOvrd&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;ClientSetupFK&quot;"/>
+            <one-to-many class="event.ContractClientAllocationOvrd"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

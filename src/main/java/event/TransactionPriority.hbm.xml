@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="event.TransactionPriority" table="&quot;TransactionPriority&quot;" >
+        <id name="TransactionPriorityPK" column="&quot;TransactionPriorityPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="Priority" column="&quot;Priority&quot;"/>
+        <property name="TransactionTypeCT" column="&quot;TransactionTypeCT&quot;"/>
+        <property name="CommissionableEventInd" column="&quot;CommissionableEventInd&quot;"/>
+        <property name="ConfirmEventInd" column="&quot;ConfirmEventInd&quot;"/>
+        <property name="ReinsuranceInd" column="&quot;ReinsuranceInd&quot;"/>
+        <property name="BonusChargebackCT" column="&quot;BonusChargebackCT&quot;"/>
+
+        <set name="TransactionCorrespondences" table="&quot;TransactionCorrespondence&quot;" inverse="true"   cascade="all">
+            <key column="&quot;TransactionPriorityFK&quot;"/>
+            <one-to-many class="event.TransactionCorrespondence"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:custom="com.segsoftware.view.custom.*"	 
+	width="100%" height="100%" 
+	xmlns:billing="view.billing.*"
+	initialize="init()">
+	<mx:states>
+		<mx:State name="viewByContract">
+			<mx:SetProperty target="{payorPanel}" name="visible" value="false"/>
+			<mx:SetProperty target="{payorPanel}" name="height" value="0%"/>			
+			<mx:SetProperty target="{billGroupPanel}" name="height" value="50%"/>
+			<mx:SetProperty target="{billPanel}" name="height" value="50%"/>			
+			<mx:SetProperty target="{billPanel}" name="title" value="Contract Bills"/>			
+		</mx:State>
+	</mx:states>
+	
+	<mx:Style source="../css/segSoftware.css"/>	
+
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ICollectionView;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import com.segsoftware.model.BillGroupHelper;
+			import mx.rpc.events.AbstractEvent;
+			import com.segsoftware.control.SEGController;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import com.adobe.cairngorm.control.CairngormEvent;
+			import com.segsoftware.model.SEGModelLocator;
+			import mx.managers.*;
+			import mx.events.*;
+			import com.segsoftware.event.*;	
+			import com.segsoftware.utility.Util;	
+			import mx.effects.easing.Bounce;		
+			
+			/**
+			 * A convenience reference.
+			 */
+			private var dispatcher:CairngormEventDispatcher = CairngormEventDispatcher.getInstance();
+			
+			/**
+			* Setup.
+			*/
+			private function init():void
+			{
+				// The initial adjustment mode.
+				SEGModelLocator.getInstance().billingAdjustMode = SEGModelLocator.BILLING_ADJUST_MODE_BY_PAYOR;	
+				
+				// Select the "name" filter radio button.
+				nameRadioButton.selected = true;
+			}
+			
+			private function calculateTotalDifference(item:Object, column:DataGridColumn):String
+			{
+				var voAsXML:XML = XML (item);
+				
+				return calculateDifference(voAsXML.TotalPaidAmount, voAsXML.TotalBilledAmount);
+			}
+			
+			/**
+			 * Calculates the difference between the paidAmount and the billedAmount.
+			 * The fields come in as Strings formatted for currency.  They must be unformatted 
+			 * (removes the commas from thousands) and converted to numbers before finding the 
+			 * difference.  The result is formatted back to currency for display.
+			 */ 
+			private function calculateDifference(paidAmount:String, billedAmount:String):String
+			{
+				var difference:Number = new Number(Util.unformatCurrency(paidAmount)) - new Number(Util.unformatCurrency(billedAmount));
+				
+				var formattedDifference:String = Util.getCurrencyFormatter().format(difference);
+				
+				return formattedDifference;
+			}
+			
+			/**
+			 * Displays the dialog to render a stop reason for Bill adjustments.
+			 */
+			private function showStopBillGroupDialog(event:Event):void
+			{
+				var stopBillGroupDialog:StopBillGroupDialog = PopUpManager.createPopUp(this, com.segsoftware.view.billing.StopBillGroupDialog, true) as StopBillGroupDialog;	
+				
+				PopUpManager.centerPopUp(stopBillGroupDialog);
+			}
+			
+			/**
+			 * Displays the dialog to filter (search for?) a valid List Bill document.
+			 */
+			private function showBillGroupFilterDialog(event:Event):void
+			{
+				var billGroupFilterDialog:BillGroupFilterDialog = PopUpManager.createPopUp(this, com.segsoftware.view.billing.BillGroupFilterDialog, true) as BillGroupFilterDialog;	
+				
+				PopUpManager.centerPopUp(billGroupFilterDialog);
+			}
+			
+			/**
+			* Sets the default state for this page.
+			*/
+			private function applyFilterPayorsFunction():void
+			{
+				payorDataGrid.selectedIndex = -1;
+
+				SEGModelLocator.getInstance().batchContractBillVOs.removeAll();					
+									
+				SEGModelLocator.getInstance().batchContractBillVOs.removeAll();
+				
+				Util.applyFilterFunction(filterPayorsFunction, SEGModelLocator.getInstance().payorClientDetailVOs);
+			}
+			
+			/**
+			* Sets the default state for this page.
+			*/
+			private function removeFilterPayorsFunction():void
+			{
+				Util.removeFilterFunction(SEGModelLocator.getInstance().payorClientDetailVOs);
+								
+				filterValue.text = "";								
+			}			
+			
+			/**
+			* Filters the current payors by name or ssn (whichever is selected by the user).
+			*/
+			private function filterPayorsFunction(item:Object):Boolean
+			{
+				var includeItemInResults:Boolean = false;
+				
+				var payorClientDetailVO:XML = item as XML;
+				
+				var filterValue:String = filterValue.text;
+				
+				var candidateValue:String = null;
+				
+				if (nameRadioButton.selected)
+				{
+					candidateValue = payorClientDetailVO.LastName.toString() + payorClientDetailVO.CorporateName.toString();
+				}
+				else if (ssnRadioButton.selected)
+				{
+					candidateValue = payorClientDetailVO.TaxIdentification.toString();															
+				}
+				
+				if (candidateValue.toUpperCase().indexOf(filterValue.toUpperCase()) == 0)
+				{
+					includeItemInResults = true;		
+				}					
+				
+				return includeItemInResults;
+												
+			}
+			
+			/**
+			 * Displays the dialog to filter (search for?) a valid List Bill document.
+			 */
+			private function showOverUnderAdjustmentDialog(event:Event):void
+			{
+				var overUnderAdjustmentDialog:OverUnderAdjustmentDialog = PopUpManager.createPopUp(this, com.segsoftware.view.billing.OverUnderAdjustmentDialog, true) as OverUnderAdjustmentDialog;	
+				
+				PopUpManager.centerPopUp(overUnderAdjustmentDialog);
+			}	
+		]]>
+	</mx:Script>
+	
+	
+	<mx:Model id="formData">
+	    <formData>
+	    	<billGroupDataGrid>{billGroupDataGrid}</billGroupDataGrid>
+	        <billDataGrid>{billDataGrid}</billDataGrid>
+	        <payorDataGrid>{payorDataGrid}</payorDataGrid>
+	    </formData>
+	</mx:Model>
+	
+	<!-- <mx:XML id="myBillGroupDocument" source="../data/BillGroups.xml"/> -->
+
+	<mx:Binding source="billGroupDataGrid.selectedItem as XML" destination="SEGModelLocator.getInstance().selectedBillGroupVO"/>
+	<mx:Binding source="payorDataGrid.selectedItem as XML" destination="SEGModelLocator.getInstance().selectedPayorClientDetailVO"/>
+	
+    <mx:transitions>
+        <!--
+            The "*" indicates that the transition should be applied
+            to any changes in the view state. You can set either 
+            property to "" to refer to the base view state. 
+        -->
+       <mx:Transition fromState="*" toState="*" id="bounceTransition">
+            <!-- Parallel effects execute in unison --> 
+            <mx:Parallel targets="{[billGroupPanel, payorPanel, billPanel]}">
+                <mx:Resize duration="400" easingFunction="Bounce.easeOut"/>
+            </mx:Parallel>
+        </mx:Transition>
+    </mx:transitions>
+	
+	
+	<mx:VBox left="10" right="10" top="10" bottom="10">
+	
+		<mx:Panel layout="absolute" top="10" title="List Bill Summary" id="billGroupPanel" height="33%" width="100%" x="10">
+			<mx:DataGrid 
+				id="billGroupDataGrid" 
+				dataProvider="{SEGModelLocator.getInstance().billGroupVOs}"  
+				editable="false" 
+				top="0" bottom="0" 
+				left="0" 
+				right="0"
+				click="
+					if (SEGModelLocator.getInstance().billingAdjustMode == SEGModelLocator.BILLING_ADJUST_MODE_BY_PAYOR)
+					{
+						dispatcher.dispatchEvent(new SEGEvent(SEGController.EVENT_GET_BILLGROUP_PAYORS, formData));
+					}
+					else if (SEGModelLocator.getInstance().billingAdjustMode == SEGModelLocator.BILLING_ADJUST_MODE_BY_SEGMENT)
+					{
+						dispatcher.dispatchEvent(new SEGEvent(SEGController.EVENT_GET_BILLS_FOR_CONTRACT_IN_BILLGROUP, formData));						
+					}
+					"
+				borderStyle="solid"
+				>
+				<mx:columns>
+					<mx:DataGridColumn headerText="BillGroupPK" visible="false" editable="false">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.BillGroupPK}"/>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>			
+					<mx:DataGridColumn 
+						headerText="Group Number" 
+						editable="false"
+						width="10">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.BillScheduleVO.ContractGroupVO.ContractGroupNumber}"/>
+							</mx:Component>
+						</mx:itemRenderer>					
+					</mx:DataGridColumn>					
+					<mx:DataGridColumn 
+						headerText="Extract Date"
+						width="10">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.ExtractDate}"/>
+							</mx:Component>
+						</mx:itemRenderer>						
+					</mx:DataGridColumn>
+					<mx:DataGridColumn 
+						headerText="Due Date"
+						width="10">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.DueDate}"/>
+							</mx:Component>
+						</mx:itemRenderer>						
+					</mx:DataGridColumn>
+					
+					
+					<mx:DataGridColumn
+								headerText="Status"
+		 					    editable="false"
+		 					    color="blue"
+		 					    width="30">
+		 					    	<mx:itemRenderer>
+		 					    		<mx:Component>
+		 					    			<mx:HBox>
+			 					    			<mx:Script>
+			 					    				<![CDATA[
+			 					    					import com.segsoftware.model.CodeTable;
+			 					    				]]>
+			 					    			</mx:Script> 
+			 					    		
+												<custom:SEGComboBox 
+													dataProvider="{CodeTable.getInstance().billStopReasonVOs}"
+													labelField="CodeDesc"
+													valueField="Code" 
+													valueObjectVO="{data as XML}"
+													valueObjectVOField="StopReasonCT"
+													width="100%"												
+													/>
+											</mx:HBox>
+		 					    		</mx:Component>
+		 					    	</mx:itemRenderer>
+					</mx:DataGridColumn>				
+					
+					
+					
+					
+					<mx:DataGridColumn 
+						headerText="Rep"
+						width="10">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.BillScheduleVO.RepName}"/>
+							</mx:Component>
+						</mx:itemRenderer>						
+					</mx:DataGridColumn>
+					<mx:DataGridColumn 
+						headerText="Total Billed Amount"
+						width="10">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.TotalBilledAmount}"/>
+							</mx:Component>
+						</mx:itemRenderer>						
+					</mx:DataGridColumn>
+					<mx:DataGridColumn 
+						headerText="Total Paid Amount"
+						width="10">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.TotalPaidAmount}"/>
+							</mx:Component>
+						</mx:itemRenderer>						
+					</mx:DataGridColumn>
+					<mx:DataGridColumn 
+						headerText="Total Difference"
+						width="10"
+					    labelFunction="calculateTotalDifference" >
+					</mx:DataGridColumn>
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:ControlBar x="0" y="-100">
+				<mx:Canvas width="100%"  height="56">
+					<mx:Button y="27" label="Stop" right="167" click="showStopBillGroupDialog(event)"/>
+					<mx:Button y="27" label="Release" right="88"/>
+					<mx:Button y="27" label="Not Paid" right="227" 
+					click="dispatcher.dispatchEvent(new SEGEvent(SEGController.EVENT_GET_NOT_PAID_BILLED, formData))"/>
+					<mx:TextInput width="110" editable="false" id="fundsAmount" text="{Util.getCurrencyFormatter().format(SEGModelLocator.getInstance().overUnderAdjustment.fundsAmount)}" y="27" x="10"/>
+					<mx:Label text="Funds Amount:" width="110" x="10" y="10"/>
+					<mx:Text x="128" y="29" text="-"/>
+					<mx:TextInput width="110" editable="false" id="allocatedAmount" text="{Util.getCurrencyFormatter().format(SEGModelLocator.getInstance().overUnderAdjustment.allocatedAmount)}" x="146" y="27"/>
+					<mx:Label text="Allocated Amount:" width="110" x="146" y="10"/>
+					<mx:Text x="264" y="29" text="-"/>
+					<mx:TextInput width="110" editable="false" id="overageFundsAmount" text="{Util.getCurrencyFormatter().format(SEGModelLocator.getInstance().overUnderAdjustment.overageFundsAmount)}" x="282" y="27"/>
+					<mx:Label text="Overage Funds:" width="110" x="282" y="10"/>
+					<mx:Text x="400" y="29" text="+"/>
+					<mx:TextInput width="110" editable="false" id="shortageFundsAmount" text="{Util.getCurrencyFormatter().format(SEGModelLocator.getInstance().overUnderAdjustment.shortageFundsAmount)}" x="421" y="27"/>
+					<mx:Label text="Shortage Funds:" width="110" x="421" y="10"/>
+					<mx:Text x="539" y="29" text="+"/>
+					<mx:TextInput width="110" editable="false" id="creditFundsAmount" text="{Util.getCurrencyFormatter().format(SEGModelLocator.getInstance().overUnderAdjustment.creditFundsAmount)}" x="560" y="27"/>
+					<mx:Label text="Credit Funds:" width="110" x="560" y="10"/>
+					<mx:Text x="677.95" y="29" text="="/>
+					<mx:TextInput width="110" editable="false" text="{Util.getCurrencyFormatter().format(SEGModelLocator.getInstance().overUnderAdjustment.balance)}" x="698.95" y="27"/>
+					<mx:Label text="Balance:" width="110" fontWeight="bold" x="698.95" y="10"/>
+					<mx:Button x="816.95" y="27" label="Adjust"
+						click="showOverUnderAdjustmentDialog(event)"/>
+					<mx:Button 
+						y="27" 
+						label="Commit" 
+						right="10"
+						click="dispatcher.dispatchEvent(new SEGEvent(SEGController.EVENT_UPDATE_BILLGROUP, formData))"						/>
+				</mx:Canvas>
+			</mx:ControlBar>
+		</mx:Panel>	
+		
+		<mx:Panel layout="absolute" 
+			title="Payor Bill Totals" 
+			height="33%" 
+			id="payorPanel" 
+			verticalCenter="0" 
+			width="100%" 
+			x="10">
+			<mx:DataGrid id="payorDataGrid" editable="false" left="0" 
+				bottom="0" 
+				right="0" 
+				top="0" 
+				dataProvider="{SEGModelLocator.getInstance().payorClientDetailVOs}"
+				change=
+				"
+					dispatcher.dispatchEvent(new SEGEvent(SEGController.EVENT_GET_PAYOR_POLICY_BILLS, formData))
+				">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Payor Name" dataField="LastName">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:HBox>
+									<mx:Script>
+										<![CDATA[
+											import com.segsoftware.utility.Util;
+										]]>
+									</mx:Script>							
+									<mx:Text text="{Util.initString(data.CorporateName, '') + Util.initString(data.LastName, '')}"/>
+								</mx:HBox>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="SSN" dataField="TaxIdentification">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.TaxIdentification}"/>
+							</mx:Component>
+						</mx:itemRenderer>					
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="Total Billed Amount" sortable="false">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.TotalBilledAmount}"/>
+							</mx:Component>
+						</mx:itemRenderer>						
+					</mx:DataGridColumn>		
+					<mx:DataGridColumn headerText="Total Paid Amount" dataField="TotalPaidAmount" sortable="false">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.TotalPaidAmount}"/>
+							</mx:Component>
+						</mx:itemRenderer>						
+					</mx:DataGridColumn>													
+					<mx:DataGridColumn headerText="Total Difference" sortable="false"
+					    labelFunction="calculateTotalDifference" >
+					</mx:DataGridColumn>					
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:ControlBar id="controlbar1">
+				<mx:HBox horizontalAlign="right" width="100%">
+					<mx:TextInput id="filterValue" focusIn="filterValue.text=''"/>
+					<mx:RadioButton id="nameRadioButton" label="Name" value="nameSort"/>
+					<mx:RadioButton id="ssnRadioButton" label="SSN" value="ssnSort"/>
+					<mx:Button label="Apply Filter" click="applyFilterPayorsFunction()"/>
+					<mx:Button label="Remove Filter" click="removeFilterPayorsFunction()"/>
+				</mx:HBox>				
+			</mx:ControlBar>
+		</mx:Panel>	
+		
+		<mx:Panel height="33%" layout="absolute" title="Payor Bills" id="billPanel" bottom="10" left="10" right="10" width="100%" borderColor="#400040">
+			<mx:DataGrid  
+				id="billDataGrid" 
+				editable="true" 
+				left="0" right="0" top="0" bottom="0"
+				dataProvider="{SEGModelLocator.getInstance().batchContractBillVOs}">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Policy #" editable="false">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.SegmentVO.ContractNumber}"/>								
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="Company" editable="false">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.SegmentVO.ProductStructureVO.CompanyVO.CompanyName}"/>								
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="Insured" editable="false">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.SegmentVO.ClientDetailVO.LastName + ', ' +  data.SegmentVO.ClientDetailVO.FirstName}"/>								
+							</mx:Component>
+						</mx:itemRenderer>					
+					</mx:DataGridColumn>										
+					<mx:DataGridColumn headerText="Billed Amount" editable="true" color="blue" dataField="BilledAmount">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.BilledAmount}"/>								
+							</mx:Component>
+						</mx:itemRenderer>					
+					</mx:DataGridColumn>		
+					<mx:DataGridColumn headerText="Paid Amount" editable="true" color="blue" dataField="PaidAmount">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.PaidAmount}"/>
+							</mx:Component>
+						</mx:itemRenderer>						
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="Difference" editable="false"
+					    labelFunction="calculateTotalDifference" >
+					</mx:DataGridColumn>						
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:ControlBar>
+				<mx:HBox width="100%" horizontalAlign="right">
+					<mx:HBox width="100%" horizontalAlign="left">
+						<mx:Label text="Adjust Bills By:"/>
+						<mx:HBox width="165" borderStyle="solid" horizontalAlign="right" borderColor="#400040">
+							<mx:RadioButton 
+								label="Payor" 
+								width="66" 
+								click=
+								"
+									this.currentState='';
+									dispatcher.dispatchEvent(new SEGEvent(SEGController.EVENT_GET_PAYOR_POLICY_BILLS, formData));
+									SEGModelLocator.getInstance().billingAdjustMode = SEGModelLocator.BILLING_ADJUST_MODE_BY_PAYOR;				
+								"							 
+								selected="true"/>
+							<mx:RadioButton 
+								label="Contract" 
+								click=
+								"
+									this.currentState='viewByContract';
+									dispatcher.dispatchEvent(new SEGEvent(SEGController.EVENT_GET_BILLS_FOR_CONTRACT_IN_BILLGROUP, formData));
+									SEGModelLocator.getInstance().billingAdjustMode = SEGModelLocator.BILLING_ADJUST_MODE_BY_SEGMENT;												
+								"/>
+						</mx:HBox>
+					</mx:HBox>
+					<mx:Button id="commitButton" label="Commit" textAlign="right" 
+					click="dispatcher.dispatchEvent(new SEGEvent(SEGController.EVENT_ADJUST_BILL_PAID_AMOUNTS, formData))"/>
+				</mx:HBox>
+			</mx:ControlBar>
+		</mx:Panel>
+	</mx:VBox>	
+</mx:Canvas>

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="agent.PremiumLevel" table="&quot;PremiumLevel&quot;">
+
+        <id name="PremiumLevelPK" column="&quot;PremiumLevelPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="IssuePremiumLevel" column="&quot;IssuePremiumLevel&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ProductLevelIncreasePercent" column="&quot;ProductLevelIncreasePercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ProductLevelIncreaseAmount" column="&quot;ProductLevelIncreaseAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="IncreaseStopAmount" column="&quot;IncreaseStopAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <many-to-one
+            name="BonusProgram"
+            column="&quot;BonusProgramFK&quot;"
+            class="agent.BonusProgram"
+            cascade="none"
+            />
+
+        <many-to-one
+            name="ParticipatingAgent"
+            column="&quot;ParticipatingAgentFK&quot;"
+            class="agent.ParticipatingAgent"
+            cascade="none"
+            />
+
+        <set name="BonusCriterias" table="&quot;BonusCriteria&quot;" inverse="true"  cascade="all">
+            <key column="&quot;PremiumLevelFK&quot;"/>
+            <one-to-many class="agent.BonusCriteria"/>
+        </set>
+
+        <set name="AppliedPremiumLevels" table="&quot;AppliedPremiumLevel&quot;" inverse="true" cascade="all">
+            <key column="&quot;PremiumLevelFK&quot;"/>
+            <one-to-many class="agent.AppliedPremiumLevel"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

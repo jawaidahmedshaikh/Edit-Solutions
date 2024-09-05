@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:DateField 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100" 
+	initialize="init()"
+	yearNavigationEnabled="true"
+	labelFunction="formatDate"
+	parseFunction="parseDate">  
+	
+	<!-- 
+	The width must be at least 100 pixels to avoid having the date shift to the left
+	when the user types in the field.  Even at 100, if the user types more 10 characters
+	for the date, it will shift to the left.
+	-->
+	
+	<mx:DateFormatter id="dateFormatter" formatString="{Util.DATE_FORMAT}" />
+	
+	<!-- The DateValidator normally handles the format and check for a valid date and it normally triggers on the valueCommit.
+		 But we don't want the validator to check for the format.  We allow the user to enter or not enter slashes.  The formatting
+		 is done for them (adding of slashes if not there) when they leave the text field.  We do want the validator to check
+		 for a valid date though.  So the triggerEvent is change which isn't called until after the date has been properly 
+		 formatted witht he slashes.  The validation is kicked off manually if the formatting fails.  Putting the validation
+		 on a change triggerEvent allows errors to be cleared if the user successfully changes the date.
+	-->
+	<mx:DateValidator id="dateValidator" 
+		source="{this}" 
+		property="text" 
+		required="{this.required}"
+		inputFormat="{Util.DATE_FORMAT}" 
+		triggerEvent="change" 
+		invalidCharError="Invalid date." 
+		wrongLengthError="Please type the date in the format {Util.DATE_FORMAT_NOT_DELIMITED} or "  
+		/>	<!-- the specified inputFormat will be added to the wrongLengthError message automatically -->
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.validators.RegExpValidator;
+			import mx.events.ValidationResultEvent;
+			import mx.collections.XMLListCollection;
+			import com.segsoftware.utility.Util;
+			import mx.events.CalendarLayoutChangeEvent;
+			import flash.events.FocusEvent;
+			 
+		    /**
+			 * The VO from which the 'text' will be taken from or applied to.
+			 */			
+			private var _valueObjectVO:XML;
+			
+			/**
+			 * The VO.TextField that will be read-from/written-to.
+			 */
+			private var _valueObjectVOField:String;
+			
+			/**
+			 * Defines whether the date is a required field or not
+			 */
+			private var _required:Boolean = true;
+						
+			/**
+			 * Core initialization.
+			 */
+			private function init():void
+			{
+				addEventListener(CalendarLayoutChangeEvent.CHANGE, updateValueObjectVO);	
+				
+				addEventListener(FocusEvent.FOCUS_OUT, updateValueObjectVO);
+			}
+			
+		    /**
+			 * @see #_valueObjectVOField
+			 */
+			[Bindable]
+			public function set valueObjectVOField(valueObjectVOField:String):void
+			{
+				_valueObjectVOField = valueObjectVOField;
+			}
+			
+			/**
+			 * @see #_valueObjectVOField
+			 */
+			public function get valueObjectVOField():String
+			{
+				return _valueObjectVOField;	
+			}
+			
+		    /**
+			 * @see #_valueObjectVO
+			 */
+			[Bindable]
+			public function set valueObjectVO(valueObjectVO:XML):void
+			{
+				_valueObjectVO = valueObjectVO;
+				
+				this.data = valueObjectVO;
+			}
+			
+			/**
+			 * @see #_valueObjectVO
+			 */
+			public function get valueObjectVO():XML
+			{
+				return _valueObjectVO;	
+			}
+			
+			/**
+			 * @see #_required
+			 */
+			[Bindable]
+			public function set required(required:Boolean):void
+			{
+				_required = required;
+			}
+			
+			/**
+			 * @see #_required
+			 */
+			public function get required():Boolean
+			{
+				return _required;	
+			}
+			
+			/**
+			 * Changes to the DateField need to be bidirectional. By
+			 * default, the TextField can 'read' from the VO, but can 
+			 * not apply changes to the VO. I had tried bidirectional
+			 * Bindings, but this did not work. I suspect it has something
+			 * to do with the fact that we are 'trying' to Bind to the
+			 * elements of an XML type as opposed to the properties of 
+			 * an actual object. We  try to mimic this bidirectional 
+			 * Binding with simple event handling.
+			 */
+			private function updateValueObjectVO(event:Event):void
+			{
+				if ((valueObjectVO != null) && (valueObjectVOField != null))
+				{
+					Util.updateValueObjectVO(valueObjectVO, valueObjectVOField, text);
+				}
+			}	
+			
+			/**
+			 * Function used to format the date displayed in the text field of the DateField control. 
+			 * The function takes a Date object as an argument, and returns a String in the format to be displayed
+			 */
+			private function formatDate(date:Date):String
+			{
+				return dateFormatter.format(date);
+			}	
+			
+			/**
+			 * Function used to parse the date entered as text in the text field area of the DateField 
+			 * control and return a Date object to the control.
+			 *  
+			 * Checks to see if the inputString contains date delimiters to determine if the date 
+			 * should be formatted first.
+			 */
+			private function parseDate(inputString:String, formatString:String = "{Util.DATE_FORMAT}"):Date
+			{
+				var dateObject:Date = null;
+				
+				if (inputString != "") 
+				{
+					if (! Util.containsDateDelimiter(inputString))
+					{
+						//  No slashes were found in the string, format it properly then convert it to a Date
+						var formattedDate:String = Util.formatDate1(Util.convertNonDelimitedDateStringToDate(inputString));
+						
+						dateObject = Util.convertDelimitedDateStringToDate(formattedDate);
+					}
+					else
+					{
+						//	Slashes already exist, just convert it to a Date
+						dateObject = Util.convertDelimitedDateStringToDate(inputString);	
+					}
+					
+					return dateObject;
+				}
+				else
+				{
+					//	Empty string, just return null so nothing gets changed in the field
+					return null;
+  				}
+			}	
+		]]>
+	</mx:Script>
+	
+</mx:DateField>

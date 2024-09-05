@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="client.TaxInformation" table="&quot;TaxInformation&quot;"  >
+        <id name="TaxInformationPK" column="&quot;TaxInformationPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="TaxIdTypeCT" column="&quot;TaxIdTypeCT&quot;"/>
+        <property name="ProofOfAgeIndCT" column="&quot;ProofOfAgeIndCT&quot;"/>
+        <property name="MaritalStatusCT" column="&quot;MaritalStatusCT&quot;"/>
+
+        <property name="StateOfBirthCT" column="&quot;StateOfBirthCT&quot;"/>
+        <property name="CountryOfBirthCT" column="&quot;CountryOfBirthCT&quot;"/>
+        <property name="CitizenshipIndCT" column="&quot;CitizenshipIndCT&quot;"/>
+
+        <property name="ClientDetailFK" column="&quot;ClientDetailFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="ClientDetail"
+            column="&quot;ClientDetailFK&quot;"
+            class="client.ClientDetail"
+            cascade="none"/>
+
+        <set name="TaxProfiles" table="&quot;TaxProfile&quot;" inverse="true"  cascade="all">
+            <key column="&quot;TaxInformationFK&quot;"/>
+            <one-to-many class="client.TaxProfile"/>
+        </set>
+
+    </class>
+</hibernate-mapping>
+

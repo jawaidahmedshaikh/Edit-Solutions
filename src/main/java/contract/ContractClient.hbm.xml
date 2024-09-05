@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.ContractClient" table="&quot;ContractClient&quot;"  >
+        <id name="ContractClientPK" column="&quot;ContractClientPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="IssueAge" column="&quot;IssueAge&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="TerminationDate" column="&quot;TerminationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="OverrideStatus" column="&quot;OverrideStatus&quot;"/>
+        <property name="RelationshipToInsuredCT" column="&quot;RelationshipToInsuredCT&quot;"/>
+        <property name="BeneRelationshipToInsured" column="&quot;BeneRelationshipToInsured&quot;" />
+        <property name="TelephoneAuthorizationCT" column="&quot;TelephoneAuthorizationCT&quot;"/>
+        <property name="ClassCT" column="&quot;ClassCT&quot;"/>
+        <property name="OriginalClassCT" column="&quot;OriginalClassCT&quot;"/>
+        <property name="FlatExtra" column="&quot;FlatExtra&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="FlatExtraAge" column="&quot;FlatExtraAge&quot;"/>
+        <property name="FlatExtraDur" column="&quot;FlatExtraDur&quot;"/>
+        <property name="PercentExtra" column="&quot;PercentExtra&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PercentExtraAge" column="&quot;PercentExtraAge&quot;"/>
+        <property name="PercentExtraDur" column="&quot;PercentExtraDur&quot;"/>
+        <property name="TableRatingCT" column="&quot;TableRatingCT&quot;"/>
+        <property name="PayorOfCT" column="&quot;PayorOfCT&quot;"/>
+        <property name="DisbursementAddressTypeCT" column="&quot;DisbursementAddressTypeCT&quot;"/>
+        <property name="CorrespondenceAddressTypeCT" column="&quot;CorrespondenceAddressTypeCT&quot;"/>
+        <property name="PendingClassChangeInd" column="&quot;PendingClassChangeInd&quot;"/>
+        <property name="RatedGenderCT" column="&quot;RatedGenderCT&quot;"/>
+        <property name="UnderwritingClassCT" column="&quot;UnderwritingClassCT&quot;"/>
+        <property name="TerminationReasonCT" column="&quot;TerminationReasonCT&quot;"/>
+        <property name="RelationshipToEmployeeCT" column="&quot;RelationshipToEmployeeCT&quot;"/>
+        <property name="AuthorizedSignatureCT" column="&quot;AuthorizedSignatureCT&quot;"/>
+        <property name="EmployeeIdentification" column="&quot;EmployeeIdentification&quot;"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;" insert="false" update="false"/>
+        <property name="ClientRoleFK" column="&quot;ClientRoleFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"                
+            />
+            
+        <many-to-one
+            name="ClientRole"
+            column="&quot;ClientRoleFK&quot;"
+            class="role.ClientRole"
+            cascade="none"/>
+
+        <set name="ContractClientAllocations" table="&quot;ContractClientAllocation&quot;" inverse="true"  cascade="all">
+            <key column="&quot;ContractClientFK&quot;"/>
+            <one-to-many class="contract.ContractClientAllocation"/>
+        </set>
+
+        <set name="Withholdings" table="&quot;Withholding&quot;" inverse="true"  cascade="all">
+            <key column="&quot;ContractClientFK&quot;"/>
+            <one-to-many class="contract.Withholding"/>
+        </set>
+
+        <set name="ClientSetups" table="&quot;ClientSetup&quot;" inverse="true"  cascade="all">
+            <key column="&quot;ContractClientFK&quot;"/>
+            <one-to-many class="event.ClientSetup"/>
+        </set>
+
+        <set name="QuestionnaireResponses" table="&quot;QuestionnaireResponse&quot;" inverse="true"  cascade="all">
+            <key column="&quot;ContractClientFK&quot;"/>
+            <one-to-many class="contract.QuestionnaireResponse"/>
+        </set>
+
+
+    </class>
+</hibernate-mapping>
+

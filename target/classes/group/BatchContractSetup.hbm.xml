@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="group.BatchContractSetup" table="&quot;BatchContractSetup&quot;"  >
+        <id name="BatchContractSetupPK" column="&quot;BatchContractSetupPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="BatchID" column="&quot;BatchID&quot;"/>
+        <property name="StatusCT" column="&quot;StatusCT&quot;"/>
+        <property name="NumberOfContracts" column="&quot;NumberOfContracts&quot;"/>
+        <property name="ReceiptDate" column="&quot;ReceiptDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="NumberOfWorkdays" column="&quot;NumberOfWorkdays&quot;"/>
+        <property name="AutoNumberCT" column="&quot;AutoNumberCT&quot;"/>
+        <property name="ApplicationTypeCT" column="&quot;ApplicationTypeCT&quot;"/>
+        <property name="BatchEventCT" column="&quot;BatchEventCT&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ApplicationSignedDate" column="&quot;ApplicationSignedDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ApplicationSignedStateCT" column="&quot;ApplicationSignedStateCT&quot;"/>
+        <property name="IssueStateCT" column="&quot;IssueStateCT&quot;"/>
+        <property name="DeathBenefitOptionCT" column="&quot;DeathBenefitOptionCT&quot;"/>
+        <property name="NonForfeitureOptionCT" column="&quot;NonForfeitureOptionCT&quot;"/>
+        <property name="CreationDate" column="&quot;CreationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="CreationOperator" column="&quot;CreationOperator&quot;"/>
+        <property name="EnrollmentMethodCT" column="&quot;EnrollmentMethodCT&quot;"/>
+
+        <property name="ContractGroupFK" column="&quot;ContractGroupFK&quot;" insert="false" update="false"/>
+        <property name="FilteredProductFK" column="&quot;FilteredProductFK&quot;" insert="false" update="false"/>
+        <property name="EnrollmentFK" column="&quot;EnrollmentFK&quot;" insert="false" update="false"/>
+
+        <set name="Segments" table="&quot;Segment&quot;" inverse="true"  cascade="all">
+            <key column="&quot;BatchContractSetupFK&quot;"/>
+            <one-to-many class="contract.Segment"/>
+        </set>
+
+        <set name="SelectedAgentHierarchies" table="&quot;SelectedAgentHierarchy&quot;" inverse="true"  cascade="all">
+            <key column="&quot;BatchContractSetupFK&quot;"/>
+            <one-to-many class="group.SelectedAgentHierarchy"/>
+        </set>
+
+        <set name="BatchProductLogs" table="&quot;BatchProductLog&quot;" inverse="true"  cascade="all">
+            <key column="&quot;BatchContractSetupFK&quot;"/>
+            <one-to-many class="group.BatchProductLog"/>
+        </set>
+
+         <set name="BatchProgressLogs" table="&quot;BatchProgressLog&quot;" inverse="true"  cascade="all">
+            <key column="&quot;BatchContractSetupFK&quot;"/>
+            <one-to-many class="group.BatchProgressLog"/>
+        </set>
+        
+        <!-- The ContractGroupRequirement also has ContractGroup as parent ... Should not to be defined as Cascade Delete -->
+        <set name="ContractGroupRequirements" table="&quot;ContractGroupRequirement&quot;" inverse="true"  cascade="save-update">
+            <key column="&quot;BatchContractSetupFK&quot;"/>
+            <one-to-many class="group.ContractGroupRequirement"/>
+        </set>        
+
+        <many-to-one
+            name="ContractGroup"
+            column="&quot;ContractGroupFK&quot;"
+            class="group.ContractGroup"
+            cascade="none"/>
+
+        <many-to-one
+            name="FilteredProduct"
+            column="&quot;FilteredProductFK&quot;"
+            class="contract.FilteredProduct"
+            cascade="none"/>
+
+        <many-to-one
+            name="Enrollment"
+            column="&quot;EnrollmentFK&quot;"
+            class="group.Enrollment"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="agent.AdditionalCompensation" table="&quot;AdditionalCompensation&quot;" >
+        <id name="AdditionalCompensationPK" column="&quot;AdditionalCompensationPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="AgentContractFK" column="&quot;AgentContractFK&quot;" insert="false" update="false"/>
+
+        <property name="ADATypeCT" column="&quot;ADATypeCT&quot;"/>
+        <property name="AnnualizedMax" column="&quot;AnnualizedMax&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ExpenseAllowanceStatus" column="&quot;ExpenseAllowanceStatus&quot;"/>
+        <property name="BonusCommissionStatus" column="&quot;BonusCommissionStatus&quot;"/>
+        <property name="NY91PercentStatus" column="&quot;NY91PercentStatus&quot;"/>
+
+        <many-to-one
+            name="AgentContract"
+            column="&quot;AgentContractFK&quot;"
+            class="agent.AgentContract"
+            cascade="none"
+          />
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Deanna Lataille (Systems Engineering Group, LLC) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="UnitValueUpdateVO">
+		<xs:annotation>
+			<xs:documentation>Used to hold the unit value update import file lines</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="FundIndicator">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="4"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RecordType">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="4"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="DetailRecord" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Price" type="xs:decimal"/>
+							<xs:element name="NetInvestFactors" type="xs:decimal"/>
+							<xs:element name="Units" type="xs:decimal"/>
+							<xs:element name="NetAssets" type="xs:decimal"/>
+							<xs:element name="Fees" type="xs:decimal"/>
+							<xs:element name="FeesPayable" type="xs:decimal"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="RateRecord" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="DividendRate" type="xs:decimal"/>
+							<xs:element name="STCapGainRate" type="xs:decimal"/>
+							<xs:element name="LTCapGainRate" type="xs:decimal"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

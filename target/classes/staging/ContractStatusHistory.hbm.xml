@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<!-- stating.CASE root -->
+    <class name="staging.ContractStatusHistory" table="&quot;CONTRACTSTATUSHISTORY&quot;">
+        <id name="ContractStatusHistoryPK" column="&quot;CONTRACTSTATUSHISTORYPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SegmentBaseFK" column="&quot;SEGMENTBASEFK&quot;" insert="false" update="false"/>
+
+        <property name="ProcessDate" column="&quot;PROCESSDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="EffectiveDate" column="&quot;EFFECTIVEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="EndDate" column="&quot;ENDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="Status" column="&quot;STATUS&quot;"/>
+        <property name="PriorStatus" column="&quot;PRIORSTATUS&quot;"/>
+
+        <many-to-one
+            name="SegmentBase"
+            column="&quot;SEGMENTBASEFK&quot;"
+            class="staging.SegmentBase"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>
+

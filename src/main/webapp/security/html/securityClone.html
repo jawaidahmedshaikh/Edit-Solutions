@@ -1,0 +1,29 @@
+
+<HTML>
+	<HEAD><TITLE>Clone</TITLE>
+		<SCRIPT>
+			function writeText(){
+			   tdText.innerHTML = window.dialogArguments;
+			   window.returnvalue = 0;
+			}
+			function returnWinValue(thisValue)
+			{
+				window.returnValue = thisValue;
+				window.close();
+			}
+		</SCRIPT>
+	</HEAD>
+	<body onLoad="writeText()" STYLE="color:black; background-color:#99BBBB; font-size:15px;">
+		<CENTER><B>Pick the Company to clone from or <i>Cancel</i> to stop</B>
+
+		<FORM name="myform1">
+
+			<TABLE>
+				<TR>
+					<TD name="tdText" id="tdText" align="center">&nbsp;</TD>
+				</TR>
+			</TABLE>
+			
+		</FORM>
+	</body>
+</HTML>

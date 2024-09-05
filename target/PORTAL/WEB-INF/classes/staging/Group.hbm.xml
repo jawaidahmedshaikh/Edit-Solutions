@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="staging.Group" table="&quot;GROUP&quot;"  >
+        <id name="GroupPK" column="&quot;GROUPPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="CaseFK" column="&quot;CASEFK&quot;" insert="false" update="false"/>
+        <property name="BillScheduleFK" column="&quot;BILLSCHEDULEFK&quot;" insert="false" update="false"/>
+
+        <property name="ContractGroupNumber" column="&quot;CONTRACTGROUPNUMBER&quot;"/>
+        <property name="ContractGroupType" column="&quot;CONTRACTGROUPTYPE&quot;"/>
+        <property name="GroupStatus" column="&quot;GROUPSTATUS&quot;"/>
+
+        <property name="CorporateName" column="&quot;CORPORATENAME&quot;"/>
+        <property name="AddressLine1" column="&quot;ADDRESSLINE1&quot;"/>
+
+        <property name="AddressLine2" column="&quot;ADDRESSLINE2&quot;"/>
+        <property name="AddressLine3" column="&quot;ADDRESSLINE3&quot;"/>
+        <property name="AddressLine4" column="&quot;ADDRESSLINE4&quot;"/>
+
+        <property name="City" column="&quot;CITY&quot;"/>
+        <property name="State" column="&quot;STATE&quot;"/>
+        <property name="Zip" column="&quot;ZIP&quot;"/>
+        
+        <property name="ActiveEligibilityHours" column="ActiveEligibilityHours"/>
+        <property name="IneligibilityPeriodUnits" column="IneligibilityPeriodUnits" />
+        <property name="IneligibilityPeriodType" column="IneligibilityPeriodType"/>
+
+        <set name="SegmentBases" table="&quot;SEGMENTBASE&quot;" inverse="true"  cascade="all">
+            <key column="&quot;GROUPFK&quot;"/>
+            <one-to-many class="staging.SegmentBase"/>
+        </set>           
+
+        <set name="PayrollDeductionSchedules" table="&quot;PAYROLLDEDUCTIONSCHEDULE&quot;" inverse="true"  cascade="all">
+            <key column="&quot;GROUPFK&quot;"/>
+            <one-to-many class="staging.PayrollDeductionSchedule"/>
+        </set>
+
+        <set name="BatchContractSetups" table="&quot;BATCHCONTRACTSETUP&quot;" inverse="true"  cascade="all">
+            <key column="&quot;GROUPFK&quot;"/>
+            <one-to-many class="staging.BatchContractSetup"/>
+        </set>
+
+        <many-to-one
+            name="ContractGroupCase"
+            column="&quot;CASEFK&quot;"
+            class="staging.Case"
+            cascade="none"/>
+
+        <many-to-one
+            name="BillSchedule"
+            column="&quot;BILLSCHEDULEFK&quot;"
+            class="staging.BillSchedule"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

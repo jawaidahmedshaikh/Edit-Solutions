@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="reinsurance.ReinsuranceHistory" table="&quot;ReinsuranceHistory&quot;"   >
+
+        <id name="ReinsuranceHistoryPK" column="&quot;ReinsuranceHistoryPK&quot;" type="long" >
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ModalPremiumAmount" column="&quot;ModalPremiumAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ReinsuranceNAR" column="&quot;ReinsuranceNAR&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="UpdateStatus" column="&quot;UpdateStatus&quot;"/>
+        <property name="ReinsuranceContractPeriodCT" column="&quot;ReinsuranceContractPeriodCT&quot;"/>
+        <property name="UpdateDateTime" column="&quot;UpdateDateTime&quot;"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+        <property name="AccountingPendingStatus" column="&quot;AccountingPendingStatus&quot;"/>
+        <property name="ReinsuranceTypeCT" column="&quot;ReinsuranceTypeCT&quot;"/>
+        <property name="UndoRedoStatus" column="&quot;UndoRedoStatus&quot;"/>
+        <property name="CededDeathBenefit" column="&quot;CededDeathBenefit&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="EDITTrxHistoryFK" column="&quot;EDITTrxHistoryFK&quot;" insert="false" update="false"/>
+        <property name="ContractTreatyFK" column="&quot;ContractTreatyFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="EDITTrxHistory"
+            column="&quot;EDITTrxHistoryFK&quot;"
+            class="event.EDITTrxHistory"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

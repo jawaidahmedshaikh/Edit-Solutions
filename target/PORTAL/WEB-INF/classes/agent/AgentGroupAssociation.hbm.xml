@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="agent.AgentGroupAssociation" table="&quot;AgentGroupAssociation&quot;">
+    
+        <id name="AgentGroupAssociationPK" column="&quot;AgentGroupAssociationPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+        
+        <property name="StartDate" column="&quot;StartDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="StopDate" column="&quot;StopDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="StopDateReasonCT" column="&quot;StopDateReasonCT&quot;"/>
+        
+<!--        
+        <many-to-one name="AgentGroup" column="&quot;AgentGroupFK&quot;" class="agent.AgentGroup" cascade="none"/>
+-->        
+        <many-to-one name="PlacedAgent" column="&quot;PlacedAgentFK&quot;" class="agent.PlacedAgent" cascade="none"/>
+        
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.sp.PRASETest" table="&quot;PRASETest&quot;">
+        <id name="PRASETestPK" column="&quot;PRASETestPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="Description" column="&quot;Description&quot;"/>
+        <property name="CreationDateTime" column="&quot;CreationDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="DriverEffectiveDate" column="&quot;DriverEffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="DriverProcess" column="&quot;DriverProcess&quot;"/>
+        <property name="DriverEvent" column="&quot;DriverEvent&quot;"/>
+        <property name="DriverEventType" column="&quot;DriverEventType&quot;"/>
+        <property name="ExpectedPRASEOutputXML" column="&quot;ExpectedPRASEOutputXML&quot;"/>
+        
+        <property name="ProductStructureFK" column="&quot;ProductStructureFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+             name="ProductStructure"
+             column="&quot;ProductStructureFK&quot;"
+             class="engine.ProductStructure"
+             cascade="none"/>
+
+        <set name="PRASETestDocuments" table="&quot;PRASETestDocument&quot;" inverse="true" cascade="all">
+            <key column="&quot;PRASETestFK&quot;"/>
+            <one-to-many class="engine.sp.PRASETestDocument"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

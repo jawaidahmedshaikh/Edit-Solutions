@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="event.InvestmentHistory" table="&quot;InvestmentHistory&quot;"   >
+
+        <id name="InvestmentHistoryPK" column="&quot;InvestmentHistoryPK&quot;" type="long" >
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="InvestmentDollars" column="&quot;InvestmentDollars&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="InvestmentUnits" column="&quot;InvestmentUnits&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ToFromStatus" column="&quot;ToFromStatus&quot;"/>
+
+        <property name="ValuationDate" column="&quot;ValuationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="GainLoss" column="&quot;GainLoss&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="ChargeCodeFK" column="&quot;ChargeCodeFK&quot;"/>
+        <property name="PreviousChargeCodeFK" column="&quot;PreviousChargeCodeFK&quot;"/>
+
+        <property name="FinalPriceStatus" column="&quot;FinalPriceStatus&quot;"/>
+
+        <property name="EDITTrxHistoryFK" column="&quot;EDITTrxHistoryFK&quot;" insert="false" update="false"/>
+        <property name="InvestmentFK" column="&quot;InvestmentFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="EDITTrxHistory"
+            column="&quot;EDITTrxHistoryFK&quot;"
+            class="event.EDITTrxHistory"
+            cascade="none"
+            />
+
+        <many-to-one
+            name="Investment"
+            column="&quot;InvestmentFK&quot;"
+            class="contract.Investment"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

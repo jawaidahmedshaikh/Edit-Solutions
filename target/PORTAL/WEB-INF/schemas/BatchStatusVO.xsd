@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Christine Gleason (SystemsEnginerring Group) -->
+<xs:schema   xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:element name="BatchStatusVO">
+		<xs:annotation>
+			<xs:documentation>Comment descrBatch Status</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="UniqueBatchId" type="xs:string"/>
+				<xs:element name="TotalNumberOfContracts" type="xs:long"/>
+				<xs:element name="CompletedContracts" type="xs:long"/>
+				<xs:element name="DataBaseUpdated" type="xs:string"/>
+				<xs:element name="Operator" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

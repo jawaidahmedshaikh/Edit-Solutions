@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.CommissionActivity" table="&quot;COMMISSIONACTIVITY&quot;" >
+        <id name="CommissionActivityPK" column="&quot;COMMISSIONACTIVITYPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="FinancialActivityFK" column="&quot;FINANCIALACTIVITYFK&quot;" insert="false" update="false"/>
+        <property name="AgentFK" column="&quot;AGENTFK&quot;" insert="false" update="false"/>
+
+        <property name="CommissionAmount" column="&quot;COMMISSIONAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CommissionTaxable" column="&quot;COMMISSIONTAXABLE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CommissionNonTaxable" column="&quot;COMMISSIONNONTAXABLE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="CommissionRate" column="&quot;COMMISSIONRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CommissionType" column="&quot;COMMISSIONTYPE&quot;"/>
+        <property name="StatementInd" column="&quot;STATEMENTIND&quot;"/>
+
+        <property name="ReduceTaxable" column="&quot;REDUCETAXABLE&quot;"/>
+        <property name="DebitBalanceAmount" column="&quot;DEBITBALANCEAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="IncludedInDebitBalInd" column="&quot;INCLUDEDINDEBITBALIND&quot;"/>
+
+        <property name="AgentNumber" column="&quot;AGENTNUMBER&quot;"/>
+        <property name="ForceoutMinBalInd" column="&quot;FORCEOUTMINBALIND&quot;"/>
+        
+        <property name="AdvancePercent" column="ADVANCEPERCENT" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RecoveryPercent" column="RECOVERYPERCENT" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AllocationPercent" column="ALLOCATIONPERCENT" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <many-to-one
+            name="FinancialActivity"
+            column="&quot;FINANCIALACTIVITYFK&quot;"
+            class="staging.FinancialActivity"
+            cascade="none"
+            />
+
+        <many-to-one
+            name="Agent"
+            column="&quot;AGENTFK&quot;"
+            class="staging.Agent"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

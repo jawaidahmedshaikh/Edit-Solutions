@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<mx:Application 
+		xmlns:billing="com.segsoftware.view.billing.*" 
+		xmlns:mx="http://www.adobe.com/2006/mxml" 
+		xmlns:control="com.segsoftware.control.*"
+		xmlns:business="com.segsoftware.business.*"
+		xmlns:custom="com.segsoftware.view.custom.*"
+		xmlns:model="com.segsoftware.model.*"
+		xmlns:logging="com.segsoftware.model.logging.*"
+		layout="absolute" 
+		initialize="init()">
+		
+	<mx:Style source="com/segsoftware/view/css/segSoftware.css"/>		
+	 
+	<!-- External script(s) that are used -->
+	<mx:Script>
+		<![CDATA[
+			import flash.net.navigateToURL;
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.model.logging.SEGLog;
+			import mx.logging.*;
+			import mx.events.*;
+			import com.segsoftware.model.CodeTable;
+			import com.segsoftware.utility.Util;
+	
+			/**
+			 * System bootstrap operations.
+			 */
+			private function init():void
+			{
+				// Touch this for pre-loading the DB values...
+				var codeTable:CodeTable = CodeTable.getInstance();
+				
+				// Grab the operator from the enclosing JSP (probably SEGSoftwareApplication.jsp)
+				var passedInOperator:String = Util.initString(Application.application.parameters.operator, "N/A");
+				
+				SEGModelLocator.getInstance().operator = passedInOperator;
+			}	
+		]]>
+	</mx:Script>	
+		
+	<!-- the FrontController, containing Commands specific to this appliation -->
+	<control:SEGController id="segController" />
+	
+	<!-- Logging mechanism -->
+	<logging:SEGLog id="segLog" />
+
+	<!-- Services are defined here and are readily accessible throughout the application -->
+	<business:Services id="services" />
+
+	<!-- Our menu system for our flex pages -->
+	<custom:SEGApplicationControlBar dock="true" height="46"/>
+
+	<billing:Billing id="billing" left="10" right="0" top="10" bottom="0" label="Billing"/>
+	
+</mx:Application>

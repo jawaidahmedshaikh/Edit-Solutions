@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group) -->
+<xs:schema   xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:element name="FinancialActivityTotalsVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CompanyName" type="xs:string"/>
+				<xs:element name="TransactionType">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalDollars" type="xs:double"/>
+				<xs:element name="TotalUnits" type="xs:double"/>
+				<xs:element name="TotalGainLoss" type="xs:double"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

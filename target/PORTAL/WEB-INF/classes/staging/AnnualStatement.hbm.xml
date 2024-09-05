@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.AnnualStatement" table="&quot;ANNUALSTATEMENT&quot;">
+        <id name="AnnualStatementPK" column="&quot;ANNUALSTATEMENTPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="StartDate" column="&quot;STARTDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="EndDate" column="&quot;ENDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="AccumulationValueAtStartDate" column="&quot;ACCUMULATIONVALUEATSTARTDATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SurrenderValueAtStartDate" column="&quot;SURRENDERVALUEATSTARTDATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="FaceAmountAtStartDate" column="&quot;FACEAMOUNTATSTARTDATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LoanedValueAtStartDate" column="&quot;LOANEDVALUEATSTARTDATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        
+        <property name="AccumulationValueAtEndDate" column="&quot;ACCUMULATIONVALUEATENDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LoanInterestAccruedAtEndDate" column="&quot;LOANINTERESTACCRUEDATENDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SurrenderChargeAtEndDate" column="&quot;SURRENDERCHARGEATENDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DeathBenefitAtEndDate" column="&quot;DEATHBENEFITATENDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="FaceAmountAtEndDate" column="&quot;FACEAMOUNTATENDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SurrenderValueAtEndDate" column="&quot;SURRENDERVALUEATENDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="SumOfPremiumsPaid" column="&quot;SUMOFPREMIUMSPAID&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SumOfLoans" column="&quot;SUMOFLOANS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SumOfLoanRepayments" column="&quot;SUMOFLOANREPAYMENTS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SumOfWithdrawals" column="&quot;SUMOFWITHDRAWALS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SumOfRiderCOI" column="&quot;SUMOFRIDERCOI&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SumOfCOI" column="&quot;SUMOFCOI&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+      
+        <set name="AnnualStatementMonthlySummaries" table="&quot;ANNUALSTATEMENTMONTHLYSUMMARY&quot;" inverse="true" cascade="all">
+            <key column="&quot;ANNUALSTATEMENTFK&quot;"/>
+            <one-to-many class="staging.AnnualStatementMonthlySummary"/>
+        </set>
+
+        <many-to-one
+            name="SegmentBase"
+            column="&quot;SEGMENTBASEFK&quot;"
+            class="staging.SegmentBase"
+            cascade="none"/>
+            
+    </class>
+</hibernate-mapping>
+

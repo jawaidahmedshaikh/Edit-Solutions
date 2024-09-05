@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.AdjustmentHistory" table="&quot;ADJUSTMENTHISTORY&quot;" >
+        <id name="AdjustmentHistoryPK" column="&quot;ADJUSTMENTHISTORYPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="FinancialActivityFK" column="&quot;FINANCIALACTIVITYFK&quot;" insert="false" update="false"/>
+
+        <property name="ChargeAmount" column="&quot;CHARGEAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ChargeType" column="&quot;CHARGETYPE&quot;"/>
+
+        <many-to-one
+            name="FinancialActivity"
+            column="&quot;FINANCIALACTIVITYFK&quot;"
+            class="staging.FinancialActivity"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.Bucket" table="&quot;BUCKET&quot;" >
+        <id name="BucketPK" column="&quot;BUCKETPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="FinancialActivityFK" column="&quot;FINANCIALACTIVITYFK&quot;" insert="false" update="false"/>
+
+        <property name="DepositDate" column="&quot;DEPOSITDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="DepositAmount" column="&quot;DEPOSITAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="BucketInterestRate" column="&quot;BUCKETINTERESTRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="UnearnedInterest" column="&quot;UNEARNEDINTEREST&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LoanPrincipalRemaining" column="&quot;LOANPRINCIPALREMAINING&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="BucketSource" column="&quot;BUCKETSOURCE&quot;"/>
+
+        <property name="LoanInterestRate" column="&quot;LOANINTERESTRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AccruedLoanInterest" column="&quot;ACCRUEDLOANINTEREST&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LoanPrincipalDollars" column="&quot;LOANPRINCIPALDOLLARS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="LoanInterestDollars" column="&quot;LOANINTERESTDOLLARS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="UnearnedLoanInterest" column="&quot;UNEARNEDLOANINTEREST&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="InterestPaidThroughDate" column="&quot;INTERESTPAIDTHROUGHDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="BilledLoanInterest" column="&quot;BILLEDLOANINTEREST&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <many-to-one
+            name="FinancialActivity"
+            column="&quot;FINANCIALACTIVITYFK&quot;"
+            class="staging.FinancialActivity"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

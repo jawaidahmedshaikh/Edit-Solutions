@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group, LLC) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="./EDITSolutions.xsd"/>
+	<xs:include schemaLocation="./ENGINEDB.xsd"/>
+	<xs:element name="GAAPDocumentVO">
+		<xs:annotation>
+			<xs:documentation>Document to be fed into PRASE for the generation of GAAP Reserves </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="GAAPDocumentPK" type="xs:long"/>
+				<xs:element ref="ProductStructureVO"/>
+				<xs:element name="PolicyEffectiveDate" type="xs:string"/>
+				<xs:element name="TrxEffectiveDate" type="xs:string"/>
+				<xs:element name="OwnerIssueAge" type="xs:int"/>
+				<xs:element name="OwnerGender" type="xs:string"/>
+				<xs:element name="IssueState" type="xs:string"/>
+				<xs:element ref="FundTypeIDVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FundTypeIDVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="FundTypeIDPK" type="xs:long"/>
+				<xs:element name="IndexingMethod" type="xs:string"/>
+				<xs:element name="FilteredFundId" type="xs:long"/>
+				<xs:element name="CurrentInterestRate" type="xs:decimal"/>
+				<xs:element name="CurrentInterestRateDuration">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="3"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="GuaranteedMinRate" type="xs:decimal"/>
+				<xs:element name="GuaranteedMinRateDuration" type="xs:int"/>
+				<xs:element name="IndexMinCapRate" type="xs:decimal"/>
+				<xs:element name="IndexMarginRate" type="xs:decimal"/>
+				<xs:element name="IndexParticipationRate" type="xs:decimal"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.RequiredMinDistribution" table="&quot;RequiredMinDistribution&quot;"  >
+        <id name="RequiredMinDistributionPK" column="&quot;RequiredMinDistributionPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SeventyAndHalfDate" column="&quot;SeventyAndHalfDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ElectionCT" column="&quot;ElectionCT&quot;"/>
+        <property name="InitialRMDAmount" column="&quot;InitialRMDAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="Amount" column="&quot;Amount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AnnualDate" column="&quot;AnnualDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="FirstPayDate" column="&quot;FirstPayDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="LastNotificationDate" column="&quot;LastNotificationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LastPaymentDate" column="&quot;LastPaymentDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LastPaymentAmount" column="&quot;LastPaymentAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="NextPaymentDate" column="&quot;NextPaymentDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LifeExpectancyMultipleCT" column="&quot;LifeExpectancyMultipleCT&quot;"/>
+        <property name="FrequencyCT" column="&quot;FrequencyCT&quot;"/>
+
+        <property name="ModalOverrideAmount" column="&quot;ModalOverrideAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="InitialCYAccumValue" column="&quot;InitialCYAccumValue&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CalculatedRMDAmount" column="&quot;CalculatedRMDAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RMDStartDate" column="&quot;RMDStartDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="DeceasedSeventyAndHalfDate" column="&quot;DeceasedSeventyAndHalfDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="BeneficiaryStatusCT" column="&quot;BeneficiaryStatusCT&quot;"/>
+
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>
+

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group, LLC) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="./EDITSolutions.xsd"/>
+	<xs:include schemaLocation="./ENGINEDB.xsd"/>
+	<xs:include schemaLocation="./ReinsuranceVO.xsd"/>
+	<xs:element name="RatesVO">
+		<xs:annotation>
+			<xs:documentation>The rates retrieved from PRASE for a given investment.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="FilteredFundFK" type="xs:long"/>
+				<xs:element name="GuaranteedRate" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="BonusRate" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="InitialGuaranteePeriod" type="xs:int" minOccurs="0"/>
+				<xs:element name="MinimumCap" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="ParticipationRate" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="IndexMargin" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="FundType" type="xs:string"/>
+				<xs:element name="IndexingMethod" type="xs:string"/>
+				<xs:element name="IndexAtIssue" type="xs:decimal"/>
+				<xs:element name="CapRateGuar" type="xs:integer"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="IssueInvestmentVO">
+		<xs:annotation>
+			<xs:documentation>The Investments at issue for a given contract.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="InvestmentVO"/>
+				<xs:element ref="RatesVO" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="IssueDocumentVO">
+		<xs:annotation>
+			<xs:documentation>Document to be fed into PRASE for the generation of Issue Reports</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="IssueClientVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="SegmentVO"/>
+				<xs:element ref="ProductStructureVO"/>
+				<xs:element name="FreeLookDays" type="xs:int"/>
+				<xs:element name="GuarMinCashSurrenderRate" type="xs:decimal" minOccurs="0"/>
+				<xs:element ref="IssueInvestmentVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ReinsuranceVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="OwnersPremiumTaxState" type="xs:string"/>
+				<xs:element name="InsuredResidenceState" type="xs:string"/>
+				<xs:element name="InsuredGender" type="xs:string"/>
+				<xs:element name="InsuredDateOfBirth" type="xs:string"/>
+				<xs:element name="InsuredIssueAge" type="xs:int"/>
+				<xs:element name="InsuredClass" type="xs:string"/>
+				<xs:element name="InsuredUnderwritingClass" type="xs:string"/>
+				<xs:element name="SevenPayRate" type="xs:decimal"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="IssueClientVO">
+		<xs:annotation>
+			<xs:documentation>The set of 4 clients (1. lowest level agent, 2. annuitant, 3. owner, and 4. secondary owner) and their primary addresses</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ClientDetailVO"/>
+				<xs:element name="RoleTypeCT" type="xs:string"/>
+				<xs:element ref="ContractClientVO"/>
+				<xs:element name="ClientPK" type="xs:long"/>
+				<xs:element name="AgentTypeCT">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AgentAllocation" type="xs:decimal" nillable="true"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

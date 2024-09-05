@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="agent.PlacedAgentCommissionProfile" table="&quot;PlacedAgentCommissionProfile&quot;" >
+        <id name="PlacedAgentCommissionProfilePK" column="&quot;PlacedAgentCommissionProfilePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="StartDate" column="&quot;StartDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="StopDate" column="&quot;StopDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="CommissionProfileFK" column="&quot;CommissionProfileFK&quot;" insert="false" update="false"/>
+        <property name="PlacedAgentFK" column="&quot;PlacedAgentFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="CommissionProfile"
+            column="&quot;CommissionProfileFK&quot;"
+            class="agent.CommissionProfile"
+            cascade="none"
+            />
+            
+        <many-to-one
+            name="PlacedAgent"
+            column="&quot;PlacedAgentFK&quot;"
+            class="agent.PlacedAgent"
+            cascade="none"
+            />            
+
+    </class>
+</hibernate-mapping>

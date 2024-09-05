@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Gregg (Systems Engineering Group, LLC) -->
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Jason (SEG) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="LogEntryCollectionVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="LogEntryVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LogEntryVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Time" type="xs:string"/>
+				<xs:element name="Type" type="xs:string"/>
+				<xs:element name="LogName" type="xs:string"/>
+				<xs:element name="ContextName" type="xs:string"/>
+				<xs:element ref="LogContextEntryVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="Message" type="xs:string"/>
+				<xs:element name="ExceptionMessageTrace" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="ExceptionStackTrace" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:long"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LogContextEntryVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="EntryName" type="xs:string"/>
+				<xs:element name="EntryValue" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

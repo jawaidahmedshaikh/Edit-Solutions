@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.Investment" table="&quot;Investment&quot;"  >
+        <id name="InvestmentPK" column="&quot;InvestmentPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="FilteredFundFK" column="&quot;FilteredFundFK&quot;" />
+        <property name="ExcessInterestCalculationDate" column="&quot;ExcessInterestCalculationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ExcessInterestPaymentDate" column="&quot;ExcessInterestPaymentDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ExcessInterest" column="&quot;ExcessInterest&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ExcessInterestMethod" column="&quot;ExcessInterestMethod&quot;"/>
+        <property name="ExcessInterestStartDate" column="&quot;ExcessInterestStartDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AssumedInvestmentReturn" column="&quot;AssumedInvestmentReturn&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ChargeCodeFK" column="&quot;ChargeCodeFK&quot;"/>
+        <property name="Status" column="&quot;Status&quot;"/>
+
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="all"/>
+
+        <set name="CommissionInvestmentHistories" table="&quot;CommissionInvestmentHistory&quot;" inverse="true"   cascade="all">
+            <key column="&quot;InvestmentFK&quot;"/>
+            <one-to-many class="event.CommissionInvestmentHistory"/>
+        </set>
+
+        <set name="InvestmentAllocations" table="&quot;InvestmentAllocation&quot;" inverse="true"   cascade="all">
+            <key column="&quot;InvestmentFK&quot;"/>
+            <one-to-many class="contract.InvestmentAllocation"/>
+        </set>
+
+        <set name="InvestmentHistories" table="&quot;InvestmentHistory&quot;" inverse="true"   cascade="all">
+            <key column="&quot;InvestmentFK&quot;"/>
+            <one-to-many class="event.InvestmentHistory"/>
+        </set>
+
+        <set name="Buckets" table="&quot;Bucket&quot;" inverse="true"   cascade="all">
+            <key column="&quot;InvestmentFK&quot;"/>
+            <one-to-many class="contract.Bucket"/>
+        </set>
+
+        <set name="InvestmentAllocationOverrides" table="&quot;InvestmentAllocationOverride&quot;" inverse="true"   cascade="all">
+            <key column="&quot;InvestmentFK&quot;"/>
+            <one-to-many class="event.InvestmentAllocationOverride"/>
+        </set>
+        
+    </class>
+</hibernate-mapping>

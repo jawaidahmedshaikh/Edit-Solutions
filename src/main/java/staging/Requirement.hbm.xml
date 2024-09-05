@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.Requirement" table="&quot;REQUIREMENT&quot;">
+        <id name="RequirementPK" column="&quot;REQUIREMENTPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SegmentBaseFK" column="&quot;SEGMENTBASEFK&quot;" insert="false" update="false"/>
+
+        <property name="RequirementDescription" column="&quot;REQUIREMENTDESCRIPTION&quot;"/>
+        <property name="RequirementStatus" column="&quot;REQUIREMENTSTATUS&quot;"/>
+        <property name="EffectiveDate" column="&quot;EFFECTIVEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="FollowupDate" column="&quot;FOLLOWUPDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ReceivedDate" column="&quot;RECEIVEDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="FreeFormReqDescription" column="&quot;FREEFORMREQDESCRIPTION&quot;"/>
+
+        <many-to-one
+            name="SegmentBase"
+            column="&quot;SEGMENTBASEFK&quot;"
+            class="staging.SegmentBase"
+            cascade="none"/>
+    </class>
+</hibernate-mapping>
+

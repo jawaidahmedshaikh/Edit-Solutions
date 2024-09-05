@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Deanna Lataille (Systems Engineering Group, LLC) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:include schemaLocation="./EDITSolutions.xsd"/>
+	<xs:include schemaLocation="./AccumulationVO.xsd"/>
+	<xs:include schemaLocation="./ErrorLogVO.xsd"/>
+	<xs:element name="ReservesBatchVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="SegmentVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="UniqueBatchId" type="xs:string"/>
+				<xs:element name="EffectiveDate" type="xs:string"/>
+				<xs:element ref="AccumulationVO" minOccurs="0"/>
+				<!--				<xs:element ref="TransactionsVO" minOccurs="0" maxOccurs="unbounded"/>-->
+				<!--				<xs:element ref="TransactionPriorityVO" minOccurs="0" maxOccurs="unbounded"/>-->
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

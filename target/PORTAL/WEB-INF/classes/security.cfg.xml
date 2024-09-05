@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.datasource">java:comp/env/jdbc/security</property>
+        
+        <property name="hibernate.max_fetch_depth">6</property>
+        <property name="hibernate.default_schema">dbo</property>
+        <property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+        <property name="show_sql">false</property>
+        
+        <mapping resource="security/ComponentMethod.hbm.xml"></mapping>
+        <mapping resource="security/FilteredRole.hbm.xml"></mapping>
+        <mapping resource="security/ImpliedRole.hbm.xml"></mapping>
+        <mapping resource="security/Mask.hbm.xml"></mapping>
+        <mapping resource="security/Operator.hbm.xml"></mapping>
+        <mapping resource="security/OperatorRole.hbm.xml"></mapping>
+        <mapping resource="security/Password.hbm.xml"></mapping>
+        <mapping resource="security/PasswordMask.hbm.xml"></mapping>
+        <mapping resource="security/Role.hbm.xml"></mapping>
+        <mapping resource="security/SecuredMethod.hbm.xml"></mapping>
+        <mapping resource="security/SecurityLog.hbm.xml"></mapping>
+        <mapping resource="security/SecurityProfile.hbm.xml"></mapping>
+    </session-factory>
+</hibernate-configuration>

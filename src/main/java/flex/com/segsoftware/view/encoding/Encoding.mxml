@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" 
+		xmlns:encoding="com.segsoftware.view.encoding.*" initialize="init()">
+	<mx:Script>
+		<![CDATA[
+			
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.command.ImportNewBusinessBatchCommand;
+			
+			function init() {
+				ImportNewBusinessBatchCommand.dispatcher.addEventListener(ImportNewBusinessBatchCommand.IMPORT_ISSUED_EVENT, 
+					function(e:Event) { 
+						viewStack.selectedIndex = 2;
+					});
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Style source="../css/segSoftware.css"/>	
+	
+	<mx:TabNavigator id="viewStack" left="0" right="0" top="0" bottom="0" creationPolicy="all" paddingTop="0">
+		<encoding:BatchContractGroup label="Batch Setup"  id="batchContractGroup" width="100%" height="100%"/>
+
+	<!-- No reason to check contract length- validation occuring elsewhere. deck 12-13-17
+		<encoding:BatchSegment label="App-Entry" id="batchSegment" width="100%" height="100%" click="{batchSegment.setContractLength()}"
+							    enabled="{batchContractGroup.batchContractSetupDataGrid.selectedIndex>-1}"/>
+	-->
+
+		<encoding:BatchSegment label="App-Entry" id="batchSegment" width="100%" height="100%"
+							    enabled="{batchContractGroup.batchContractSetupDataGrid.selectedIndex>-1}"/>
+		<encoding:BatchImportLog label="Import Log" id="importLog" width="100%" height="100%" isSelected="{viewStack.selectedIndex == 2}"/>
+	</mx:TabNavigator>
+
+</mx:Canvas>

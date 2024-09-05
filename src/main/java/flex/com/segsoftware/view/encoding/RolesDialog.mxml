@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="580" height="514" 
+	title="Roles Dialog"
+	showCloseButton="true"
+	close="mx.managers.PopUpManager.removePopUp(this)">
+	
+	<mx:Style source="../css/segSoftware.css"/>		
+	
+	<mx:Panel layout="absolute" title="Roles" left="10" right="10" top="10" bottom="10">
+		<mx:CheckBox x="10" y="10" label="Owner"/>
+		<mx:CheckBox x="10" y="36" label="Employee"/>
+		<mx:CheckBox x="10" y="116" label="Insured"/>
+		<mx:CheckBox x="10" y="62" label="Payor"/>
+		<mx:CheckBox x="10" y="299" label="Primary Bene"/>
+		<mx:CheckBox x="10" y="325" label="Secondary Bene"/>
+		<mx:Form top="116" left="141" right="34" height="138">
+			<mx:FormItem label="Class:">
+				<mx:ComboBox></mx:ComboBox>
+			</mx:FormItem>
+			<mx:FormItem label="Table Rating:">
+				<mx:ComboBox></mx:ComboBox>
+			</mx:FormItem>
+			<mx:FormItem label="Rated Gender:">
+				<mx:ComboBox></mx:ComboBox>
+			</mx:FormItem>
+			<mx:FormItem label="U/W Class:">
+				<mx:ComboBox></mx:ComboBox>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:Form height="90" top="300" right="34" left="141">
+			<mx:FormItem label="Primary Bene Split:">
+				<mx:TextInput/>
+			</mx:FormItem>
+			<mx:FormItem label="Secondary Bene Split:">
+				<mx:TextInput/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:HRule y="88" left="10" right="10"/>
+		<mx:FormHeading x="141" y="88" label="Underwriting"/>
+		<mx:HRule y="272" left="10" right="10"/>
+		<mx:FormHeading x="141" y="272" label="Splits (x 100%)"/>
+	</mx:Panel>
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+		]]>
+	</mx:Script>
+</mx:TitleWindow>

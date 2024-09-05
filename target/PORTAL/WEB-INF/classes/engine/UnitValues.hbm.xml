@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.UnitValues" table="&quot;UnitValues&quot;"  >
+    
+        <cache usage="read-write"/>
+    
+        <id name="UnitValuesPK" column="&quot;UnitValuesPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="UnitValue" column="&quot;UnitValue&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AnnuityUnitValue" column="&quot;AnnuityUnitValue&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="UpdateStatus" column="&quot;UpdateStatus&quot;"/>
+        <property name="NetAssetValue1" column="&quot;NetAssetValue1&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NetAssetValue2" column="&quot;NetAssetValue2&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="MutualFundShares" column="&quot;MutualFundShares&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ParticipantUnits" column="&quot;ParticipantUnits&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="MutualFundAssets" column="&quot;MutualFundAssets&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DividendRate" column="&quot;DividendRate&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+
+        <property name="FilteredFundFK" column="&quot;FilteredFundFK&quot;" insert="false" update="false"/>
+        <property name="ChargeCodeFK" column="&quot;ChargeCodeFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="FilteredFund"
+            column="&quot;FilteredFundFK&quot;"
+            class="engine.FilteredFund"
+            cascade="none"/>
+
+        <many-to-one
+            name="ChargeCode"
+            column="&quot;ChargeCodeFK&quot;"
+            class="engine.ChargeCode"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group, LLC) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="LoanSettlementVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="LoanInterestLiabilityPaid" type="xs:decimal"/>
+				<xs:element name="LoanPrincipalDollars" type="xs:decimal"/>
+				<xs:element name="LoanInterestDollars" type="xs:decimal"/>
+				<xs:element name="Dollars" type="xs:decimal"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

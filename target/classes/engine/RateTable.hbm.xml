@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.RateTable" table="&quot;RateTable&quot;"  >
+        <id name="RateTablePK" column="&quot;RateTablePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="Age" column="&quot;Age&quot;"/>
+        <property name="Duration" column="&quot;Duration&quot;"/>
+        <property name="Rate" column="&quot;Rate&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="TableKeysFK" column="&quot;TableKeysFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="TableKeys"
+            column="&quot;TableKeysFK&quot;"
+            class="engine.TableKeys"
+            cascade="none"/>
+
+
+    </class>
+</hibernate-mapping>

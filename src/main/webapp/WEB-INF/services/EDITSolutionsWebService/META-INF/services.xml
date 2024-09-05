@@ -1,0 +1,8 @@
+<service name="EDITSolutionsWebService">
+    <module ref="soapmonitor"/>
+	<parameter name="ServiceClass"
+          locked="false">webservice.EDITSolutionsWebService</parameter>
+	<operation name="process">
+		<messageReceiver class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver"/>
+	</operation>
+</service>

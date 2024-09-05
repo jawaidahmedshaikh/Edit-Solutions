@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:custom="com.segsoftware.view.custom.*" 
+	layout="absolute" 
+	width="472" 
+	height="230"
+	title="Product Log Dialog"  
+	showCloseButton="true"
+	close="mx.managers.PopUpManager.removePopUp(this)">
+
+	<mx:Style source="../css/segSoftware.css"/>	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.event.SEGEvent;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import mx.collections.XMLListCollection;
+			import mx.managers.PopUpManager;
+			import com.segsoftware.utility.Util;
+			
+			import com.segsoftware.model.CodeTable;
+			
+			/**
+			 * Convenience reference.
+			 */
+			private var dispatcher:com.adobe.cairngorm.control.CairngormEventDispatcher = CairngormEventDispatcher.getInstance();
+			
+			/**
+			 * The candidate ProductStructure dropdown needs a "calculated" label based
+			 * on the usual Product, ProductType, CompanyName, etc.
+			 */
+			private function formatCandidateProductStructureLabel(object:Object):String
+			{
+				var filteredProductVO:XML = object as XML;
+				
+				return Util.formatProductKey(filteredProductVO.ProductStructureVO[0]);
+			}			
+		]]>
+	</mx:Script>
+	
+	<mx:Panel layout="absolute" left="10" right="10" top="10" bottom="10" title="Detail">
+		<mx:Form left="10" right="10" top="10" bottom="10">
+			<mx:FormItem label="Product Key:">
+				<custom:SEGComboBox 
+					id="productKey" 
+					labelFunction="{formatCandidateProductStructureLabel}"
+					valueField="FilteredProductPK"
+					dataProvider="{SEGModelLocator.getInstance().candidateFilteredProductVOs}" 
+					valueObjectVO="{SEGModelLocator.getInstance().newValueObjectVO.BatchProductLogVO[0]}"
+					valueObjectVOField="FilteredProductFK"/> 
+			</mx:FormItem>
+			<mx:FormItem label="# Apps Received (estimated):">
+				<custom:SEGTextInput
+					valueObjectVO="{SEGModelLocator.getInstance().newValueObjectVO.BatchProductLogVO[0]}"
+					valueObjectVOField="NumberOfAppsReceived"/>					
+			</mx:FormItem>
+		</mx:Form>
+		<mx:ControlBar horizontalAlign="right">
+			<mx:Button label="OK" 
+				click="dispatcher.dispatchEvent(new SEGEvent(SEGController.EVENT_ADD_BATCHPRODUCTLOG_ENTRY, null));
+					mx.managers.PopUpManager.removePopUp(this)"/>
+		</mx:ControlBar>
+	</mx:Panel>
+	
+</mx:TitleWindow>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="logging.LogColumnEntry" table="&quot;LogColumnEntry&quot;">
+
+        <id name="LogColumnEntryPK" column="&quot;LogColumnEntryPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="LogColumnFK" column="&quot;LogColumnFK&quot;" insert="false" update="false"/>
+        <property name="LogEntryFK" column="&quot;LogEntryFK&quot;" insert="false" update="false"/>
+        <property name="LogColumnValue" column="&quot;LogColumnValue&quot;"/>
+
+        <many-to-one name="LogColumn" column="&quot;LogColumnFK&quot;" class="logging.LogColumn" cascade="none"/>
+
+        <many-to-one name="LogEntry" column="&quot;LogEntryFK&quot;" class="logging.LogEntry" cascade="none"/>
+
+    </class>
+</hibernate-mapping>

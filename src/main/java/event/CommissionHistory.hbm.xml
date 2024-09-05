@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="event.CommissionHistory" table="&quot;CommissionHistory&quot;"   >
+
+        <id name="CommissionHistoryPK" column="&quot;CommissionHistoryPK&quot;" type="long" >
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="CommissionAmount" column="&quot;CommissionAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CommissionTaxable" column="&quot;CommissionTaxable&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CommissionNonTaxable" column="&quot;CommissionNonTaxable&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="ADAAmount" column="&quot;ADAAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ExpenseAmount" column="&quot;ExpenseAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="UpdateStatus" column="&quot;UpdateStatus&quot;"/>
+
+        <property name="AccountingPendingStatus" column="&quot;AccountingPendingStatus&quot;"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+
+        <property name="CommissionRate" column="&quot;CommissionRate&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CommissionTypeCT" column="&quot;CommissionTypeCT&quot;"/>
+        <property name="UpdateDateTime" column="&quot;UpdateDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+
+        <property name="StatementInd" column="&quot;StatementInd&quot;"/>
+        <property name="ReduceTaxable" column="&quot;ReduceTaxable&quot;"/>
+        <property name="UndoRedoStatus" column="&quot;UndoRedoStatus&quot;"/>
+ 
+        <property name="DebitBalanceAmount" column="&quot;DebitBalanceAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CommHoldReleaseDate" column="&quot;CommHoldReleaseDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+		<property name="IncludedInDebitBalInd" column="&quot;IncludedInDebitBalInd&quot;"/>
+
+        <property name="EDITTrxHistoryFK" column="&quot;EDITTrxHistoryFK&quot;" insert="false" update="false"/>
+        <property name="PlacedAgentFK" column="&quot;PlacedAgentFK&quot;" insert="false" update="false"/>
+        <property name="SourcePlacedAgentFK" column="&quot;SourcePlacedAgentFK&quot;" insert="false" update="false"/>
+          
+        <property name="AgentSnapshotFK" column="&quot;AgentSnapshotFK&quot;" insert="false" update="false"/>
+        <property name="CheckTo" column="&quot;CheckTo&quot;" type="long"/>
+        <property name="GroupTypeCT" column="&quot;GroupTypeCT&quot;"/>        
+
+        <set name="CommissionInvestmentHistories" table="&quot;CommissionInvestmentHistories&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;CommissionHistoryFK&quot;"/>
+            <one-to-many class="event.CommissionInvestmentHistory"/>
+        </set>
+
+        <many-to-one
+            name="EDITTrxHistory"
+            column="&quot;EDITTrxHistoryFK&quot;"
+            class="event.EDITTrxHistory"
+            cascade="none"
+            />
+
+        <many-to-one
+            name="PlacedAgent"
+            column="&quot;PlacedAgentFK&quot;"
+            class="agent.PlacedAgent"
+            cascade="none"
+            />
+            
+        <many-to-one
+            name="SourcePlacedAgent"
+            column="&quot;SourcePlacedAgentFK&quot;"
+            class="agent.PlacedAgent"
+            cascade="none"
+            />            
+
+        <set name="BonusCommissionHistories" table="&quot;BonusCommissionHisory&quot;" inverse="true" cascade="all">
+            <key column="&quot;CommissionHistoryFK&quot;"/>
+            <one-to-many class="event.BonusCommissionHistory"/>
+        </set>
+        
+        <many-to-one
+            name="AgentSnapshot"
+            column="&quot;AgentSnapshotFK&quot;"
+            class="contract.AgentSnapshot"
+            cascade="none"
+            />      
+
+    </class>
+</hibernate-mapping>

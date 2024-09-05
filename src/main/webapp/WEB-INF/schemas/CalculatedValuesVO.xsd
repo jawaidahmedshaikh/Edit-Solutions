@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Deanna Lataille (Systems Engineering Group, LLC) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="CalculatedValuesVO">
+		<xs:annotation>
+			<xs:documentation>Used for Correspondence calculated values</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CalculatedValuesPK" type="xs:long"/>
+				<xs:element name="CashValue" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CashSurrenderValue" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LoanPrincipal" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="UnitValues" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ReserveAmount" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PaidUpTermVested" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LoanBalance" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LastLoanActivityDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LastLoanDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PolicyDuration" type="xs:int" nillable="true"/>
+				<xs:element name="AccumLTCClaims" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AccumHomeCareClaims" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LTCNumberOfMonthsPaid" type="xs:int" nillable="true"/>
+				<xs:element name="HomeCareNumberOfMonthsPaid" type="xs:int" nillable="true"/>
+				<xs:element name="AccumWithdrawalAmount" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AccumWithdrawalUnits" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AccumCriticalCareAmount" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PaidUpTermDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ReducedDBAge" type="xs:int" nillable="true"/>
+				<xs:element name="LTCConfinementAmount" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LTCHHCAmount" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LTCWaitingPeriod" type="xs:int" nillable="true"/>
+				<xs:element name="LTCEliminationPeriod" type="xs:int" nillable="true"/>
+				<xs:element name="GuarPaidUpPurchasePremium" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CurrentInterestRate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ContractSurrValGuar" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CurrentMVACharge" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="GuaranteedPremiumPercent" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PriorYearEndAccountValue" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PriorYearEndCashSurrenderValue" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PriorYearEndMinAcctValue" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PriorYearSurrenderValue" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalMinAccountValue" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="WithdrawalSinceInception" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CoverageFee" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PremiumsPaid" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

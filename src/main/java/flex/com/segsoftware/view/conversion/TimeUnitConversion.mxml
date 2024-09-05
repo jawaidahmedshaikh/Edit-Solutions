@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	paddingBottom="0"
+	paddingTop="0"
+	initialize="onInit()">
+	<mx:Script>
+		<![CDATA[
+			import mx.formatters.NumberFormatter;
+			import com.segsoftware.utility.Util;
+			
+			/**
+			* The precision of the converted result.
+			*/
+			private var _precision:int;
+			
+			/**
+			* Used to format the response.
+			*/
+			private var _numberFormatter:NumberFormatter = new NumberFormatter();
+			
+			/**
+			* The time in millis to be converted to total days or 
+			* hours or minutes or seconds.
+			*/
+			private var _timeInMillis:int;
+			
+			/**
+			* Init.
+			*/
+			private function onInit():void
+			{
+				// Default to mins.
+				this.unitComboBox.selectedIndex = 1;
+				
+				this.numberFormatter.precision = precision;	
+			}
+			
+			/**
+			* @see #_precision
+			*/
+			[Bindable] public function get precision():int
+			{
+				return this._precision;
+			}
+			
+			/**
+			* @see #_precision
+			*/
+			public function set precision(precision:int):void
+			{
+				this._precision = precision;
+			}
+			
+			/**
+			* @see #_timeInMillis
+			*/
+			[Bindable] public function get timeInMillis():int
+			{
+				return _timeInMillis;
+			}
+			
+			/**
+			* @see #_timeInMillis
+			*/
+			public function set timeInMillis(timeInMillis:int):void
+			{
+				this._timeInMillis = timeInMillis;
+				
+				this.convertUnits();
+			}
+			
+			/**
+			* @see #_numberFormatter
+			*/
+			private function get numberFormatter():NumberFormatter
+			{
+				return this._numberFormatter;
+			}
+			
+			/**
+			* Converts the specified time in millis to its user-selcted unit equivalent.
+			*/
+			private function convertUnits():void
+			{	
+				var unit:Number = new Number(unitComboBox.selectedItem.data.toString());
+				
+				var convertedUnit:Number = Util.convertMillis(timeInMillis, unit);
+				
+				unitResultTextInput.text = numberFormatter.format(convertedUnit);
+			}
+		]]>
+	</mx:Script>
+	<mx:ComboBox
+		id="unitComboBox"
+		change=
+		"
+			convertUnits();
+		">
+		<mx:ArrayCollection>
+			<mx:Object label="Seconds" data="{Util.UNIT_SECONDS}"/>
+			<mx:Object label="Minutes" data="{Util.UNIT_MINUTES}"/>
+			<mx:Object label="Hours" data="{Util.UNIT_HOURS}"/>
+			<mx:Object label="Days" data="{Util.UNIT_DAYS}"/>
+		</mx:ArrayCollection>	
+	</mx:ComboBox>
+	<mx:TextInput 
+		id="unitResultTextInput"
+		maxChars="6"
+		/>
+	
+</mx:HBox>

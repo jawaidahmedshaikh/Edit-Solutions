@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group, LLC) -->
+<!-- edited with XML Spy v4.2 U (http://www.xmlspy.com) by Jason Joyal (JJ Inc) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="SearchResponseVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ClientDetailFK" type="xs:long"/>
+				<xs:element name="ClientIdentification" type="xs:string"/>
+				<xs:element name="TaxIdentification" type="xs:string"/>
+				<xs:element name="ClientName" type="xs:string"/>
+				<xs:element name="ClientStatus">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="DateOfBirth" type="xs:string"/>
+				<xs:element ref="SearchResponseContractInfo" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SearchResponseContractInfo">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ClientRoleFK" type="xs:long"/>
+				<xs:element name="RoleType" type="xs:string"/>
+				<xs:element name="SegmentFK" type="xs:long"/>
+				<xs:element name="ContractNumber" type="xs:string"/>
+				<xs:element name="SegmentStatus" type="xs:string"/>
+				<xs:element name="OptionCode" type="xs:string"/>
+				<xs:element name="ProductStructureFK" type="xs:long"/>
+				<xs:element name="BusinessContractName" type="xs:string"/>
+				<xs:element name="OverrideStatus" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

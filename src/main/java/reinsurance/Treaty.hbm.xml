@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="reinsurance.Treaty" table="&quot;Treaty&quot;"  >
+        <id name="TreatyPK" column="&quot;TreatyPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="StartDate" column="&quot;StartDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="StopDate" column="&quot;StopDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="SettlementPeriod" column="&quot;SettlementPeriod&quot;"/>
+        <property name="PaymentModeCT" column="&quot;PaymentModeCT&quot;"/>
+        <property name="CalculationModeCT" column="&quot;CalculationModeCT&quot;"/>
+        <property name="RetentionAmount" column="&quot;RetentionAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LastCheckDate" column="&quot;LastCheckDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="PoolPercentage" column="&quot;PoolPercentage&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ReinsurerBalance" column="&quot;ReinsurerBalance&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="Status" column="&quot;Status&quot;"/>
+
+        <property name="TreatyGroupFK" column="&quot;TreatyGroupFK&quot;" insert="false" update="false"/>
+        <property name="ReinsurerFK" column="&quot;ReinsurerFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="TreatyGroup"
+            column="&quot;TreatyGroupFK&quot;"
+            class="reinsurance.TreatyGroup"
+            cascade="none"
+            />
+
+        <many-to-one
+            name="Reinsurer"
+            column="&quot;ReinsurerFK&quot;"
+            class="reinsurance.Reinsurer"
+            cascade="none"
+            />
+
+        <set name="ContractTreaties" table="&quot;ContractTreaty&quot;" inverse="true"   cascade="all">
+            <key column="&quot;TreatyFK&quot;"/>
+            <one-to-many class="reinsurance.ContractTreaty"/>
+        </set>
+
+    </class>
+</hibernate-mapping>
+

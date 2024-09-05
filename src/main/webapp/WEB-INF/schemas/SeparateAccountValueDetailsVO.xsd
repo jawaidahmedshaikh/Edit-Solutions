@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Deanna Lataille (Systems Engineering Group, LLC) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="SeparateAccountValueDetailsVO">
+		<xs:annotation>
+			<xs:documentation>Contains the information needed to create the Separate Account Investment Values By Division Report</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="FundNumber">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="6"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FundName">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MarketingPackageName">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ValuationDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="UnitValue">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ParticipantUnits">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="InvestmentValue">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

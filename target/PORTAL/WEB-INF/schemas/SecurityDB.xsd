@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Deanna Lataille (Systems Engineering Group, LLC) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="SecuredMethodVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SecuredMethodPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ComponentMethodFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RoleFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FilteredRoleFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="AccessibleMethod_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="AccessibleMethodPK"/>
+		</xs:key>
+		<xs:keyref name="AccessibleMethod_To_ComponentMethod" refer="ComponentMethod_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="ComponentMethodFK"/>
+		</xs:keyref>
+		<xs:keyref name="AccessibleMethod_To_Role" refer="Role_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="RoleFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="ComponentMethodVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ComponentMethodPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ComponentNameCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ComponentName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="100"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MethodName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="100"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ComponentClassName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="100"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="SecuredMethodVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="ComponentMethod_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="ComponentMethodPK"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="ImpliedRoleVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ImpliedRolePK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RoleFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ImpliedRoleFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="ImpliedRole_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="ImpliedRolePK"/>
+		</xs:key>
+		<xs:keyref name="ImpliedRole_To_Role" refer="Role_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="RoleFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="MaskVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MaskPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MaskTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MinLength" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:maxInclusive value="2147483647"/>
+							<xs:minInclusive value="-2147483648"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MaxLength" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:maxInclusive value="2147483647"/>
+							<xs:minInclusive value="-2147483648"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MixedCaseCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AlphaNumericCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SpecialCharsCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SecurityProfileFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="OperatorVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="PasswordMaskVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="Mask_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="MaskPK"/>
+		</xs:key>
+		<xs:keyref name="Mask_To_SecurityProfile" refer="SecurityProfile_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="SecurityProfileFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="OperatorVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="OperatorPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Name" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LastName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FirstName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MiddleInitial" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="3"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Title" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Dept" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MaintDateTime" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="35"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MaintOperator" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MaskFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EMail" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LockedIndicator" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LoggedInIndicator" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TerminationDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TelephoneNumber" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="14"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TelephoneExtension" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="6"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="OperatorTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ApplyMax" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RemoveMax" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TransferMax" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="OperatorRoleVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="PasswordVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="Operator_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="OperatorPK"/>
+		</xs:key>
+		<xs:keyref name="Operator_To_Mask" refer="Mask_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="MaskFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="OperatorRoleVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="OperatorRolePK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="OperatorFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RoleFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="OperatorRole_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="OperatorRolePK"/>
+		</xs:key>
+		<xs:keyref name="OperatorRole_To_Operator" refer="Operator_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="OperatorFK"/>
+		</xs:keyref>
+		<xs:keyref name="OperatorRole_To_Role" refer="Role_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="RoleFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="PasswordVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PasswordPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EncryptedPassword" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CreationDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="OperatorFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Status" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PasswordMaskFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="OrderOfCreation" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:maxInclusive value="2147483647"/>
+							<xs:minInclusive value="-2147483648"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="Password_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="PasswordPK"/>
+		</xs:key>
+		<xs:keyref name="Password_To_Operator" refer="Operator_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="OperatorFK"/>
+		</xs:keyref>
+		<xs:keyref name="Password_To_PasswordMask" refer="PasswordMask_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="PasswordMaskFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="PasswordMaskVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PasswordMaskPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ExpirationInDays" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:maxInclusive value="2147483647"/>
+							<xs:minInclusive value="-2147483648"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RestrictRepeats" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="NumberOfRepeatCycles" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:maxInclusive value="2147483647"/>
+							<xs:minInclusive value="-2147483648"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MaskFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="PasswordVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="PasswordMask_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="PasswordMaskPK"/>
+		</xs:key>
+		<xs:keyref name="PasswordMask_To_Mask" refer="Mask_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="MaskFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="RoleVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RolePK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Name">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="SecuredMethodVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ImpliedRoleVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="OperatorRoleVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="FilteredRoleVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="Role_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="RolePK"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="SecurityProfileVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SecurityProfilePK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SessionTimeoutInMinutes" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:maxInclusive value="2147483647"/>
+							<xs:minInclusive value="-2147483648"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MaxLoginAttempts" type="xs:integer" nillable="true"/>
+				<xs:element ref="MaskVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="SecurityProfile_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="SecurityProfilePK"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="SecurityLogVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SecurityLogPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="OperatorName">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MaintDateTime">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="35"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Message">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="100"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Type">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="SecurityLog_PrimaryKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="SecurityLogPK"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="FilteredRoleVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="FilteredRolePK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RoleFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ProductStructureFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="SecuredMethodVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

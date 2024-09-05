@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by SEG (Systems Engineering Group, LLC) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="NewBusinessBatchImportVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="NewBusinessContractVO" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="BeneficiariesEquallySplit" type="xs:boolean"/>
+							<xs:element name="BaseSegmentVO">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="IssueStateCT" nillable="true">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="20"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="EffectiveDate" nillable="true">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="\p{Nd}{2}/\p{Nd}{2}/\p{Nd}{4}"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="ApplicationSignedDate" nillable="true">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="\p{Nd}{2}/\p{Nd}{2}/\p{Nd}{4}"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="DepartmentCode" nillable="true">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="10"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="ApplicationSignedStateCT" nillable="true">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="20"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+                                        <xs:element name="DeductionAmountEffectiveDate" nillable="true">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="\p{Nd}{2}/\p{Nd}{2}/\p{Nd}{4}"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+                                        <xs:element name="DeductionAmountOverride" nillable="true">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:decimal">
+                                                    <xs:totalDigits value="19"/>
+                                                    <xs:fractionDigits value="2"/>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element ref="LifeVO"/>
+										<xs:element ref="ContractClientVO" minOccurs="2" maxOccurs="unbounded"/>
+										<xs:element name="RiderSegmentVO" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Coverage">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="50"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="Units" nillable="true">
+														<xs:simpleType>
+															<xs:restriction base="xs:decimal">
+																<xs:totalDigits value="19"/>
+																<xs:fractionDigits value="3"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="EOBMultiple" type="xs:int"/>
+													<xs:element name="GIOOption">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="10"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element ref="LifeVO"/>
+													<xs:element ref="ContractClientVO" minOccurs="0"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ContractClientVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RoleTypeCT">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RelationshipToEmployeeCT">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="BeneRelationshipToInsured">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EmployeeIdentification">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="11"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ClientDetailVO">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="LastName" nillable="false">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="30"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="MiddleName" nillable="true">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="15"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="FirstName" nillable="false">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="15"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="GenderCT" nillable="true">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="20"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="BirthDate" nillable="true">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:pattern value="\p{Nd}{2}/\p{Nd}{2}/\p{Nd}{4}"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Occupation" nillable="true">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="20"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="TaxIdentification" nillable="true">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="11"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="ContactInformationVO" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="ContactTypeCT">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="20"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="PhoneEmail">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="65"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ClientAddressVO" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="AddressLine1" nillable="true">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="35"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="AddressLine2" nillable="true">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="35"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="City" nillable="true">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="35"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="StateCT" nillable="true">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="20"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="ZipCode" nillable="true">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="15"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="CountryCT" nillable="true">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="20"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ContractClientAllocationVO" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="AllocationPercent" nillable="true">
+								<xs:simpleType>
+									<xs:restriction base="xs:decimal">
+										<xs:totalDigits value="19"/>
+										<xs:fractionDigits value="10"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="QuestionnaireResponseVO" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="QuestionnaireId">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="5"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="ResponseCT">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="20"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LifeVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="FaceAmount" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="DeathBenefitOptionCT">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

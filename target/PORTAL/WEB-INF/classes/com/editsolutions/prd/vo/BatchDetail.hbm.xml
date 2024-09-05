@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+     <class name="com.editsolutions.prd.vo.BatchDetail" table="PRD_BatchDetail"  >
+        <id name="batchDetailPK" column="PRD_BatchDetailPK" type="long">
+              <generator class="identity"/>
+        </id>
+        <property name="batchFK" column="PRD_BatchFK"/>
+        <property name="groupFK" column="Group_ContractGroupFK"/>
+        <property name="caseFK" column="Case_ContractGroupFK"/>
+        <property name="addDate" column="AddDate" type="date"/>
+        <property name="addUser" column="AddUser"/>
+        <property name="modDate" column="ModDate" type="date"/>
+        <property name="modUser" column="ModUser"/>
+        <property name="defaultGroup" type="java.lang.Boolean">
+            <column name="IsDefaultGroup" sql-type="tinyint"/>
+        </property>
+        <many-to-one name="prdSettings" lazy="false" class="com.editsolutions.prd.vo.PRDSettings"
+             column="PRD_SetupFK" unique="true"/>
+    </class>
+</hibernate-mapping>

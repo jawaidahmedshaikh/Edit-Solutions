@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" 
+	height="100%" 
+	xmlns:custom="com.segsoftware.view.custom.*"
+	>
+
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.SEGModelBuilder;
+			import mx.utils.XMLUtil;
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.control.SEGController;
+			import mx.managers.PopUpManager;
+			
+			/**
+			* Renders the dialog for creating a new PRASE Document.
+			*/
+			public function showClonePRASETestDocumentDialog():void
+			{					
+				if (SEGModelLocator.getInstance().selectedPRASEDocumentVO != null)
+				{
+					var clonePRASEDocumentDialog:ClonePRASEDocumentDialog = PopUpManager.createPopUp(this, com.segsoftware.view.prase.ClonePRASEDocumentDialog, true) as ClonePRASEDocumentDialog;	
+				
+					PopUpManager.centerPopUp(clonePRASEDocumentDialog);													
+				}
+			}
+			
+			/**
+			* Renders a dialog that shows all associated PRASETests to the currently selected PRASEDocument.
+			*/
+			public function showAssociatedTests():void
+			{
+				if (SEGModelLocator.getInstance().selectedPRASEDocumentVO != null)
+				{
+					var associatedPRASETestDialog:AssociatedPRASETestDialog = PopUpManager.createPopUp(this, com.segsoftware.view.prase.AssociatedPRASETestDialog, true) as AssociatedPRASETestDialog;	
+				
+					PopUpManager.centerPopUp(associatedPRASETestDialog);	
+					
+					Util.dispatchEvent(SEGController.EVENT_GET_ASSOCIATED_PRASETESTS, null);												
+				}				
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Binding source="praseDocumentsDataGrid.selectedItem as XML" destination="SEGModelLocator.getInstance().selectedPRASEDocumentVO"/>
+
+	<mx:VBox left="10" right="10" top="10" bottom="10">
+		<mx:Panel height="50%" layout="absolute" left="10" right="10" top="10" width="100%" title="Document Summary">
+			<mx:DataGrid 
+				editable="true"
+				id="praseDocumentsDataGrid"
+				left="0" 
+				right="0" 
+				top="0" 
+				bottom="0"
+				dataProvider="{SEGModelLocator.getInstance().praseDocumentVOs}"
+				change=
+				"
+					documentContentTextArea.enabled=false;
+					buildingParameterTextArea.enabled=false;
+				"
+				>
+				<mx:columns>
+					<mx:DataGridColumn headerText="Type" dataField="RootElementName" editable="false"/>
+					<mx:DataGridColumn headerText="Description" dataField="Description" color="blue" editable="true"/>					
+					<mx:DataGridColumn headerText="Creation Date/Time" dataField="CreationDateTime" editable="false"/>
+					<mx:DataGridColumn headerText="Creation Driver" dataField="CreationDriverKey" editable="false"/>
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:ControlBar horizontalAlign="right">
+				<mx:Button label="Show Assoc  Tests" click="showAssociatedTests()"/>
+				<mx:VRule height="20"/>
+				<mx:Button label="Clone" click="showClonePRASETestDocumentDialog()"/>
+				<mx:Button label="Delete"/>
+				<mx:VRule height="20"/>
+				<mx:Button 
+					label="Show All"
+					click="Util.dispatchEvent(SEGController.EVENT_GET_ALL_PRASEDOCUMENTS, null)"/>
+			</mx:ControlBar>
+		</mx:Panel>
+		
+		<mx:HBox height="50%" left="10" right="10" bottom="10" width="100%">
+			<mx:Panel height="100%" layout="absolute" left="10" right="10" bottom="10" width="75%" title="PRASE Document">
+				<custom:SEGTextArea 
+					id="documentContentTextArea"
+					left="0" 
+					right="0" 
+					top="0" 
+					bottom="0"
+					valueObjectVO="{SEGModelLocator.getInstance().selectedPRASEDocumentVO}"
+					valueObjectVOField="DocumentContentXML"
+					text="{praseDocumentsDataGrid.selectedItem.DocumentContentXML}"
+					renderAsXML="true"
+					/>
+				<mx:ControlBar width="100%" horizontalAlign="right">
+					<mx:Button 
+						label="Modify"
+						click=
+						"
+							if (praseDocumentsDataGrid.selectedItem)
+							{
+								documentContentTextArea.enabled=true							
+							}
+						"/>
+				</mx:ControlBar>
+			</mx:Panel>
+			<mx:Panel width="25%" height="100%" layout="absolute" title="Building Parameters">
+				<custom:SEGTextArea 
+					id="buildingParameterTextArea"
+					left="0" 
+					right="0" 
+					top="0" 
+					bottom="0"
+					valueObjectVO="{SEGModelLocator.getInstance().selectedPRASEDocumentVO}"
+					valueObjectVOField="BuildingParameterXML"
+					text="{praseDocumentsDataGrid.selectedItem.BuildingParameterXML}"
+					renderAsXML="true"					
+					/>	
+				<mx:ControlBar width="100%" horizontalAlign="right">
+					<mx:Button 
+						label="Modify"
+						click=
+						"
+							if (praseDocumentsDataGrid.selectedItem)
+							{
+								buildingParameterTextArea.enabled=true							
+							}
+						"/>
+				</mx:ControlBar>							
+			</mx:Panel>
+		</mx:HBox>
+	<mx:ControlBar width="100%" horizontalAlign="right">
+		<mx:Button 
+			label="Commit"
+			click=
+			"
+				Util.dispatchEvent(SEGController.EVENT_UPDATE_PRASE_DOCUMENT, null);
+				
+				documentContentTextArea.enabled = false;
+				
+				buildingParameterTextArea.enabled = false;
+			"
+			/>
+	</mx:ControlBar>		
+	</mx:VBox>
+
+	
+</mx:Canvas>

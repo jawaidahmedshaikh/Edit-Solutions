@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="accounting.ElementStructure" table="&quot;ElementStructure&quot;">
+    
+        <cache usage="read-write"/>
+    
+        <id name="ElementStructurePK" column="&quot;ElementStructurePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+        
+        <property name="MemoCode" column="&quot;MemoCode&quot;"/>
+        <property name="CertainPeriod" column="&quot;CertainPeriod&quot;"/>
+        <property name="QualNonQualCT" column="&quot;QualNonQualCT&quot;"/>
+        <property name="SwitchEffectInd" column="&quot;SwitchEffectInd&quot;"/>
+        <property name="SuppressAccountingInd" column="&quot;SuppressAccountingInd&quot;"/>
+
+        <property name="ElementFK" column="&quot;ElementFK&quot;" insert="false" update="false"/>
+        <property name="FundFK" column="&quot;FundFK&quot;" insert="false" update="false"/>
+        <property name="ChargeCodeFK" column="&quot;ChargeCodeFK&quot;" insert="false" update="false"/>
+        
+        <many-to-one
+            name="Element"
+            column="&quot;ElementFK&quot;"
+            class="accounting.Element"
+            cascade="none"
+         />
+    </class>
+</hibernate-mapping>
+

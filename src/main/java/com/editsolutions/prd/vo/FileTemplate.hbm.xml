@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="com.editsolutions.prd.vo.FileTemplate" table="PRD_FileTemplate"  >
+        <id name="fileTemplatePK" column="PRD_FileTemplatePK" type="long">
+              <generator class="identity"/>
+        </id>
+
+        <property name="name" column="FileTemplateName"/>
+        <property name="description" column="FileTemplateDescription"/>
+        <property name="outputTypeCT" column="OutputTypeCT"/>
+        <property name="fileTemplateTypeCT" column="FileTemplateTypeCT"/>
+        <property name="delimiterCT" column="DelimiterCT"/>
+        <property name="addDate" column="AddDate" type="date"/>
+        <property name="addUser" column="AddUser"/>
+        <property name="modDate" column="ModDate" type="date"/>
+        <property name="modUser" column="ModUser"/>
+        <property name="includeTitles" type="java.lang.Boolean">
+           <column name="IncludeTitles" sql-type="tinyint"/>
+        </property>
+        
+        <bag name="fileTemplateFields" table="PRD_FileTemplateField"
+                inverse="true" lazy="false" fetch="select" cascade="none">
+            <key>
+                <column name="PRD_FileTemplateFK" not-null="true" />
+            </key>
+            <one-to-many class="com.editsolutions.prd.vo.FileTemplateField" />
+        </bag>
+
+        
+    </class>
+</hibernate-mapping>

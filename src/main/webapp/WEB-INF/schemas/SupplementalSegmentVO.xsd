@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Deanna Lataille (Systems Engineering Group, LLC) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="./CommissionVO.xsd"/>
+	<xs:include schemaLocation="./EDITSolutions.xsd"/>
+	<xs:include schemaLocation="./ClientVO.xsd"/>
+	<xs:element name="SupplementalSegmentVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SupplementalSegmentPK" type="xs:long"/>
+				<xs:element ref="SegmentVO"/>
+				<xs:element ref="ClientVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="CommissionVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

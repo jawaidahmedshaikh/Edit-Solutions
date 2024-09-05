@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group) -->
+<xs:schema  xmlns:xs="http://www.w3.org/2001/XMLSchema"  elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:element name="TaxFormVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TaxFormName" type="xs:string"/>
+				<xs:element name="PremiumType">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="DistributionCode" type="xs:string"/>
+				<xs:element name="GrossAmount" type="xs:double"/>
+				<xs:element name="TaxableBenefit" type="xs:double"/>
+				<xs:element name="FederalWithholding" type="xs:double"/>
+				<xs:element name="StateWithholding" type="xs:double"/>
+				<xs:element name="CountyWithholding" type="xs:double"/>
+				<xs:element name="CityWithholding" type="xs:double"/>
+				<xs:element name="MarketValue" type="xs:double"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

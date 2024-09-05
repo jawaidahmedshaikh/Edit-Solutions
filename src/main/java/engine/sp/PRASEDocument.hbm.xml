@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.sp.PRASEDocument" table="&quot;PRASEDocument&quot;">
+        <id name="PRASEDocumentPK" column="&quot;PRASEDocumentPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="RootElementName" column="&quot;RootElementName&quot;"/>
+        <property name="Description" column="&quot;Description&quot;"/>
+        <property name="DocumentContentXML" column="&quot;DocumentContentXML&quot;"/>
+        <property name="CreationDateTime" column="&quot;CreationDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="CreationDriverKey" column="&quot;CreationDriverKey&quot;"/>
+        <property name="BuildingParameterXML" column="&quot;BuildingParameterXML&quot;"/>
+        
+
+        <set name="PRASETestDocuments" table="&quot;PRASETestDocument&quot;" inverse="true" cascade="all">
+            <key column="&quot;PRASEDocumentFK&quot;"/>
+            <one-to-many class="engine.sp.PRASETestDocument"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.ContractClient" table="&quot;CONTRACTCLIENT&quot;"  >
+        <id name="ContractClientPK" column="&quot;CONTRACTCLIENTPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SegmentBaseFK" column="&quot;SEGMENTBASEFK&quot;" insert="false" update="false"/>
+        <property name="SegmentRiderFK" column="&quot;SEGMENTRIDERFK&quot;" insert="false" update="false"/>
+
+        <property name="Role" column="&quot;ROLE&quot;"/>
+        <property name="IssueAge" column="&quot;ISSUEAGE&quot;"/>
+        <property name="ClassCode" column="&quot;CLASSCODE&quot;"/>
+
+        <property name="RelationshipToEmployee" column="&quot;RELATIONSHIPTOEMPLOYEE&quot;"/>
+        <property name="UnderwritingClass" column="&quot;UNDERWRITINGCLASS&quot;"/>
+        <property name="RatedGender" column="&quot;RATEDGENDER&quot;"/>
+
+        <property name="ResidentState" column="&quot;RESIDENTSTATE&quot;"/>
+        <property name="LastName" column="&quot;LASTNAME&quot;"/>
+        <property name="FirstName" column="&quot;FIRSTNAME&quot;"/>
+
+        <property name="MiddleName" column="&quot;MIDDLENAME&quot;"/>
+        <property name="AddressLine1" column="&quot;ADDRESSLINE1&quot;"/>
+        <property name="AddressLine2" column="&quot;ADDRESSLINE2&quot;"/>
+
+        <property name="AddressLine3" column="&quot;ADDRESSLINE3&quot;"/>
+        <property name="AddressLine4" column="&quot;ADDRESSLINE4&quot;"/>
+        <property name="City" column="&quot;CITY&quot;"/>
+
+        <property name="State" column="&quot;STATE&quot;"/>
+        <property name="Zip" column="&quot;ZIP&quot;"/>
+        <property name="ClientId" column="&quot;CLIENTID&quot;"/>
+
+        <property name="TaxIdentification" column="&quot;TAXIDENTIFICATION&quot;"/>
+        <property name="CorporateName" column="&quot;CORPORATENAME&quot;"/>
+        <property name="Gender" column="&quot;GENDER&quot;"/>
+
+        <property name="DateOfBirth" column="&quot;DATEOFBIRTH&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="SplitEqualInd" column="&quot;SPLITEQUALIND&quot;"/>
+        <property name="BenePercentage" column="&quot;BENEPERCENTAGE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="AllocationDollars" column="&quot;ALLOCATIONDOLLARS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RelationshipToInsured" column="&quot;RELATIONSHIPTOINSURED&quot;"/>
+        <property name="NamePrefix" column="&quot;NAMEPREFIX&quot;"/>
+
+        <property name="NameSuffix" column="&quot;NAMESUFFIX&quot;"/>
+        <property name="BeneRelationshipToInsured" column="&quot;BENERELATIONSHIPTOINSURED&quot;"/>
+        
+        <property name="DateOfDeath" column="&quot;DATEOFDEATH&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ProofOfDeathReceivedDate" column="&quot;PROOFOFDEATHRECEIVEDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        
+        <property name="NotificationReceivedDate" column="&quot;NOTIFICATIONRECEIVEDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="EmployeeIdentification" column="&quot;EMPLOYEEIDENTIFICATION&quot;"/>
+        <property name="TerminationDate" column="&quot;TERMINATIONDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <set name="Accountings" table="&quot;ACCOUNTING&quot;" inverse="true"  cascade="all">
+            <key column="&quot;CONTRACTCLIENTFK&quot;"/>
+            <one-to-many class="staging.Accounting"/>
+        </set>
+
+        <many-to-one
+            name="SegmentBase"
+            column="&quot;SEGMENTBASEFK&quot;"
+            class="staging.SegmentBase"
+            cascade="none"                
+            />
+
+        <many-to-one
+            name="SegmentRider"
+            column="&quot;SEGMENTRIDERFK&quot;"
+            class="staging.SegmentRider"
+            cascade="none"
+            />
+    </class>
+</hibernate-mapping>
+

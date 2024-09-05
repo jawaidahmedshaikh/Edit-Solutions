@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="group.ProjectedBusinessByMonth" table="&quot;ProjectedBusinessByMonth&quot;"  >
+        <id name="ProjectedBusinessByMonthPK" column="&quot;ProjectedBusinessByMonthPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="Date" column="&quot;Date&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="PercentExpected" column="&quot;PercentExpected&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NumberOfEligibles" column="&quot;NumberOfEligibles&quot;"/>
+        <property name="EnrollmentStatusCT" column="&quot;EnrollmentStatusCT&quot;"/>
+        <property name="ClosedDate" column="&quot;ClosedDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ClosedUnpaidPercent" column="&quot;ClosedUnpaidPercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="EnrollmentFK" column="&quot;EnrollmentFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Enrollment"
+            column="&quot;EnrollmentFK&quot;"
+            class="group.Enrollment"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

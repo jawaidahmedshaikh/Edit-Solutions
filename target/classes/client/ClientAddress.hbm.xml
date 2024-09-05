@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="client.ClientAddress" table="&quot;ClientAddress&quot;"  >
+        <id name="ClientAddressPK" column="&quot;ClientAddressPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SequenceNumber" column="&quot;SequenceNumber&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="TerminationDate" column="&quot;TerminationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="StartDate" column="&quot;StartDate&quot;"/>
+        <property name="StopDate" column="&quot;StopDate&quot;"/>
+        <property name="ZipCode" column="&quot;ZipCode&quot;"/>
+        <property name="AddressLine1" column="&quot;AddressLine1&quot;"/>
+        <property name="AddressLine2" column="&quot;AddressLine2&quot;"/>
+        <property name="AddressLine3" column="&quot;AddressLine3&quot;"/>
+        <property name="AddressLine4" column="&quot;AddressLine4&quot;"/>
+        <property name="County" column="&quot;County&quot;"/>
+        <property name="City" column="&quot;City&quot;"/>
+        <property name="AddressTypeCT" column="&quot;AddressTypeCT&quot;"/>
+        <property name="ZipCodePlacementCT" column="&quot;ZipCodePlacementCT&quot;"/>
+        <property name="StateCT" column="&quot;StateCT&quot;"/>
+        <property name="CountryCT" column="&quot;CountryCT&quot;"/>
+        <property name="OverrideStatus" column="&quot;OverrideStatus&quot;"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>        
+
+        <property name="ClientDetailFK" column="&quot;ClientDetailFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="ClientDetail"
+            column="&quot;ClientDetailFK&quot;"
+            class="client.ClientDetail"
+            cascade="none"/>
+
+        <set name="Suspenses" table="&quot;Suspense&quot;" inverse="true"  cascade="all">
+            <key column="&quot;ClientAddressFK&quot;"/>
+            <one-to-many class="event.Suspense"/>
+        </set>
+
+    </class>
+</hibernate-mapping>
+

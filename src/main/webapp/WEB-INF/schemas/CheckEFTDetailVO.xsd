@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group, LLC) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="./EDITSolutions.xsd"/>
+	<xs:include schemaLocation="./ENGINEDB.xsd"/>
+	<xs:element name="CheckEFTDetailVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="SuspenseVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="EDITTrxHistoryVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ClientDetailVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="SegmentVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ProductStructureVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

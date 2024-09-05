@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN" "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+
+<taglib>
+    <tlibversion>1.0</tlibversion>
+    <jspversion>1.1</jspversion>
+    <shortname>edit</shortname>
+    <uri>http://www.seg.com/taglib</uri>
+    <info>EDIT Solutions Security Tag library</info>
+
+    <tag>
+        <name>secureElement</name>
+        <tagclass>edit.portal.taglib.SecureElement</tagclass>
+        <bodycontent>JSP</bodycontent>
+        <info>Checks that the operator is in the proper Role</info>
+        <attribute>
+            <name>requiredRoles</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+
+    <tag>
+        <name>selectForUserCompanyStructures</name>
+        <tagclass>edit.portal.taglib.UserCompanyStructureSelect</tagclass>
+        <bodycontent>JSP</bodycontent>
+        <info>Creates select for the company structures that the user can access</info>
+        <attribute>
+            <name>name</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+	<attribute>
+            <name>dynamicAttributes</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>currentUserCompanyStructure</name>
+        <tagclass>edit.portal.taglib.CurrentUserCompanyStructure</tagclass>
+        <bodycontent>JSP</bodycontent>
+        <info>Shows user current company structure</info>
+	<attribute>
+            <name>dynamicAttributes</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+</taglib>
+

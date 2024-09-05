@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.ChargeCode" table="&quot;ChargeCode&quot;"  >
+    
+        <cache usage="read-write"/>
+    
+        <id name="ChargeCodePK" column="&quot;ChargeCodePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ChargeCode" column="&quot;ChargeCode&quot;"/>
+        <property name="ClientFundNumber" column="&quot;ClientFundNumber&quot;"/>
+        <property name="NewIssuesIndicatorCT" column="&quot;NewIssuesIndicatorCT&quot;"/>
+        <property name="AccumulatedPremium" column="&quot;AccumulatedPremium&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="FilteredFundFK" column="&quot;FilteredFundFK&quot;" insert="false" update="false"/>
+
+        <set name="ControlBalances" table="&quot;ControlBalance&quot;" inverse="true" lazy="true" cascade="all">
+            <key column="&quot;ChargeCodeFK&quot;"/>
+            <one-to-many class="engine.ControlBalance"/>
+        </set>
+
+        <many-to-one
+            name="FilteredFund"
+            column="&quot;FilteredFundFK&quot;"
+            class="engine.FilteredFund"
+            cascade="none"/>
+
+<!--        The following lines are commented out because not ready to implement UnitValues   -->
+<!--        <set name="UnitValues" table="&quot;UnitValues&quot;" inverse="true"  cascade="all" >-->
+<!--            <key column="&quot;ChargeCodeFK&quot;"/>-->
+<!--            <one-to-many class="engine.UnitValues"/>-->
+<!--        </set>-->
+
+    </class>
+</hibernate-mapping>

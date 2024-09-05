@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="accounting.Element" table="&quot;Element&quot;">
+    
+        <cache usage="read-write"/>
+    
+        <id name="ElementPK" column="&quot;ElementPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+        
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="SequenceNumber" column="&quot;Process&quot;"/>
+        <property name="Process" column="&quot;Effect&quot;"/>
+        <property name="Event" column="&quot;Event&quot;"/>
+        <property name="EventType" column="&quot;EventType]&quot;"/>
+        <property name="ElementName" column="&quot;ElementName&quot;"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+
+ 		<set name="ElementCompanyRelations" table="&quot;ElementCompanyRelation&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;ElementFK&quot;"/>
+            <one-to-many class="accounting.ElementCompanyRelation"/>
+        </set>
+        
+ 		<set name="ElementStructures" table="&quot;ElementStructure&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;ElementFK&quot;"/>
+            <one-to-many class="accounting.ElementStructure"/>
+        </set>
+        
+    </class>
+</hibernate-mapping>
+

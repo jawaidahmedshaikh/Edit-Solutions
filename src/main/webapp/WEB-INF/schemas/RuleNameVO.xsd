@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Jason (SEG) -->
+<xs:schema   xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:element name="RuleNameVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProcessName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="EventName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="EventTypeName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="RuleName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

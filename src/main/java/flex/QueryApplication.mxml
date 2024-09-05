@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application  
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:query="com.segsoftware.view.query.*"	
+	layout="absolute" 
+	xmlns:control="com.segsoftware.control.*" 
+	xmlns:business="com.segsoftware.business.*"
+	xmlns:custom="com.segsoftware.view.custom.*"
+	xmlns:model="com.segsoftware.model.*"
+	xmlns:logging="com.segsoftware.model.logging.*"
+	initialize="init()" 
+	creationComplete="onCreationComplete()"
+	width="100%" 
+	height="100%" 
+	>
+
+	<mx:Style source="com/segsoftware/view/css/segSoftware.css"/>		
+
+	<!-- External script(s) that are used -->
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import com.segsoftware.model.query.QueryStatement;
+			import com.segsoftware.model.Constant;
+			import com.adobe.cairngorm.model.ModelLocator;
+			import mx.controls.Alert;
+			import com.segsoftware.model.SEGEntity;
+			import mx.effects.easing.Quadratic;
+			import com.segsoftware.model.SEGModelBuilder;
+			import com.segsoftware.model.query.Query;
+			import com.segsoftware.model.conversion.GroupNode;
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.model.logging.SEGLog;
+			import mx.logging.*;
+			import mx.events.*;
+			import mx.managers.PopUpManager;
+			import com.segsoftware.model.CodeTable; 
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.view.query.HQLParameterValueDialog;
+			
+			/**
+			 * Query object that is actively being edited.  When the user hits new, a default
+			 * Query object is created and set as the activeQuery
+			 */
+			private var _activeQuery:Query = null;
+	
+			[Bindable]
+			public function get activeQuery():Query
+			{
+				return _activeQuery;
+			}
+			
+			public function set activeQuery(activeQuery:Query):void
+			{
+				this._activeQuery = activeQuery;
+			}
+	
+			/**
+			 * System bootstrap operations.
+			 */
+			private function init():void
+			{
+				// Grab the operator from the enclosing JSP (probably SEGSoftwareApplication.jsp)
+				var passedInOperator:String = Util.initString(Application.application.parameters.operator, "N/A");
+				
+				SEGModelLocator.getInstance().operator = passedInOperator;
+			}	
+			
+			/**
+			* CreationComplete.
+			*/
+			private function onCreationComplete():void
+			{				
+				resetToDummyColumn();
+			}
+			
+			/**
+			* The user wants to add a new Query entry. We supply an empty one
+			* to the Collection. We only allow one empty one at any one time.
+			*/
+			private function addNewQuery():void
+			{
+				this.activeQuery = new Query();
+				
+				this.addButton.enabled = false;
+				
+				this.queryDetailPanel.enabled = true;
+				
+				this.nameTextInput.setFocus();			
+			}
+			
+			/**
+			* I would like to "undo" current edits. The best way I see to 
+			* do this is to reload the page.
+			*/
+			private function cancelEdits():void
+			{
+				this.nameTextInput.text = "";
+				
+				this.descriptionTextInput.text = "";
+				
+				this.expressionTextArea.text = "";
+				
+				// Remove the 'red' from any validation efforts.
+				this.nameTextInput.errorString = "";
+				
+				this.descriptionTextInput.errorString = "";
+				
+				this.expressionTextArea.errorString = "";
+				
+				this.queryDetailPanel.enabled = false;	
+				
+				this.addButton.enabled = true;
+				
+				this.cancelButton.enabled = false;	
+				
+				this.activeQuery = null;
+				
+				resetToDummyColumn();
+			}
+			
+			/**
+			* Remove and result columns - can't find a "nice" way to do this.
+			*/
+			private function resetToDummyColumn():void
+			{
+				var dummyColumns:ArrayCollection = new ArrayCollection();
+				
+				var dummyColumn:DataGridColumn = new DataGridColumn("");
+				
+				dummyColumns.addItem(dummyColumn);
+				
+				this.resultDataGrid.columns = dummyColumns.toArray();				
+			}
+			
+			/**
+			 * Gets all the Queries from the DB and calls the callback function
+			 */
+			private function getAllQueries():void
+			{
+				Query.findAll(displayAllQueries);
+			}
+			
+			/**
+			 * Callback function after finding all existing queries
+			 */
+			public function displayAllQueries(queryStatement:QueryStatement):void
+			{
+				SEGModelLocator.getInstance().queries = queryStatement.queryResult.queryCompositions;	
+			}
+	
+			/**
+			* Attempts to run the QueryStatement taking into 
+			* consideration whether we are in add or test mode.	
+			*/
+			private function runQuery():void
+			{
+				if (Util.validate(this.expressionValidator, this.databaseValidator).length == 0)
+				{
+					// We just need the expression and the database to execute against.
+					var queryStatement:QueryStatement = new QueryStatement(this.expressionTextArea.text, this.databaseComboBox.selectedItem.data, buildResultRows);
+					
+					queryStatement.marshalAsRows = true;
+					
+					//  If the expression has parameters, bring up a dialog for the user
+					//	to enter values.  The query will be run from the dialog.
+					if (queryStatement.hqlHasParameters())
+					{
+						var hqlParameterValueDialog:HQLParameterValueDialog = PopUpManager.createPopUp(this, com.segsoftware.view.query.HQLParameterValueDialog, true) as HQLParameterValueDialog;	
+				
+						hqlParameterValueDialog.queryStatement = queryStatement;
+						
+						PopUpManager.centerPopUp(hqlParameterValueDialog);
+					}
+					else
+					{
+						queryStatement.executeQuery();
+					}
+				}
+				else
+				{
+					Alert.show("Validation Error(s) Exist");
+				}
+			}
+			
+			/**
+			* A callback function of the QueryStatement. With these results,
+			* we need to dynamically build the DataGrid's rows/columns.
+			*/
+			private function buildResultRows(queryStatement:QueryStatement):void
+			{
+				buildDataGridColumns(queryStatement.queryResult.columnNames);
+				
+				this.resultDataGrid.dataProvider = queryStatement.queryResult.queryRows;
+			}
+			
+			/**
+			* All queries are dynamic, so we have to dynamically build the DataGrid columns
+			* with each query.
+			*/
+			private function buildDataGridColumns(columnNames:ArrayCollection):void
+			{
+				var dataGridColumns:ArrayCollection = new ArrayCollection();
+				
+				for each (var columnName:String in columnNames)
+				{
+					var dataGridColumn:DataGridColumn = new DataGridColumn(columnName);
+					
+					dataGridColumn.dataField = columnName;
+					
+					dataGridColumn.headerText = columnName;
+					
+					dataGridColumns.addItem(dataGridColumn);
+				}				
+				
+				this.resultDataGrid.columns = dataGridColumns.toArray();
+			}
+			
+			/**
+			 * This method gets called after the Save button has been hit and the save
+			 * command is complete (called by save command's result method, therefore,
+			 * it must be public).  Updates the summary with the latest queries and 
+			 * clears the screen.
+			 */
+			public function updateAfterSave():void
+			{
+				getAllQueries();
+				cancelEdits();
+			}
+			
+			/**
+			 * User selected a query from the summary, set the form fields
+			 */
+			private function selectQuery():void
+			{
+				this.activeQuery = queryDataGrid.selectedItem as Query;
+				
+				presetDatabaseCombox();
+				
+				this.addButton.enabled = false;
+				
+				this.queryDetailPanel.enabled = true;
+				this.cancelButton.enabled = true;
+				this.saveButton.enabled = true;
+				this.runButton.enabled = true;
+			}
+			
+			/**
+			 * Sets the databaseComboBox to the database set in the activeQuery
+			 */
+			private function presetDatabaseCombox():void
+			{
+				var dataProvider:ArrayCollection = databaseComboBox.dataProvider as ArrayCollection;
+				
+				for (var i:int = 0; i < dataProvider.length; i++)
+				{
+					var dataProviderItem:Object = dataProvider[i];
+					
+					if (dataProviderItem.data.toString() == this.activeQuery.databaseName)
+					{
+						databaseComboBox.selectedItem = databaseComboBox.dataProvider[i];	
+					}
+				}
+			}
+			
+			
+		]]>
+	</mx:Script>	
+	<!--
+	<mx:Validator id="nameValidator" source="{nameText}" property="name" required="true" triggerEvent=""/>			
+	-->	
+	<!-- the FrontController, containing Commands specific to this appliation -->
+	<control:SEGController id="segController" />
+
+	<!-- Logging mechanism -->
+	<logging:SEGLog id="segLog" />
+	
+	<!-- Services are defined here and are readily accessible throughout the application -->
+	<business:Services id="services" />
+	
+	<!-- Our menu system for our flex pages -->
+	<custom:SEGApplicationControlBar dock="true" height="46"/>
+	
+	<mx:StringValidator 
+		id="nameValidator"
+		source="{this.nameTextInput}" 
+		required="true" 
+		property="text" 
+		triggerEvent=""
+		requiredFieldError="[Name] is a Required Field"/>
+		
+	<mx:StringValidator 
+		id="descriptionValidator"
+		source="{this.descriptionTextInput}" 
+		required="true" 
+		property="text" 
+		triggerEvent=""
+		requiredFieldError="[Description] is a Required Field"/>		
+		
+	<mx:StringValidator 
+		id="expressionValidator"
+		source="{this.expressionTextArea}" 
+		required="true" 
+		property="text" 
+		triggerEvent=""
+		requiredFieldError="[Expression] is a Required Field"/>			
+
+	<mx:Validator 
+		id="databaseValidator"
+		source="{this.databaseComboBox}" 
+		required="true" 
+		property="selectedItem" 
+		triggerEvent=""
+		requiredFieldError="[Database] is a Required Field"/>	
+	
+	<mx:VBox 
+		left="0" 
+		right="0" 
+		top="10" 
+		bottom="10"
+		paddingLeft="10"
+		paddingRight="10"
+		styleName="SEGVBox">
+		
+		<mx:HBox width="100%" height="50%" styleName="SEGHBox">
+			<mx:VBox width="50%" height="100%" styleName="SEGVBox">
+				<mx:Button label="Query Detail" width="100%" styleName="SEGButtonHeader" height="{Constant.BUTTON_HEADER_HEIGHT}"/>		
+				<mx:Panel 
+					id="queryDetailPanel"
+					width="100%" 
+					height="100%" 
+					layout="absolute"
+					headerHeight="0"
+					enabled="false"
+					>
+					<mx:Label x="29" text="Name:" top="2"/>
+					<mx:Label x="0" y="32" text="Description:" height="24"/>
+					<mx:Label x="34" y="62" text="Type:"/>
+					<mx:TextInput 
+						id="nameTextInput" 
+						text="{this.activeQuery.name}"
+						top="0" 
+						left="79" 
+						restrict="a-zA-Z0-9" 
+						maxChars="50" 
+						width="200"
+						styleName="SEGDisabledText"/>					
+					<mx:TextInput 
+						id="descriptionTextInput"
+						text="{this.activeQuery.description}" 
+						y="30" 
+						right="79" 
+						left="79" 
+						maxChars="200"
+						styleName="SEGDisabledText"/>
+					<mx:TextInput 
+						id="typeTextInput"
+						y="60" 
+						width="59" 
+						text="HQL" 
+						editable="false"
+						focusEnabled="false" 
+						enabled="false" 
+						left="79"
+						styleName="SEGDisabledText"/>
+					<mx:Label x="0" y="91" text="Expression:"/>
+					<mx:TextArea 
+						id="expressionTextArea" 
+						text="{this.activeQuery.expression}"
+						left="78" 
+						right="0" 
+						bottom="0" 
+						top="90" 
+						maxChars="1000"
+						styleName="SEGDisabledText"/>
+					<mx:Label x="146" y="62" text="Database:"/>
+					<mx:ComboBox 
+						id="databaseComboBox"
+						x="217" 
+						y="60" 
+						prompt="Please Select">
+						<mx:ArrayCollection>
+							<mx:Object label="{QueryStatement.EDITSOLUTIONS}" data="{QueryStatement.EDITSOLUTIONS}"/>
+							<mx:Object label="{QueryStatement.ENGINE}" data="{QueryStatement.ENGINE}"/>
+						</mx:ArrayCollection>					
+					</mx:ComboBox>
+						<mx:ControlBar height="5"/>
+				</mx:Panel>
+			</mx:VBox>
+			<mx:VBox width="50%" height="100%" verticalGap="1" styleName="SEGVBox">
+				<mx:Button x="10" y="242" label="Query Summary" width="100%" styleName="SEGButtonHeader" height="{Constant.BUTTON_HEADER_HEIGHT}"/>
+				<mx:Panel width="100%" height="100%" layout="absolute" headerHeight="0">
+					<mx:DataGrid 
+						id="queryDataGrid"
+						creationComplete="getAllQueries()"
+						variableRowHeight="true"
+						rowHeight="25"
+						dataProvider="{SEGModelLocator.getInstance().queries}"
+						change="selectQuery()" 
+						left="0" right="0" top="0" bottom="0">
+						<mx:columns>
+							<mx:DataGridColumn editable="true" headerText="Name" dataField="name" editorDataField="text" width="150">
+								<mx:itemEditor>
+									<mx:Component>
+										<mx:HBox horizontalScrollPolicy="off">
+											<mx:Script>
+												<![CDATA[
+													import com.segsoftware.model.*;
+													
+													public function get text():String
+													{
+														var value:String = null;
+														
+														trace("dude dataProvider");
+														
+														var object:Object = SEGModelLocator.getInstance().queries;
+														
+														if (nameTextInput)
+														{
+															value = nameTextInput.text;
+														}
+														
+														return value;
+													}
+													
+													override public function set data(value:Object):void
+													{
+														super.data = value;
+														
+														this.nameTextInput.text = data.name;
+													}	
+												]]>
+											</mx:Script>
+											<mx:TextInput 
+												id="nameTextInput"
+												backgroundColor="red"
+												width="100%"
+												/>
+										</mx:HBox>
+									</mx:Component>
+								</mx:itemEditor>
+							</mx:DataGridColumn>
+							<mx:DataGridColumn editable="true" headerText="Description" dataField="description" width="200"/>
+							<mx:DataGridColumn editable="false" headerText="Type" dataField="type" width="50"/>						
+							<mx:DataGridColumn editable="false" headerText="Database" dataField="databaseName"/>						
+							<mx:DataGridColumn id="expressionDataGridColumn" editable="true" headerText="Expression" dataField="expression"/>
+						</mx:columns>
+					</mx:DataGrid>
+					<mx:ControlBar height="5">
+					</mx:ControlBar>			
+				</mx:Panel>
+			</mx:VBox>
+		</mx:HBox>	
+		<mx:VBox width="100%" height="50%" verticalGap="0" styleName="SEGVBox">
+			<mx:Button label="Query Results" width="100%" height="{Constant.BUTTON_HEADER_HEIGHT}" styleName="SEGButtonHeader"/>
+			<mx:Panel 
+				width="100%" 
+				height="100%" 
+				layout="absolute" 
+				headerHeight="0"
+				horizontalScrollPolicy="off"
+				verticalScrollPolicy="off">
+				<mx:DataGrid 
+					id="resultDataGrid"
+					columnWidth="100"
+					rowHeight="25"
+					horizontalScrollPolicy="auto"
+					verticalScrollPolicy="auto"
+					left="0" 
+					right="0" 
+					top="0" 
+					bottom="0">
+				</mx:DataGrid>
+				<mx:ControlBar 
+					horizontalAlign="right" 
+					height="{Constant.CONTROLBAR_HEIGHT}"					
+					styleName="SEGControlBar"
+					paddingBottom="0"
+					paddingTop="0"
+					verticalAlign="middle">
+					<mx:Button 
+						id="addButton"
+						label="New"
+						click="addNewQuery()"
+						/>
+					<mx:Button 
+						id="saveButton"
+						label="Save" 
+						enabled="{!addButton.enabled}"
+						click=
+						"
+							if (Util.validate(nameValidator, descriptionValidator, expressionValidator).length == 0)
+							{
+								activeQuery.updateQuery(nameTextInput.text, 
+														descriptionTextInput.text,
+														typeTextInput.text,
+														expressionTextArea.text,
+														this.databaseComboBox.selectedItem.data);
+																	
+								Util.dispatchEvent(SEGController.EVENT_SAVE_QUERY, activeQuery, this);	
+							}
+							else
+							{
+								Alert.show('Validation Error(s) Exist');	
+							}
+						"/>
+					<mx:Button 
+						id="cancelButton"
+						label="Cancel" 
+						enabled="{!addButton.enabled}"
+						click="cancelEdits()"/>
+					<mx:Button
+						label="Delete" 
+						enabled="{this.queryDataGrid.selectedItem}"/>
+					<mx:VRule height="20"/>
+					<mx:Button 
+						id="runButton"
+						label="Run" 
+						enabled="{!addButton.enabled}"
+						click="runQuery()"/>
+				</mx:ControlBar>
+			</mx:Panel>
+			
+		</mx:VBox>
+	</mx:VBox>
+</mx:Application>

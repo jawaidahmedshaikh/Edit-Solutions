@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="com.editsolutions.prd.node.GroupNode" table="vw_PRD_Group"  >
+        <id name="groupSetupPK" column="Group_ContractGroupPK" type="long">
+            <generator class="identity"/> 
+        </id>
+
+        <property name="groupNumber" column="GroupNumber"/>
+        <property name="groupName" column="GroupName"/>
+
+        <many-to-one name="prdNode" lazy="false" class="com.editsolutions.prd.node.PRDNode"
+                 column="PRD_SetupPK" unique="true"/>
+                 
+    </class>
+</hibernate-mapping>

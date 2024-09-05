@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.Bucket" table="&quot;Bucket&quot;"  >
+        <id name="BucketPK" column="&quot;BucketPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+                                                    
+        <property name="CumDollars" column="&quot;CumDollars&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CumUnits" column="&quot;CumUnits&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DepositDate" column="&quot;DepositDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="DepositAmount" column="&quot;DepositAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LastValuationDate" column="&quot;LastValuationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="InterestRateOverride" column="&quot;InterestRateOverride&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="BucketInterestRate" column="&quot;BucketInterestRate&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PriorBucketRate" column="&quot;PriorBucketRate&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DurationOverride" column="&quot;DurationOverride&quot;"/>
+
+        <property name="PayoutUnits" column="&quot;PayoutUnits&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PayoutDollars" column="&quot;PayoutDollars&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RenewalDate" column="&quot;RenewalDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="LastRenewalDate" column="&quot;LastRenewalDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="GuarCumValue" column="&quot;GuarCumValue&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="BonusAmount" column="&quot;BonusAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="IndexCapRate" column="&quot;IndexCapRate&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RebalanceAmount" column="&quot;RebalanceAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DepositAmountGain" column="&quot;DepositAmountGain&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="UnearnedInterest" column="&quot;UnearnedInterest&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="BonusIntRate" column="&quot;BonusIntRate&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="BonusIntRateDur" column="&quot;BonusIntRateDur&quot;"/>
+
+        <property name="LockupEndDate" column="&quot;LockupEndDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="BucketSourceCT" column="&quot;BucketSourceCT&quot;"/>
+        <property name="LoanCumDollars" column="&quot;LoanCumDollars&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LoanPrincipalRemaining" column="&quot;LoanPrincipalRemaining&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LoanInterestRate" column="&quot;LoanInterestRate&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PreviousLoanInterestRate" column="&quot;PreviousLoanInterestRate&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AccruedLoanInterest" column="&quot;AccruedLoanInterest&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="UnearnedLoanInterest" column="&quot;UnearnedLoanInterest&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="InterestPaidThroughDate" column="&quot;InterestPaidThroughDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="BilledLoanInterest" column="&quot;BilledLoanInterest&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="InvestmentFK" column="&quot;InvestmentFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Investment"
+            column="&quot;InvestmentFK&quot;"
+            class="contract.Investment"
+            cascade="none"/>
+
+        <set name="AnnualizedSubBuckets" table="&quot;AnnualizedSubBucket&quot;" inverse="true"   cascade="all">
+            <key column="&quot;BucketFK&quot;"/>
+            <one-to-many class="contract.AnnualizedSubBucket"/>
+        </set>
+
+        <set name="BucketHistories" table="&quot;BucketHistory&quot;" inverse="true"   cascade="all">
+            <key column="&quot;BucketFK&quot;"/>
+            <one-to-many class="event.BucketHistory"/>
+        </set>
+
+        <set name="BucketAllocations" table="&quot;BucketAllocation&quot;" inverse="true"   cascade="all">
+            <key column="&quot;BucketFK&quot;"/>
+            <one-to-many class="contract.BucketAllocation"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

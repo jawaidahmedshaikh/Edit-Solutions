@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="agent.Vesting" table="&quot;Vesting&quot;" >
+        <id name="VestingPK" column="&quot;VestingPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="AgentFK" column="&quot;AgentFK&quot;" insert="false" update="false"/>
+
+        <property name="TermVestingBasisCT" column="&quot;TermVestingBasisCT&quot;"/>
+        <property name="TermVestingStatusCT" column="&quot;TermVestingStatusCT&quot;"/>
+        <property name="TermVestingPercent" column="&quot;TermVestingPercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="VestingDuration" column="&quot;VestingDuration&quot;"/>
+
+          <many-to-one
+            name="Agent"
+            column="&quot;AgentFK&quot;"
+            class="agent.Agent"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

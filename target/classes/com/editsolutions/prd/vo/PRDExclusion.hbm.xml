@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="com.editsolutions.prd.vo.PRDExclusion" table="PRD_Exclusion"  >
+        <id name="prdExclusionPK" column="PRD_ExclusionPK" type="long">
+              <generator class="identity"/>
+        </id>
+
+        <property name="prdSetupFK" column="PRD_SetupFK"/>
+        <property name="exclusionType" column="ExclusionType"/>
+        <property name="exclusionCode" column="ExclusionCode"/>
+        <property name="addDate" column="AddDate" type="date"/>
+        <property name="addUser" column="AddUser"/>
+        <property name="modDate" column="ModDate" type="date"/>
+        <property name="modUser" column="ModUser"/>
+        
+    </class>
+</hibernate-mapping>

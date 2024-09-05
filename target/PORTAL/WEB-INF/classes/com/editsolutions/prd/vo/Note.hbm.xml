@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+     <class name="com.editsolutions.prd.vo.Note" table="PRD_Note"  >
+        <id name="notePK" column="PRD_NotePK" type="long">
+              <generator class="identity"/>
+        </id>
+        <property name="dataHeaderFK" column="PRD_DataHeaderFK"/>
+        <property name="noteDate" column="NoteDate" type="date"/>
+        <property name="actionDate" column="ActionDate" type="date"/>
+        <property name="note" column="Note"/>
+        <property name="statusCT" column="StatusCT"/>
+        <many-to-one name="prdSettings" lazy="false" class="com.editsolutions.prd.vo.PRDSettings"
+            column="PRD_SetupFK" unique="true" insert="false" update="false"/>
+    </class>
+</hibernate-mapping>

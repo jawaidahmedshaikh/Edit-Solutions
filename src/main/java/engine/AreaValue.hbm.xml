@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.AreaValue" table="&quot;AreaValue&quot;" lazy="true">
+    
+        <cache usage="read-write"/>
+        
+        <id name="AreaValuePK" column="&quot;AreaValuePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AreaValue" column="&quot;AreaValue&quot;"/>
+        <property name="AreaCT" column="&quot;AreaCT&quot;"/>
+        <property name="QualifierCT" column="&quot;QualifierCT&quot;"/>
+
+        <set name="ProductStructures" table="&quot;FilteredAreaValue&quot;" lazy="true" cascade="none">
+            <key column="&quot;AreaValueFK&quot;"/>
+            <many-to-many class="engine.ProductStructure" column="&quot;ProductStructureFK&quot;"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

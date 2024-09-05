@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Deanna Lataille (Systems Engineering Group, LLC) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="./RiderSegmentVO.xsd"/>
+	<xs:include schemaLocation="./BaseSegmentVO.xsd"/>
+	<xs:include schemaLocation="./InvestmentTransferValueVO.xsd"/>
+	<xs:element name="CoiReplenishmentVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="EffectiveDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="10"/>
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="BaseSegmentVO"/>
+				<xs:element ref="RiderSegmentVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="InsuredResidenceState" type="xs:string" nillable="true"/>
+				<xs:element name="InsuredGender" type="xs:string" nillable="true"/>
+				<xs:element name="InsuredDateOfBirth" type="xs:string" nillable="true"/>
+				<xs:element name="InsuredIssueAge" type="xs:int" nillable="true"/>
+				<xs:element name="InsuredClass" type="xs:string" nillable="true"/>
+				<xs:element name="InsuredUnderwritingClass" type="xs:string" nillable="true"/>
+				<xs:element ref="InvestmentTransferValueVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

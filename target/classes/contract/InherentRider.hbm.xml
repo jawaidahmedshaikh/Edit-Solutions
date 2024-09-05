@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.InherentRider" table="&quot;InherentRider&quot;"  >
+        <id name="InherentRiderPK" column="&quot;InherentRiderPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="RiderEffectiveDate" column="&quot;RiderEffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="InherentRiderTypeCT" column="&quot;InherentRiderTypeCT&quot;"/>
+        <property name="RiderStatusCT" column="&quot;RiderStatusCT&quot;"/>
+        <property name="RiderPercent" column="&quot;RiderPercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="Amount" column="&quot;Amount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>
+

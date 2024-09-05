@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group, LLC) -->
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Jason (SEG) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="ParticipatingAgentInfoVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="FirstName">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="25"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Name">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AgentNumber">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Address1">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Address2">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Address3">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Address4">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="City">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="State">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Zip">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AgentType">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ReportTo">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="DisbursementSource">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RedirectName">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RedirectNumber">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RedirectAddress1">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RedirectAddress2">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RedirectAddress3">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RedirectAddress4">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RedirectCity">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RedirectState">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RedirectZip">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="BonusCheckAmount" type="xs:decimal"/>
+				<xs:element name="BounsName" type="xs:string"/>
+				<xs:element ref="PremiumLevelStatementVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:anyAttribute/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BonusStatementLineVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AgentNumber">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ProductType">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AgentName">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EffectiveDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ProcessDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="OwnerName">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PolicyNumber">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="BonusPremium" type="xs:decimal"/>
+				<xs:element name="Type">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AllocationPercent" type="xs:decimal"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BonusStatementVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="StatementDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="ParticipatingAgentInfoVO"/>
+				<xs:element ref="BonusEarningsVO"/>
+				<xs:element name="LastStatementAmount" type="xs:decimal"/>
+				<xs:element name="LastStatementDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BonusEarningsVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TaxableIncome" type="xs:decimal"/>
+				<xs:element name="TaxableIncomeYTD" type="xs:decimal"/>
+				<xs:element name="PositivePolicyEarnings" type="xs:decimal"/>
+				<xs:element name="NegativePolicyEarnings" type="xs:decimal"/>
+				<xs:element name="NetPolicyEarnings" type="xs:decimal"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BonusCommissionStatementVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="BonusStatementVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="PremiumLevelStatementVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="IssueLevelPremium" type="xs:decimal"/>
+				<xs:element name="ProductLevelIncreasePercent" type="xs:decimal"/>
+				<xs:element name="ProductLevelIncreaseAmount" type="xs:decimal"/>
+				<xs:element name="IncreaseStopAmount" type="xs:decimal"/>
+				<xs:element ref="BonusCriteriaStatementVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BonusCriteriaStatementVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="BonusAmount" type="xs:decimal"/>
+				<xs:element name="BonusBasisPoint" type="xs:decimal"/>
+				<xs:element name="ExcessBonusAmount" type="xs:decimal"/>
+				<xs:element name="ExcessBonusBasisPoint" type="xs:decimal"/>
+				<xs:element name="ExcessPremiumLevel" type="xs:decimal"/>
+				<xs:element ref="BonusStatementLineVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

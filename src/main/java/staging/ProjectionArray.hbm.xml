@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.ProjectionArray" table="&quot;PROJECTIONARRAY&quot;">
+        <id name="ProjectionArrayPK" column="&quot;PROJECTIONARRAYPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SegmentBaseFK" column="&quot;SEGMENTBASEFK&quot;" insert="false" update="false"/>
+
+        <property name="Type" column="&quot;TYPE&quot;"/>
+        <property name="Duration" column="&quot;DURATION&quot;"/>
+        <property name="GuarNetPay" column="&quot;GUARNETPAY&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="NonGuarNetPay" column="&quot;NONGUARNETPAY&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="GuarSurrender" column="&quot;GUARSURRENDER&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NonGuarSurrender" column="&quot;NONGUARSURRENDER&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="GuarPaidUpTerm" column="&quot;GUARPAIDUPTERM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NonGuarPaidUpTerm" column="&quot;NONGUARPAIDUPTERM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="OneYearTerm" column="&quot;ONEYEARTERM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="PaidUpTermVested" column="&quot;PAIDUPTERMVESTED&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="VestingPeriod" column="&quot;VESTINGPERIOD&quot;"/>
+        <property name="PremiumLoad" column="&quot;PREMIUMLOAD&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="AnniversaryDate" column="&quot;ANNIVERSARYDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AttainedAge" column="&quot;ATTAINEDAGE&quot;"/>
+        <property name="MidPointPUT" column="&quot;MIDPOINTPUT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="MidPointPremTerm" column="&quot;MIDPOINTPREMTERM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PaidUpAge" column="&quot;PAIDUPAGE&quot;"/>
+        <property name="DeathBenefit" column="&quot;DEATHBENEFIT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="Rpu" column="&quot;RPU&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NetPremiumCostIndex10" column="&quot;NETPREMIUMCOSTINDEX10&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NetPremiumCostIndex20" column="&quot;NETPREMIUMCOSTINDEX20&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="SurrenderCostIndex10" column="&quot;SURRENDERCOSTINDEX10&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SurrenderCostIndex20" column="&quot;SURRENDERCOSTINDEX20&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NonGuarDeathBenefit" column="&quot;NONGUARDEATHBENEFIT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="GuarNetPremiumCostIndex10" column="&quot;GUARNETPREMIUMCOSTINDEX10&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="GuarNetPremiumCostIndex20" column="&quot;GUARNETPREMIUMCOSTINDEX20&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="GuarSurrenderCostIndex10" column="&quot;GUARSURRENDERCOSTINDEX10&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="GuarSurrenderCostIndex20" column="&quot;GUARSURRENDERCOSTINDEX20&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="GuarModalPremium" column="&quot;GUARMODALPREMIUM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="GuarLTCPremium" column="&quot;GUARLTCPREMIUM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="GuarDecreaseTermDB" column="&quot;GUARDECREASETERMDB&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        
+        <property name="GuaranteedEOBPremium" column="&quot;GUARANTEEDEOBPREMIUM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="PaidUpTermDate" column="&quot;PaidUpTermDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <many-to-one
+            name="SegmentBase"
+            column="&quot;SEGMENTBASEFK&quot;"
+            class="staging.SegmentBase"
+            cascade="none"/>
+    </class>
+</hibernate-mapping>
+

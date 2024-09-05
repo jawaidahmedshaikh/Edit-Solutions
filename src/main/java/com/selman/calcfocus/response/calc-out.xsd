@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://xmlns.calcfocus.com/services/calc" xmlns="http://xmlns.calcfocus.com/services/calc"
+         xmlns:xmime="http://www.w3.org/2005/05/xmlmime" version="1.0">
+
+   <xs:include schemaLocation="calc.xsd"/>
+
+   <xs:element name="calculateResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="header" type="Header" maxOccurs="1" minOccurs="1"/>
+            <xs:element name="policySummary" type="PolicySummary" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element name="PartySummary" type="PartySummary" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element name="addressSummary" type="AddressSummary" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element name="lifetimeFinancialAdviceSummary" type="LifetimeFinancialAdviceSummary" maxOccurs="1" minOccurs="0"/>
+            <xs:element name="futureLifeProjectionSummary" type="futureLifeProjectionSummary" maxOccurs="1" minOccurs="0"/>
+            <xs:element name="insuranceProposal" type="InsuranceProposal" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element name="insuranceNeed" type="Need" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element name="commissionableAmount" type="CommissionableAmount" maxOccurs="unbounded" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:complexType name="PolicySummary">
+      <xs:sequence>
+         <xs:element name="illustrationType" type="IllustrationType" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="policyAdminStatus" type="PolicyAdminStatus" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="policyCurrentDate" type="xs:date" maxOccurs="1" minOccurs="1"/>
+         <xs:element type="xs:date" name="effectiveDate" maxOccurs="1" minOccurs="1"/>
+         <xs:element type="xs:date" name="pointInTimeDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:string" name="policyNumber" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:string" name="issueState" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:int" name="issueAge" minOccurs="0" maxOccurs="1"/>
+         <xs:element type="xs:int" name="currentYear" minOccurs="0" maxOccurs="1"/>
+         <xs:element type="xs:int" name="attainedAge" minOccurs="0" maxOccurs="1"/>
+         <xs:element type="xs:int" name="maturityAge" minOccurs="0" maxOccurs="1"/>
+         <xs:element type="PolicyType" name="policyType" minOccurs="1" maxOccurs="1"/>
+         <xs:element type="PaymentMode" name="paymentMode" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="Premium" name="premium" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="xs:double" name="premiumSuspense" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="seconaryGuaranteeExpiryDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="expiryDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="maturityDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="DeathBenefitOption" name="deathBenefitOption" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="DefinitionOfLifeInsurance" name="definitionOfLifeInsurance" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="billingIndicator" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+         <xs:element name="SumOfPremiumPolicyholderPaidForNoLapseGuaranteeTest" type="xs:double" minOccurs="0" maxOccurs="1"/>
+         <xs:element name="SumOfPremiumRequiredToKeepNoLapseGuaranteeInforce" type="xs:double" minOccurs="0" maxOccurs="1"/>
+         <xs:element type="xs:double" name="initialLoanPrincipal" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="currentDateValues" type="CurrentDateValues" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="baseProductSummary" type="BaseProductSummary" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="baseGuaranteedCashValue" type="Rate" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="coverageSummary" type="CoverageSummary" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="scenarioSummary" type="ScenarioSummary" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="fundSummary" type="FundSummary" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="iRSCycleConsequences" type="IRSCycleConsequences" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="eventCycleConsequences" type="EventCycleConsequences" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="eventCycleConsequencesCoverage" type="EventCycleConsequencesCoverage" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="historicalTransaction" type="HistoricalTransaction" minOccurs="0" maxOccurs="unbounded"/>
+         <xs:element type="xs:double" name="lowestDeathBenefitDuringSevenPayPeriod" maxOccurs="1" minOccurs="0"/>
+         <!-- TODO transactionSummary should be inside scenarioSummary -->
+         <xs:element name="transactionSummary" type="TransactionSummary" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="FundPerformance" name="fundPerformance" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="EndOfYearValues" name="actuarialValues" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="reserveSummary" type="ReserveSummary" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="report" type="Report" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="Report">
+      <xs:sequence>
+         <xs:element name="name" type="xs:string" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="reportType" type="ReportType" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="content" type="xs:base64Binary" maxOccurs="1" minOccurs="1" xmime:expectedContentTypes="application/pdf,application/zip"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="futureLifeProjectionSummary">
+      <xs:sequence>
+         <xs:element name="policySummary" type="FutureLifeProjectionSummaryPolicySummary" maxOccurs="unbounded" minOccurs="1"/>
+         <xs:element type="xs:double" name="incomePercentageConservativeModerateBreakpoint" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="incomePercentageModerateAggressiveBreakpoint" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="FutureLifeProjection" name="futureLifeProjection" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="FutureLifeProjection">
+      <xs:sequence>
+         <xs:element name="policySummary" type="FutureLifeProjectionPolicySummary" maxOccurs="unbounded" minOccurs="1"/>
+         <xs:element type="StochasticFutureLifeProjection" name="stochasticFutureLifeProjection" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="NonStochasticFutureLifeProjection" name="nonStochasticFutureLifeProjection" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="StochasticFutureLifeProjection">
+      <xs:sequence>
+         <xs:element type="xs:double" name="rating" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:int" name="averageDeathAge" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="averageBequestAchievedAtDeathAge" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="averagePercentageOfDesiredIncomeAchievedAtDeathAge" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="averagePercentageOfDesiredBequestAchievedAtDeathAge" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="percentageOfTrialsWhichAchievedDesiredBequest" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="percentageOfTrialsWhichAchievedDesiredIncome" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="percentageOfTrialsWhichAchievedDesiredBequestAndDesiredIncome" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="RetirementGoalPriority" name="bestFitRetirementGoalPriority" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="YearValue" name="annualLifeInsuranceDeathBenefit" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="YearValue" name="averageDesiredIncome" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="YearValue" name="averageDesiredBequest" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="YearValue" name="averageAnnualIncome" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="YearValue" name="averageAnnualBequest" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="YearValue" name="averageCumulativeIncomePercentageAchievedArray" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="YearValue" name="averageAnnualIncomeShortfallPercentageArray" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="YearValue" name="oneStdDevHighSavings" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="YearValue" name="oneStdDevLowSavings" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="YearValue" name="twoStdDevHighSavings" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="YearValue" name="twoStdDevLowSavings" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="YearValue" name="oneStdDevHighIncome" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="YearValue" name="oneStdDevLowIncome" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="YearValue" name="twoStdDevHighIncome" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="YearValue" name="twoStdDevLowIncome" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="NonStochasticFutureLifeProjection">
+      <xs:sequence>
+         <xs:element type="FutureLifeProjectionType" name="futureLifeProjectionType" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:int" name="deathAge" maxOccurs="1" minOccurs="1"/>
+         <xs:element name="endOfYearValues" type="EndOfYearValues" maxOccurs="unbounded" minOccurs="1"/>
+         <xs:element name="fundPerformance" type="FundPerformance" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="YearValue" name="desiredIncome" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="YearValue" name="desiredBequest" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="FutureLifeProjectionSummaryPolicySummary">
+      <xs:sequence>
+         <xs:element type="xs:string" name="productName" maxOccurs="1" minOccurs="1"/>
+         <xs:element type="xs:string" name="productCode" maxOccurs="1" minOccurs="1"/>
+         <xs:element type="PolicyType" name="productType" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="effectiveDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="maturityDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:int" name="issueAge" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="faceAmount" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="FutureLifeProjectionPolicySummary">
+      <xs:sequence>
+         <xs:element type="xs:string" name="productCode" maxOccurs="1" minOccurs="1"/>
+         <xs:element type="xs:double" name="allocationPercentage" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="YearValue" name="averageAnnualNonStochasticIncome" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="FundPerformance">
+      <xs:sequence>
+         <xs:element type="xs:string" name="fundName" maxOccurs="1" minOccurs="1"/>
+         <xs:element type="FundType" name="fundType" maxOccurs="1" minOccurs="1"/>
+         <xs:element name="rate" type="Rate" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="FundSummary">
+      <xs:sequence>
+         <xs:element type="xs:string" name="fundCode" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="fundPrincipal" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="lastPrincipalChangeDate" maxOccurs="1" minOccurs="1"/>
+         <xs:element type="xs:double" name="uncapitalizedCredit" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="uncapitalizedInterest" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="units" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="BaseProductSummary">
+      <xs:sequence>
+         <xs:element type="xs:double" name="currentLoanInterestRate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="cOIRatingFactor" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="applicationFee" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="monthlyAdministrativeFee" type="Rate" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="xs:double" name="partialWithdrawalFee" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="deathBenefitDiscountFactor" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="benefitReductionType" type="BenefitReductionType" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="benefitReductionSchedule" type="BenefitReductionSchedule" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="surrenderCharge" type="Rate" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="premiumCharge" type="Rate" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="CurrentCOI" type="Rate" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="baseFundInterestRate" type="Rate" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="PartySummary">
+      <xs:sequence>
+         <xs:element type="xs:string" name="PartyGUID" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:string" name="firstName" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:string" name="lastName" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="dateOfBirth" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="addressAssociation" type="AddressAssociation" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="AddressSummary">
+      <xs:sequence>
+         <xs:element type="xs:string" name="addressGUID" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:string" name="line1" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:string" name="city" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:string" name="state" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ReserveSummary">
+      <xs:sequence>
+         <xs:element type="xs:double" name="GMF" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="GLP" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="NLP" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="EA" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="CRVM" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="BenefitReductionSchedule">
+      <xs:sequence>
+         <xs:element type="xs:int" name="year" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:int" name="age" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="reduceToPercent" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="reduceToAmount" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CoverageSummary">
+      <xs:sequence>
+         <xs:element type="xs:string" name="GUID" minOccurs="0" maxOccurs="1"/>
+         <xs:element type="xs:string" name="primaryInsuredPartyGUID" minOccurs="0" maxOccurs="1"/>
+         <xs:element type="xs:string" name="jointInsuredPartyGUID" minOccurs="0" maxOccurs="1"/>
+         <xs:element type="BaseIndicator" name="baseIndicator" minOccurs="1" maxOccurs="1"/>
+         <xs:element type="xs:string" name="productCode" minOccurs="1" maxOccurs="1"/>
+         <xs:element type="xs:double" name="faceAmount" minOccurs="0" maxOccurs="1"/>
+         <xs:element type="xs:date" name="originalEffectiveDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="terminationDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="effectiveDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="expiryDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:int" name="issueAge" minOccurs="0" maxOccurs="1"/>
+         <xs:element type="xs:string" name="eliminationPeriod" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:int" name="coverageTotalDuration" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="CoverageBenefitLevelCode" name="coverageBenefitLevelCode" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="TobaccoUse" name="tobaccoUse" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="CoverageLevel" name="coverageLevel" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="Premium" name="premium" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="EndOfYearValues">
+      <xs:sequence>
+         <xs:element type="xs:int" name="year" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:int" name="attainedAge" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumOutlay" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumPremiumsPaid" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumCumulativePremiumsPaid" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumPremiumExpenseCharge" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumWithdrawals" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumLoans" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumLoanRepays" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="surrenderCashValue" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="accumulationCashValue" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="unloanedCashValue" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="deathBenefit" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="faceAmount" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="shadowAccumulationCashValue" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="loanCashValue" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="internalRateOfReturnCashValue" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="internalRateOfReturnDeathBenefit" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="WholeLifeEndOfYearValues" name="wholeLifeEndOfYearValues" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="DOLIMECEndOfYearValues" name="dOLIMECEndOfYearValues" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="WholeLifeEndOfYearValues">
+      <xs:sequence>
+         <!-- death benefit -->
+         <xs:element type="xs:double" name="baseDeathBenefit" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="oneYearTermDeathBenefit" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="additionalInsuranceDeathBenefit" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="paidUpInsuranceDeathBenefit" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="reducedPaidUpFaceAmount" maxOccurs="1" minOccurs="0"/>
+         <!-- cash value -->
+         <xs:element type="xs:double" name="additionalInsuranceCashValue" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="paidUpInsuranceCashValue" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="dividendsAccumulatingAtInterestCashValue" maxOccurs="1" minOccurs="0"/>
+         <!-- raw dividends -->
+         <xs:element type="xs:double" name="baseDividend" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="additionalInsuranceDividend" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="paidUpInsuranceDividend" maxOccurs="1" minOccurs="0"/>
+         <!-- dividend application -->
+         <xs:element type="xs:double" name="dividendAppliedToPremiums" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="dividendAppliedToAdditionalInsurance" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="dividendAppliedToOYT" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="dividendAppliedToPaidUpInsurance" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="dividendAppliedToInterestAccumulation" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="dividendAppliedToLoanBalance" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="dividendDisbursedAsCash" maxOccurs="1" minOccurs="0"/>
+         <!-- premiums -->
+         <xs:element type="xs:double" name="sumOfAnnualPUAPremiums" maxOccurs="1" minOccurs="0"/>
+         <!-- ISWL -->
+         <xs:element type="xs:double" name="sumISWLCharges" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumISWLPremium" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumISWLPremiumPaidFromFund" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="DOLIMECEndOfYearValues">
+      <xs:sequence>
+         <!-- Guideline Premium Test -->
+         <xs:element type="xs:double" name="guidelineLevelPremium" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="guidelineSinglePremium" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="guidelineDOLILimit" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="guidelineDOLIPremiumsPaid" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="guidelineMaximumPremiumPayable" maxOccurs="1" minOccurs="0"/>
+         <!-- Seven Pay Test -->
+         <xs:element type="xs:double" name="sevenPayPremium" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sevenPayPremiumLimit" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sevenPayPremiumsPaid" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sevenPayMaximumPremiumPayable" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumOfContractPremium" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="tAMRANetSinglePremium" maxOccurs="1" minOccurs="0"/>
+         <!-- CVAT -->
+         <xs:element type="xs:double" name="corridorDeathBenefit" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="deemedCashValue" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="lowestDeathBenefit" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="BeginningOfYearValues">
+      <xs:sequence>
+         <xs:element type="xs:int" name="year" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="surrenderCharge" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="AnnuityAnnualValues">
+      <xs:sequence>
+         <xs:element type="xs:double" name="decimalYear" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="effectiveDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="mVAAdjustedLowSurrenderValue" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="mVAAdjustedHighSurrenderValue" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="surrenderCashValue" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="Premium">
+      <xs:sequence>
+         <xs:element type="PremiumType" name="type" maxOccurs="1" minOccurs="1"/>
+         <xs:element type="xs:double" name="annual" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="modal" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="quarterly" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="semiAnnual" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="monthly" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="biweekly" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="bimonthly" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="weekly" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="ninthly" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="tenthly" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ScenarioSummary">
+      <xs:sequence>
+         <xs:element name="scenarioName" type="xs:string" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="scenarioDescriptionType" type="ScenarioDescriptionType" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="interestAssumption" type="InterestAssumption" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="mortalityAssumption" type="MortalityAssumption" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="supplementalScenarioIndicator" type="xs:boolean" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="deathBenefitOption" type="DeathBenefitOption" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="definitionOfLifeInsurance" type="DefinitionOfLifeInsurance" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="lapseYear" type="xs:int" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="expiryYear" type="xs:int" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="expiryDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="solveValue" type="xs:double" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="tenYearSurrenderCostIndex" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="tenYearNetPaymentCostIndex" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="twentyYearSurrenderCostIndex" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="twentyYearNetPaymentCostIndex" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="accumulationValueAtMaturity" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="unloanedCashValueAtMaturity" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="accumulationValueAtStart" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="unloanedCashValueAtStart" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="accumulationValueAtEndOfFirstYear" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="unloanedCashValueAtEndOfFirstYear" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="endOfYearValues" type="EndOfYearValues" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="beginningOfYearValues" type="BeginningOfYearValues" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="annuityAnnualValues" type="AnnuityAnnualValues" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="baseProductSummary" type="BaseProductSummary" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="anchoredScenarioSummary" type="ScenarioSummary" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="solveSummary" type="SolveSummary" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="SolveSummary">
+      <xs:sequence>
+         <xs:element type="xs:string" name="solveName" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="SolveValueType" name="solveValueType" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="TransactionType" name="transactionType" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="MortalityAssumption" name="mortalityAssumption" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:boolean" name="solveSuccessIndicator" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="value" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:string" name="endDateType" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="PaymentMode" name="mode" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="TransactionSummary">
+      <xs:sequence>
+         <xs:element type="TransactionType" name="transactionType" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="TransactionNoteType" name="transactionNote" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:string" name="ScenarioName" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="ScenarioType" name="scenarioType" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:int" name="attainedAge" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="effectiveDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:string" name="description" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="variableFundTransaction" type="VariableFundTransaction" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="accountingEntry" type="AccountingEntry" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="commissionableAmount" type="CommissionableAmount" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element type="xs:double" name="amountRequested" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="amountAccepted" maxOccurs="1" minOccurs="0"/>
+          <xs:element type="TransactionNoteType" name="transactionNotes" maxOccurs="unbounded" minOccurs="0"/>
+          <xs:element type="xs:string" name="noteDescription" maxOccurs="unbounded" minOccurs="0"/>
+          <xs:element type="DOLIMECEndOfYearValues" name="dOLIMECValues" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="VariableFundTransaction">
+      <xs:sequence>
+         <xs:element name="buySellIndicator" type="BuySell" maxOccurs="1" minOccurs="1"/>
+         <xs:element name="fundCode" type="xs:string" maxOccurs="1" minOccurs="1"/>
+         <xs:element name="unitsTransacted" type="xs:double" maxOccurs="1" minOccurs="1"/>
+         <xs:element name="netAssetValue" type="xs:double" maxOccurs="1" minOccurs="1"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="AccountingEntry">
+      <xs:sequence>
+         <xs:element name="creditDebitIndicator" type="CreditDebit" maxOccurs="1" minOccurs="1"/>
+         <xs:element name="accountType" type="AccountingAccountType" maxOccurs="1" minOccurs="1"/>
+         <xs:element name="accountNumber" type="xs:string" maxOccurs="1" minOccurs="1"/>
+         <xs:element name="amount" type="xs:double" maxOccurs="1" minOccurs="1"/>
+         <xs:element name="accountingEntryAttributes" type="AccountingEntryAttributes" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="AccountingEntryAttributes">
+      <xs:sequence>
+         <xs:element name="duration" type="xs:int" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CommissionableAmount">
+      <xs:sequence>
+         <xs:element name="amount" type="xs:double" maxOccurs="1" minOccurs="1"/>
+         <xs:element name="creditDebitIndicator" type="CreditDebit" maxOccurs="1" minOccurs="1"/>
+         <xs:element type="xs:string" name="productCode" maxOccurs="1" minOccurs="1"/>
+         <xs:element name="duration" type="xs:int" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="amountOverTarget" type="xs:double" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="agentName" type="xs:string" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="InsuranceProposal">
+      <xs:sequence>
+         <xs:element name="proposalDescription" type="xs:string" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="totalDuration" type="xs:int" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="levelType" type="InsuranceLevelType" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="netPresentCost" type="xs:double" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="productOfferReason" type="ProductOfferReason" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="guaranteedSimplifiedOfferType" type="GuaranteedSimplifiedOfferType" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="simplifiedIssueDeterminationRule" type="SimplifiedIssueDeterminationRule" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="endOfYearValues" type="EndOfYearValues" maxOccurs="unbounded" minOccurs="0"/>
+         <xs:element name="policySummary" type="PolicySummary" maxOccurs="unbounded" minOccurs="1"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="Need">
+      <xs:sequence>
+         <xs:element name="needType" type="NeedType" maxOccurs="1" minOccurs="1"/>
+         <xs:element name="annualNeed" type="AnnualNeed" maxOccurs="unbounded" minOccurs="1"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="AnnualNeed">
+      <xs:sequence>
+         <xs:element name="attainedAge" type="xs:int" maxOccurs="1" minOccurs="1"/>
+         <xs:element name="amount" type="xs:double" maxOccurs="1" minOccurs="1"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="LifetimeFinancialAdviceSummary">
+      <xs:sequence>
+         <xs:element type="LifetimeFinancialAdviceMode" name="lifetimeFinancialAdviceMode" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CurrentDateValues">
+      <xs:sequence>
+         <xs:element type="xs:date" name="currentDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="premiumSuspense" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="costBasis" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:boolean" name="isMEC" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="sevenPayStartDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumOfPremiumPaidTAMRA" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sevenPayPremium" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sevenPayInitialAdjustmentValue" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="guidelineSinglePremium" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="guidelineLevelPremium" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="guidelineLevelPremiumSum" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumOfPremiumsPaidToDateCurrentYear" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumOfPremiumChargePaidToDateCurrentYear" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="maxExpenseChargeCurrentYear" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumOfPremiumPaid" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumOfLoansCurrentYear" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumOfLoanRepaymentsCurrentYear" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumOfWithdrawalsCurrentYear" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumOfPremiumPolicyholderPaidForNoLapseGuaranteeTest" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumOfPremiumRequiredToKeepNoLapseGuaranteeInforce" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="historicalTransaction" type="HistoricalTransaction" minOccurs="0" maxOccurs="unbounded"/>
+         <xs:element type="xs:double" name="lowestDeathBenefitDuringSevenPayPeriod" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="IRSCycleConsequences">
+       <xs:sequence>
+         <xs:element type="xs:date" name="resultSetEffectiveDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="guidelineSinglePremium" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="guidelineLevelPremiumSum" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="guidelineLevelPremium" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="sevenPayStartDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sevenPayInitialAdjustmentValue" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="lowestDeathBenefitDuringSevenPayPeriod" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:boolean" name="isMEC" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="mECDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="unnecessaryGSP" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="unnecessaryGLP" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sevenPayPremium" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="limitTAMRA" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:boolean" name="unnecessaryPremiumIndicator" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:boolean" name="benefitIncreaseIndicator" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumOfPremiumPaidDEFRA" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumOfPremiumPaidTAMRA" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumOfPremiumPolicyholderPaidForNoLapseGuaranteeTest" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sumOfPremiumRequiredToKeepNoLapseGuaranteeInforce" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="costBasis" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="maxContributionTAMRA" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="maxContributionDEFRA" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:int" name="sevenPayYear" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="premiumtoEndow" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="forceInDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="forceOut" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="stopBIllingDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="projectedMecDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="recommendedRefundAmt" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="safeDecreaseAmount" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="EventCycleConsequences">
+      <xs:sequence>
+         <xs:element type="xs:double" name="commissionTarget" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="minimumPremiumTarget" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="surrenderChargeTarget" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="definitionOfLifeInsurance" type="DefinitionOfLifeInsurance" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="sevenPayPremium" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="guidelineLevelPremium" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="guidelineSinglePremium" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="statCRVM" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="fITCRVM" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="EventCycleConsequencesCoverage">
+      <xs:sequence>
+         <xs:element type="xs:string" name="productCode" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:date" name="effectiveDate" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:boolean" name="qualifiedBenefit" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="commissionTarget" maxOccurs="1" minOccurs="0"/>
+         <xs:element type="xs:double" name="minimumPremiumTarget" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="eventCycleConsequencesCoverage" type="EventCycleConsequencesCoverage" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>
+

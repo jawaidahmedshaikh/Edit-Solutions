@@ -1,0 +1,269 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.Segment" table="&quot;Segment&quot;"  >
+        <id name="SegmentPK" column="&quot;SegmentPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ProductStructureFK" column="&quot;ProductStructureFK&quot;"/>
+        <property name="ContractNumber" column="&quot;ContractNumber&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="Amount" column="&quot;Amount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="QualNonQualCT" column="&quot;QualNonQualCT&quot;"/>
+        <property name="ExchangeInd" column="&quot;ExchangeInd&quot;"/>
+        <property name="CostBasis" column="&quot;CostBasis&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RecoveredCostBasis" column="&quot;RecoveredCostBasis&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TerminationDate" column="&quot;TerminationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="StatusChangeDate" column="&quot;StatusChangeDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="SegmentNameCT" column="&quot;SegmentNameCT&quot;"/>
+        <property name="SegmentStatusCT" column="&quot;SegmentStatusCT&quot;"/>
+        <property name="OptionCodeCT" column="&quot;OptionCodeCT&quot;"/>
+        <property name="IssueStateCT" column="&quot;IssueStateCT&quot;"/>
+        <property name="IssueStateORInd" column="&quot;IssueStateORInd&quot;"/>
+        <property name="OriginalStateCT" column="&quot;OriginalStateCT&quot;"/>
+        <property name="QualifiedTypeCT" column="&quot;QualifiedTypeCT&quot;"/>
+        <property name="QuoteDate" column="&quot;QuoteDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="Charges" column="&quot;Charges&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="Loads" column="&quot;Loads&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="Fees" column="&quot;Fees&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TaxReportingGroup" column="&quot;TaxReportingGroup&quot;"/>
+        <property name="IssueDate" column="&quot;IssueDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="CashWithAppInd" column="&quot;CashWithAppInd&quot;"/>
+        <property name="WaiverInEffect" column="&quot;WaiverInEffect&quot;"/>
+        <property name="FreeAmountRemaining" column="&quot;FreeAmountRemaining&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="FreeAmount" column="&quot;FreeAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DateInEffect" column="&quot;DateInEffect&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="CreationOperator" column="&quot;CreationOperator&quot;"/>
+        <property name="CreationDate" column="&quot;CreationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LastAnniversaryDate" column="&quot;LastAnniversaryDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="SavingsPercent" column="&quot;SavingsPercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AnnualInsuranceAmount" column="&quot;AnnualInsuranceAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AnnualInvestmentAmount" column="&quot;AnnualInvestmentAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DismembermentPercent" column="&quot;DismembermentPercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ApplicationSignedDate" column="&quot;ApplicationSignedDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ApplicationReceivedDate" column="&quot;ApplicationReceivedDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="PolicyDeliveryDate" column="&quot;PolicyDeliveryDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="WaiveFreeLookIndicator" column="&quot;WaiveFreeLookIndicator&quot;"/>
+        <property name="FreeLookDaysOverride" column="&quot;FreeLookDaysOverride&quot;"/>
+        <property name="FreeLookEndDate" column="&quot;FreeLookEndDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="PointInScaleIndicator" column="&quot;PointInScaleIndicator&quot;"/>
+        <property name="ChargeDeductDivisionInd" column="&quot;ChargeDeductDivisionInd&quot;"/>
+        <property name="DialableSalesLoadPercentage" column="&quot;DialableSalesLoadPercentage&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ChargeDeductAmount" column="&quot;ChargeDeductAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RiderNumber" column="&quot;RiderNumber&quot;"/>
+        <property name="CommitmentIndicator" column="&quot;CommitmentIndicator&quot;"/>
+        <property name="CommitmentAmount" column="&quot;CommitmentAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ChargeCodeStatus" column="&quot;ChargeCodeStatus&quot;"/>
+        <property name="DateOfDeathValue" column="&quot;DateOfDeathValue&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SuppOriginalContractNumber" column="&quot;SuppOriginalContractNumber&quot;"/>
+        <property name="OpenClaimEndDate" column="&quot;OpenClaimEndDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AnnuitizationValue" column="&quot;AnnuitizationValue&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ROTHConvInd" column="&quot;ROTHConvInd&quot;"/>
+        <property name="CasetrackingOptionCT" column="&quot;CasetrackingOptionCT&quot;"/>
+        <property name="PrintLine1" column="&quot;PrintLine1&quot;"/>
+        <property name="PrintLine2" column="&quot;PrintLine2&quot;"/>
+        <property name="TotalActiveBeneficiaries" column="&quot;TotalActiveBeneficiaries&quot;"/>
+        <property name="RemainingBeneficiaries" column="&quot;RemainingBeneficiaries&quot;"/>
+        <property name="TotalFaceAmount" column="&quot;TotalFaceAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SettlementAmount" column="&quot;SettlementAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LastSettlementValDate" column="&quot;LastSettlementValDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ContractTypeCT" column="&quot;ContractTypeCT&quot;"/>
+        <property name="Units" column="&quot;Units&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CommissionPhaseID" column="&quot;CommissionPhaseID&quot;"/>
+        <property name="CommissionPhaseOverride" column="&quot;CommissionPhaseOverride&quot;"/>
+        <property name="MemberOfContractGroup" column="&quot;MemberOfContractGroup&quot;"/>
+        <property name="ApplicationNumber" column="&quot;ApplicationNumber&quot;"/>
+        <property name="ApplicationSignedStateCT" column="&quot;ApplicationSignedStateCT&quot;"/>
+        <property name="RatedGenderCT" column="&quot;RatedGenderCT&quot;"/>
+        <property name="UnderwritingClassCT" column="&quot;UnderwritingClassCT&quot;"/>
+        <property name="GroupPlan" column="&quot;GroupPlan&quot;"/>
+        <property name="AnnualPremium" column="&quot;AnnualPremium&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AuthorizedSignatureCT" column="&quot;AuthorizedSignatureCT&quot;"/>
+        <property name="AgeAtIssue" column="&quot;AgeAtIssue&quot;"/>
+        <property name="OriginalUnits" column="&quot;OriginalUnits&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ConsecutiveAPLCount" column="&quot;ConsecutiveAPLCount&quot;"/>
+        <property name="FirstNotifyDate" column="&quot;FirstNotifyDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="PreviousNotifyDate" column="&quot;PreviousNotifyDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="FinalNotifyDate" column="&quot;FinalNotifyDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AdvanceFinalNotify" column="&quot;AdvanceFinalNotify&quot;"/>
+        <property name="PostIssueStatusCT" column="&quot;PostIssueStatusCT&quot;"/>
+        <property name="PriorPRDDue" column="&quot;PriorPRDDue&quot;"/>
+        <property name="ConversionDate" column="&quot;ConversionDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ClientUpdate" column="&quot;ClientUpdate&quot;"/>
+        <property name="WorksheetTypeCT" column="&quot;WorksheetTypeCT&quot;"/>
+        <property name="EstateOfTheInsured" column="&quot;EstateOfTheInsured&quot;" />
+        <property name="RequirementEffectiveDate" column="&quot;RequirementEffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="SegmentChangeEffectiveDate" column="&quot;SegmentChangeEffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ScheduledTerminationDate" column="&quot;ScheduledTerminationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ClaimStopDate" column="&quot;ClaimStopDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="BillScheduleChangeType" column="&quot;BillScheduleChangeType&quot;" />
+        <property name="DividendOptionCT" column="&quot;DividendOptionCT&quot;" />
+        <property name="EOBMultiple" column="&quot;EOBMultiple&quot;"/>
+        <property name="EOBMaximum" column="&quot;EOBMaximum&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="EOBCum" column="&quot;EOBCum&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PremiumTaxSitusOverrideCT" column="&quot;PremiumTaxSitusOverrideCT&quot;"/>
+        <property name="GIOOption" column="&quot;GIOOption&quot;" />
+        <property name="DeductionAmountOverride" column="&quot;DeductionAmountOverride&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DeductionAmountEffectiveDate" column="&quot;DeductionAmountEffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="ContractGroupFK" column="&quot;ContractGroupFK&quot;" insert="false" update="false"/>
+        <property name="BillScheduleFK" column="&quot;BillScheduleFK&quot;" insert="false" update="false"/>
+        <property name="BatchContractSetupFK" column="&quot;BatchContractSetupFK&quot;" insert="false" update="false"/>
+        <property name="DepartmentLocationFK" column="&quot;DepartmentLocationFK&quot;" insert="false" update="false"/>
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;" insert="false" update="false"/>
+        <property name="PriorContractGroupFK" column="&quot;PriorContractGroupFK&quot;" insert="false" update="false"/>
+        <property name="OriginalContractGroupFK" column="&quot;OriginalContractGroupFK&quot;" insert="false" update="false"/>
+        <property name="MasterContractFK" column="&quot;MasterContractFK&quot;" insert="false" update="false"/>
+    	<property name="ExpiryDate" column="&quot;ExpiryDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="Sequence" column="&quot;Sequence&quot;"/>
+        <property name="Location" column="&quot;Location&quot;"/>
+        <property name="IndivAnnPremium" column="&quot;IndivAnnPremium&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"/>
+
+        <many-to-one
+            name="ContractGroup"
+            column="&quot;ContractGroupFK&quot;"
+            class="group.ContractGroup"
+            cascade="none"/>
+
+         <many-to-one
+            name="MasterContract"
+            column="&quot;MasterContractFK&quot;"
+            class="contract.MasterContract"
+            cascade="none"/>
+
+        <many-to-one
+            name="BillSchedule"
+            column="&quot;BillScheduleFK&quot;"
+            class="billing.BillSchedule"
+            cascade="none"/>
+
+        <many-to-one
+            name="BatchContractSetup"
+            column="&quot;BatchContractSetupFK&quot;"
+            class="group.BatchContractSetup"
+            cascade="none"/>
+
+        <many-to-one
+            name="DepartmentLocation"
+            column="&quot;DepartmentLocationFK&quot;"
+            class="group.DepartmentLocation"
+            cascade="none"/>
+
+        <many-to-one
+            name="PriorContractGroup"
+            column="&quot;PriorContractGroupFK&quot;"
+            class="group.ContractGroup"
+            cascade="none"/>
+
+
+        <set name="ContractClients" table="&quot;ContractClient&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="contract.ContractClient"/>
+            <filter name="statusFilter" condition="OverrideStatus = 'P'"/>
+        </set>
+        
+        <set name="ContractSetups" table="&quot;ContractSetup&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="event.ContractSetup"/>
+        </set>
+
+        <set name="ContractRequirements" table="&quot;ContractRequirement&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="contract.ContractRequirement"/>
+        </set>
+
+        <set name="AgentHierarchies" table="&quot;AgentHierarchy&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="contract.AgentHierarchy"/>
+        </set>
+
+        <set name="Deposits" table="&quot;Deposits&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="contract.Deposits"/>
+        </set>
+
+        <set name="Payouts" table="&quot;Payout&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="contract.Payout"/>
+        </set>
+
+        <set name="Lifes" table="&quot;Life&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="contract.Life"/>
+        </set>
+
+        <set name="InherentRiders" table="&quot;InherentRider&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="contract.InherentRider"/>
+        </set>
+
+        <set name="RequiredMinDistributions" table="&quot;RequiredMinDistribution&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="contract.RequiredMinDistribution"/>
+        </set>
+
+        <set name="Investments" table="&quot;Investment&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="contract.Investment"/>
+        </set>
+
+		<set name="NoteReminders" table="&quot;NoteReminder&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="contract.NoteReminder"/>
+		</set>
+
+<!--        <set name="Segments" table="&quot;Segment&quot;" inverse="true"   cascade="all">-->
+<!--            <key column="&quot;SegmentFK&quot;"/>-->
+<!--            <one-to-many class="contract.Segment"/>-->
+<!--        </set>-->
+
+        <set name="ContractTreaties" table="&quot;ContractTreaty&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="reinsurance.ContractTreaty"/>
+        </set>
+
+        <set name="Bills" table="&quot;Bill&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="billing.Bill"/>
+        </set>
+
+        <set name="PremiumDues" table="&quot;PremiumDue&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="contract.PremiumDue"/>
+        </set>
+
+        <set name="Segments" table="&quot;Segment&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="contract.Segment"/>
+        </set>
+
+        <set name="PayrollDeductions" table="&quot;PayrollDeduction&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="group.PayrollDeduction"/>
+        </set>
+
+        <set name="SegmentHistories" table="&quot;Segment&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="contract.Segment"/>
+        </set>
+
+        <set name="ValueAtIssues" table="&quot;ValueAtIssue&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SegmentFK&quot;"/>
+            <one-to-many class="contract.ValueAtIssue"/>
+        </set>
+
+    </class>
+    <filter-def name="statusFilter">
+        <filter-param name="overrideStatus" type="string"/>
+    </filter-def>
+</hibernate-mapping>
+

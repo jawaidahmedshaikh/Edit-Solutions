@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Gregg (Systems Engineering Group, LLC) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Gregg Fraschini (BOBz) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:element name="AccountExtractVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AccountExtractPK" type="xs:long"/>
+				<xs:element name="SegmentFK" type="xs:long"/>
+				<xs:element name="CompanyName" type="xs:string"/>
+				<xs:element ref="AccountEffectVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AccountEffectVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AccountNumber" type="xs:string"/>
+				<xs:element name="AccountName" type="xs:string"/>
+				<xs:element name="AccountEffect" type="xs:string"/>
+				<xs:element name="AccountAmount" type="xs:decimal"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

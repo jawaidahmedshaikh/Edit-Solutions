@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+     <class name="com.editsolutions.prd.vo.Batch" table="PRD_Batch"  >
+        <id name="batchPK" column="PRD_BatchPK" type="long">
+              <generator class="identity"/>
+        </id>
+        <property name="batchName" column="BatchName"/>
+        <property name="batchDescription" column="BatchDescription"/>
+        <property name="addDate" column="AddDate" type="date"/>
+        <property name="addUser" column="AddUser"/>
+        <property name="modDate" column="ModDate" type="date"/>
+        <property name="modUser" column="ModUser"/>
+        
+        <!--
+        <bag name="batchDetails" table="PRD_BatchDetail"
+                inverse="true" lazy="false" fetch="select" cascade="none">
+            <key>
+                <column name="PRD_BatchFK" not-null="true" />
+            </key>
+            <one-to-many class="com.editsolutions.prd.vo.BatchDetail" />
+        </bag>
+          -->
+
+    </class>
+</hibernate-mapping>

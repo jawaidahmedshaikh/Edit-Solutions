@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="billing.Bill" table="&quot;Bill&quot;"  >
+        <id name="BillPK" column="&quot;BillPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="BilledAmount" column="&quot;BilledAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PaidAmount" column="&quot;PaidAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AdjustmentAmount" column="&quot;AdjustmentAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="BillGroupFK" column="&quot;BillGroupFK&quot;" insert="false" update="false"/>
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;" insert="false" update="false"/>
+
+
+        <many-to-one
+            name="BillGroup"
+            column="&quot;BillGroupFK&quot;"
+            class="billing.BillGroup"
+            cascade="none"
+            />
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

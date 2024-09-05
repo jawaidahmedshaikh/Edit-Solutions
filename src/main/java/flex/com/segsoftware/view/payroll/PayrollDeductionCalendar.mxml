@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="710" 
+	height="100%" 
+	xmlns:payroll="com.segsoftware.view.payroll.*" xmlns:custom="com.segsoftware.view.custom.*"
+	initialize=
+	"
+	init();	
+	">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.DateChooserEvent;
+			import mx.controls.DateField;
+			import com.segsoftware.view.custom.SEGComboBox;
+			import mx.collections.ArrayCollection;
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.event.SEGEvent;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import com.segsoftware.view.custom.*;
+			import mx.events.ListEvent;
+			import com.segsoftware.model.CodeTable;
+			
+			[Bindable]
+			private var yearRanges:ArrayCollection = new ArrayCollection();
+			
+			/**
+			* Tags the entry to be updated or deleted;
+			*/
+			[Bindable] private var updateDelete:String;
+			
+			/**
+			* The current year displayed on the calendar.
+			*/
+			[Bindable] private var payrollDeductionYear:int;
+			
+		
+			/**
+			* First time events.
+			*/
+			private function init():void
+			{	
+				buildYearRanges();
+			}
+			
+			/**
+			* Builds the range of available years for this Calendar.
+			*/
+			private function buildYearRanges():void
+			{
+				var startYear:int = new Date().fullYear - 100;
+				
+				var stopYear:int = new Date().fullYear + 100;
+				
+				for (var year:int = startYear; year <= stopYear; year++)
+				{
+					yearRanges.addItem(year.toString());					
+				}	
+				
+				// Also set the user-selectable range on the graphical calendar.
+				dateChooser.minYear = startYear;
+				
+				dateChooser.maxYear = stopYear;
+			}	
+			
+			/**
+			* Called when the user scrolls to next/prev month or year.
+			*/
+			public function getPayrollDeductionCalendars():void
+			{
+				var displayedYear:int = this.dateChooser.displayedYear;
+				
+				this.payrollDeductionYear = displayedYear;
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_PAYROLLDEDUCTIONCALENDARS, formData));
+
+			}		
+		]]>
+	</mx:Script>
+	
+	<mx:Model id="formData">
+		<formData>
+			<UpdateDelete>{updateDelete}</UpdateDelete>
+			<PayrollDeductionDate>{dateChooser.selectedDate}</PayrollDeductionDate>
+			<PayrollDeductionYear>{payrollDeductionYear}</PayrollDeductionYear>			
+			<PayrollDeductionCodeVO>{payrollDeductionCodeCT.selectedItem}</PayrollDeductionCodeVO>	
+		</formData>
+	</mx:Model>
+	
+	<mx:Binding source="payrollDeductionCalendarDataGrid.selectedItem as XML" destination="SEGModelLocator.getInstance().selectedPayrollDeductionCalendarVO"/>
+	
+	<mx:Style source="../css/segSoftware.css"/>
+	
+	<mx:Validator id="payrollDeductionCodeCTValidator" source="{payrollDeductionCodeCT}" property="selectedItem" trigger="{addButton}" triggerEvent="click"  required="true" />
+	<mx:Validator id="dateChooserValidator" source="{dateChooser}" property="selectedDate" trigger="{addButton}" triggerEvent="click"  required="true" />	
+	<mx:Validator id="payrollDeductionCalendarDataGridValidator" source="{payrollDeductionCalendarDataGrid}" property="selectedItem" trigger="{removeButton}" triggerEvent="click"  required="true" />		
+	
+	<mx:HBox top="10" bottom="43" right="10" left="10">
+		<mx:Panel width="50%" height="100%" layout="absolute" title="Calendar">
+			<mx:DateChooser 
+				scroll=
+				"
+					getPayrollDeductionCalendars();
+				"
+				x="0" 
+				y="0" 
+				width="100%" 
+				height="100%"
+				yearNavigationEnabled="true"
+				id="dateChooser"
+				disabledDays="{[0,6]}"/>
+			<mx:ControlBar horizontalAlign="right">
+			</mx:ControlBar>
+		</mx:Panel>
+		<mx:Panel width="50%" height="100%" layout="absolute" title="Payroll Deduction Days">
+			<mx:DataGrid 
+				width="100%" 
+				height="100%"
+				dataProvider="{SEGModelLocator.getInstance().payrollDeductionCalendarVOs}"
+				id="payrollDeductionCalendarDataGrid"
+				>
+				<mx:columns>
+					<mx:DataGridColumn headerText="Date">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:HBox>
+									<mx:Script>
+										<![CDATA[
+											import com.segsoftware.utility.Util;	
+										]]>
+									</mx:Script>
+									<mx:Text
+										text="{Util.formatDate2(Util.convertDelimitedDateStringToDate(data.PayrollDeductionDate))}"
+										/>	
+																		
+								</mx:HBox>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="PRD Value" dataField="col3" color="blue">
+ 				    	<mx:itemRenderer>
+ 				    		<mx:Component>
+ 				    			<mx:HBox>
+ 					    			<mx:Script>
+ 					    				<![CDATA[
+ 					    					import com.segsoftware.model.CodeTable;
+ 					    				]]>
+ 					    			</mx:Script> 
+ 					    		
+									<custom:SEGComboBox 
+										dataProvider="{CodeTable.getInstance().prdCodeCodeTableVOs}"
+										labelField="CodeDesc"
+										valueField="Code" 
+										valueObjectVO="{data as XML}"
+										valueObjectVOField="PayrollDeductionCodeCT"
+										width="100%"												
+										/>
+								</mx:HBox>
+ 				    		</mx:Component>
+ 				    	</mx:itemRenderer>					
+					</mx:DataGridColumn>
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:ControlBar horizontalAlign="right">
+				<mx:RadioButtonGroup id="updateDeleteRadioGroup"/>
+			</mx:ControlBar>
+		</mx:Panel>
+	</mx:HBox>
+	<mx:HBox horizontalAlign="right" height="25" bottom="10" right="10" left="10">
+		<mx:Label text="PRD Value:"/>
+		<custom:SEGComboBox 
+			dataProvider="{CodeTable.getInstance().prdCodeCodeTableVOs}"
+			labelField="CodeDesc"
+			valueField="Code" 
+			 width="188"
+			 id="payrollDeductionCodeCT"
+			 />
+		<mx:Button 
+			label="Add"
+			toolTip="Add Payroll Deduction"
+			id="addButton"
+			click=
+			"
+				if (Util.validate(payrollDeductionCodeCTValidator).length == 0)
+				{
+					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_CREATE_PAYROLLDEDUCTIONCALENDAR, formData))														
+				}
+			"/>
+		<mx:Button 
+			label="Remove"
+			toolTip="Remove Payroll Deduction"
+			id="removeButton"
+			click=
+			"
+				if (Util.validate(payrollDeductionCalendarDataGridValidator).length == 0)
+				{
+					this.updateDelete = 'delete';
+				
+					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_UDPATE_DELETE_PAYROLLDEDUCTIONCALENDARS, formData))									
+				}
+			"/>
+		<mx:Button 
+			label="Update"
+			toolTip="Update Payroll Deduction"
+			click=
+			"
+				if (Util.validate(payrollDeductionCalendarDataGridValidator).length == 0)
+				{			
+					this.updateDelete = 'update';
+							
+					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_UDPATE_DELETE_PAYROLLDEDUCTIONCALENDARS, formData))
+				}
+			"					
+			/>
+	</mx:HBox>	
+</mx:Canvas>

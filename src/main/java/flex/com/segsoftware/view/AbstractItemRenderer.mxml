@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:view="com.segsoftware.view.*"
+	initialize="onInitialize()"
+	creationComplete="onCreationComplete()"
+	implements="mx.controls.listClasses.IDropInListItemRenderer"
+	>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.List;
+			import mx.controls.listClasses.ListData;
+			import mx.core.UIComponent;
+			import mx.collections.ListCollectionView;
+			import mx.collections.IList;
+			import mx.controls.listClasses.ListBase;
+			import mx.controls.listClasses.BaseListData;
+			import mx.controls.dataGridClasses.DataGridListData;
+			import mx.events.ListEvent;
+			import mx.controls.DataGrid;
+			import mx.events.FlexEvent;
+			import mx.controls.listClasses.IDropInListItemRenderer;
+			
+			public static var ALTERNATING_ROW_EVEN_COLOR:String = "#F7F7F7";
+			
+			public static var ALTERNATING_ROW_ODD_COLOR:String = "#FFFFFF";
+			
+			/**
+			 * True when the current sell (as  part of the current row)
+			 * is selected. This is true when the currently selected Message
+			 * is the same as the Message this cell (row) is responsible for rendering. 
+			 */ 
+			private var _cellSelected:Boolean = false;
+			
+			/**
+			* Supplied by Flex to gain access to the owning container.
+			*/
+			private var _baseListData:BaseListData;
+			
+			/**
+			* Should this ItemRenderer be used as an ItemEditor, the subclass will want to
+			* set this value with any change to the value being represented.
+			*/
+			private var _text:String;
+			
+			/**
+			* The height the component should render itself when selected
+			* when initially selected. This height could be modified later on
+			* by user interaction, but we still need some initial value.
+			*/
+			private var _defaultHeight:Number;
+						
+			private function onInitialize():void
+			{				
+
+			}	
+			
+			private function onCreationComplete():void
+			{				
+				(this.listData.owner as ListBase).addEventListener(ListEvent.CHANGE, updateSelectedUnselected);				
+			}
+			
+			/**
+			* @see #_text
+			*/
+			[Bindable] public function get text():String
+			{
+				return this._text;	
+			}
+			
+			/**
+			* @see #_text	
+			*/
+			public function set text(text:String):void
+			{
+				this._text = text;	
+			}
+			
+			/**
+			* Subclasses can override this method to 
+			* take action when the cell is selected by the user.
+			*/
+			protected function updateSelected():void
+			{	
+				
+			}
+
+			/**
+			* Subclasses can override this method to 
+			* take action when the cell is unselected by the user.
+			*/						
+			protected function updateUnselected():void
+			{
+								
+			}
+			
+			/**
+			 * Cells need to be cosmetically modified as the whether they
+			 * are selected or not. Classes that subclass can modify the default
+			 * behvior by overriding the protected updateSelect/updateUnselected
+			 * methods. This method gets called from the 'set data'.
+			 */
+			private function updateSelectedUnselected(event:ListEvent=null):void
+			{				
+				if ((data != null) && (listData != null))
+				{
+			        if((listData.owner as ListBase).selectedItem == data) 
+			        {	
+						if (((listData.owner as ListBase).selectedItem != null) && (data != null))
+						{		        	
+				        	cellSelected = true;
+				        	
+				        	updateSelected();
+				  		}
+			        }
+			        else
+			        {
+			        	cellSelected = false;
+			        	
+						updateUnselected();
+			        }
+		  		}
+			}
+			
+			/**
+			 * @see #_cellSelected
+			 */ 
+			private function get cellSelected():Boolean
+			{
+				return this._cellSelected;
+			}
+			
+			/**
+			 * @see #_cellSelected
+			 */ 
+			private function set cellSelected(cellSelected:Boolean):void
+			{
+				this._cellSelected = cellSelected;
+			}
+			
+			/**
+			* Implemented for the implemented IDropInListItemRenderer interface.
+			*/
+		    public function get listData():BaseListData
+		    {
+				return this._baseListData;						    	
+		    }
+		    
+			/**
+			* Implemented for the implemented IDropInListItemRenderer interface.
+			*/		    
+    		public function set listData(value:BaseListData):void
+    		{
+    			this._baseListData = value;
+    		} 		
+    		
+    		/**
+    		* When rendering these custom itemRenders, it may be useful to match
+    		* the same alternating background color as the owning ListBase (e.g. DataGrid).
+    		* This checks the index of the represented data and determines the color.
+    		* The color is [not] dynamic. I wanted to query the owning ListBase (e.g. DataGrid)
+    		* to determine its alternating colors, but could not find the manner in which
+    		* to do this.
+    		*/
+    		public function get alternativeRowColor():String
+    		{
+    			var alternativeRowColor:String = null;
+    			
+				var rowIndex:int = (this.listData.owner as ListBase).itemRendererToIndex(this); 
+				
+				if ((rowIndex % 2) == 0) // even row
+				{
+					alternativeRowColor = ALTERNATING_ROW_EVEN_COLOR;					
+				}   
+				else // odd row
+				{
+					alternativeRowColor = ALTERNATING_ROW_ODD_COLOR;
+				}			
+				
+				return alternativeRowColor;
+    		}
+    		
+			
+			/**
+			 * Called repeatedly by flex whenever this renderer needs to 
+			 * be updated. It's a good time to do some processing.
+			 */ 
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				var owningListBase:Object = listData.owner;
+				
+				trace("dude itemRendererToIndex: " + (this.listData.owner as ListBase).itemRendererToIndex(this));
+							
+				updateSelectedUnselected();
+			}
+		]]>
+	</mx:Script>
+</mx:Canvas>

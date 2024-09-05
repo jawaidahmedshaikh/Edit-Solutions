@@ -1,0 +1,1994 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Deanna Lataille (Systems Engineering Group, LLC) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="AreaKeyVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AreaKeyPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Grouping" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Field" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="AreaValueVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="AreaKey_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="AreaKeyPK"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="AreaValueVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AreaValuePK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AreaKeyFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EffectiveDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AreaValue" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AreaCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="QualifierCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="FilteredAreaValueVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="AreaValue_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="AreaValuePK"/>
+		</xs:key>
+		<xs:keyref name="AreaKey_To_AreaValue_FK_AreaValue_AreaKey1" refer="AreaKey_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="AreaKeyFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="ChargeCodeVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ChargeCodePK" type="xs:long"/>
+				<xs:element name="FilteredFundFK" type="xs:long"/>
+				<xs:element name="ChargeCode">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="6"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ClientFundNumber">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="NewIssuesIndicatorCT" type="xs:string"/>
+				<xs:element name="AccumulatedPremium" type="xs:decimal"/>
+				<xs:element ref="UnitValuesVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="ChargeCode_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="ChargeCodePK"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="CompanyVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CompanyPK" type="xs:long"/>
+				<xs:element name="CompanyName" type="xs:string"/>
+				<xs:element name="PolicyNumberPrefix" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="8"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PolicyNumberSequenceNumber" type="xs:int" nillable="true"/>
+				<xs:element name="PolicySequenceLength" type="xs:int" nillable="true"/>
+				<xs:element name="BillingCompanyNumber" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ControlBalanceDetailVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ControlBalanceDetailPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ControlBalanceFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="NetAssets" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PolicyOwnerValue" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AccruedGainLoss" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalAccruedNetPremiums" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalAccruedAdminFees" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalAccruedCOI" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalAccruedReallocations" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalAccruedRRD" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalAccruedSurrenders" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalAccruedContribToMortRsv" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalAccruedMAndE" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalAccruedAdvisoryFees" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalAccruedMgtFees" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalAccruedRVPFees" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalAccruedAdvanceTransfers" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MAndEPayableReceivables" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AdvisoryFeePayablesReceivables" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MgtFeePayablesReceivables" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RVPPayablesReceivables" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+                <xs:element name="UnitBalance" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="26"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AccountingPeriod">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="7"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EffectiveDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ValuationDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ShareBalance" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="26"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalCashNetPremium" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CashGainLoss" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalCashAdminFees" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalCashCoi" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalCashReallocations" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalCashRRD" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalCashSurrenders" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalCashContribToMortRsv" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalCashMAndE" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalCashAdvisoryFees" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalCashMgmtFees" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalCashSVAFees" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TotalCashAdvanceTransfers" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+                <xs:element name="NetCash" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+                <xs:element name="SharesPurchased" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="26"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+                <xs:element name="PolicyActivity" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+                <xs:element name="UnitsPurchased" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="26"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="ControlBalanceDetail_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="ControlBalanceDetailPK"/>
+		</xs:key>
+		<xs:keyref name="ControlBalance_To_ControlBalanceDetail_FK_ControlBalDetail_ControlBal" refer="ControlBalance_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="ControlBalanceFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="ControlBalanceVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ControlBalancePK" type="xs:long"/>
+				<xs:element name="ProductFilteredFundStructureFK" type="xs:long" nillable="true"/>
+				<xs:element name="EndingDollarBalance" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EndingUnitBalance" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="26"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EndingBalanceCycleDate" type="xs:string" nillable="true"/>
+				<xs:element name="EndingShareBalance" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="23"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ChargeCodeFK" type="xs:long" nillable="true"/>
+				<xs:element name="DFCASHEndingShareBalance" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="23"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="ControlBalanceDetailVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="ControlBalance_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="ControlBalancePK"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="FeeVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="FeePK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FilteredFundFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FeeDescriptionFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EffectiveDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="35"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ProcessDateTime" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="35"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="OriginalProcessDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="35"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ReleaseDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="35"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ReleaseInd" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="StatusCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AccountingPendingStatus" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TrxAmount" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TransactionTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ContractNumber" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MaintDateTime" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="35"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Operator" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AccumulatedTrxAmtReceived" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ToFromInd" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Shares" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ChargeCodeFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Units" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RedemptionDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="35"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AccountingPeriod" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="7"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="FeeCorrespondenceVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="Fee_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="FeePK"/>
+		</xs:key>
+		<xs:keyref name="FeeDescription_To_Fee_FK_Fee_FeeDescription" refer="FeeDescription_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="FeeDescriptionFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="FeeCorrespondenceVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="FeeCorrespondencePK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FeeFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="StatusCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CorrespondenceDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="35"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AddressTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="NotificationAmount" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="FeeCorrespondence_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="FeeCorrespondencePK"/>
+		</xs:key>
+		<xs:keyref name="Fee_To_FeeCorrespondence_FK_FeeCorrespondence_Fee" refer="Fee_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="FeeFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="FeeDescriptionVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="FeeDescriptionPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FilteredFundFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FeeTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FeeRedemption" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PricingTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ClientDetailFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="FeeVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="FeeDescription_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="FeeDescriptionPK"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="FilteredAreaValueVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="FilteredAreaValuePK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ProductStructureFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AreaValueFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="FilteredAreaKey_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="FilteredAreaKeyPK"/>
+		</xs:key>
+		<xs:keyref name="AreaValue_To_FilteredAreaKey_FK_FilteredAreaKey_AreaValue" refer="AreaValue_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="AreaValueFK"/>
+		</xs:keyref>
+		<xs:keyref name="CompanyStructure_To_FilteredAreaKey_FK_FilteredAreaKey_CompanyStructure" refer="CompanyStructure_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="CompanyStructureFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="FilteredFundVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="FilteredFundPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FundFK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FundNumber">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="6"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EffectiveDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TerminationDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PricingDirection" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="GuaranteedDuration" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:maxInclusive value="2147483647"/>
+							<xs:minInclusive value="-2147483648"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="IndexingMethodCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FundAdjustmentCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="IndexCapRateGuarPeriod" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:maxInclusive value="2147483647"/>
+							<xs:minInclusive value="-2147483648"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PremiumBonusDuration" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:maxInclusive value="2147483647"/>
+							<xs:minInclusive value="-2147483648"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MinimumTransferAmount" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MVAStartingIndexGuarPeriod" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:maxInclusive value="2147483647"/>
+							<xs:minInclusive value="-2147483648"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SubscriptionNotificationDays" type="xs:integer" nillable="true"/>
+				<xs:element name="COIReplenishmentDays" type="xs:integer" nillable="true"/>
+				<xs:element name="DeathDays" type="xs:integer" nillable="true"/>
+				<xs:element name="FullSurrenderDays" type="xs:integer" nillable="true"/>
+				<xs:element name="WithdrawalDays" type="xs:integer" nillable="true"/>
+				<xs:element name="TransferDays" type="xs:integer" nillable="true"/>
+				<xs:element name="LoanDays" type="xs:integer" nillable="true"/>
+				<xs:element name="DivisionFeesLiquidationDays" type="xs:integer" nillable="true"/>
+				<xs:element name="SubscriptionDaysTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="COIReplenishmentDaysTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="DeathDaysTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FullSurrenderDaysTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="WithdrawalDaysTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TransferDaysTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LoanDaysTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="DivFeesLiquidatnDaysTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SubscriptionModeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="COIReplenishmentModeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="DeathModeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FullSurrenderModeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="WithdrawalModeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TransferModeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LoanModeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="DivisionFeesLiquidationModeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="HoldingAccountFK" type="xs:long" nillable="true"/>
+				<xs:element name="AnnualSubBucketCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FundNewClientCloseDate" type="xs:string"/>
+				<xs:element name="FundNewDepositCloseDate" type="xs:string"/>
+				<xs:element name="ContributionLockUpDuration" type="xs:int"/>
+				<xs:element name="DivisionLevelLockUpDuration" type="xs:int"/>
+				<xs:element name="DivisionLockUpEndDate" type="xs:string"/>
+				<xs:element name="SeparateAccountName">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PostLockWithdrawalDateCT" type="xs:string"/>
+				<xs:element name="ChargeCodeIndicator" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CategoryCT">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SeriesToSeriesEligibilityInd" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SeriesTransferDays" type="xs:integer" nillable="true"/>
+				<xs:element name="SeriesTransferDaysTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SeriesTransferModeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="IncludeInCorrespondenceInd" type="xs:string"/>
+				<xs:element ref="ProductFilteredFundStructureVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="FeeVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="FeeDescriptionVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="InterestRateParametersVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="UnitValuesVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ChargeCodeVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="FilteredFund_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="FilteredFundPK"/>
+		</xs:key>
+		<xs:keyref name="Fund_To_FilteredFund_FK_FilteredFund_Fund" refer="Fund_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="FundFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="FundVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="FundPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Name">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FundType" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PortfolioNewMoneyStatusCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ShortName" type="xs:string"/>
+				<xs:element name="ExcludeFromActivityFileInd">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TypeCodeCT" type="xs:string"/>
+				<xs:element name="ReportingFundName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="150"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LoanQualifierCT" type="xs:string"/>
+				<xs:element ref="FilteredFundVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="Fund_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="FundPK"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="InterestRateVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="InterestRatePK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="InterestRateParametersFK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EffectiveDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="GuaranteeDuration">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Rate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="InterestRate_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="InterestRatePK"/>
+		</xs:key>
+		<xs:keyref name="InterestRateParameters_To_InterestRate_FK_InterestRate_InterestRateParameters" refer="InterestRateParameters_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="InterestRateParametersFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="InterestRateParametersVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="InterestRateParametersPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FilteredFundFK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="OriginalDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="OptionCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="StopDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="InterestRateVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="InterestRateParameters_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="InterestRateParametersPK"/>
+		</xs:key>
+		<xs:keyref name="FilteredFund_To_InterestRateParameters_FK_InterestRateParameters_FilteredFund" refer="FilteredFund_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="FilteredFundFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="ProductFilteredFundStructureVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProductFilteredFundStructurePK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ProductStructureFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FilteredFundFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="ControlBalanceVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="CompanyFilteredFundStructure_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="CompanyFilteredFundStructurePK"/>
+		</xs:key>
+		<xs:keyref name="CompanyStructure_To_CompanyFilteredFundStructure_FK__CompanyFi__Compa__1B0907CE" refer="CompanyStructure_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="CompanyStructureFK"/>
+		</xs:keyref>
+		<xs:keyref name="FilteredFund_To_CompanyFilteredFundStructure_FK__CompanyFi__Filte__1BFD2C07" refer="FilteredFund_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="FilteredFundFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="ProductRuleStructureVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProductRuleStructurePK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ProductStructureFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RulesFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="CompanyRuleStructure_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="CompanyRuleStructurePK"/>
+		</xs:key>
+		<xs:keyref name="CompanyStructure_To_CompanyRuleStructure_FK_CompanyRuleStructure_CompanyStructure" refer="CompanyStructure_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="CompanyStructureFK"/>
+		</xs:keyref>
+		<xs:keyref name="Rules_To_CompanyRuleStructure_FK_CompanyRuleStructure_Rules" refer="Rules_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="RulesFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="ProductStructureVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProductStructurePK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MarketingPackageName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="GroupProductName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AreaName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="BusinessContractName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MaintDateTime" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="35"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Operator" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AccountingClosePeriod" type="xs:string"/>
+				<xs:element name="TypeCodeCT" type="xs:string"/>
+				<xs:element name="ExternalProductName" type="xs:string"/>
+				<xs:element name="GroupTypeCT" type="xs:string"/>
+				<xs:element name="HedgeFundInterimAccountFK" type="xs:long" nillable="true" minOccurs="0"/>
+				<xs:element name="CompanyFK" type="xs:long"/>
+				<xs:element name="ProductTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="ProductFilteredFundStructureVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ProductRuleStructureVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="FilteredAreaValueVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="CompanyStructure_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="CompanyStructurePK"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="RateTableVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RateTablePK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TableKeysFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Age" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:maxInclusive value="2147483647"/>
+							<xs:minInclusive value="-2147483648"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Duration" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:maxInclusive value="2147483647"/>
+							<xs:minInclusive value="-2147483648"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Rate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="RateTable_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="RateTablePK"/>
+		</xs:key>
+		<xs:keyref name="TableKeys_To_RateTable_FK_RateTable_TableKeys" refer="TableKeys_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="TableKeysFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="RulesVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RulesPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ScriptFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TableDefFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RuleName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ProcessName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EventName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EventTypeName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SubRuleName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EffectiveDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MaintDateTime" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="35"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Operator" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Description" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="100"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="ProductRuleStructureVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="Rules_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="RulesPK"/>
+		</xs:key>
+		<xs:keyref name="Script_To_Rules_FK_Rules_Script" refer="Script_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="ScriptFK"/>
+		</xs:keyref>
+		<xs:keyref name="TableDef_To_Rules_FK_Rules_TableDef" refer="TableDef_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="TableDefFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="ScriptVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ScriptPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ScriptName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Operator" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MaintDateTime" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="35"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ScriptTypeCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ScriptStatusCT" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="RulesVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ScriptLineVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="Script_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="ScriptPK"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="ScriptInstructionVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ScriptInstructionPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Instruction" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="ScriptInstruction_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="ScriptInstructionPK"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="ScriptLineVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ScriptLinePK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ScriptFK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LineNumber" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:maxInclusive value="2147483647"/>
+							<xs:minInclusive value="-2147483648"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ScriptLine">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="200"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="ScriptLine_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="ScriptLinePK"/>
+		</xs:key>
+		<xs:keyref name="Script_To_ScriptLine_FK_ScriptLine_Script" refer="Script_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="ScriptFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="TableDefVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TableDefPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TableName">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AccessType">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Operator" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LockDateTime" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="35"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MaintDateTime" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="35"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="RulesVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="TableKeysVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="TableDef_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="TableDefPK"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="TableKeysVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TableKeysPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TableDefFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EffectiveDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="BandAmount" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="UserKey" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="25"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Gender" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ClassType" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="State" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TableType" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="RateTableVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="TableKeys_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="TableKeysPK"/>
+		</xs:key>
+		<xs:keyref name="TableDef_To_TableKeys_FK_TableKeys_TableDef" refer="TableDef_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="TableDefFK"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="UnitValuesVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="UnitValuesPK">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FilteredFundFK" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:long">
+							<xs:maxInclusive value="9223372036854775807"/>
+							<xs:minInclusive value="-9223372036854775808"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EffectiveDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="UnitValue" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AnnuityUnitValue" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="UpdateStatus" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="NetAssetValue1" type="xs:decimal"/>
+				<xs:element name="NetAssetValue2" type="xs:decimal"/>
+				<xs:element name="MutualFundShares" type="xs:decimal"/>
+				<xs:element name="ParticipantUnits" type="xs:decimal"/>
+				<xs:element name="MutualFundAssets" type="xs:decimal"/>
+				<xs:element name="DividendRate" type="xs:decimal"/>
+				<xs:element name="ChargeCodeFK" type="xs:long" nillable="true"/>
+                <xs:element name="UVALAssets" type="xs:decimal" nillable="true"/>
+                <xs:element name="NAV1Assets" type="xs:decimal" nillable="true"/>
+                <xs:element name="NAV2Assets" type="xs:decimal" nillable="true"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="UnitValues_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="UnitValuesPK"/>
+		</xs:key>
+		<xs:keyref name="FilteredFund_To_UnitValues_FK_UnitValues_FilteredFund" refer="FilteredFund_PrimaryKey_0">
+			<xs:selector xpath="."/>
+			<xs:field xpath="FilteredFundFK"/>
+		</xs:keyref>
+	</xs:element>
+</xs:schema>

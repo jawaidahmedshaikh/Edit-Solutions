@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ApplicationControlBar 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="568" 
+	height="300"
+	xmlns:logging="com.segsoftware.view.custom.logging.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import flash.net.navigateToURL;
+			import com.segsoftware.model.logging.SEGLog;
+			import mx.events.*;
+			
+			/**
+			 * Responds to menu selections off of the main application rendering
+			 * the targeted page. [Notice] that the action is plucked-off of the
+			 * menuItem entries and matches the same action(s) as needed in 
+			 * PortalLoginTran.
+			 */
+			private function menuClickHandler(event:MenuEvent):void
+			{				
+				var action:String = event.item.@action;
+				
+				navigateToURL(new URLRequest("/PORTAL/servlet/RequestManager?transaction=PortalLoginTran&action=" + action), "_top");
+			}			
+		]]>
+	</mx:Script>	
+	<mx:HBox left="0">
+			<mx:MenuBar
+				labelField="@label"
+				itemClick="menuClickHandler(event)" left="0">
+				<mx:XMLList id="menuData">
+					<menu label="Go To">
+						<menuItem label="Main" action="goToMain"/>
+						<menuitem type="separator"/>
+						<menuItem label="New Business" action="showQuote"/>
+						<menuItem label="Client" action="showIndividuals"/>
+						<menuItem label="Contract" action="showContract"/>												
+					</menu>
+				</mx:XMLList>
+			</mx:MenuBar>
+	</mx:HBox>	
+	
+	<mx:HBox right="0" horizontalAlign="right" width="100%">
+		 <logging:SEGMessageArea /> 
+	</mx:HBox>
+				
+			
+		
+</mx:ApplicationControlBar>

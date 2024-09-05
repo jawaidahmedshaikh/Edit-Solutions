@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="group.BatchProductLog" table="&quot;BatchProductLog&quot;"  >
+        <id name="BatchProductLogPK" column="&quot;BatchProductLogPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="NumberOfAppsReceived" column="&quot;NumberOfAppsReceived&quot;"/>
+
+        <property name="BatchContractSetupFK" column="&quot;BatchContractSetupFK&quot;" insert="false" update="false"/>
+        <property name="FilteredProductFK" column="&quot;FilteredProductFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="BatchContractSetup"
+            column="&quot;BatchContractSetupFK&quot;"
+            class="group.BatchContractSetup"
+            cascade="none"/>
+
+        <many-to-one
+            name="FilteredProduct"
+            column="&quot;FilteredProductFK&quot;"
+            class="contract.FilteredProduct"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

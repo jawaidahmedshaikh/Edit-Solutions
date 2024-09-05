@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	layout="absolute"
+	title="Script Lines" xmlns:custom="com.segsoftware.view.custom.*">
+
+	<mx:Style source="../css/segSoftware.css"/>		
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CollectionEvent;
+			import mx.collections.ArrayCollection;
+			import mx.collections.IViewCursor;
+		
+			import com.segsoftware.model.*;
+			import com.segsoftware.model.scriptProcessor.*;
+			import com.segsoftware.view.custom.SearchableDataGrid;
+			
+            
+            private var _spScriptLines:ArrayCollection;
+            
+            private var hitRowCount:int;
+            
+            
+            [Bindable]
+			public function set spScriptLines(spScriptLines:ArrayCollection):void
+            {
+             	this._spScriptLines = spScriptLines;
+             	
+             	clearSearch();
+            } 
+            
+            public function get spScriptLines():ArrayCollection
+            {
+            	return this._spScriptLines;
+            }
+            
+            /**
+             * Searches the dataGrid for the specified text.  The parent grid class does the search.
+             * The error field displays the number of rows found. 
+             */
+            private function search():void
+            {
+            	scriptLineDataGrid.search(searchString.text);
+            	
+            	var hits:Array = scriptLineDataGrid.hits;
+            	
+            	var rowIndexes:Array = scriptLineDataGrid.rowIndexes;
+            	
+            	hitRowCount = 0;
+            	
+            	scriptLineDataGrid.scrollToIndex(rowIndexes[hitRowCount]);
+            	
+            	if (hits.length == 0)
+	         	{
+	             	searchError.text = "Not found!";
+	          	}
+	          	else
+	          	{
+	          		searchError.text = hits.length + " found";
+	          	}
+            }
+            
+            /**
+	         * Clears the search error text field
+	         */
+	        private function resetSearchError():void
+	        {
+	         	if (searchError.text == "")
+	         	{
+	         		return;
+	         	}
+	         	else
+	        	{
+	         		searchError.text = "";
+	         	}
+			}
+			
+			/**
+			 * Clears the search results and search string
+			 */
+			private function clearSearch():void
+			{
+				resetSearchError();
+				
+				searchString.text = "";
+				
+				scriptLineDataGrid.clearSearch();
+			}
+			
+			/**
+			 * Goes to and selects the next index found in the search.  Uses
+			 * the selectedIndex as its starting position.  Will wrap to the
+			 * beginning if the cursor is at the end of the list.
+			 */
+			private function goToNextHit():void
+			{
+				scriptLineDataGrid.goToNextHit();
+			}
+			
+			/**
+			 * Goes to and selects the previous index found in the search. Uses
+			 * the selectedIndex as its starting position.  Will wrap to the
+			 * end if the cursor is at the beginning of the list.
+			 */
+			private function goToPreviousHit():void
+			{
+				scriptLineDataGrid.goToPreviousHit();
+			}
+
+            
+			]]>
+		
+	</mx:Script>
+	
+	
+	<custom:SearchableDataGrid  
+		width="100%" height="100%"
+		id="scriptLineDataGrid"
+		allowMultipleSelection="false"
+		searchColumn="result"
+		highlightedRowColor="0xFFFF00"
+		dataProvider="{spScriptLines}">
+		
+		<custom:columns>
+			<mx:DataGridColumn sortable="false" 
+				headerText="Type" 
+				dataField="type"
+				width="150">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:HBox>
+							<mx:Image id="typeIcon" source="{data.typeIcon}"/>
+							<mx:Text text="{data.type}" />
+						</mx:HBox>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn sortable="false"
+				headerText="Result" 
+				dataField="result"
+				>
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Label text="{data.result}"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+		</custom:columns>
+	</custom:SearchableDataGrid>
+	
+	<mx:ControlBar>
+		<!-- Show legend for icons. -->  
+		<!-- Set upSkin to null so it won't look like a button.  NOTE: in Flex 2, upSkin
+		     should be used, in Flex 3, skin should be used.  The Flex 3 compiler's Flex
+		     2 compatibility mode does provide backward compatibility for this.  Must
+		     manually change when go to Flex 3 for real -->
+		<mx:HBox width="30%">
+		    <mx:Button label="Instruction"
+		    	icon="{SPRecordedScriptLine.typeIcon_Instruction}"
+		        mouseEnabled="false"
+		        upSkin="{null}"
+		    />
+		    
+		    <mx:Button label="Push"
+		        icon="{SPRecordedScriptLine.typeIcon_Push}"
+		        mouseEnabled="false"
+		        upSkin="{null}"
+		    />
+		    
+		    <mx:Button label="Pop"
+		        icon="{SPRecordedScriptLine.typeIcon_Pop}"
+		        mouseEnabled="false"
+		        upSkin="{null}"
+		    />
+		</mx:HBox>  
+		  
+		<mx:VRule width="2" height="22"/>
+	    
+	    <mx:HBox width="70%" horizontalAlign="right">
+	    	<mx:Button label="Prev" click="goToPreviousHit()" />
+	    	<mx:Button label="Next" click="goToNextHit()" />
+		    <mx:Text id="searchError" fontWeight="bold" color="red" /> 
+	  		<mx:TextInput id="searchString" change="resetSearchError()" /> 
+	  		<mx:Button label="Search" id="Search" click="search()" /> 
+		</mx:HBox>
+	        
+	</mx:ControlBar>
+	
+</mx:Panel>

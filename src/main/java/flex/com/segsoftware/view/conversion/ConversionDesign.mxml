@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:custom="com.segsoftware.view.custom.*"
+	width="100%" 
+	height="100%"
+	initialize="init()" 
+	xmlns:ns1="com.*"
+	show="conversionTemplateDataGrid.selectedItem = SEGModelLocator.getInstance().selectedConversionTemplateVO"
+	>
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.event.SEGEvent;
+            import com.segsoftware.model.SEGModelLocator;		
+			import com.segsoftware.utility.Util;
+
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import com.adobe.cairngorm.control.CairngormEvent;
+
+            import mx.controls.Alert;
+            import mx.events.CloseEvent;	
+			import mx.managers.PopUpManager;
+			
+			/**
+			* Component startup.
+			*/
+			private function init():void
+			{			
+				conversionTemplateText.enabled = false;
+						
+				// CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_ALL_CONVERSION_TEMPLATES, null))
+			}
+			
+			/**
+			* Renders the dialog for adding a new Conversion Template.
+			*/
+			private function showAddConversionTemplateDialog():void
+			{
+				var conversionTemplateDialog:AddCloneConversionTemplateDialog = PopUpManager.createPopUp(this, com.segsoftware.view.conversion.AddCloneConversionTemplateDialog, true) as AddCloneConversionTemplateDialog;	
+							
+				conversionTemplateDialog.dialogState = AddCloneConversionTemplateDialog.STATE_ADD;							
+							
+				PopUpManager.centerPopUp(conversionTemplateDialog);								
+			}
+			
+			/**
+			* Renders the dialog for cloning a new Conversion Template.
+			*/
+			private function showCloneConversionTemplateDialog():void
+			{
+				if (SEGModelLocator.getInstance().selectedConversionTemplateVO != null)
+				{
+					var conversionTemplateDialog:AddCloneConversionTemplateDialog = PopUpManager.createPopUp(this, com.segsoftware.view.conversion.AddCloneConversionTemplateDialog, true) as AddCloneConversionTemplateDialog;	
+								
+					conversionTemplateDialog.dialogState = AddCloneConversionTemplateDialog.STATE_CLONE;							
+								
+					PopUpManager.centerPopUp(conversionTemplateDialog);								
+				}
+			}	
+
+            // Event handler function uses a static method to show
+            // a pop-up window with the title, message, and requested buttons.        
+            private function showDeleteConfirmation(event:Event):void 
+            {
+            	if (SEGModelLocator.getInstance().selectedConversionTemplateVO != null)
+            	{
+	                Util.showConfirmationDialog("Delete selected Conversion Template?", this, showDeleteConfirmationHandler);            		
+            	}
+            }
+        
+            // Event handler function for displaying the selected Alert button.
+            private function showDeleteConfirmationHandler(event:CloseEvent):void 
+            {
+				if (event.detail == Alert.OK)
+				{
+					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_DELETE_CONVERSION_TEMPLATE, null));									
+					
+					// CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_ALL_CONVERSION_TEMPLATES, null));
+				}
+            }	
+            
+            /**
+             * Renders a dialog that shows the results of validating the ConversionTemplate.TemplateText
+             * of the currently selected ConversionTemplate.
+             */
+            private function validateConversionTemplate():void
+            {
+            	if (SEGModelLocator.getInstance().selectedConversionTemplateVO != null)
+            	{
+            		if (conversionTemplateText.text != null)
+            		{
+						var conversionTemplateValidationDialog:ConversionTemplateValidationDialog = PopUpManager.createPopUp(this, com.segsoftware.view.conversion.ConversionTemplateValidationDialog, true) as ConversionTemplateValidationDialog;	
+									
+						PopUpManager.centerPopUp(conversionTemplateValidationDialog);	            			
+            			
+						CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_VALIDATE_CONVERSION_TEMPLATE, null));
+            		}
+            	}	
+            }
+            
+			/**
+			 * Displays all ConversionTemplates in the database.
+			 */
+            private function showAllConversionTemplates():void
+            {
+            	CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_ALL_CONVERSION_TEMPLATES, null));
+            }			
+            
+            /**
+             * Updates the selected ConversionTemplate.
+             */
+            private function updateConversionTemplate():void
+            {
+            	// If they haven't modified the text, don't bother trying to save it.
+				if (conversionTemplateText.enabled == true)
+				{
+					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_UPDATE_CONVERSION_TEMPLATE, formData));
+				}
+            }
+            
+			/**
+			* Renders the dialog to enter ConversionJob name.
+			*/
+			private function showConversionJobDialog():void
+			{
+				var newConversionJobDialog:NewConversionJobDialog = PopUpManager.createPopUp(this, com.segsoftware.view.conversion.NewConversionJobDialog, true) as NewConversionJobDialog;	
+							
+				PopUpManager.centerPopUp(newConversionJobDialog);								
+			}              
+		]]>
+	</mx:Script>
+	
+	<mx:Model id="formData">
+		<formData>
+			<conversionTemplateText>{conversionTemplateText}</conversionTemplateText>
+			<sampleConversionData>{sampleConversionData}</sampleConversionData>			
+		</formData>
+	</mx:Model>
+
+	<mx:Binding source="conversionTemplateDataGrid.selectedItem as XML" destination="SEGModelLocator.getInstance().selectedConversionTemplateVO"/>
+	<mx:Binding source="conversionDataFileDataGrid.selectedItem as XML" destination="SEGModelLocator.getInstance().selectedConversionDataFileVO"/>		
+	<mx:Binding source="conversionTemplateDataGrid.selectedItem as XML" destination="SEGModelLocator.getInstance().selectedConversionTemplateVO"/>	
+
+	<mx:VBox left="10" right="10" top="10" bottom="10">
+		<mx:HBox width="100%" height="50%">
+			
+
+		<mx:Panel y="10" height="100%" layout="absolute" left="10" right="10" width="50%" title="Template">
+			<mx:DataGrid
+				id="conversionTemplateDataGrid" 
+				left="0" 
+				right="0" 
+				top="0" 
+				bottom="0"
+				dataProvider="{SEGModelLocator.getInstance().conversionTemplateVOs}"
+				change="conversionTemplateText.enabled = false;">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Name" dataField="TemplateName"/>
+					<mx:DataGridColumn headerText="Description" dataField="TemplateDescription"/>
+					<mx:DataGridColumn headerText="MaintDateTime" dataField="MaintDateTime"/>					
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:ControlBar horizontalAlign="right">
+				<mx:Button 
+					id="addButton"
+					label="Add"
+					click="showAddConversionTemplateDialog()"
+					/>
+				<mx:Button 
+					id="cloneButton"
+					label="Clone"
+					click="showCloneConversionTemplateDialog()"/>
+				<mx:Button 
+					id="deleteButton"
+					label="Delete"
+					click="showDeleteConfirmation(event)"/>
+				<mx:Button 
+					id="showAllButton"
+					label="Show All" 
+					click="showAllConversionTemplates()"/>
+			</mx:ControlBar>
+		</mx:Panel>
+		<mx:Panel y="311" height="100%" layout="absolute" left="10" right="10" width="50%" title="Template Code">
+			<custom:SEGTextArea 
+				id="conversionTemplateText"
+				left="0" 
+				right="0" 
+				top="0" 
+				bottom="0"
+				valueObjectVO="{SEGModelLocator.getInstance().selectedConversionTemplateVO}"
+				valueObjectVOField="TemplateText"
+				text="{SEGModelLocator.getInstance().selectedConversionTemplateVO.TemplateText}"
+				/>
+			<mx:ControlBar horizontalAlign="right">
+				<mx:Button 
+					id="validateSyntaxButton"
+					label="Validate Syntax"
+					click="validateConversionTemplate()"/>
+				<mx:Button 
+					id="modifyButton"
+					label="Modify" 
+					click="conversionTemplateText.enabled = true"/>
+				<mx:Button 
+					id="saveButton"
+					label="Save"
+					click= "updateConversionTemplate()"/>
+			</mx:ControlBar>
+		</mx:Panel>
+		</mx:HBox>		
+		<mx:HBox width="100%" height="50%">
+			<mx:Panel width="33.33%" height="100%" layout="absolute" title="Conversion Files (Raw/Converted)">
+				<mx:DataGrid
+					id="conversionDataFileDataGrid"
+					left="0" 
+					right="0" 
+					top="0" 
+					bottom="0"
+					dataProvider="{SEGModelLocator.getInstance().conversionDataFileVOs}"
+					change=
+					"
+						Util.dispatchEvent(SEGController.EVENT_LOAD_SAMPLE_CONVERSION_DATA, null);
+					">
+					<mx:columns>
+						<mx:DataGridColumn headerText="File Name" dataField="FileName"/>
+						<mx:DataGridColumn headerText="File Size (bytes)" dataField="FileSize"/>
+					</mx:columns>
+				</mx:DataGrid>
+				<mx:ControlBar horizontalAlign="right">
+					<mx:Button 
+						label="Show All"
+						click="Util.dispatchEvent(SEGController.EVENT_GET_ALL_TEST_FILES, null)"/>
+				</mx:ControlBar>
+			</mx:Panel>		
+			<mx:Panel width="33.33%" height="100%" layout="absolute" title="Sample of Pre-Conversion Data">
+				<custom:SEGTextArea 
+					left="0" 
+					right="0" 
+					top="0" 
+					bottom="0"
+					id="sampleConversionData"
+					text="{SEGModelLocator.getInstance().sampleConversionData}"/>
+			</mx:Panel>	
+			<mx:Panel width="33.33%" height="100%" layout="absolute" title="Sample of Post-Conversion Data">
+				<custom:SEGTextArea 
+					left="0" 
+					right="0" 
+					top="0" 
+					bottom="0"
+					id="sampleConvertedData"
+					text="{SEGModelLocator.getInstance().sampleConvertedData}"
+					renderAsXML="true"
+					/>
+				<mx:ControlBar horizontalAlign="right">
+					<mx:Button 
+						id="test"
+						label="Run Sample Data"
+						click=
+						"
+							if (SEGModelLocator.getInstance().selectedConversionTemplateVO)
+							{
+								if (SEGModelLocator.getInstance().selectedConversionDataFileVO)
+								{
+									CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_TEST_CONVERSION_TEMPLATE, formData))
+								}
+							}
+						"
+					/>	
+					<mx:VRule height="20"/>
+					<mx:Button 
+						label="Run Conversion Job"
+						click=
+						"
+							if (SEGModelLocator.getInstance().selectedConversionTemplateVO)
+							{
+								if (SEGModelLocator.getInstance().selectedConversionDataFileVO)
+								{
+									showConversionJobDialog();									
+								}
+							}
+						"
+						/>
+				</mx:ControlBar>
+			</mx:Panel>						
+		</mx:HBox>
+	</mx:VBox>	
+</mx:Canvas>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group, LLC) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="./EDITSolutions.xsd"/>
+	<xs:element name="AgentSnapshotDetailVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AgentGroupFK" type="xs:long"/>
+				<xs:element name="AgentSnapshotDetailPK" type="xs:long"/>
+				<xs:element name="AgentSnapshotPK" type="xs:long"/>
+				<xs:element name="PlacedAgentFK" type="xs:long"/>
+				<xs:element name="CommissionOverrideAmount" type="xs:decimal"/>
+				<xs:element name="CommissionOverridePercent" type="xs:decimal"/>
+				<xs:element name="TotalCommissionsPaid" type="xs:decimal" nillable="true"/>
+				<xs:element name="AdvanceAmount" type="xs:decimal" nillable="true"/>
+				<xs:element name="AdvanceRecovery" type="xs:decimal" nillable="true"/>
+				<xs:element name="AdvancePercent" type="xs:decimal"/>
+				<xs:element name="RecoveryPercent" type="xs:decimal"/>
+				<xs:element ref="AgentVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="AgentContractVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="AgentLicenseVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="CommissionProfileVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="AdditionalCompensationVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ClientDetailVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

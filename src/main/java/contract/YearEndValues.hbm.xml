@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.YearEndValues" table="&quot;YearEndValues&quot;"  >
+        <id name="YearEndValuesPK" column="&quot;YearEndValuesPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;" insert="false" update="false"/>
+        
+        <property name="YearEndDate" column="&quot;YearEndDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        
+        <property name="PolicyAdminStatus" column="&quot;PolicyAdminStatus&quot;"/>
+        <property name="PaymentMethod" column="&quot;PaymentMethod&quot;"/>
+        <property name="PaymentMode" column="&quot;PaymentMode&quot;"/>
+        <property name="DeductionFrequency" column="&quot;DeductionFrequency&quot;"/>
+        
+        <property name="ULFaceAmount" column="&quot;ULFaceAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/> 
+        <property name="TermRiderCount" column="&quot;TermRiderCount&quot;"/>
+        
+        <property name="TermRiderFace" column="&quot;TermRiderFace&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>                
+        <property name="AnnualPremium" column="&quot;AnnualPremium&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ResidentState" column="&quot;ResidentState&quot;"/>
+        <property name="AccumulatedValue" column="&quot;AccumulatedValue&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="InterimInterest" column="&quot;InterimInterest&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

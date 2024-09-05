@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" 
+	cornerRadius="10" 
+	roundedBottomCorners="true"
+	borderThickness="1"
+	borderStyle="solid"	
+	borderColor="black"	
+	width="800" 
+	height="300"
+	title="&lt;{ColumnNode.DEFAULT_COLUMN_NAME}&gt;" 
+	horizontalAlign="left"
+	textAlign="left"
+	backgroundColor="#D3D9DD"
+	headerHeight="12"
+	horizontalScrollPolicy="off"
+	currentState="{(this.columnNode.recordType)?'isInitialColumnState':''}">
+	<mx:states>
+		<mx:State name="isInitialColumnState">
+			<mx:SetStyle name="borderColor" value="#00ff00"/>
+			<mx:SetStyle name="borderThickness" value="3"/>
+		</mx:State>
+	</mx:states>
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.model.conversion.ConversionNode;
+			import com.segsoftware.model.conversion.ColumnNode;
+			
+			/**
+			* The ColumnNode represented by this UI component.
+			*/
+			private var _columnNode:ColumnNode;
+			
+			/**
+			* @see #_columnNode
+			*/
+			[Bindable]
+			public function get columnNode():ColumnNode
+			{
+				return this._columnNode;
+			}
+			
+			/**
+			* @see #_columnNode
+			*/
+			public function set columnNode(columnNode:ColumnNode):void
+			{
+				this._columnNode = columnNode;
+				
+				//this.isDateCheckBox.selected = columnNode.date;
+				
+				//this.minRadioButton.selected = (columnNode.defaultDate == ColumnNode.DEFAULTDATE_MIN);
+				
+				//this.maxRadioButton.selected = (columnNode.defaultDate == ColumnNode.DEFAULTDATE_MAX);
+			}	
+
+			/**
+			* Sets the typed-in value on this ColumnNode.length;
+			*/			
+			private function columnLengthModified(event:Event):void
+			{
+				var lengthNumber:Number = new Number(lengthTextInput.text);
+			
+				if (!isNaN(lengthNumber))
+				{
+					this.columnNode.length = lengthNumber;
+				}				
+			}	
+		]]>
+	</mx:Script>
+	
+	<mx:Style source="../css/segSoftware.css"/>	
+	
+	
+	<!--
+	<mx:Validator id="columnNameValidator" source="{columnNameTextInput}" property="text" required="true" />
+	<mx:Validator id="lengthValidator" source="{lengthTextInput}" property="text" required="true" />			
+	-->
+	
+	<mx:Canvas 
+		left="0" 
+		right="0" 
+		top="0" 
+		bottom="0" 
+		borderStyle="solid" 
+		borderColor="#859AA5" 
+		borderThickness="1">
+		<mx:Label x="13" y="10" text="Length:"/>
+		<mx:TextInput 
+			id="lengthTextInput"
+			text="{this.columnNode.length}"
+			x="69" 
+			y="8" 
+			maxChars="4"
+			enabled="{!this.columnNode.recordType}"
+			change=
+			"
+				columnLengthModified(event);
+			"/>
+		<mx:Label text="Name:" x="19" y="36"/>
+		<mx:TextInput 
+			textAlign="left"
+			id="columnNameTextInput"
+			text="{this.columnNode.name}" 
+			width="125"
+			enabled="{!this.columnNode.recordType}"
+			change=
+			"
+				this.columnNode.name = columnNameTextInput.text;
+			"  x="69" y="34"/>
+		<mx:CheckBox 
+			id="isDateCheckBox"
+			labelPlacement="right"
+			change=
+			"
+				if (isDateCheckBox.selected)
+				{
+					this.columnNode.date = true;
+				}
+				else
+				{
+					this.columnNode.date = false;
+				}
+			" x="69" 
+			y="62"
+			visible="{!this.columnNode.recordType}"
+			selected="{this.columnNode.date}"/>
+		<mx:Label 
+			x="10" 
+			y="62" 
+			text="Is Date:"
+			visible="{!this.columnNode.recordType}"/>
+		<mx:RadioButtonGroup id="minMaxRadioGroup"/>
+		<mx:RadioButton
+			id="minRadioButton"			 
+			x="69" y="88"  
+			groupName="minMaxRadioGroup" 
+			labelPlacement="right" 
+			width="50" 
+			label="Min"
+			visible="{!this.columnNode.recordType}" 
+			enabled="{isDateCheckBox.selected}"
+			change=
+			"
+				if (this.minRadioButton.selected)
+				{
+					this.columnNode.defaultDate = ColumnNode.DEFAULTDATE_MIN;	
+				}
+			"
+			selected="{this.columnNode.defaultDate == ColumnNode.DEFAULTDATE_MIN}"/>
+		<mx:RadioButton 
+			id="maxRadioButton"
+			x="115" y="88" 
+			groupName="minMaxRadioGroup" 
+			labelPlacement="right" 
+			width="50" 
+			label="Max"
+			visible="{!this.columnNode.recordType}"
+			enabled="{isDateCheckBox.selected}"
+			change=
+			"
+				if (this.maxRadioButton.selected)
+				{
+					this.columnNode.defaultDate = ColumnNode.DEFAULTDATE_MAX;	
+				}
+			"
+			selected="{this.columnNode.defaultDate == ColumnNode.DEFAULTDATE_MAX}"/>
+		<mx:Label 
+			x="11" y="88" 
+			visible="{!this.columnNode.recordType}"			
+			text="Default:"/>
+		<mx:RadioButton 
+			id="noRadioButton"
+			x="165" y="88" 
+			groupName="noMaxRadioGroup" 
+			labelPlacement="right" 
+			width="50" 
+			label="No"
+			visible="{!this.columnNode.recordType}"
+			enabled="{isDateCheckBox.selected}"
+			change=
+			"
+				if (this.noRadioButton.selected)
+				{
+					this.columnNode.defaultDate = ColumnNode.DEFAULTDATE_NO;	
+				}
+			"
+			selected="{this.columnNode.defaultDate == ColumnNode.DEFAULTDATE_NO}"/>
+	</mx:Canvas>
+		
+	<mx:ControlBar
+		paddingBottom="0"
+		paddingLeft="0"
+		paddingRight="0"
+		paddingTop="0">
+	</mx:ControlBar>
+	
+</mx:Panel>

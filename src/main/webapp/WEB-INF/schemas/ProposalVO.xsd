@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Deanna Lataille (Systems Engineering Group, LLC) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="./NaturalDocVO.xsd"/>
+	<xs:element name="ProposalVO">
+		<xs:annotation>
+			<xs:documentation>Schema to be used for reprojection</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="NaturalDocVO"/>
+				<xs:element name="ProposalDate" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ProposalProjectionVO" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="EndOfYear" type="xs:int"/>
+							<xs:element name="Date">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="10"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Age" type="xs:int"/>
+							<xs:element name="PremiumsReceived" type="xs:decimal" nillable="true"/>
+							<xs:element name="Charge" type="xs:decimal" nillable="true"/>
+							<xs:element name="DeathBenefit" type="xs:decimal" nillable="true"/>
+							<xs:element name="NonGuarProjectedFundValue" type="xs:decimal" nillable="true"/>
+							<xs:element name="GuaranteedDeathBenefit" type="xs:decimal" nillable="true"/>
+							<xs:element name="GuaranteedFundValue" type="xs:decimal" nillable="true"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

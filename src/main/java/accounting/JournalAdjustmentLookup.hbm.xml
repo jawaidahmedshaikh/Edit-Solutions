@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="accounting.JournalAdjustmentLookup" table="&quot;JournalAdjustmentLookup&quot;">
+		<composite-id>
+            <key-property name="AccountNumber" column="&quot;AccountNumber&quot;" />
+            <key-property name="CompanyName" column="&quot;CompanyName&quot;" />
+        </composite-id>
+        <property name="AccountName" column="&quot;AccountName&quot;"/>
+        <property name="AgentCodeRequiredInd" column="&quot;AgentCodeRequiredInd&quot;"/>
+        <property name="StateCodeRequiredInd" column="&quot;StateCodeRequiredInd&quot;"/>
+    </class>
+</hibernate-mapping>
+

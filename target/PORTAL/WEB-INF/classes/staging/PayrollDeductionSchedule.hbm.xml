@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="staging.PayrollDeductionSchedule" table="&quot;PAYROLLDEDUCTIONSCHEDULE&quot;"  >
+        <id name="PayrollDeductionSchedulePK" column="&quot;PAYROLLDEDUCTIONSCHEDULEPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="GroupFK" column="&quot;GROUPFK&quot;" insert="false" update="false"/>
+        <property name="StagingFK" column="&quot;STAGINGFK&quot;" insert="false" update="false"/>
+
+        <property name="PRDType" column="&quot;PRDTYPE&quot;"/>
+        <property name="InitialLeadDays" column="&quot;INITIALLEADDAYS&quot;"/>
+        <property name="SubsequentLeadDays" column="&quot;SUBSEQUENTLEADDAYS&quot;"/>
+
+        <property name="EffectiveDate" column="&quot;EFFECTIVEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="TerminationDate" column="&quot;TERMINATIONDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LastPRDExtractDate" column="&quot;LASTPRDEXTRACTDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="NextPRDExtractDate" column="&quot;NEXTPRDEXTRACTDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="NextPRDDueDate" column="&quot;NEXTPRDDUEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="CurrentDateThru" column="&quot;CURRENTDATETHRU&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="PRDConsolidation" column="&quot;PRDCONSOLIDATION&quot;"/>
+        <property name="ReportType" column="&quot;REPORTTYPE&quot;"/>
+        <property name="SortOption" column="&quot;SORTOPTION&quot;"/>
+
+        <property name="Summary" column="&quot;SUMMARY&quot;"/>
+        <property name="OutputType" column="&quot;OUTPUTTYPE&quot;"/>
+        <property name="CreationOperator" column="&quot;CreationOperator&quot;"/>
+        <property name="CreationDate" column="&quot;CreationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <set name="PayrollDeductions" table="&quot;PAYROLLDEDUCTION&quot;" inverse="true"  cascade="all">
+            <key column="&quot;PAYROLLDEDUCTIONSCHEDULEFK&quot;"/>
+            <one-to-many class="staging.PayrollDeduction"/>
+        </set>
+
+        <many-to-one
+            name="Group"
+            column="&quot;GROUPFK&quot;"
+            class="staging.Group"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

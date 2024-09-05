@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:custom="com.segsoftware.view.custom.*"
+	width="100%" 
+	height="100%"
+	initialize="init()">
+	
+	<mx:Style source="../css/segSoftware.css"/>		
+	 
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ListCollectionView;
+			import mx.controls.ComboBox;
+			import mx.events.ListEvent;
+			import com.segsoftware.model.CodeTable;
+			import flash.profiler.showRedrawRegions;
+			import mx.collections.XMLListCollection;
+			import com.segsoftware.event.SEGEvent;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import mx.controls.Alert;
+			import mx.managers.PopUpManager;
+			import com.segsoftware.model.SEGModelLocator;
+			import mx.events.CloseEvent;
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.utility.EventBroker;
+			
+			public var EVENT_BATCH_CONTRACT_SETUP_SELECTED:String = "BatchContractSetupSelected";
+			
+			/**
+			 * Renders the dialog for adding a new BatchContractSetup.
+			 */
+			private function showAddBatchContractSetupDialog(event:Event):void
+			{
+				// Clear any previous search results
+				SEGModelLocator.getInstance().searchedForGroupContractGroupVOs.removeAll();
+				
+				var addBatchContractSetupDialog:AddBatchContractSetupDialog = PopUpManager.createPopUp(this, com.segsoftware.view.encoding.AddBatchContractSetupDialog, true) as AddBatchContractSetupDialog;	
+							
+				PopUpManager.centerPopUp(addBatchContractSetupDialog);			
+			}
+			
+			public function showBatchTransmittedDialog():void
+			{								
+				var batchTransmittedDialog:BatchTransmittedDialog = PopUpManager.createPopUp(this, com.segsoftware.view.encoding.BatchTransmittedDialog, true) as BatchTransmittedDialog;	
+							
+				PopUpManager.centerPopUp(batchTransmittedDialog);					
+			}
+			
+			/**
+			 * The candidate ProductStructure dropdown needs a "calculated" label based
+			 * on the usual Product, ProductType, CompanyName, etc.
+			 */
+			private function formatCandidateProductStructureLabel(object:Object):String
+			{
+				var filteredProductVO:XML = object as XML;
+				
+				return Util.formatProductKey(filteredProductVO.ProductStructureVO[0]);
+			}
+			
+			/**
+			 * Copy a selected BatchContractSetup.
+			 */
+			private function showCopyBatchContractSetupDialog(event:Event):void
+			{
+				if (batchContractSetupDataGrid.selectedItem)
+				{
+					Util.showConfirmationDialog("Copy Selected BatchContractSetup?", this, showCopyConfirmationHandler);					
+				}
+				else
+				{
+					Alert.show('Please Select BatchContractSetup To Copy');
+				}			
+			}
+			
+			private function showCopyConfirmationHandler(event:CloseEvent):void
+			{
+				if (event.detail == Alert.OK)
+				{
+					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_COPY_BATCHCONTRACTSETUP, formData));
+				}
+			}
+			
+			private function showDeleteBatchContractSetupDialog(event:Event):void
+			{
+				if (batchContractSetupDataGrid.selectedItem)
+				{
+					Util.showConfirmationDialog("Delete Selected BatchContractSetup?", this, showDeleteConfirmationHandler);
+				}
+				else
+				{
+					Alert.show('Please Select BatchContractSetup To Delete');
+				}
+			}
+			
+			private function showDeleteConfirmationHandler(event:CloseEvent):void
+			{
+				if (event.detail == Alert.OK)
+				{
+					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_DELETE_BATCHCONTRACTSETUP, formData));									
+				}
+			}
+			
+			/**
+			* Called when the import file button is clicked. It allows to 
+			* check for the selection of BatchContractSetup before proceeding.
+			*/
+			private function importBatchFile(event:Event):void
+			{
+				if (SEGModelLocator.getInstance().selectedBatchContractSetupVO == null)
+				{
+					event.stopImmediatePropagation();									
+				}
+			}	
+			
+			/**
+			* Page init.
+			*/
+			private function init():void
+			{
+				segFileUpload.returnFileReference = true;
+				// Pre inititialize these values. The BatchTransmitted dialog will need them up front.
+				CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_CASE_FILTEREDREQUIREMENTS, formData));								
+			}		
+			
+			/**
+			* Applies a filter to the BatchContractSetup grid.
+			*/
+			private function applyFilterBatchContractSetupsFunction():void
+			{
+				batchContractSetupDataGrid.selectedIndex = -1;
+				
+				Util.applyFilterFunction(filterBatchContractSetupsFunction, SEGModelLocator.getInstance().batchContractSetupVOs);
+			}
+			
+			/**
+			* Removes the currently applied filter function on the BatchContractSetup DataGrid.
+			*/
+			private function removeFilterBatchContractSetupsFunction():void
+			{
+				Util.removeFilterFunction(SEGModelLocator.getInstance().batchContractSetupVOs);
+								
+				filterValue.text = "";								
+			}			
+			
+			/**
+			* Filters the current BatchContractSetup DataGrid by a specified Group #.
+			*/
+			private function filterBatchContractSetupsFunction(item:Object):Boolean
+			{
+				var includeItemInResults:Boolean = false;
+				
+				var batchContractSetupVO:XML = item as XML;
+				
+				var filterValue:String = filterValue.text;
+				
+				var candidateValue:String = batchContractSetupVO.ContractGroupVO[0].ContractGroupNumber[0];
+				
+				if (candidateValue.toUpperCase().indexOf(filterValue.toUpperCase()) == 0)
+				{
+					includeItemInResults = true;		
+				}					
+				
+				return includeItemInResults;	
+			}	
+			
+			/**
+			* User has selected a different product structure from the drop-down. We
+			* need to adjust the filtered codetable values.
+			*/
+			private function updateFilteredCodeTables():void
+			{
+				formData.productKeyVO = productKey.selectedItem;					
+					
+				CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_FILTER_CODETABLES, formData));				
+			}		
+			
+			/**
+			* Gets the candidate AgentHiearchies for the just-selected BatchContractSetup iff there
+			* is an Enrollment associated with the BatchContractSetup.
+			*/
+			private function getCandidateAgentHierarchies():void
+			{
+				var enrollmentFK:String = Util.initString(SEGModelLocator.getInstance().selectedBatchContractSetupVO.EnrollmentFK[0], null);
+				
+				if (enrollmentFK)
+				{
+					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_CANDIDATE_AGENTHIERARCHIES, formData));																					
+				}
+			}
+			
+			protected function viewSelected(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if (batchContractSetupDataGrid.selectedItem != null) {
+				    debugger.text = batchContractSetupDataGrid.selectedItem.toString();
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Model id="formData">
+		<formData>
+			<highlightedCandidateAgentHierarchyVOs>{candidateAgentHierarchyDataGrid.selectedItems}</highlightedCandidateAgentHierarchyVOs>	
+			<highlightedSelectedAgentHierarchyVOs>{selectedAgentHierarchyVODataGrid.selectedItems}</highlightedSelectedAgentHierarchyVOs>		
+			<PartialContractGroupNumber>{filterValue.text}</PartialContractGroupNumber>	
+			<batchContractSetupVOs>{batchContractSetupDataGrid.selectedItems}</batchContractSetupVOs>
+			<productKeyVO/>
+		</formData>
+	</mx:Model>
+	
+	<mx:Binding 
+		source="batchContractSetupDataGrid.selectedItem as XML"
+		destination="SEGModelLocator.getInstance().selectedBatchContractSetupVO"/>
+
+	<mx:Validator id="filterValidator" source="{filterValue}" required="true" property="text"/>
+    <mx:Validator id="productKeyValidator" source="{productKey}" property="selectedItem" required="true" requiredFieldError="Must Select a Product" triggerEvent="null"/>	
+
+	<mx:VBox left="10" right="10" top="10" bottom="40">
+
+	<mx:Panel height="50%" layout="absolute" left="10" right="10" top="10" title="Batch Contract Setup" width="100%">
+		<mx:DataGrid click="viewSelected(event)"
+			id="batchContractSetupDataGrid" 
+			left="0" 
+			right="0" 
+			top="0" 
+			bottom="0"
+			editable="false"
+			dataProvider="{SEGModelLocator.getInstance().batchContractSetupVOs}"
+			change="CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_CLEAR_BATCHCONTRACTSETUPMODELS, formData));
+					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_CANDIDATE_PRODUCTSTRUCTURES, formData));			
+					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_SELECTED_AGENTHIERARCHIES, formData));
+					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_BATCHPROGRESSLOGS, formData));
+					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_BATCHPRODUCTLOGS, formData));
+					
+					getCandidateAgentHierarchies();
+					
+					EventBroker.broadcast(new SEGEvent(EVENT_BATCH_CONTRACT_SETUP_SELECTED, null));
+					">
+			<mx:columns>
+				<mx:DataGridColumn 
+					headerText="Group Number"
+					width="12.5"
+					sortable="false">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Text text="{data.ContractGroupVO.ContractGroupNumber}"/>
+						</mx:Component>
+					</mx:itemRenderer>				
+				</mx:DataGridColumn>
+							
+				<mx:DataGridColumn 
+					headerText="Group Name"
+					width="12.5"
+					sortable="false">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Text text="{data.ContractGroupVO.ClientRoleVO.ClientDetailVO.CorporateName}"/>
+						</mx:Component>				
+					</mx:itemRenderer>						
+				</mx:DataGridColumn>
+				
+				<mx:DataGridColumn
+							headerText="Beg. Policy Date"
+	 					    editable="false"
+	 					    color="blue"
+	 					    width="14.5"
+	 					    sortable="false">
+	 					    	<mx:itemRenderer>
+	 					    		<mx:Component>
+	 					    			<mx:HBox>
+		 					    			<mx:Script>
+		 					    				<![CDATA[
+		 					    					import com.segsoftware.model.SEGModelLocator;
+													import com.segsoftware.control.SEGController;		 					    					
+		 					    					import mx.collections.XMLListCollection;
+													import com.adobe.cairngorm.control.CairngormEventDispatcher;	
+													import com.segsoftware.event.SEGEvent;
+													import mx.collections.ListCollectionView;															
+													
+													/**
+													* Gets the candidate AgentHiearchies for the currently selected
+													* BatchContractSetup for the just changed Enrollment (changed
+													* via the selected of a new date in the dropdown).
+													*/
+													private function getCandidateAgentHierarchies(event:Event):void
+													{
+														var enrollmentVO:XML = event.currentTarget.selectedItem as XML;
+														
+														if (enrollmentVO)
+														{
+															CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_CANDIDATE_AGENTHIERARCHIES, null));																														
+														}
+													}	
+													
+													/**
+													* I was unable to make the Enrollment SEGComboBox work correctly within the
+													* BatchContractSetup DataGrid. I switched to a mx:ComboBox and now
+													* manually set the Enrollment.EnrollmentPK on the currently selected
+													* BatchContractSetup.EnrollmentFK.
+													*/
+													private function setBatchContractSetup_EnrollmentFK(event:Event):void
+													{
+														var enrollmentVO:XML = event.currentTarget.selectedItem as XML;
+														
+														var enrollmentPK:String = "";
+														
+														if (enrollmentVO)
+														{
+															enrollmentPK = enrollmentVO.EnrollmentPK[0].toString();
+														}
+														
+														SEGModelLocator.getInstance().selectedBatchContractSetupVO.EnrollmentFK[0] = <EnrollmentFK>{enrollmentPK}</EnrollmentFK>;
+													}
+													
+													/**
+													* The list of EnrollmentVOs in the dropdown need to select the
+													* one that is backed by the BatchContractSetupVO represented
+													* in the row of the datagrid.
+													*/
+													private function setSelectedEnrollment(event:Event):void
+													{
+														var enrollmentVOComboBox:ComboBox = event.currentTarget as ComboBox;
+														
+														var batchContractSetupVO:XML = enrollmentVOComboBox.parent["data"] as XML;
+														
+														if (batchContractSetupVO)
+														{
+															var enrollmentFK:String = batchContractSetupVO.EnrollmentFK[0].toString();
+															
+															var enrollmentVOs:ListCollectionView = enrollmentVOComboBox.dataProvider as ListCollectionView;															
+															
+															if (enrollmentVOs)
+															{
+																for each (var enrollmentVO:XML in enrollmentVOs)
+																{
+																	var enrollmentPK:String = enrollmentVO.EnrollmentPK[0].toString();
+																	
+																	if (enrollmentPK == enrollmentFK)
+																	{
+																		enrollmentVOComboBox.selectedItem = enrollmentVO;
+																		
+																		break;
+																	}
+																}																
+															}
+														}
+													}											 					    					
+		 					    				]]>
+		 					    			</mx:Script> 
+		 					    		
+											<mx:ComboBox 
+												prompt="Please Select"
+												dataProvider="{data.EnrollmentVO}"
+												labelField="BeginningPolicyDate"
+												width="100%"
+												valueCommit=
+												"
+													setSelectedEnrollment(event);
+												"
+												change=
+												"
+													setBatchContractSetup_EnrollmentFK(event);
+													
+													getCandidateAgentHierarchies(event);
+												"
+												/>
+										</mx:HBox>
+	 					    		</mx:Component>
+	 					    	</mx:itemRenderer>
+				</mx:DataGridColumn>				
+				
+    			<mx:DataGridColumn 
+    				headerText="Receipt Date" 
+    				editable="false" 
+					width="10.5"    				
+    				dataField="ReceiptDate"
+    				sortable="false"
+					/>	
+    				  							
+				<mx:DataGridColumn 
+					headerText="Batch ID"
+					width="12.5"
+					sortable="false">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Text text="{data.BatchID}"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				
+				<mx:DataGridColumn
+							headerText="Status"
+	 					    editable="false"
+	 					    color="blue"
+	 					    width="12.5"
+	 					    sortable="false">
+	 					    	<mx:itemRenderer>
+	 					    		<mx:Component>
+	 					    			<mx:HBox>
+		 					    			<mx:Script>
+		 					    				<![CDATA[
+		 					    					import com.segsoftware.model.CodeTable;
+		 					    				]]>
+		 					    			</mx:Script> 
+		 					    		
+											<custom:SEGComboBox 
+												dataProvider="{CodeTable.getInstance().batchContractStatusVOs}"
+												labelField="CodeDesc"
+												valueField="Code" 
+												valueObjectVO="{data as XML}"
+												valueObjectVOField="StatusCT"
+												width="100%"												
+												/>
+										</mx:HBox>
+	 					    		</mx:Component>
+	 					    	</mx:itemRenderer>
+				</mx:DataGridColumn>
+				
+				<mx:DataGridColumn 
+					headerText="Operator"
+					width="12.5"
+					sortable="false">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Text text="{data.CreationOperator}"/>
+						</mx:Component>
+					</mx:itemRenderer>					
+				</mx:DataGridColumn>
+				
+				<mx:DataGridColumn 
+					headerText="Batch Transmittal..."
+					width="12.5"
+					sortable="false">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:LinkButton label="More..." click="outerDocument.showBatchTransmittedDialog()"/>	
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:ControlBar width="100%" height="44" horizontalAlign="right">
+			<mx:TextInput id="filterValue"/>
+			<mx:RadioButton label="Group Number" selected="true"/>
+			<mx:Button 
+				label="Apply Filter" 
+				id="applyFilterButton"
+				click=
+				"
+					if (Util.validate(filterValidator).length == 0)
+					{
+						Util.dispatchEvent(SEGController.EVENT_GET_BATCHCONTRACTSETUPS_BY_PARTIALCONTRACTGROUPNUMBER, formData);						
+					}
+				"/>
+			<mx:Button 
+				label="Remove Filter" 
+				click=
+				"
+					filterValue.text='';
+  				    Util.dispatchEvent(SEGController.EVENT_GET_ALL_BATCHCONTRACTSETUPS, null);						
+				"
+				/>
+			<mx:VRule height="20"/>
+			<custom:SEGFileUpload 
+				id="segFileUpload"
+				label="Import" 
+				width="67"
+				click="importBatchFile(event)"
+				segEvent="{SEGController.EVENT_IMPORT_NEW_BUSINESS_BATCH}"/>
+			<mx:VRule height="20"/>
+			<mx:Button 
+				label="Show All"
+				click="CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_ALL_BATCHCONTRACTSETUPS, formData))"/>
+		</mx:ControlBar>
+	</mx:Panel>
+	
+	<mx:Panel height="154" layout="horizontal" verticalCenter="-13.5" left="10" right="10" title="Contract Defaults" width="100%">
+		<mx:Form>
+			<mx:FormItem label="Product Key:">
+				<custom:SEGComboBox 
+					id="productKey" 
+					labelFunction="{formatCandidateProductStructureLabel}"
+					valueField="FilteredProductPK"
+					dataProvider="{SEGModelLocator.getInstance().candidateFilteredProductVOs}" 
+					valueObjectVO="{SEGModelLocator.getInstance().selectedBatchContractSetupVO}"
+					valueObjectVOField="FilteredProductFK"
+					change=
+					"
+						updateFilteredCodeTables();
+					"/> 
+			</mx:FormItem>			
+			<mx:FormItem label="DBO O/R:">
+				<custom:SEGComboBox 
+					labelField="CodeDesc" 
+					valueField="Code"
+					dataProvider="{CodeTable.getInstance().filteredDeathBenefitOptionCodeTableVOs}"
+					valueObjectVO="{SEGModelLocator.getInstance().selectedBatchContractSetupVO}"
+					valueObjectVOField="DeathBenefitOptionCT"/> 
+			</mx:FormItem>
+			<mx:FormItem label="NFO O/R:">
+				<custom:SEGComboBox 
+					labelField="CodeDesc" 
+					valueField="Code"
+					dataProvider="{CodeTable.getInstance().filteredNonForfeitureOptionCodeTableVOs}"
+					valueObjectVO="{SEGModelLocator.getInstance().selectedBatchContractSetupVO}"
+					valueObjectVOField="NonForfeitureOptionCT"/> 
+			</mx:FormItem>
+		</mx:Form>
+		<mx:Form>
+			<mx:FormItem label="Effective Date:">
+				<custom:SEGDateField
+					valueObjectVO="{SEGModelLocator.getInstance().selectedBatchContractSetupVO}"
+					valueObjectVOField="EffectiveDate"
+					text="{SEGModelLocator.getInstance().selectedBatchContractSetupVO.EffectiveDate}"
+					editable="true"
+					required="false"/>					
+			</mx:FormItem>
+			<mx:FormItem label="App Signed Date:">
+				<custom:SEGDateField
+					valueObjectVO="{SEGModelLocator.getInstance().selectedBatchContractSetupVO}"
+					valueObjectVOField="ApplicationSignedDate"
+					text="{SEGModelLocator.getInstance().selectedBatchContractSetupVO.ApplicationSignedDate}"
+					editable="true"
+					required="false"/>					
+			</mx:FormItem>
+			<mx:FormItem label="App Signed State:">
+				<custom:SEGComboBox 
+					labelField="CodeDesc" 
+					valueField="Code"
+					dataProvider="{CodeTable.getInstance().filteredStateCodeTableVOs}"
+					valueObjectVO="{SEGModelLocator.getInstance().selectedBatchContractSetupVO}"
+					valueObjectVOField="ApplicationSignedStateCT"/> 
+			</mx:FormItem>
+		</mx:Form>
+		<mx:Form>
+			<mx:FormItem label="Issue State:">
+				<custom:SEGComboBox 
+					labelField="CodeDesc" 
+					valueField="Code"
+					dataProvider="{CodeTable.getInstance().filteredStateCodeTableVOs}"
+					valueObjectVO="{SEGModelLocator.getInstance().selectedBatchContractSetupVO}"
+					valueObjectVOField="IssueStateCT"/> 
+			</mx:FormItem>
+		</mx:Form>
+		<mx:TextArea width="100%" height="100%" id="debugger" includeInLayout="false" visible="false"/>
+	</mx:Panel>
+	
+	<mx:HBox bottom="49" left="10" right="10" height="50%" verticalAlign="middle" width="100%">
+		<mx:Panel height="100%" layout="absolute" bottom="40" title="Candidate Agents" left="10" width="100%">
+			<mx:DataGrid top="0" right="0" 
+				bottom="0" 
+				left="0"
+				id="candidateAgentHierarchyDataGrid"
+				dataProvider="{SEGModelLocator.getInstance().candidateAgentHierarchyVOs}"
+				allowMultipleSelection="true">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Agent Name">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:HBox horizontalScrollPolicy="off" verticalScrollPolicy="off">
+									<mx:Script>
+										<![CDATA[
+											import com.segsoftware.utility.Util;
+										]]>
+									</mx:Script>
+									<mx:Text text="{Util.initString(data.PlacedAgentVO.AgentContractVO.AgentVO.ClientRoleVO.ClientDetailVO.CorporateName, '') + Util.initString(data.PlacedAgentVO.AgentContractVO.AgentVO.ClientRoleVO.ClientDetailVO.LastName, '')}"/>									
+								</mx:HBox>
+							</mx:Component> 
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="Number">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.PlacedAgentVO.AgentContractVO.AgentVO.ClientRoleVO.ReferenceID}"/>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="Split %">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.AgentHierarchyVO.AgentHierarchyAllocationVO.AllocationPercent}"/>
+							</mx:Component>
+						</mx:itemRenderer>				
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="Contract">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:HBox horizontalScrollPolicy="off" verticalScrollPolicy="off">
+									<mx:Script>
+										<![CDATA[
+											import com.segsoftware.utility.Util;
+										]]>
+									</mx:Script>
+									
+									<mx:Text text="{Util.initString(data.PlacedAgentVO.AgentContractVO.ContractCodeCT, '')}"/>									
+								</mx:HBox>
+							</mx:Component>
+						</mx:itemRenderer>					
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="SIT">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.PlacedAgentVO.SituationCode}"/>
+							</mx:Component>
+						</mx:itemRenderer>					
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="Option">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.PlacedAgentVO.PlacedAgentCommissionProfileVO.CommissionProfileVO.CommissionOptionCT}"/>
+							</mx:Component>
+						</mx:itemRenderer>				
+					</mx:DataGridColumn>		
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:Panel>
+
+		<mx:VBox>
+			<mx:Button y="527" horizontalCenter="-9" 
+				click="Util.selectAllRows(candidateAgentHierarchyDataGrid);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_SELECT_CANDIDATE_AGENTHIERARCHY, formData))" icon="@Embed('../assets/icons/arrow_DoubleRight.png')" width="49"/>
+			<mx:Button y="557" width="49" horizontalCenter="-9" 
+				click="CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_SELECT_CANDIDATE_AGENTHIERARCHY, formData))" icon="@Embed('../assets/icons/arrow_SingleRight.png')"/>
+			<mx:Button y="587" width="49" horizontalCenter="-9" 
+				click="CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_DESELECT_SELECTEDAGENTHIERARCHY, formData))" icon="@Embed('../assets/icons/arrow_SingleLeft.png')"/>
+			<mx:Button y="617" horizontalCenter="-9" 
+				click="Util.selectAllRows(selectedAgentHierarchyVODataGrid);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_DESELECT_SELECTEDAGENTHIERARCHY, formData))" icon="@Embed('../assets/icons/arrow_DoubleLeft.png')" width="49"/>	
+		</mx:VBox>
+		
+		<mx:Panel height="100%" layout="absolute" bottom="40" right="10" title="Selected Agents" width="100%">
+			<mx:DataGrid top="0" right="0" 
+				bottom="0" 
+				left="0"
+				id="selectedAgentHierarchyVODataGrid"
+				dataProvider="{SEGModelLocator.getInstance().selectedCandidateAgentHierarchyVOs}"
+				allowMultipleSelection="true">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Agent Name">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:HBox horizontalScrollPolicy="off" verticalScrollPolicy="off">
+									<mx:Script>
+										<![CDATA[
+											import com.segsoftware.utility.Util;
+										]]>
+									</mx:Script>
+									<mx:Text text="{Util.initString(data.PlacedAgentVO.AgentContractVO.AgentVO.ClientRoleVO.ClientDetailVO.CorporateName, '') + Util.initString(data.PlacedAgentVO.AgentContractVO.AgentVO.ClientRoleVO.ClientDetailVO.LastName, '')}"/>									
+								</mx:HBox>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="Number">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.PlacedAgentVO.AgentContractVO.AgentVO.ClientRoleVO.ReferenceID}"/>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="Split %">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.AgentHierarchyVO.AgentHierarchyAllocationVO.AllocationPercent}"/>
+							</mx:Component>
+						</mx:itemRenderer>				
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="Contract">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:HBox horizontalScrollPolicy="off" verticalScrollPolicy="off">
+									<mx:Script>
+										<![CDATA[
+											import com.segsoftware.utility.Util;
+										]]>
+									</mx:Script>
+									
+									<mx:Text text="{Util.initString(data.PlacedAgentVO.AgentContractVO.ContractCodeCT, '')}"/>									
+								</mx:HBox>
+							</mx:Component>
+						</mx:itemRenderer>					
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="SIT">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.PlacedAgentVO.SituationCode}"/>
+							</mx:Component>
+						</mx:itemRenderer>					
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="Option">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Text text="{data.PlacedAgentVO.PlacedAgentCommissionProfileVO.CommissionProfileVO.CommissionOptionCT}"/>
+							</mx:Component>
+						</mx:itemRenderer>				
+					</mx:DataGridColumn>		
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:Panel>
+	</mx:HBox>
+	</mx:VBox>
+	
+	<mx:Button label="Add" click="showAddBatchContractSetupDialog(event)" right="262" bottom="10"/>
+	<mx:VRule height="20" right="252" bottom="10"/>
+	<mx:Button label="Copy" click="showCopyBatchContractSetupDialog(event)" right="186" bottom="10"/>
+	<mx:VRule height="20" right="176" bottom="10"/>
+	<mx:Button label="Delete" click="showDeleteBatchContractSetupDialog(event)" right="98" bottom="10"/>
+	<mx:VRule height="20" right="88" bottom="10"/>
+	<mx:Button label="Commit" 
+			click=
+			"
+				if (Util.validate(productKeyValidator).length == 0)
+				{
+					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_UPDATE_BATCHCONTRACTSETUP, formData));
+				}
+			"
+			right="10" bottom="10"/>
+	
+</mx:Canvas>

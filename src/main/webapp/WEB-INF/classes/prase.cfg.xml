@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory>
+        <property name="connection.datasource">java:comp/env/jdbc/prase</property>
+        
+        <property name="hibernate.max_fetch_depth">6</property>
+        <property name="hibernate.default_schema">dbo</property>
+        <property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+		<property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+		<property name="hibernate.cache.provider_configuration_file_resource_path">ehcache.xml</property>
+		<property name="hibernate.generate_statistics">false</property>
+  		<property name="hibernate.cache.use_query_cache">true</property>
+  		<property name="hibernate.cache.use_structured_entries">false</property>
+  		<property name="hibernate.cache.use_second_level_cache">true</property>
+  		<property name="show_sql">false</property>
+  		<property name="format_sql">false</property>
+  		  
+  		<mapping resource="engine/AreaKey.hbm.xml"></mapping>
+        <mapping resource="engine/AreaValue.hbm.xml"></mapping>
+        <mapping resource="engine/ChargeCode.hbm.xml"></mapping>
+        <mapping resource="engine/Company.hbm.xml"></mapping>
+        <mapping resource="engine/ControlBalance.hbm.xml"></mapping>
+        <mapping resource="engine/Fee.hbm.xml"></mapping>
+        <mapping resource="engine/FilteredAreaValue.hbm.xml"></mapping>
+        <mapping resource="engine/FilteredFund.hbm.xml"></mapping>
+        <mapping resource="engine/Fund.hbm.xml"></mapping>
+        <mapping resource="engine/sp/PRASEDocument.hbm.xml"></mapping>
+        <mapping resource="engine/sp/PRASETestDocument.hbm.xml"></mapping>
+        <mapping resource="engine/sp/PRASETest.hbm.xml"></mapping>
+        <mapping resource="engine/ProductFilteredFundStructure.hbm.xml"></mapping>
+        <mapping resource="engine/ProductRuleStructure.hbm.xml"></mapping>
+        <mapping resource="engine/ProductStructure.hbm.xml"></mapping>
+        <mapping resource="engine/RateTable.hbm.xml"></mapping>
+        <mapping resource="engine/Rules.hbm.xml"></mapping>
+        <mapping resource="engine/Script.hbm.xml"></mapping>
+        <mapping resource="engine/ScriptLine.hbm.xml"></mapping>
+        <mapping resource="engine/TableDef.hbm.xml"></mapping>
+        <mapping resource="engine/TableKeys.hbm.xml"></mapping>
+        <mapping resource="engine/UnitValues.hbm.xml"></mapping>
+        <mapping resource="conversion/ConversionTemplate.hbm.xml"></mapping>
+        <mapping resource="conversion/ConversionJob.hbm.xml"></mapping>
+        <mapping resource="query/Query.hbm.xml"></mapping>
+    </session-factory>
+</hibernate-configuration>

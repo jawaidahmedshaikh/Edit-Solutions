@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="agent.PlacedAgent" table="&quot;PlacedAgent&quot;" >
+        <id name="PlacedAgentPK" column="&quot;PlacedAgentPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="AgentContractFK" column="&quot;AgentContractFK&quot;" insert="false" update="false"/>
+        
+        <property name="HierarchyLevel" column="&quot;HierarchyLevel&quot;"/>
+        <property name="LeftBoundary" column="&quot;LeftBoundary&quot;"/>
+        <property name="RightBoundary" column="&quot;RightBoundary&quot;"/>
+
+        <property name="ModifyingEvent" column="&quot;ModifyingEvent&quot;"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="InactiveIndicator" column="&quot;InactiveIndicator&quot;"/>
+
+        <property name="StartDate" column="&quot;StartDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="StopDate" column="&quot;StopDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="SituationCode" column="&quot;SituationCode&quot;"/>
+        <property name="StopDateReasonCT" column="&quot;StopDateReasonCT&quot;"/>
+
+        <property name="ClientRoleFK" column="&quot;ClientRoleFK&quot;" insert="false" update="false"/>
+        
+          <many-to-one
+            name="AgentContract"
+            column="&quot;AgentContractFK&quot;"
+            class="agent.AgentContract"
+            cascade="none"
+            lazy="false"                  
+            />
+
+        <many-to-one
+          name="ClientRole"
+          column="&quot;ClientRoleFK&quot;"
+          class="role.ClientRole"
+          cascade="none"
+          lazy="false"
+          />
+
+        <set name="PlacedAgentCommissionProfiles" table="&quot;PlacedAgentCommissionProfile&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;PlacedAgentFK&quot;"/>
+            <one-to-many class="agent.PlacedAgentCommissionProfile"/>
+        </set>        
+    
+        <set name="AgentSnapshots" table="&quot;AgentSnapshot&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;PlacedAgentFK&quot;"/>
+            <one-to-many class="contract.AgentSnapshot"/>
+        </set>             
+
+<!--        
+        <set name="AgentGroupAssociations" table="&quot;AgentGroupAssociation&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;PlacedAgentFK&quot;"/>
+            <one-to-many class="agent.AgentGroupAssociation"/>
+        </set>
+-->
+        <set name="ParticipatingAgents" table="&quot;ParticipatingAgent&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;PlacedAgentFK&quot;"/>
+            <one-to-many class="agent.ParticipatingAgent"/>
+        </set>
+
+        <set name="CommissionHistories" table="&quot;CommissionHistory&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;PlacedAgentFK&quot;"/>
+            <one-to-many class="event.CommissionHistory"/>
+        </set>
+        
+        <set name="CheckAdjustments" table="&quot;CheckAdjustment&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;PlacedAgentFK&quot;"/>
+            <one-to-many class="agent.CheckAdjustment"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

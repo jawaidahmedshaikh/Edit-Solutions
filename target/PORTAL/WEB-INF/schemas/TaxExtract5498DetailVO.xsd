@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Deanna Lataille (Systems Engineering Group, LLC) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:element name="TaxExtract5498DetailVO">
+		<xs:annotation>
+			<xs:documentation>Document to be fed into PRASE for the generation of GAAP Reserves </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TaxExtractPK" type="xs:long"/>
+				<xs:element name="QualNonQualIndicator" type="xs:string"/>
+				<xs:element name="QualifiedType" type="xs:string"/>
+				<xs:element name="MarketingPackageName" type="xs:string"/>
+				<xs:element name="BusinessContractName" type="xs:string"/>
+				<xs:element name="OwnerDateOfBirth" type="xs:string"/>
+				<xs:element name="OwnerLastName" type="xs:string"/>
+				<xs:element name="OwnerFirstName" type="xs:string"/>
+                <xs:element name="OwnerCorporateName" type="xs:string"/>
+				<xs:element name="AddressLine1" type="xs:string"/>
+				<xs:element name="AddressLine2" type="xs:string"/>
+				<xs:element name="AddressLine3" type="xs:string"/>
+				<xs:element name="AddressLine4" type="xs:string"/>
+				<xs:element name="City" type="xs:string"/>
+				<xs:element name="State" type="xs:string"/>
+				<xs:element name="Zip" type="xs:string"/>
+				<xs:element name="TaxForm" type="xs:string"/>
+				<xs:element name="TaxYear" type="xs:string"/>
+				<xs:element name="TaxIdType" type="xs:string"/>
+				<xs:element name="TaxID" type="xs:string"/>
+				<xs:element name="ContractNumber" type="xs:string"/>
+				<xs:element name="AccumValue" type="xs:string"/>
+                <xs:element name="AccumulatedContribution" type="xs:string"/>
+                <xs:element name="AccumulatedRollover" type="xs:string"/>
+                <xs:element name="AccumulatedROTHConversion" type="xs:string"/>
+				<xs:element name="SeventyAndHalfInd" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

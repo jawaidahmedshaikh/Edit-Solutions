@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group, LLC) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="./EDITSolutions.xsd"/>
+	<xs:element name="QuoteVO">
+		<xs:annotation>
+			<xs:documentation>Quote processor</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="SegmentVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ClientDetailVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="BillScheduleVO"/>
+				<xs:element name="CommutedValue" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="QuoteDate" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+							<xs:minLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="QuoteTypeCT" type="xs:string" minOccurs="0"/>
+				<xs:element name="AccumValue" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="SurrenderCharge" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="MVA" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="CashSurrenderValue" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="GuarMinimumSurrenderValue" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="MaxPreferredAvailable" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="MaxNonPreferredAvailable" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="GrossLoanableAmount" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="LoanCollateral" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="DeathBenefit" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="UnlockedCashValue" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="PremiumRefund" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="SurrenderValue" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="AdjustedSurrenderValue" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="LoanPayoff" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="CheckAmount" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="LongTermCareLienBalance" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="TILienBalance" type="xs:decimal" minOccurs="0"/>
+                                <xs:element name="PaidToDate" type="xs:string" minOccurs="0"/>
+                                <xs:element name="NetSinglePremium" type="xs:decimal" minOccurs="0"/>
+                                <xs:element name="ReducedPaidUpAmount" type="xs:decimal" minOccurs="0"/>
+                                <xs:element name="LienBalance" type="xs:decimal" minOccurs="0"/>
+                                <xs:element name="Operator" type="xs:string"/>
+				<xs:element ref="QuoteInvestmentVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="QuoteAdjustmentVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="EDITTrxVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="QuoteInvestmentVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="QuoteInvestmentPK" type="xs:long"/>
+				<xs:element ref="InvestmentVO"/>
+				<xs:element name="BeginningSandP" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="CurrentIndexCapRate" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="ParticipationRate" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="Margin" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="InterestEarnedCurrent" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="BonusInterestEarned" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="UnitValueDate" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="10"/>
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="UnitValue" type="xs:decimal" minOccurs="0"/>
+				<xs:element ref="QuoteBucketVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="QuoteBucketVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="QuoteBucketPK" type="xs:long"/>
+				<xs:element name="BucketFK" type="xs:long"/>
+				<xs:element name="BeginningSandP" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="CurrentIndexCapRate" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="ParticipationRate" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="Margin" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="InterestEarnedCurrent" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="BonusInterestEarned" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="AvailableLoan" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="UnlockedLoanAmount" type="xs:decimal" minOccurs="0"/>
+                                <xs:element name="UnearnedLoanInterest" type="xs:decimal" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="QuoteAdjustmentVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ChargeTypeCT" type="xs:string" minOccurs="0"/>
+				<xs:element name="ChargeAmount" type="xs:decimal" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

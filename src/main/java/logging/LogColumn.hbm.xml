@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="logging.LogColumn" table="&quot;LogColumn&quot;">
+
+        <id name="LogColumnPK" column="&quot;LogColumnPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ColumnName" column="&quot;ColumnName&quot;"/>
+        <property name="ColumnLabel" column="&quot;ColumnLabel&quot;"/>
+        <property name="ColumnDescription" column="&quot;ColumnDescription&quot;"/>
+        <property name="Sequence" column="&quot;Sequence&quot;"/>
+
+        <many-to-one name="Log" column="&quot;LogFK&quot;" class="logging.Log" cascade="none"/>
+
+        <set name="LogColumnEntries" table="&quot;LogColumnEntry&quot;" inverse="true" cascade="all">
+            <key column="&quot;LogColumnFK&quot;"/>
+            <one-to-many class="logging.LogColumnEntry"/>
+        </set>        
+    </class>
+</hibernate-mapping>

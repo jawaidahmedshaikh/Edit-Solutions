@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.BillGroup" table="&quot;BILLGROUP&quot;"  >
+        <id name="BillGroupPK" column="&quot;BILLGROUPPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="BillScheduleFK" column="&quot;BILLSCHEDULEFK&quot;" insert="false" update="false"/>
+
+        <property name="ExtractDate" column="&quot;EXTRACTDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="DueDate" column="&quot;DUEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="TotalBilledAmount" column="&quot;TOTALBILLEDAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="TotalPaidAmount" column="&quot;TOTALPAIDAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ReleaseDate" column="&quot;RELEASEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="StopReason" column="&quot;STOPREASON&quot;"/>
+
+        <set name="Bills" table="&quot;BILL&quot;" inverse="true"   cascade="all">
+            <key column="&quot;BILLGROUPFK&quot;"/>
+            <one-to-many class="staging.Bill"/>
+        </set>
+
+        <many-to-one
+            name="BillSchedule"
+            column="&quot;BILLSCHEDULEFK&quot;"
+            class="staging.BillSchedule"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="staging.SubBucket" table="&quot;SUBBUCKET&quot;"  >
+        <id name="SubBucketPK" column="&quot;SUBBUCKETPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="InvestmentBucketFK" column="&quot;INVESTMENTBUCKETFK&quot;" insert="false" update="false"/>
+
+        <property name="EffectiveDate" column="&quot;EFFECTIVEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="CurrentRate" column="&quot;CURRENTRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CurrentEndDate" column="&quot;CURRENTENDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="BaseRateBaseEndDate" column="&quot;BASERATEBASEENDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="GuarMinRate1" column="&quot;GUARMINRATE1&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="GuarMinEndDate1" column="&quot;GUARMINENDDATE1&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="GuarMinRate2" column="&quot;GUARMINRATE2&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="GuarMinEndDate2" column="&quot;GUARMINENDDATE2&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="NumberBuckets" column="&quot;NUMBERBUCKETS&quot;"/>
+        <property name="BaseRate" column="&quot;BASERATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="FundValue" column="&quot;FUNDVALUE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+               
+        <many-to-one
+            name="InvestmentBucket"
+            column="&quot;INVESTMENTBUCKETFK&quot;"
+            class="staging.InvestmentBucket"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

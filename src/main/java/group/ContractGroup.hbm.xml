@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="group.ContractGroup" table="ContractGroup"  >
+        <id name="ContractGroupPK" column="ContractGroupPK" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ContractGroupFK" column="ContractGroupFK" insert="false" update="false"/>
+        <property name="BillScheduleFK" column="BillScheduleFK" insert="false" update="false"/>
+        <property name="ClientRoleFK" column="ClientRoleFK" insert="false" update="false"/>
+
+        <property name="ContractGroupNumber" column="ContractGroupNumber"/>
+        <property name="GroupID" column="GroupID"/>
+        <property name="EffectiveDate" column="EffectiveDate" type="edit.services.db.hibernate.customtype.EDITDateUserType"/> 
+        <property name="TerminationDate" column="TerminationDate" type="edit.services.db.hibernate.customtype.EDITDateUserType"/> 
+        <property name="CaseAssociationCode" column="CaseAssociationCode"/>
+        <property name="ContractGroupTypeCT" column="ContractGroupTypeCT"/>
+        <property name="GroupStatusCT" column="GroupStatusCT"/>
+        <property name="CaseTypeCT" column="CaseTypeCT"/>
+        <property name="CaseStatusCT" column="CaseStatusCT"/>
+        <property name="DomicileStateCT" column="DomicileStateCT"/>
+        <property name="CreationDate" column="CreationDate" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="CreationOperator" column="CreationOperator"/>
+        <property name="ContractRequirementsGenerated" column="ContractRequirementsGenerated"/>
+        <property name="GroupTrustStateCT" column="GroupTrustStateCT"/>
+        <property name="RequirementNotifyDayCT" column="RequirementNotifyDayCT"/>
+        <property name="DeductionAmtMinTol" column="DeductionAmtMinTol" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DeductionAmtMaxTol" column="DeductionAmtMaxTol" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ActiveEligibilityHours" column="ActiveEligibilityHours"/>
+        <property name="IneligibilityPeriodUnits" column="IneligibilityPeriodUnits" />
+        <property name="IneligibilityPeriodType" column="IneligibilityPeriodType"/>
+
+        <set name="Segments" table="Segment" inverse="true"  cascade="all">
+            <key column="ContractGroupFK"/>
+            <one-to-many class="contract.Segment"/>
+        </set>
+
+        <set name="AgentHierarchies" table="AgentHierarchy" inverse="true"  cascade="all">
+            <key column="ContractGroupFK"/>
+            <one-to-many class="contract.AgentHierarchy"/>
+        </set>
+
+        <!-- The ContractGroupRequirement also has BatchContractSetup as parent ... Should not to be defined as Cascade Delete -->
+        <set name="ContractGroupRequirements" table="ContractGroupRequirement" inverse="true"  cascade="save-update">
+            <key column="ContractGroupFK"/>
+            <one-to-many class="group.ContractGroupRequirement"/>
+        </set>      
+        
+        <set name="FilteredProducts" table="FilteredProduct" inverse="true"  cascade="all">
+            <key column="ContractGroupFK"/>
+            <one-to-many class="contract.FilteredProduct"/>
+        </set>       
+
+        <set name="BatchContractSetups" table="BatchContractSetup" inverse="true"  cascade="all">
+            <key column="ContractGroupFK"/>
+            <one-to-many class="group.BatchContractSetup"/>
+        </set>           
+        
+        <set name="ContractGroups" table="ContractGroup" inverse="true"  cascade="all">
+            <key column="ContractGroupFK"/>
+            <one-to-many class="group.ContractGroup"/>
+        </set>           
+
+        <set name="PayrollDeductionSchedules" table="PayrollDeductionSchedule" inverse="true"  cascade="all">
+            <key column="ContractGroupFK"/>
+            <one-to-many class="group.PayrollDeductionSchedule"/>
+        </set>
+
+        <set name="ContractGroupInvestments" table="ContractGroupInvestment" inverse="true"  cascade="all">
+            <key column="ContractGroupFK"/>
+            <one-to-many class="group.ContractGroupInvestment"/>
+        </set>
+
+        <set name="DepartmentLocations" table="DepartmentLocation" inverse="true"  cascade="all">
+            <key column="ContractGroupFK"/>
+            <one-to-many class="group.DepartmentLocation"/>
+        </set>
+
+        <set name="CaseStatusChangeHistories" table="CaseStatusChangeHistory" inverse="true"  cascade="all">
+            <key column="ContractGroupFK"/>
+            <one-to-many class="group.CaseStatusChangeHistory"/>
+        </set>
+
+        <set name="ContractGroupNotes" table="ContractGroupNote" inverse="true"  cascade="all">
+            <key column="ContractGroupFK"/>
+            <one-to-many class="group.ContractGroupNote"/>
+        </set>
+
+
+        <set name="Enrollments" table="Enrollment" inverse="true"  cascade="all">
+            <key column="ContractGroupFK"/>
+            <one-to-many class="group.Enrollment"/>
+        </set>
+
+       <set name="CaseSetups" table="CaseSetup" inverse="true"  cascade="all">
+            <key column="ContractGroupFK"/>
+            <one-to-many class="group.CaseSetup"/>
+        </set>
+
+       <set name="ContractTreaties" table="ContractTreaty" inverse="true"  cascade="all">
+            <key column="ContractGroupFK"/>
+            <one-to-many class="reinsurance.ContractTreaty"/>
+        </set>
+
+        <many-to-one
+            name="ContractGroup"
+            column="ContractGroupFK"
+            class="group.ContractGroup"
+            cascade="none"/>
+
+        <many-to-one
+            name="BillSchedule"
+            column="BillScheduleFK"
+            class="billing.BillSchedule"
+            cascade="none"/>
+
+        <many-to-one
+            name="ClientRole"
+            column="ClientRoleFK"
+            class="role.ClientRole"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" 
+	width="480" 
+	height="178" 
+	xmlns:ns1="com.segsoftware.view.custom.*" 
+	title="Close PRASE Document Dialog"
+	showCloseButton="true"
+	close="mx.managers.PopUpManager.removePopUp(this)"
+	>
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.control.SEGController;
+			import mx.managers.PopUpManager;
+		]]>
+	</mx:Script>
+	
+	<mx:Model id="formData">
+		<formData>
+			<descriptionText>{descriptionTextInput.text}</descriptionText>
+		</formData>
+	</mx:Model>
+	
+	<mx:Validator id="descriptionValidator" source="{descriptionTextInput}" required="true" property="text"/>
+	
+	<mx:Form left="10" right="10" top="10">
+		<mx:FormItem label="Type:">
+			<mx:TextInput text="{SEGModelLocator.getInstance().selectedPRASEDocumentVO.RootElementName}" editable="false" borderStyle="none"/>
+		</mx:FormItem>
+		<mx:FormItem label="Description:" width="100%">
+			<ns1:SEGTextInput id="descriptionTextInput" width="100%" />
+		</mx:FormItem>
+	</mx:Form>
+	<mx:ControlBar horizontalAlign="right">
+		<mx:Button 
+			label="Commit"
+			id="commitButton"
+			click=
+			"
+				if (Util.validate(descriptionValidator).length == 0)
+				{
+					Util.dispatchEvent(SEGController.EVENT_CLONE_PRASEDOCUMENT, formData);
+					
+					PopUpManager.removePopUp(this);															
+				}
+			"
+			/>
+	</mx:ControlBar>
+	
+</mx:TitleWindow>

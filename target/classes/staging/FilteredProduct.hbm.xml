@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.FilteredProduct" table="&quot;FILTEREDPRODUCT&quot;" >
+        <id name="FilteredProductPK" column="&quot;FILTEREDPRODUCTPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="CaseFK" column="&quot;CASEFK&quot;" insert="false" update="false"/>
+
+        <property name="CompanyName" column="&quot;COMPANYNAME&quot;"/>
+        <property name="MarketingPackage" column="&quot;MARKETINGPACKAGE&quot;"/>
+        <property name="GroupName" column="&quot;GROUPNAME&quot;"/>
+
+        <property name="Area" column="&quot;AREA&quot;"/>
+        <property name="BusinessContract" column="&quot;BUSINESSCONTRACT&quot;"/>
+       
+        <set name="CaseProductUnderwritings" table="&quot;CASEPRODUCTUNDERWRITING&quot;" inverse="true"  cascade="all">
+            <key column="&quot;FILTEREDPRODUCTFK&quot;"/>
+            <one-to-many class="staging.CaseProductUnderwriting"/>
+        </set>
+
+        <many-to-one
+            name="Case"
+            column="&quot;CASEFK&quot;"
+            class="staging.Case"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

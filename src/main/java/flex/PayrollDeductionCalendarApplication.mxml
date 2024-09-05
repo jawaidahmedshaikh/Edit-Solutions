@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	xmlns:payroll="com.segsoftware.view.payroll.*"
+	xmlns:control="com.segsoftware.control.*"
+	xmlns:business="com.segsoftware.business.*"
+	xmlns:model="com.segsoftware.model.*"
+	xmlns:logging="com.segsoftware.model.logging.*"
+	initialize="init()" width="100%" height="100%">
+
+	<mx:Style source="com/segsoftware/view/css/segSoftware.css"/>		
+
+	<!-- External script(s) that are used -->
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.model.logging.SEGLog;
+			import mx.logging.*;
+			import mx.events.*;
+			import com.segsoftware.model.CodeTable; 
+			import com.segsoftware.utility.Util;
+	
+			/**
+			 * System bootstrap operations.
+			 */
+			private function init():void
+			{
+				// Touch this for pre-loading the DB values...
+				var codeTable:CodeTable = CodeTable.getInstance();
+				
+				// Grab the PayrollDeductionPK from the enclosing JSP (probably a link off of the PayrollDeductionPopup)
+				var passedInPayrollDeductionSchedulePK:String = Util.initString(Application.application.parameters.payrollDeductionSchedulePK, "N/A");				
+				
+				SEGModelLocator.getInstance().payrollDeductionSchedulePK = passedInPayrollDeductionSchedulePK;
+				
+				this.payrollDedectionCalendar.getPayrollDeductionCalendars();
+			}	
+		]]>
+	</mx:Script>	
+		
+	<!-- the FrontController, containing Commands specific to this appliation -->
+	<control:SEGController id="segController" />
+
+	<!-- Logging mechanism -->
+	<logging:SEGLog id="segLog" />
+	
+	<!-- Services are defined here and are readily accessible throughout the application -->
+	<business:Services id="services" />
+
+	<payroll:PayrollDeductionCalendar id="payrollDedectionCalendar" left="0" right="0" top="0" bottom="0"/>
+	
+</mx:Application>

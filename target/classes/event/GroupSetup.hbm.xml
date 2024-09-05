@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="event.GroupSetup" table="&quot;GroupSetup&quot;">
+        <id name="GroupSetupPK" column="&quot;GroupSetupPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="GroupTypeCT" column="&quot;GroupTypeCT&quot;"/>
+        <property name="GroupKey" column="&quot;GroupKey&quot;"/>
+        <property name="MemoCode" column="&quot;MemoCode&quot;"/>
+        <property name="PremiumTypeCT" column="&quot;PremiumTypeCT&quot;"/>
+        <property name="GrossNetStatusCT" column="&quot;GrossNetStatusCT&quot;"/>
+        <property name="DistributionCodeCT" column="&quot;DistributionCodeCT&quot;"/>
+        <property name="GroupAmount" column="&quot;GroupAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="GroupPercent" column="&quot;GroupPercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="EmployerContribution" column="&quot;EmployerContribution&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="EmployeeContribution" column="&quot;EmployeeContribution&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="WithdrawalTypeCT" column="&quot;WithdrawalTypeCT&quot;"/>
+
+        <set name="Charges" table="&quot;Charge&quot;" inverse="true"   cascade="all">
+            <key column="&quot;GroupSetupFK&quot;"/>
+            <one-to-many class="event.Charge"/>
+        </set>
+
+        <set name="ScheduledEvents" table="&quot;ScheduledEvent&quot;" inverse="true"   cascade="all">
+            <key column="&quot;GroupSetupFK&quot;"/>
+            <one-to-many class="event.ScheduledEvent"/>
+        </set>
+
+        <set name="ContractSetups" table="&quot;ContractSetup&quot;" inverse="true"   cascade="all">
+            <key column="&quot;GroupSetupFK&quot;"/>
+            <one-to-many class="event.ContractSetup"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

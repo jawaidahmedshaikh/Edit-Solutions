@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas width="100%" height="100%"
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	initialize="init()">
+	
+	<mx:Style source="../css/segSoftware.css"/>	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.encoding.BatchContractImportEntry;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import com.segsoftware.business.GroupDelegate;
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.event.SEGEvent;
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.model.encoding.BatchContractImport;
+			import com.segsoftware.model.logging.*;
+			import com.segsoftware.view.custom.logging.*;
+			
+			import mx.collections.*;
+			import mx.events.IndexChangedEvent;
+			import mx.managers.PopUpManager;
+			import com.segsoftware.command.ImportNewBusinessBatchCommand;
+			
+			private var refreshTimer:Timer;
+			private var logCache:Dictionary = new Dictionary();
+			[Bindable] public var isSelected:Boolean;
+			
+			/**
+			 * Starts a process to periodically refresh the list of imports, 
+			 * provided the import log screen is still open. 
+			 */
+			private function init():void
+			{
+				layoutAccordion();
+				
+				// refresh every 10 seconds
+				refreshTimer = new Timer(10000, 0);
+				refreshTimer.start();
+				refreshTimer.addEventListener(TimerEvent.TIMER, refresh);
+				
+				ImportNewBusinessBatchCommand.dispatcher.addEventListener(ImportNewBusinessBatchCommand.IMPORT_ISSUED_EVENT, 
+					function(e:Event) { setTimeout(function() { refresh(e); }, 2000) });
+			}
+			
+			private function refresh(e:Event):void {
+				// perform the refresh only if the user is looking at this tab
+				if(isSelected) {
+					layoutAccordion();
+				}
+			}
+			
+			private function gotRecordDetail(importRec:BatchContractImport):void {
+				if(importRec == null) {
+					// something went wrong, already handled
+					refreshTimer.stop();
+					return;
+				}
+				
+				var existingRecord:BatchContractImport = logCache[importRec.batchContractImportFilePk];
+				existingRecord.initialize(importRec);
+			}
+			
+			private function accordion_changehandler(evt:IndexChangedEvent):void {
+				var currentIndex:int = evt.newIndex;
+				var entry:BatchContractImport = (accordion.getChildAt(currentIndex) as ImportLogAccordionEntry).logEntry;
+				
+				// if the record is in PENDING status, its detail will be retrieved through the normal channels
+				if(entry.status != "PENDING") {
+					GroupDelegate.loadBatchImportDetail(entry, gotRecordDetail);
+				}
+			}
+			
+			private function gotRecords(arr:ArrayCollection):void {
+				
+				if(arr == null) {
+					// something went wrong, GroupDelegate already handled notifying the user
+					refreshTimer.stop();
+					return;
+				}
+				var length:int = arr.length;
+				
+				var addEnd:Boolean = true;
+				if(accordion.getChildren().length > 0) {
+					addEnd = false;
+				}
+								
+				for (var i:int = 0; i < length; i++)
+				{					
+					var importRec:BatchContractImport = arr[i];
+					// request detail for 1st record because we will not get a "change" event for this
+					if(i == 0 && accordion.getChildren().length == 0) {
+						GroupDelegate.loadBatchImportDetail(importRec, gotRecordDetail);
+					}
+					
+					if(logCache[importRec.batchContractImportFilePk] == null) {
+						var entry:ImportLogAccordionEntry = new ImportLogAccordionEntry();
+						entry.logEntry = importRec;
+						var dobj:DisplayObject  = entry as DisplayObject;
+						
+						if(addEnd) {
+							accordion.addChild(dobj);
+						} else {
+							accordion.addChildAt(dobj, 0);
+						}
+						
+						logCache[importRec.batchContractImportFilePk] = importRec;
+					} else {
+						var existingRec:BatchContractImport = logCache[importRec.batchContractImportFilePk] as BatchContractImport;
+						existingRec.initialize(importRec);
+					}
+				}   				
+			} 
+			
+			/**
+			 * Retrieves a list of recent batch import logs
+			 * and presents them in the accordion. 
+			 */
+			private function layoutAccordion():void
+			{
+				GroupDelegate.loadBatchImportLogs(gotRecords, gotRecordDetail);
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<!-- Place the Accordion within a Canvas to control scrolling.  
+	The Accordion will automatically add scroll bars when necessary but
+	it adds a horizontal one even though it is not needed here.
+	Can't override the scrolling policy for an Accordion, therefore,
+	a Canvas is used -->
+	<mx:Canvas verticalScrollPolicy="auto" 
+			   horizontalScrollPolicy="off"
+			   width="100%"
+			   height="100%">
+		<mx:Accordion xmlns:mx="http://www.adobe.com/2006/mxml" 
+					  width="100%" height="100%"
+					  resizeToContent="true"
+					  initialize="layoutAccordion()"
+					  change="accordion_changehandler(event)"
+					  id="accordion"
+					  >
+		</mx:Accordion>
+	</mx:Canvas>			
+</mx:Canvas>

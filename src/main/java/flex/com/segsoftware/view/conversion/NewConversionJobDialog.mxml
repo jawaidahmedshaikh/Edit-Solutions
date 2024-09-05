@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:custom="com.segsoftware.view.custom.*"
+	layout="absolute" 
+	width="550" 
+	height="274" 
+	showCloseButton="true" 
+	title="Conversion Job Details"
+	close="mx.managers.PopUpManager.removePopUp(this)"
+	>
+	
+	<mx:Model id="formData">
+		<formData>
+			<jobName>{jobName.text}</jobName>
+			<numberOfGroups>{numberOfGroupsComboBox.selectedItem.data}</numberOfGroups>
+			<genericXMLOnly>{(genericXMLOnlyCheckBox.selected)?"Y":"N"}</genericXMLOnly>
+			<returnSample>{(returnSampleCheckBox.selected)?"Y":"N"}</returnSample>
+			<recordPRASE>{recordPRASECheckBox.selected}</recordPRASE>			
+		</formData>
+	</mx:Model>
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.model.SEGModelLocator;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.event.SEGEvent;
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.view.custom.*;
+			
+			import mx.managers.PopUpManager;
+			
+			public function runConversion():void
+			{
+				Util.dispatchEvent(SEGController.EVENT_RUN_CONVERSION, formData);
+			}
+			
+			/**
+			* Users will want to have a job name auto-supplied based on the currently
+			* selected ConversionTemplate and/or currently selected Job name.
+			*/
+			private function get defaultJobName():String
+			{
+				var defaultJobName:String = null;
+				
+				if (SEGModelLocator.getInstance().selectedConversionJob)
+				{
+					defaultJobName = SEGModelLocator.getInstance().selectedConversionJob.jobName;									
+				}
+				else
+				{
+					defaultJobName = SEGModelLocator.getInstance().selectedConversionTemplateRun.templateName;
+				}
+				
+				return defaultJobName;								
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:StringValidator 
+		id="conversionJobNameValidator"
+		source="{jobName}" 
+		required="true" 
+		property="text" 
+		triggerEvent="click"
+		requiredFieldError="[Job Name] is a Required Field"/>
+		
+	<mx:Panel layout="absolute" left="10" right="10" top="10" bottom="10" headerHeight="0">
+		<mx:Form left="10" right="10" top="10" bottom="10">
+			<mx:FormItem label="Job Name:" id="formitem1">
+				<mx:TextInput 
+					id="jobName" 
+					width="288"
+					text="{defaultJobName}"
+					enabled="{(SEGModelLocator.getInstance().selectedConversionJob == null)}"/>
+			</mx:FormItem>
+			<mx:FormItem label="Number of Groups:">
+				<mx:HBox>
+					<mx:ComboBox 
+						rowCount="6"
+						id="numberOfGroupsComboBox"
+						toolTip="The number of group(ings) to process."
+						change=
+						"
+							if (numberOfGroupsComboBox.selectedItem.data == '0')
+							{
+								genericXMLOnlyCheckBox.selected = true;
+								
+								genericXMLOnlyCheckBox.enabled = true;
+								
+								returnSampleCheckBox.selected = false;
+								
+								returnSampleCheckBox.enabled = false;
+								
+								recordPRASECheckBox.selected = false;
+								
+								recordPRASECheckBox.enabled = false;
+							}
+							else
+							{
+								genericXMLOnlyCheckBox.enabled = true;
+								
+								returnSampleCheckBox.enabled = false;
+								
+								recordPRASECheckBox.enabled = false;								
+							}
+						">
+						<mx:ArrayCollection>
+							<mx:Object label="All" data="0"/>
+							<mx:Object label="1" data="1"/>
+							<mx:Object label="10" data="10"/>
+							<mx:Object label="100" data="100"/>
+							<mx:Object label="1,000" data="1000"/>
+						</mx:ArrayCollection>				
+					</mx:ComboBox>
+				</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem label="Generate XML Only:">
+				<mx:CheckBox 
+					id="genericXMLOnlyCheckBox" 
+					selected="false"
+					toolTip="Don't dispatch to PRASE - generate raw XML only."
+					change=
+					"
+						if (genericXMLOnlyCheckBox.selected)
+						{							
+							returnSampleCheckBox.selected = false;
+							
+							returnSampleCheckBox.enabled = false;
+							
+							recordPRASECheckBox.selected = false;
+							
+							recordPRASECheckBox.enabled = false;
+						}
+						else
+						{
+							returnSampleCheckBox.enabled = false;
+							
+							recordPRASECheckBox.enabled = false;
+						}
+					"/>
+			</mx:FormItem>
+			<mx:FormItem 
+				label="Return Sample:"
+				visible="false">
+				<mx:CheckBox 
+					id="returnSampleCheckBox"
+					enabled="false" 
+					selected="false"/>
+			</mx:FormItem>
+			<mx:FormItem 
+				label="Record PRASE Events:" 
+				visible="false">
+				<mx:CheckBox 
+					id="recordPRASECheckBox"
+					visible="false"
+					enabled="false"
+					selected="false"/>
+			</mx:FormItem>
+		</mx:Form>
+	</mx:Panel>
+	<mx:ControlBar horizontalAlign="right" width="472" x="10">
+		<mx:Button 
+			label="Cancel" 
+			click=
+			"
+				PopUpManager.removePopUp(this);
+			"/>
+		<mx:Button 
+			id="okButton"
+			label="Run"
+			click=
+			"
+				if (Util.validate(conversionJobNameValidator).length == 0)
+				{
+					runConversion();
+					
+				    PopUpManager.removePopUp(this);										
+				}
+			"/>
+	</mx:ControlBar>
+
+</mx:TitleWindow>

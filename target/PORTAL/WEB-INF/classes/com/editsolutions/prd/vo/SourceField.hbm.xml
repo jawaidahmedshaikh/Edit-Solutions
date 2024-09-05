@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+     <class name="com.editsolutions.prd.vo.SourceField" table="PRD_SourceField"  >
+        <id name="sourceFieldPK" column="PRD_SourceFieldPK" type="long">
+              <generator class="identity"/>
+        </id>
+        <property name="sqlFieldName" column="SQLFieldName"/>
+        <property name="odsFieldName" column="ODSFieldName"/>
+        <property name="javaFieldName" column="JavaFieldName"/>
+        <property name="friendlyFieldName" column="FriendlyFieldName"/>
+        <property name="fieldType" column="FieldType"/>
+        <property name="javaFieldType" column="JavaFieldType"/>
+        <property name="displayOrder" column="DisplaySortOrder"/>
+        <property name="addDate" column="AddDate" type="date"/>
+        <property name="addUser" column="AddUser"/>
+        <property name="modDate" column="ModDate" type="date"/>
+        <property name="modUser" column="ModUser"/>
+        <property name="fileTemplateTypeCT" column="FileTemplateTypeCT"/>
+
+<!-- 
+        <bag name="fileTemplateFields" table="PRD_FileTemplateField"
+                inverse="true" lazy="false" fetch="select" cascade="none">
+            <key>
+                <column name="PRD_SourceFieldFK" not-null="true" />
+            </key>
+            <one-to-many class="com.editsolutions.prd.vo.FileTemplateField" />
+        </bag>
+ -->
+
+    </class>
+</hibernate-mapping>

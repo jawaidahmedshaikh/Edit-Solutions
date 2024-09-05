@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="conversion.ConversionTemplate" table="&quot;ConversionTemplate&quot;" lazy="true">
+
+        <id name="ConversionTemplatePK" column="&quot;ConversionTemplatePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="TemplateName" column="&quot;TemplateName&quot;"/>
+        <property name="TemplateDescription" column="&quot;TemplateDescription&quot;"/>
+        <property name="TemplateText" column="&quot;TemplateText&quot;" type="edit.services.db.hibernate.customtype.EDITClobUserType"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+
+        <set name="ConversionJobs" table="&quot;ConversionJob&quot;" lazy="true" cascade="none">
+            <key column="&quot;ConversionTemplateFK&quot;"/>
+            <one-to-many class="conversion.ConversionJob"/>
+        </set>
+
+    </class>
+
+</hibernate-mapping>

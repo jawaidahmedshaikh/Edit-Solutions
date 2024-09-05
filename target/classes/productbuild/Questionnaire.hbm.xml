@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="productbuild.Questionnaire" table="&quot;Questionnaire&quot;"  >
+        <id name="QuestionnairePK" column="&quot;QuestionnairePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="QuestionnaireId" column="&quot;QuestionnaireId&quot;"/>
+        <property name="QuestionnaireDescription" column="&quot;QuestionnaireDescription&quot;"/>
+        <property name="FollowupDays" column="&quot;FollowupDays&quot;"/>
+        <property name="ManualInd" column="&quot;ManualInd&quot;"/>
+        <property name="AreaCT" column="&quot;AreaCT&quot;"/>
+
+        <set name="FilteredQuestionnaires" table="&quot;FilteredQuestionnaire&quot;" inverse="true"  cascade="all">
+            <key column="&quot;QuestionnaireFK&quot;"/>
+            <one-to-many class="productbuild.FilteredQuestionnaire"/>
+        </set>
+
+    </class>
+</hibernate-mapping>
+

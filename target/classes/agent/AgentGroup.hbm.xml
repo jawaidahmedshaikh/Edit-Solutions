@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="agent.AgentGroup" table="&quot;AgentGroup&quot;">
+
+        <id name="AgentGroupPK" column="&quot;AgentGroupPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ContractCodeCT" column="&quot;ContractCodeCT&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="TerminationDate" column="TerminationDate" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AgentGroupTypeCT" column="&quot;AgentGroupTypeCT&quot;"/>
+
+        <property name="CommissionProfileFK" column="&quot;CommissionProfileFK&quot;" insert="false" update="false"/>
+        <property name="AgentFK" column="&quot;AgentFK&quot;" insert="false" update="false"/>
+
+        <many-to-one name="Agent" column="&quot;AgentFK&quot;" class="agent.Agent" cascade="none"/>
+        <many-to-one name="CommissionProfile" column="&quot;CommissionProfileFK&quot;" class="agent.CommissionProfile" cascade="none"/>
+
+        <set name="AgentGroupAssociations" table="&quot;AgentGroupAssociation&quot;" inverse="true" cascade="all">
+            <key column="AgentGroupFK"/>
+            <one-to-many class="agent.AgentGroupAssociation"/>
+        </set>
+
+        <set name="ContributingProducts" table="&quot;ContributingProduct&quot;" inverse="true" cascade="all">
+            <key column="AgentGroupFK"/>
+            <one-to-many class="agent.ContributingProduct"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

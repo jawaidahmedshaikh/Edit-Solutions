@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.FinancialActivity" table="&quot;FINANCIALACTIVITY&quot;" >
+        <id name="FinancialActivityPK" column="&quot;FINANCIALACTIVITYPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SegmentBaseFK" column="&quot;SEGMENTBASEFK&quot;" insert="false" update="false"/>
+
+        <property name="EffectiveDate" column="&quot;EFFECTIVEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ProcessDate" column="&quot;PROCESSDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="TaxYear" column="&quot;TAXYEAR&quot;"/>
+
+        <property name="TrxAmount" column="&quot;TRXAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DueDate" column="&quot;DUEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="TransactionType" column="&quot;TRANSACTIONTYPE&quot;"/>
+
+        <property name="NoCorrespondenceInd" column="&quot;NOCORRESPONDENCEIND&quot;"/>
+        <property name="NoAccountingInd" column="&quot;NOACCOUNTINGIND&quot;"/>
+        <property name="NoCommissionInd" column="&quot;NOCOMMISSIONIND&quot;"/>
+
+        <property name="MaintDateTime" column="&quot;MAINTDATETIME&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="Operator" column="&quot;OPERATOR&quot;"/>
+        <property name="GrossAmount" column="&quot;GROSSAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="NetAmount" column="&quot;NETAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CheckAmount" column="&quot;CHECKAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="FreeAmount" column="&quot;FREEAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="TaxableBenefit" column="&quot;TAXABLEBENEFIT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DisbursementSource" column="&quot;DISBURSEMENTSOURCE&quot;"/>
+        <property name="CommissionableAmount" column="&quot;COMMISSIONABLEAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="MaxCommissionAmount" column="&quot;MAXCOMMISSIONAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CostBasis" column="&quot;COSTBASIS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AccumulatedValue" column="&quot;ACCUMULATEDVALUE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="SurrenderValue" column="&quot;SURRENDERVALUE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ComplexChangeType" column="&quot;COMPLEXCHANGETYPE&quot;"/>
+
+        <set name="CommissionActivities" table="&quot;COMMISSIONACTIVITY&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;FINANCIALACTIVITYFK&quot;"/>
+            <one-to-many class="staging.CommissionActivity"/>
+        </set>
+
+        <set name="AdjustmentHistories" table="&quot;ADJUSTMENTHISTORY&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;FINANCIALACTIVITYFK&quot;"/>
+            <one-to-many class="staging.AdjustmentHistory"/>
+        </set>
+
+        <set name="Buckets" table="&quot;BUCKET&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;FINANCIALACTIVITYFK&quot;"/>
+            <one-to-many class="staging.Bucket"/>
+        </set>
+
+        <many-to-one
+            name="SegmentBase"
+            column="&quot;SEGMENTBASEFK&quot;"
+            class="staging.SegmentBase"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

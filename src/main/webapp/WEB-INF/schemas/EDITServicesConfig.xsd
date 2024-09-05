@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Syam (Systems Engineering Group, LLC) -->
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Jason (SEG) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="EDITServicesConfig">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="EDITService" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="JDBC">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="DriverClassName" type="xs:string"/>
+										<xs:element name="URL" type="xs:string"/>
+										<xs:element name="SchemaName" type="xs:string"/>
+										<xs:element name="Username" type="xs:string" minOccurs="0"/>
+										<xs:element name="Password" type="xs:string" minOccurs="0"/>
+										<xs:element name="MinPoolSize" type="xs:int"/>
+										<xs:element name="MaxPoolSize" type="xs:int"/>
+										<xs:element name="Dialect" type="xs:string" minOccurs="0"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ServiceName" type="xs:string"/>
+							<xs:element name="Hibernate">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Entity" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="EDITLog" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="LogName" type="xs:string"/>
+							<xs:element name="File" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="EDITExport" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ExportName" type="xs:string"/>
+							<xs:element name="Directory" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="UnitValueImport" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Directory" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="JAASConfig" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Property" type="xs:string"/>
+							<xs:element name="File" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="SOAPConfig">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="URL" type="xs:string"/>
+							<xs:element name="AdapterClass" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="OFACConfig">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="OFACCheck" type="xs:string"/>
+							<xs:element name="URL" type="xs:string"/>
+							<xs:element name="OFACMethod" type="xs:string"/>
+							<xs:element name="OFACConnectAttempts" type="xs:int"/>
+							<xs:element name="OFACConnectIntervalTimeInMSecs" type="xs:long"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="EDITIssueProcess" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CompanyStructurePK" type="xs:string"/>
+							<xs:element name="Transaction" type="xs:string" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="EDITDeathProcess" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CompanyStructurePK" type="xs:string"/>
+							<xs:element name="AllowableTransaction" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TransactionType" type="xs:string"/>
+										<xs:element name="DateRestriction" type="xs:string" minOccurs="0"/>
+										<xs:element name="RoleRestriction" type="xs:string" minOccurs="0"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="SpawningTransaction" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TransactionTypeCT" type="xs:string"/>
+							<xs:element name="SpawnedTransaction" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TransactionTypeCT" type="xs:string"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="EDITReport" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ReportName" type="xs:string"/>
+							<xs:element name="LocalDirectory" type="xs:string"/>
+							<xs:element name="WebDirectory" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="DateCalculations" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="BusinessContract" type="xs:string"/>
+							<xs:element name="InitialPremiumDate" type="xs:string"/>
+							<xs:element name="IncomeMaturityDate" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="QualNonQualInd" type="xs:string" minOccurs="0"/>
+										<xs:element name="Years" type="xs:string"/>
+										<xs:element name="Months" type="xs:string" minOccurs="0"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="IgnoreAgentLicensingEdits" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CompanyStructurePK" type="xs:string" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ReportCompanyName" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CashClearanceImport" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Directory" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="CheckForOverlappingSituationDates" nillable="true" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ThreadPool">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ThreadCount" type="xs:string"/>
+							<xs:element name="KeepAlive" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="IncludeUndoTransactionsInCommissionStatementsIndicator" type="xs:string"/>
+				<xs:element name="CheckAmountForLastStatmentAmount" type="xs:string"/>
+				<xs:element name="ConversionData" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Directory" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="NonFinancialEntity" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ClassName" type="xs:string"/>
+							<xs:element name="ChangeEffectiveDate" type="xs:string"/>
+							<xs:element name="IgnoreField" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="AllowPRASETest" nillable="true" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+                <xs:element name="AllowPRASERecording" nillable="true" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ContractHistoryDisplay" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

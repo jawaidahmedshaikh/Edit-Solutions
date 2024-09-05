@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="role.ClientRole" table="&quot;ClientRole&quot;" lazy="true">
+        <id name="ClientRolePK" column="&quot;ClientRolePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="RoleTypeCT" column="&quot;RoleTypeCT&quot;"/>
+        <property name="OverrideStatus" column="&quot;OverrideStatus&quot;"/>
+        <property name="NewIssuesEligibilityStatusCT" column="&quot;NewIssuesEligibilityStatusCT&quot;"/>
+        <property name="NewIssuesEligibilityStartDate" column="&quot;NewIssuesEligibilityStartDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ReferenceID" column="&quot;ReferenceID&quot;"/>
+ 
+		<property name="ClientDetailFK" column="&quot;ClientDetailFK&quot;" insert="false" update="false"/>
+        <property name="PreferenceFK" column="&quot;PreferenceFK&quot;" insert="false" update="false"/>
+        <property name="TaxProfileFK" column="&quot;TaxProfileFK&quot;" insert="false" update="false"/>
+        <property name="AgentFK" column="&quot;AgentFK&quot;" insert="false" update="false"/>
+
+        <set name="ClientRoleFinancials" table="&quot;ClientRoleFinancial&quot;" inverse="true" lazy="true" cascade="all">
+            <key column="&quot;ClientRoleFK&quot;"/>
+            <one-to-many class="role.ClientRoleFinancial"/>
+        </set>
+
+        <set name="EnrollmentLeadServiceAgents" table="&quot;EnrollmentLeadServiceAgent&quot;" inverse="true"  cascade="all">
+            <key column="&quot;ClientRoleFK&quot;"/>
+            <one-to-many class="group.EnrollmentLeadServiceAgent"/>
+        </set>
+
+        <many-to-one
+            name="ClientDetail"
+            column="&quot;ClientDetailFK&quot;"
+            class="client.ClientDetail"
+            cascade="none"/>
+
+        <many-to-one
+            name="Preference"
+            column="&quot;PreferenceFK&quot;"
+            class="client.Preference"
+            cascade="none"/>
+
+         <many-to-one
+            name="TaxProfile"
+            column="&quot;TaxProfileFK&quot;"
+            class="client.TaxProfile"
+            cascade="none"/>
+
+        <many-to-one
+           name="Agent"
+           column="&quot;AgentFK&quot;"
+           class="agent.Agent"
+           cascade="none"/>
+
+        <set name="ContractClients" table="&quot;ContractClient&quot;" inverse="true"  cascade="none">
+            <key column="&quot;ClientRoleFK&quot;"/>
+            <one-to-many class="contract.ContractClient"/>
+            <filter name="statusFilter" condition="OverrideStatus = 'P'"/>
+        </set>
+
+        <set name="ClientSetups" table="&quot;ClientSetup&quot;" inverse="true"  cascade="none">
+            <key column="&quot;ClientRoleFK&quot;"/>
+            <one-to-many class="event.ClientSetup"/>
+        </set>
+
+        <set name="ContractGroups" table="&quot;ContractGroup&quot;" inverse="true"  cascade="none">
+            <key column="&quot;ClientRoleFK&quot;"/>
+            <one-to-many class="group.ContractGroup"/>
+        </set>
+        
+        <set name="PlacedAgents" table="&quot;PlacedAgent&quot;" inverse="true" cascade="none">
+            <key column="&quot;ClientRoleFK&quot;"/>
+            <one-to-many class="agent.PlacedAgent"/>
+        </set>
+
+    </class>
+        <filter-def name="statusFilter">
+        <filter-param name="overrideStatus" type="string"/>
+    </filter-def>
+</hibernate-mapping>
+

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.ProductRuleStructure" table="&quot;ProductRuleStructure&quot;" lazy="true">
+        
+        <cache usage="read-write"/>
+        
+        <id name="ProductRuleStructurePK" column="&quot;ProductRuleStructurePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <many-to-one
+            name="ProductStructure"
+            column="&quot;ProductStructureFK&quot;"
+            class="engine.ProductStructure"
+            cascade="none"/>
+
+        <many-to-one
+            name="Rules"
+            column="&quot;RulesFK&quot;"
+            class="engine.Rules"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

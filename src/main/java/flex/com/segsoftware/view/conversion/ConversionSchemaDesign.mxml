@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" 
+	height="100%" 
+	xmlns:conversion="com.segsoftware.view.conversion.*">
+	
+	<mx:HDividedBox 
+		left="0" 
+		right="0" 
+		top="0" 
+		bottom="0"
+		>
+		<mx:Canvas width="100%" height="100%">
+			<mx:DataGrid  width="100%" height="100%">
+				
+			</mx:DataGrid>
+		</mx:Canvas>
+		<conversion:GroupDesign width="100%" height="100%"/>	
+	</mx:HDividedBox>
+	
+	
+</mx:Canvas>

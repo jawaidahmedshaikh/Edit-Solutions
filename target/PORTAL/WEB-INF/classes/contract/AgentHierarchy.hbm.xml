@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.AgentHierarchy" table="&quot;AgentHierarchy&quot;"  >
+        <id name="AgentHierarchyPK" column="&quot;AgentHierarchyPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="AdvancePremium" column="&quot;AdvancePremium&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="Region" column="&quot;Region&quot;"/>
+
+        <property name="AgentFK" column="&quot;AgentFK&quot;" insert="false" update="false"/>
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;" insert="false" update="false"/>
+        <property name="ContractGroupFK" column="&quot;ContractGroupFK&quot;" insert="false" update="false"/>
+
+        <property name="CommissionPhaseID" column="&quot;CommissionPhaseID&quot;" />
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"/>
+
+        <many-to-one
+            name="ContractGroup"
+            column="&quot;ContractGroupFK&quot;"
+            class="group.ContractGroup"
+            cascade="none"/>
+
+        <many-to-one
+            name="Agent"
+            column="&quot;AgentFK&quot;"
+            class="agent.Agent"
+            cascade="none"/>
+
+        <set name="AgentSnapshots" table="&quot;AgentShapshot&quot;" inverse="true"  cascade="all">
+            <key column="&quot;AgentHierarchyFK&quot;"/>
+            <one-to-many class="contract.AgentSnapshot"/>
+        </set>
+
+         <set name="AgentHierarchyAllocations" table="&quot;AgentHierarchyAllocation&quot;" inverse="true"  cascade="all">
+            <key column="&quot;AgentHierarchyFK&quot;"/>
+            <one-to-many class="contract.AgentHierarchyAllocation"/>
+        </set>
+
+    </class>
+</hibernate-mapping>
+

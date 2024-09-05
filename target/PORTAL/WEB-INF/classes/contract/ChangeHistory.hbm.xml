@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.ChangeHistory" table="&quot;ChangeHistory&quot;" lazy="true">
+        <id name="ChangeHistoryPK" column="&quot;ChangeHistoryPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ModifiedRecordFK" column="&quot;ModifiedRecordFK&quot;"/>
+        <property name="TableName" column="&quot;TableName&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ProcessDate" column="&quot;ProcessDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="FieldName" column="&quot;FieldName&quot;"/>
+        <property name="BeforeValue" column="&quot;BeforeValue&quot;"/>
+        <property name="AfterValue" column="&quot;AfterValue&quot;"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="NonFinancialTypeCT" column="&quot;NonFinancialTypeCT&quot;"/>
+        <property name="RoleCT" column="&quot;RoleCT&quot;"/>
+        <property name="ParentFK" column="&quot;ParentFK&quot;"/>
+        <property name="PendingStatus" column="&quot;PendingStatus&quot;"/>
+        
+
+
+    </class>
+</hibernate-mapping>
+

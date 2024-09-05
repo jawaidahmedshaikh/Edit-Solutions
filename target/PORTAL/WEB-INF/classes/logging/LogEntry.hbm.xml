@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="logging.LogEntry" table="&quot;LogEntry&quot;">
+
+        <id name="LogEntryPK" column="&quot;LogEntryPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="CreationDateTime" column="&quot;CreationDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="LogMessage" column="&quot;LogMessage&quot;"/>
+
+        <property name="LogFK" column="&quot;LogFK&quot;" insert="false" update="false"/>
+
+        <set name="LogColumnEntries" table="&quot;LogColumnEntry&quot;" inverse="true" cascade="all">
+            <key column="&quot;LogEntryFK&quot;"/>
+            <one-to-many class="logging.LogColumnEntry"/>
+        </set>
+
+        <many-to-one name="Log" column="&quot;LogFK&quot;" class="logging.Log" cascade="none"/>
+
+    </class>
+</hibernate-mapping>

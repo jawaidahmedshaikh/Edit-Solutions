@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.Fee" table="&quot;Fee&quot;" lazy="true">
+    
+        <cache usage="read-write"/>
+    
+        <id name="FeePK" column="&quot;FeePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="FeeDescriptionFK" column="&quot;FeeDescriptionFK&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ProcessDateTime" column="&quot;ProcessDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="OriginalProcessDate" column="&quot;OriginalProcessDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ReleaseDate" column="&quot;ReleaseDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ReleaseInd" column="&quot;ReleaseInd&quot;"/>
+        <property name="StatusCT" column="&quot;StatusCT&quot;"/>
+        <property name="AccountingPendingStatus" column="&quot;AccountingPendingStatus&quot;"/>
+        <property name="TrxAmount" column="&quot;TrxAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TransactionTypeCT" column="&quot;TransactionTypeCT&quot;"/>
+        <property name="ContractNumber" column="&quot;ContractNumber&quot;"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+        <property name="AccumulatedTrxAmtReceived" column="&quot;AccumulatedTrxAmtReceived&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ToFromInd" column="&quot;ToFromInd&quot;"/>
+        <property name="Shares" column="&quot;Shares&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ChargeCodeFK" column="&quot;ChargeCodeFK&quot;"/>
+        <property name="Units" column="&quot;Units&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RedemptionDate" column="&quot;RedemptionDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AccountingPeriod" column="&quot;AccountingPeriod&quot;"/>
+        <property name="FilteredFundFK" column="&quot;FilteredFundFK&quot;" update="false" insert="false"/>
+
+        <many-to-one
+            name="FilteredFund"
+            column="&quot;FilteredFundFK&quot;"
+            class="engine.FilteredFund"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>
+

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	width="352" 
+	height="164" 
+	title="Quote Dialog" 
+	verticalAlign="middle" 
+	horizontalAlign="center"
+	showCloseButton="true"
+	close="mx.managers.PopUpManager.removePopUp(this)">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.SEGModelLocator;
+			import mx.managers.PopUpManager;
+			import com.segsoftware.utility.Util;
+		]]>
+	</mx:Script>	
+	
+	<mx:Style source="../css/segSoftware.css"/>	
+	
+	<mx:Form x="10" y="10">
+		<mx:FormItem label="Annual Premium:">
+			<mx:TextInput 
+				editable="false" 
+				text="{Util.getCurrencyFormatter().format(SEGModelLocator.getInstance().quoteVO.AnnualPremium)}"
+				/>
+		</mx:FormItem>
+		<mx:FormItem label="Deduction Amount:">
+			<mx:TextInput editable="false" text="{Util.getCurrencyFormatter().format(SEGModelLocator.getInstance().quoteVO.DeductionAmount)}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Target Premium:">
+			<mx:TextInput editable="false" text="N/A"/>
+		</mx:FormItem>
+	</mx:Form>
+
+	
+</mx:TitleWindow>

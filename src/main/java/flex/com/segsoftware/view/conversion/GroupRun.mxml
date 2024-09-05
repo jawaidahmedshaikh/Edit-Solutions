@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%" 
+	xmlns:conversion="com.segsoftware.view.conversion.*"
+	headerHeight="12"
+	creationComplete="onCreationComplete()">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.view.scriptProcessor.SPResultsDisplay;
+			import mx.events.CollectionEvent;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import com.segsoftware.model.conversion.ConversionJob;
+			import mx.managers.PopUpManager;
+			import com.segsoftware.model.conversion.ConversionData;
+			import com.segsoftware.model.conversion.ConversionTemplate;
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.utility.Util;
+			
+			/**
+			* The allRunChanged event is dispatched (locally within this page) to notify
+			* listening components.
+			*/
+			[Bindable(event='allowRunChanged')]
+			private function get allowRun():Boolean
+			{
+				var allowRun1:Boolean = (SEGModelLocator.getInstance().selectedConversionTemplateRun != null)
+				
+				var allowRun2:Boolean = (SEGModelLocator.getInstance().selectedConversionData != null)
+				
+				return (allowRun1 && allowRun2);
+			}
+			
+			/**
+			* Creation Complete.
+			*/
+			private function onCreationComplete():void
+			{
+				SEGModelLocator.getInstance().conversionJobs.addEventListener(CollectionEvent.COLLECTION_CHANGE, conversionJobsCollectionChangeHandler);	
+				
+				this.addEventListener("allowRunChanged", selectConversionJobHandler);
+			}
+			
+			/**
+			* In the same way that selecting a ConversionJob will select its corresponding
+			* Template and File, what happens should someone select a Template and File? - we
+			* should select the correct ConversionJob.
+			*/
+			private function selectConversionJobHandler(event:Event):void
+			{
+				if (allowRun)
+				{
+					var selectedConversionJob:ConversionJob = null;
+					
+					var conversionTemplatePK:Number = SEGModelLocator.getInstance().selectedConversionTemplateRun.conversionTemplatePK;
+					
+					var fileName:String = SEGModelLocator.getInstance().selectedConversionData.fileName;
+					
+					for each (var conversionJob:ConversionJob in SEGModelLocator.getInstance().conversionJobs)
+					{
+						var currentConversionTemplateFK:Number = conversionJob.conversionTemplateFK;
+						
+						var currentFileName:String = conversionJob.fileName;
+						
+						if (currentConversionTemplateFK == conversionTemplatePK)
+						{
+							if (currentFileName == fileName)
+							{
+								selectedConversionJob = conversionJob;
+								
+								break;
+							}
+						}
+					}
+					
+					if (selectedConversionJob)
+					{
+						this.conversionJobDataGrid.selectedItem = selectedConversionJob;
+					}
+					else
+					{
+						this.conversionJobDataGrid.selectedItem = null;
+						
+						SEGModelLocator.getInstance().selectedConversionJob = null;
+					}
+				}
+			}
+			
+			/**
+			* After running a conversion job, we reload the list of all convesion jobs (in case
+			* a new one was added). This re-selects the currently selected conversion job.
+			*/
+			private function conversionJobsCollectionChangeHandler(event:CollectionEvent):void
+			{
+				if (SEGModelLocator.getInstance().selectedConversionJob)
+				{
+					var selectedConversionJobPK:Number = SEGModelLocator.getInstance().selectedConversionJob.conversionJobPK;
+					
+					if (event.kind == "add")
+					{
+						var conversionJob:ConversionJob = event.items[0] as ConversionJob;
+						
+						if (conversionJob.conversionJobPK == selectedConversionJobPK)
+						{
+							this.conversionJobDataGrid.selectedItem = conversionJob;
+						}
+					}
+				}
+				
+			}
+			
+		   /**
+			* Renders the dialog to enter ConversionJob name.
+			*/
+			private function showConversionJobDialog():void
+			{
+				var newConversionJobDialog:NewConversionJobDialog = PopUpManager.createPopUp(this, com.segsoftware.view.conversion.NewConversionJobDialog, true) as NewConversionJobDialog;	
+							
+				PopUpManager.centerPopUp(newConversionJobDialog);								
+			}	
+			
+			/**
+			 * Renders the dialog to display PRASE events (ScriptProcessor results) as a
+			 * separate application
+			 */
+			private function showSPResults():void
+			{
+				flash.external.ExternalInterface.call("window.open", "/PORTAL/flex/SPResultsApplication.jsp", "_blank", 
+				"toolbar=no,resizable=yes");
+			}	
+			
+			/**
+			* User selects a ConversionJob - we select the associated ConversionTemplate and Flat File.
+			*/
+			private function selectTemplateAndFile():void
+			{
+				var selectedConversionJob:ConversionJob = SEGModelLocator.getInstance().selectedConversionJob;
+				
+				var fileName:String = selectedConversionJob.fileName;
+				
+				var conversionTemplateFK:Number = selectedConversionJob.conversionTemplateFK;
+				
+				// Select the file / scroll into view
+				for each (var conversionData:ConversionData in SEGModelLocator.getInstance().conversionDatas)
+				{
+					if (conversionData.fileName == fileName)
+					{
+						this.conversionDataDataGrid.selectedItem = conversionData;
+						
+						this.conversionDataDataGrid.scrollToIndex(SEGModelLocator.getInstance().conversionDatas.getItemIndex(conversionData));
+						
+						break;
+					}					
+				}
+				
+				// Select the template / scroll into view
+				for each (var conversionTemplate:ConversionTemplate in SEGModelLocator.getInstance().conversionTemplates)
+				{
+					if (conversionTemplate.conversionTemplatePK == conversionTemplateFK)
+					{
+						this.conversionTemplateDataGrid.selectedItem = conversionTemplate;
+						
+						this.conversionTemplateDataGrid.scrollToIndex(SEGModelLocator.getInstance().conversionTemplates.getItemIndex(conversionTemplate));
+					}
+				}
+			}
+			
+			/**
+			* Formats the date/time to one of our standard formats.
+			*/
+			private function formatDateTime(item:Object, column:DataGridColumn):String
+			{
+				var dateTime:Date = item[column.dataField] as Date;
+				
+				return Util.formatDateTime1(dateTime);
+			}
+		]]>
+	</mx:Script>
+		
+	<mx:Binding source="conversionTemplateDataGrid.selectedItem as ConversionTemplate" destination="SEGModelLocator.getInstance().selectedConversionTemplateRun"/>	
+	<mx:Binding source="conversionDataDataGrid.selectedItem as ConversionData" destination="SEGModelLocator.getInstance().selectedConversionData"/>	
+	<mx:Binding source="conversionJobDataGrid.selectedItem as ConversionJob" destination="SEGModelLocator.getInstance().selectedConversionJob"/>		
+	
+	<mx:VDividedBox height="100%" width="100%">
+		<mx:HBox width="100%" height="50%">
+			<mx:VBox width="25%" height="100%" verticalGap="0">
+				<mx:Button label="Saved Templates" width="100%" height="15"/>
+				<conversion:TemplateList 
+					id="conversionTemplateDataGrid" 					
+					width="100%" 
+					height="100%"
+					dataProvider="{SEGModelLocator.getInstance().conversionTemplates}"
+					change=
+					"
+						this.dispatchEvent(new Event('allowRunChanged'));						
+					"/>
+			</mx:VBox>
+			<mx:VBox width="25%" height="100%" verticalGap="0">
+				<mx:Button label="Flat Files" width="100%" height="15"/>
+				<mx:DataGrid 
+					id="conversionDataDataGrid"
+					width="100%" 
+					height="100%"
+					dataProvider="{SEGModelLocator.getInstance().conversionDatas}"
+					change=
+					"
+						this.dispatchEvent(new Event('allowRunChanged'));						
+					">
+					<mx:columns>
+						<mx:DataGridColumn 
+							headerText="File 
+							Name" 
+							dataField="fileName"
+							sortable="true"/>
+						<mx:DataGridColumn 
+							headerText="File Size (bytes)" 
+							dataField="fileSize"
+							sortable="true"/>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:VBox>
+			<mx:VBox width="50%" height="100%" verticalGap="0">
+				<mx:Button label="Jobs" width="100%" height="15"/>
+				<mx:DataGrid
+					id="conversionJobDataGrid" 
+					width="100%"
+					height="100%"
+					dataProvider="{SEGModelLocator.getInstance().conversionJobs}"
+					change=
+					"
+						selectTemplateAndFile();
+				
+						this.dispatchEvent(new Event('allowRunChanged'));
+					">
+					<mx:columns>
+						<mx:DataGridColumn headerText="Job Name" dataField="jobName"/>
+						<mx:DataGridColumn headerText="Start Time" dataField="startTime" labelFunction="formatDateTime"/>
+						<mx:DataGridColumn headerText="End Time" dataField="endTime" labelFunction="formatDateTime"/>
+						<mx:DataGridColumn headerText="Total Time">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:HBox paddingBottom="0" paddingTop="0">
+										<mx:Script>
+											<![CDATA[
+												import com.segsoftware.model.conversion.ConversionJob;
+											]]>
+										</mx:Script>
+										<conversion:TimeUnitConversion precision="3" timeInMillis="{(data as ConversionJob).totalTime}"/>										
+									</mx:HBox>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>												
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:VBox>
+		</mx:HBox>
+		<mx:HBox width="100%" height="50%">
+			<mx:VBox 
+				width="100%" 
+				height="100%"
+				verticalGap="0">
+				<mx:Button label="Results" width="100%" height="15"/>
+				<mx:TextArea 
+					id="resultsTextArea"
+					width="100%" 
+					height="100%"
+					text="{SEGModelLocator.getInstance().conversionResult.asXMLList}"/>
+			</mx:VBox>
+		</mx:HBox>		
+	</mx:VDividedBox>
+	<mx:ControlBar 
+		horizontalAlign="right"
+		height="25" 
+		verticalAlign="middle"
+		paddingTop="0"
+		paddingBottom="0">
+		<mx:HBox width="100%" horizontalAlign="left">
+		</mx:HBox>
+		<mx:HBox width="100%" horizontalAlign="center">
+			<mx:Button 
+				label="Display PRASE Events"
+				click="showSPResults()"/>
+		</mx:HBox>
+		<mx:HBox width="100%" horizontalAlign="right">
+			<mx:Button 
+				label="Cancel"
+				click=
+				"
+					SEGModelLocator.getInstance().selectedConversionTemplateRun = null;
+					
+					SEGModelLocator.getInstance().selectedConversionData = null;
+					
+					SEGModelLocator.getInstance().selectedConversionJob = null;
+								
+					this.conversionTemplateDataGrid.selectedItem = null;
+					
+					this.conversionDataDataGrid.selectedItem = null;
+			
+					this.conversionJobDataGrid.selectedItem = null;
+					
+					this.resultsTextArea.text = '';
+					
+					this.dispatchEvent(new Event('allowRunChanged'));
+				"
+				/>
+			<mx:VRule height="20"/>
+			<mx:Button 
+				label="Run Conversion"
+				enabled="{allowRun}"
+				click="showConversionJobDialog()"/>
+		</mx:HBox>
+	</mx:ControlBar>	
+</mx:Panel>

@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="event.InvestmentAllocationOverride" table="&quot;InvestmentAllocationOverride&quot;" lazy="true" node="InvestmentAllocationOverrideVO">
+        <id name="InvestmentAllocationOverridePK" column="&quot;InvestmentAllocationOverridePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="HFStatus" column="&quot;HFStatus&quot;"/>
+        <property name="HFIAIndicator" column="&quot;HFIAIndicator&quot;" />
+        <property name="ToFromStatus" column="&quot;ToFromStatus&quot;"/>
+        <property name="BucketFK" column="&quot;BucketFK&quot;"/>
+
+        <property name="InvestmentFK" column="&quot;InvestmentFK&quot;" insert="false" update="false"/>
+        <property name="InvestmentAllocationFK" column="&quot;InvestmentAllocationFK&quot;" insert="false" update="false"/>
+        <property name="ContractSetupFK" column="&quot;ContractSetupFK&quot;" insert="false" update="false"/>
+        <property name="HoldingAccountIndicator" column="&quot;HoldingAccountIndicator&quot;"/>
+
+<!--    Note, treat HedgeFundInvestmentFK as a simple property, not a key with relationships.  This field is a key to
+        an investment but InvestmentFK already existed.  Deanna says "it's strictly used by the code so that the
+        HFTP/HFTA transaction will know what hedge fund the override needs to be used for."   We should look into
+        a better way to do this.  -->
+        <property name="HedgeFundInvestmentFK" column="&quot;HedgeFundInvestmentFK&quot;"/>
+
+        <many-to-one
+            name="Investment"
+            column="&quot;InvestmentFK&quot;"
+            class="contract.Investment"
+            cascade="none"
+            node="InvestmentFK"
+            embed-xml="false"
+            />
+
+        <many-to-one
+            name="ContractSetup"
+            column="&quot;ContractSetupFK&quot;"
+            class="event.ContractSetup"
+            cascade="none"
+            node="ContractSetupFK"
+            embed-xml="false"/>
+
+       <many-to-one
+           name="InvestmentAllocation"
+           column="&quot;InvestmentAllocationFK&quot;"
+           class="contract.InvestmentAllocation"
+           cascade="none"
+           node="InvestmentAllocationFK"
+           embed-xml="false"
+           />
+    </class>
+</hibernate-mapping>

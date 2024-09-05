@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="com.editsolutions.prd.vo.CaseSetup" table="vw_PRD_Case"  >
+        <id type="long" name="caseContractPk" column="Case_ContractGroupPK">
+              <generator class="identity"/>
+        </id>
+
+        <property name="caseNumber" column="CaseNumber"/>
+        <property name="effectiveDate" column="EffectiveDate" type="date"/>
+        <property name="terminationDate" column="TerminationDate" type="date"/>
+        <property name="requirementNotifyDayCT" column="RequirementNotifyDayCT"/>
+        <property name="caseTypeCT" column="CaseTypeCT"/>
+        <property name="domicileStateCT" column="DomicileStateCT"/>
+        <property name="groupTrustStateCT" column="GroupTrustStateCT"/>
+        <property name="clientRolePK" column="ClientRolePK" type="long"/>
+        <property name="referenceID" column="ReferenceID"/>
+        <property name="clientDetailPK" column="ClientDetailPK" type="long"/>
+        <property name="caseName" column="CaseName" type="string"/>
+        <property name="addressLine1" column="AddressLine1"/>
+        <property name="addressLine2" column="AddressLine2"/>
+        <property name="addressLine3" column="AddressLine3"/>
+        <property name="addressLine4" column="AddressLine4"/>
+        <property name="city" column="City"/>
+        <property name="stateCT" column="StateCT"/>
+        <property name="zipCode" column="ZipCode"/>
+        <property name="changeEffectiveDate" column="ChangeEffectiveDate" type="date"/>
+        <property name="systemCT" column="SystemCT"/>
+
+        <property name="addDate" column="AddDate" type="date"/>
+        <property name="addUser" column="AddUser"/>
+        <property name="modDate" column="ModDate" type="date"/>
+        <property name="modUser" column="ModUser"/>
+        
+        <bag name="groupSetups" table="vw_PRD_Group"
+                inverse="true" lazy="false" fetch="select" cascade="none">
+            <key>
+                <column name="Case_ContractGroupPk" not-null="true" />
+            </key>
+            <one-to-many class="com.editsolutions.prd.vo.GroupSetup" />
+        </bag>
+
+    </class>
+</hibernate-mapping>

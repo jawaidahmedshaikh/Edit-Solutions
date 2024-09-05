@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" width="562" height="422"
+	showCloseButton="true" 
+	title="HQL Parameter-Value Substitutions"
+	layout="absolute"
+	creationComplete="creationComplete()"
+	close="mx.managers.PopUpManager.removePopUp(this)">
+
+	<mx:Style source="../css/segSoftware.css"/>	
+	
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.query.QueryParameter;
+			import mx.collections.*;
+			import com.segsoftware.model.SEGModelLocator;
+			import mx.managers.PopUpManager;
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.event.*;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import mx.events.*;
+			import com.segsoftware.model.query.QueryStatement;
+			
+			/**
+			 * QueryStatement holding the expression and will hold the QueryParameters
+			 * when this dialog closes.  Set by the caller.
+			 */
+			private var _queryStatement:QueryStatement;
+			
+			/**
+			 * Collection of QueryParameter objects containing the name-value pairs.
+			 * The collection is built upon creation by parsing the parameter names
+			 * from the queryStatement's expression.  The collection then serves as
+			 * the dataProvider for the grid and as the query parameters for the 
+			 * queryStatement.
+			 */
+			private	var _queryParameters:ArrayCollection = new ArrayCollection();
+
+			
+			[Bindable]
+			public function get queryStatement():QueryStatement
+			{
+				return this._queryStatement;
+			}
+			
+			public function set queryStatement(queryStatement:QueryStatement):void
+			{
+				this._queryStatement = queryStatement;
+			}
+			
+			[Bindable]
+			public function get queryParameters():ArrayCollection
+			{
+				return this._queryParameters;
+			}
+			
+			public function set queryParameters(queryParameters:ArrayCollection):void
+			{
+				this._queryParameters = queryParameters;
+			}
+			
+			/**
+			 * Builds the collection of queryParameters to hold the name-value pairs.
+			 * Gets the parameter names from the expression.
+			 */
+			private function creationComplete():void
+			{
+				var parameters:Array = queryStatement.parseParametersFromHQL();	
+				
+				for each (var parameter:String in parameters)
+				{
+					var queryParameter:QueryParameter = new QueryParameter(parameter, null);
+					
+					queryParameters.addItem(queryParameter);	
+				}
+			}
+			
+			/**
+			 * Sets the parameters on the statement, executes the query, and closes this dialog
+			 */
+			private function close():void
+			{
+				queryStatement.queryParameters = this.queryParameters;
+				
+				queryStatement.executeQuery();
+				
+				mx.managers.PopUpManager.removePopUp(this);
+			}
+			
+		]]>
+	</mx:Script>	
+	
+	<mx:Panel layout="absolute" left="10" right="10" bottom="10" top="20">
+		<mx:Form left="10" top="10" height="266" width="482">
+			<mx:FormItem width="100%" height="135">
+				<mx:DataGrid id="parameterValueDataGrid"
+					height="100%" 
+					width="100%"
+					dataProvider="{queryParameters}" editable="true" >
+					<mx:columns>
+						<mx:DataGridColumn headerText="Parameter" dataField="name" editable="false" />
+						<mx:DataGridColumn headerText="Value" dataField="value" editable="true"/>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:ControlBar horizontalAlign="right">
+			<mx:Button label="OK"
+				click="close()"/>
+		</mx:ControlBar>				
+	</mx:Panel>
+
+</mx:TitleWindow>

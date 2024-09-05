@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.TableKeys" table="&quot;TableKeys&quot;"  >
+    
+        <cache usage="read-write"/>
+        
+        <id name="TableKeysPK" column="&quot;TableKeysPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="BandAmount" column="&quot;BandAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="UserKey" column="&quot;UserKey&quot;"/>
+        <property name="Gender" column="&quot;Gender&quot;"/>
+        <property name="ClassType" column="&quot;ClassType&quot;"/>
+        <property name="State" column="&quot;State&quot;"/>
+        <property name="TableType" column="&quot;TableType&quot;"/>
+
+        <property name="TableDefFK" column="&quot;TableDefFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="TableDef"
+            column="&quot;TableDefFK&quot;"
+            class="engine.TableDef"
+            cascade="none"/>
+
+
+        <set name="RateTables" table="&quot;RateTable&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;TableKeysFK&quot;"/>
+            <one-to-many class="engine.RateTable"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

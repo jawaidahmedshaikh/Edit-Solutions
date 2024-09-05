@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="staging.CaseProductUnderwriting" table="&quot;CASEPRODUCTUNDERWRITING&quot;"  >
+        <id name="CaseProductUnderwritingPK" column="&quot;CASEPRODUCTUNDERWRITINGPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="Grouping" column="&quot;GROUPING&quot;"/>
+        <property name="Field" column="&quot;FIELD&quot;"/>
+        <property name="Qualifier" column="&quot;QUALIFIER&quot;"/>
+        <property name="Value" column="&quot;VALUE&quot;"/>
+        <property name="RelationshipToEmployee" column="&quot;RELATIONSHIPTOEMPLOYEE&quot;"/>
+        <property name="RequiredOptional" column="&quot;REQUIREDOPTIONAL&quot;"/>
+
+        <property name="EnrollmentFK" column="&quot;ENROLLMENTFK&quot;" insert="false" update="false"/>
+        <property name="FilteredProductFK" column="&quot;FILTEREDPRODUCTFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Enrollment"
+            column="&quot;ENROLLMENTFK&quot;"
+            class="staging.Enrollment"
+            cascade="none"/>
+
+        <many-to-one
+            name="FilteredProduct"
+            column="&quot;FILTEREDPRODUCTFK&quot;"
+            class="staging.FilteredProduct"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

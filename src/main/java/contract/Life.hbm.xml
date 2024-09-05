@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.Life" table="&quot;Life&quot;"  >
+        <id name="LifePK" column="&quot;LifePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="DeathBenefitOptionCT" column="&quot;DeathBenefitOptionCT&quot;"/>
+        <property name="Option7702CT" column="&quot;Option7702CT&quot;"/>
+        <property name="GuidelineSinglePremium" column="&quot;GuidelineSinglePremium&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="GuidelineLevelPremium" column="&quot;GuidelineLevelPremium&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="Tamra" column="&quot;Tamra&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TamraInitAdjValue" column="&quot;TamraInitAdjValue&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="FaceAmount" column="&quot;FaceAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="MAPEndDate" column="&quot;MAPEndDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="TamraStartDate" column="&quot;TamraStartDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="StartNew7PayIndicator" column="&quot;StartNew7PayIndicator&quot;"/>
+        <property name="MECGuidelineSinglePremium" column="&quot;MECGuidelineSinglePremium&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="MECGuidelineLevelPremium" column="&quot;MECGuidelineLevelPremium&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="MECStatusCT" column="&quot;MECStatusCT&quot;"/>
+        <property name="MECDate" column="&quot;MECDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="PendingDBOChangeInd" column="&quot;PendingDBOChangeInd&quot;"/>
+        <property name="CumGuidelineLevelPremium" column="&quot;CumGuidelineLevelPremium&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="MaximumNetAmountAtRisk" column="&quot;MaximumNetAmountAtRisk&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="PaidToDate" column="&quot;PaidToDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LapsePendingDate" column="&quot;LapsePendingDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LapseDate" column="&quot;LapseDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="Term" column="&quot;Term&quot;"/>
+        <property name="NonForfeitureOptionCT" column="&quot;NonForfeitureOptionCT&quot;"/>
+        <property name="DueAndUnpaid" column="&quot;DueAndUnpaid&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="GuarPaidUpTerm" column="&quot;GuarPaidUpTerm&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NonGuarPaidUpTerm" column="&quot;NonGuarPaidUpTerm&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="OneYearTerm" column="&quot;OneYearTerm&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CurrentDeathBenefit" column="&quot;CurrentDeathBenefit&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="MortalityCredit" column="&quot;MortalityCredit&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="EndowmentCredit" column="&quot;EndowmentCredit&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ExcessInterestCredit" column="&quot;ExcessInterestCredit&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PaidUpAge" column="&quot;PaidUpAge&quot;"/>
+        <property name="RPUDeathBenefit" column="&quot;RPUDeathBenefit&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PaidUpTermDate" column="&quot;PaidUpTermDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>
+

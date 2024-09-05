@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 12, 2015 12:18:07 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="group.BatchContractImportRecord" table="BatchContractImportRecord" lazy="false">
+        <id name="batchContractImportRecordPk" type="java.lang.Long" 
+        	column="BatchContractImportRecordPk" >
+            <generator class="native" />
+        </id>
+        <property name="batchContractImportFileFK" type="java.lang.Long">
+            <column name="BatchContractImportFileFK" />
+        </property>
+        <property name="recordSequence" type="java.lang.Integer">
+            <column name="RecordSequence" />
+        </property>
+        <property name="label" type="java.lang.String">
+        	<column name="Label" />
+        </property>
+        <property name="status" type="java.lang.String">
+            <column name="Status" />
+        </property>
+        <property name="message" type="java.lang.String">
+            <column name="Message" />
+        </property>
+        
+		<set name="BatchContractImportRecordLogs" cascade="save-update" sort="natural">
+            <key column="BatchContractImportRecordFk"/>
+            <one-to-many class="group.BatchContractImportRecordLog"/>
+        </set>
+        
+        <many-to-one name="batchContractImportFile" class="group.BatchContractImportFile" 
+        	not-null="true" column="BatchContractImportFileFK" insert="false" update="false"/>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 11, 2015 11:29:49 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="group.BatchContractImportFile" table="BatchContractImportFile">
+        <id name="batchContractImportFilePk" type="java.lang.Long" column="BatchContractImportFilePK">
+        	<generator class="native" />
+        </id>
+        <property name="fileMD5Hash" type="java.lang.String">
+            <column name="FileMD5Hash" />
+        </property>
+        <property name="creationTime" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType">
+        	<column name="CreationTime" />
+        </property>
+        <property name="status" type="java.lang.String">
+            <column name="Status" />
+        </property>
+        <property name="sourceFileName" type="java.lang.String">
+            <column name="SourceFileName" />
+        </property>
+        <property name="completedTime" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType">
+            <column name="CompletedTime" />
+        </property>
+        <property name="modifiedTime" column="ModifiedTime" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="message" column="Message" type="java.lang.String"/>
+        <property name="batchContractSetupFk" column="BatchContractSetupFK" type="java.lang.Long" />
+        <property name="operator" column="Operator" type="java.lang.String" />
+        <property name="totalRecords" column="TotalRecords" type="java.lang.Integer" />
+        
+         <set name="BatchContractImportRecords" inverse="true" sort="natural">
+            <key column="BatchContractImportFileFK"/>
+            <one-to-many class="group.BatchContractImportRecord"/>
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.InvestmentBucket" table="&quot;INVESTMENTBUCKET&quot;"  >
+        <id name="InvestmentBucketPK" column="&quot;INVESTMENTBUCKETPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+                                                    
+        <property name="CumDollars" column="&quot;CUMDOLLARS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CumUnits" column="&quot;CUMUNITS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DepositDate" column="&quot;DEPOSITDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="DepositAmount" column="&quot;DEPOSITAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LastValuationDate" column="&quot;LASTVALUATIONDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="InterestRateOverride" column="&quot;INTERESTRATEOVERRIDE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="BucketInterestRate" column="&quot;BUCKETINTERESTRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PriorBucketRate" column="&quot;PRIORBUCKETRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DurationOverride" column="&quot;DURATIONOVERRIDE&quot;"/>
+
+        <property name="PayoutUnits" column="&quot;PAYOUTUNITS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PayoutDollars" column="&quot;PAYOUTDOLLARS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RenewalDate" column="&quot;RENEWALDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="LastRenewalDate" column="&quot;LASTRENEWALDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="GuarCumValue" column="&quot;GUARCUMVALUE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="BonusAmount" column="&quot;BONUSAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="IndexCapRate" column="&quot;INDEXCAPRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RebalanceAmount" column="&quot;REBALANCEAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DepositAmountGain" column="&quot;DEPOSITAMOUNTGAIN&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="UnearnedInterest" column="&quot;UNEARNEDINTEREST&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="BonusIntRate" column="&quot;BONUSINTRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="BonusIntRateDur" column="&quot;BONUSINTRATEDUR&quot;"/>
+
+        <property name="LockupEndDate" column="&quot;LOCKUPENDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="BucketSource" column="&quot;BUCKETSOURCE&quot;"/>
+        <property name="LoanCumDollars" column="&quot;LOANCUMDOLLARS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LoanPrincipalRemaining" column="&quot;LOANPRINCIPALREMAINING&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LoanInterestRate" column="&quot;LOANINTERESTRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PreviousLoanInterestRate" column="&quot;PREVIOUSLOANINTERESTRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AccruedLoanInterest" column="&quot;ACCRUEDLOANINTEREST&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="UnearnedLoanInterest" column="&quot;UNEARNEDLOANINTEREST&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="InterestPaidThroughDate" column="&quot;INTERESTPAIDTHROUGHDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="BilledLoanInterest" column="&quot;BILLEDLOANINTEREST&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="InvestmentFK" column="&quot;INVESTMENT&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Investment"
+            column="&quot;INVESTMENTFK&quot;"
+            class="staging.Investment"
+            cascade="none"/>
+
+		<set name="SubBuckets" table="&quot;SUBBUCKET&quot;" inverse="true" cascade="all">
+			<key column="&quot;INVESTMENTBUCKETFK&quot;"/>
+			<one-to-many class="staging.SubBucket"/>
+		</set>
+
+    </class>
+</hibernate-mapping>

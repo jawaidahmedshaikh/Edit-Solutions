@@ -1,0 +1,16 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:ns1="http://webservice.edit/xsd" xmlns:seg="http://www.segsoftware.com/services/EDITSolutionsWebService" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://www.segsoftware.com/services/EDITSolutionsWebService"><wsdl:types><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://webservice.edit/xsd" targetNamespace="http://webservice.edit/xsd" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+<xs:element name="process">
+<xs:complexType>
+<xs:sequence>
+<xs:element type="xs:anyType" name="soapRequest" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="processResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element type="xs:anyType" name="return" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:schema></wsdl:types><wsdl:message name="processMessage"><wsdl:part element="ns1:process" name="part1" /></wsdl:message><wsdl:message name="processResponseMessage"><wsdl:part element="ns1:processResponse" name="part1" /></wsdl:message><wsdl:portType name="EDITSolutionsWebServicePortType"><wsdl:operation name="process"><wsdl:input message="seg:processMessage" /><wsdl:output message="seg:processResponseMessage" /></wsdl:operation></wsdl:portType><wsdl:binding type="seg:EDITSolutionsWebServicePortType" name="EDITSolutionsWebServiceSOAP11Binding"><soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" /><wsdl:operation name="process"><soap:operation style="document" soapAction="urn:process" /><wsdl:input><soap:body namespace="http://www.segsoftware.com/services/EDITSolutionsWebService" use="literal" /></wsdl:input><wsdl:output><soap:body namespace="http://www.segsoftware.com/services/EDITSolutionsWebService" use="literal" /></wsdl:output></wsdl:operation></wsdl:binding><wsdl:binding type="seg:EDITSolutionsWebServicePortType" name="EDITSolutionsWebServiceSOAP12Binding"><soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" /><wsdl:operation name="process"><soap12:operation style="document" soapAction="urn:process" /><wsdl:input><soap12:body namespace="http://www.segsoftware.com/services/EDITSolutionsWebService" use="literal" /></wsdl:input><wsdl:output><soap12:body namespace="http://www.segsoftware.com/services/EDITSolutionsWebService" use="literal" /></wsdl:output></wsdl:operation></wsdl:binding><wsdl:service name="EDITSolutionsWebService"><wsdl:port binding="seg:EDITSolutionsWebServiceSOAP11Binding" name="EDITSolutionsWebServiceSOAP11port"><soap:address location="http://localhost:8080/PORTAL/services/EDITSolutionsWebServiceEDITSolutionsWebService" /></wsdl:port><wsdl:port binding="seg:EDITSolutionsWebServiceSOAP12Binding" name="EDITSolutionsWebServiceSOAP12port"><soap12:address location="http://localhost:8080/PORTAL/services/EDITSolutionsWebServiceEDITSolutionsWebService" /></wsdl:port></wsdl:service></wsdl:definitions>

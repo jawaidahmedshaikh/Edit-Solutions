@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+     <class name="com.editsolutions.prd.vo.ChangeLog" table="PRD_Change_Log"  >
+        <id name="changeLogPK" column="PRD_Change_LogPK" type="long">
+              <generator class="identity"/>
+        </id>
+        <property name="tableName" column="TableName"/>
+        <property name="pkValue1" column="PKValue1"/>
+        <property name="pkValue2" column="PKValue2"/>
+        <property name="fieldName" column="FieldName"/>
+        <property name="fieldType" column="FieldType"/>
+        <property name="oldValue" column="oldValue"/>
+        <property name="newValue" column="newValue"/>
+        <property name="modDate" column="ModDate" type="date"/>
+        <property name="modUser" column="ModUser"/>
+
+    </class>
+</hibernate-mapping>

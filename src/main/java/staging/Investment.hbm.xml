@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="staging.Investment" table="&quot;INVESTMENT&quot;">
+		<id name="InvestmentPK" column="&quot;INVESTMENTPK&quot;" type="long">
+			<generator class="edit.services.db.hibernate.KeyGenerator"/>
+		</id>
+		<property name="SegmentBaseFK" column="&quot;SEGMENTBASEFK&quot;" insert="false" update="false"/>
+		<property name="FundType" column="&quot;FUNDTYPE&quot;"/>
+		<property name="FundNumber" column="&quot;FUNDNUMBER&quot;"/>
+		<property name="PlannedAllocation" column="&quot;PLANNEDALLOCATION&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="GuarMinCashValueInterestRate" column="&quot;GUARMINCASHVALUEINTERESTRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="CurrentInterestRate" column="&quot;CURRENTINTERESTRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="CurrentFixedInterestEndDate" column="&quot;CURRENTFIXEDINTERESTENDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+		<property name="StartingMVAIndexRate" column="&quot;STARTINGMVAINDEXRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="PriorAnnivIndexValue" column="&quot;PRIORANNIVINDEXVALUE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="PriorAnnivAccountValue" column="&quot;PRIORANNIVACCOUNTVALUE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="WithdrawalsSincePriorAnniv" column="&quot;WITHDRAWALSSINCEPRIORANNIV&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="CurrentAccountValue" column="&quot;CURRENTACCOUNTVALUE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="CurrentMinCashSurrenderValue" column="&quot;CURRENTMINCASHSURRENDERVALUE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="IndexCapRate" column="&quot;INDEXCAPRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="IndexCapRateGuarTerm" column="&quot;INDEXCAPRATEGUARTERM&quot;"/>
+		<property name="IndexCapMinimum" column="&quot;INDEXCAPMINIMUM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="ParticipationRate" column="&quot;PARTICIPATIONRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="IndexMargin" column="&quot;INDEXMARGIN&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="InterestRateAsOf1231" column="&quot;INTERESTRATEASOF1231&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="CurrentSurrenderCharge" column="&quot;CURRENTSURRENDERCHARGE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="PremiumBonusAmount" column="&quot;PREMIUMBONUSAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="FirstYearBonus" column="&quot;FIRSTYEARBONUS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="GrossPremiumCollected" column="&quot;GROSSPREMIUMCOLLECTED&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="BonusInterestRate" column="&quot;BONUSINTERESTRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="BonusRateDuration" column="&quot;BONUSRATEDURATION&quot;"/>
+		<property name="RebalanceAmount" column="&quot;REBALANCEAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="MinGuarRate" column="&quot;MINGUARRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="FreeAmountRemaining" column="&quot;FREEAMOUNTREMAINING&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+		<property name="FundGuaranteedDuration" column="&quot;FUNDGUARANTEEDDURATION&quot;"/>
+		<property name="IndexingMethod" column="&quot;INDEXINGMETHOD&quot;"/>
+		
+		<many-to-one name="SegmentBase" column="&quot;SEGMENTBASEFK&quot;" class="staging.SegmentBase" cascade="none"/>
+		
+		<set name="InvestmentBuckets" table="&quot;INVESTMENTBUCKET&quot;" inverse="true" cascade="all">
+			<key column="&quot;INVESTMENTFK&quot;"/>
+			<one-to-many class="staging.InvestmentBucket"/>
+		</set>
+	</class>
+</hibernate-mapping>

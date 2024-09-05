@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:DateChooser 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" 
+	height="100%"
+	initialize="init()">
+		
+	<mx:Script>
+		<![CDATA[
+			import mx.events.*;
+			import mx.collections.*;
+			
+			import flash.events.MouseEvent;
+		
+			/**
+			* The collection of payrollDeductionCalendarVOs to "potentially" render in this 
+			* Calendar Cell. "Potentially" because this Calendar Cell is only supposed to 
+			* render VOs for a particular month. The specified collection may contain VOs
+			* across many months as defined in PayrollDeductionCalendarVO.PayrollDeductionDate.
+			*/
+			private var _payrollDeductionCalendarVOs:XMLListCollection;
+			
+			/**
+			 * @see #_payrollDeductionCalendarVOs
+			 */
+			[Bindable]
+			public function set payrollDeductionCalendarVOs(payrollDeductionCalendarVOs:XMLListCollection):void
+			{
+				_payrollDeductionCalendarVOs = payrollDeductionCalendarVOs;
+	
+				_payrollDeductionCalendarVOs.addEventListener(CollectionEvent.COLLECTION_CHANGE, payrollDeductionCalendarVOsUpdated);				
+			}
+
+			/**
+			 * @see #_payrollDeductionCalendarVOs
+			 */			
+			public function get payrollDeductionCalendarVOs():XMLListCollection
+			{
+				return _payrollDeductionCalendarVOs;
+			}
+			
+			private var dateRangeCollection:ArrayCollection = new ArrayCollection();
+
+			/**
+			 * Every time a PayrollDeductionCalendarVO is added or removed from the collection of 
+			 * all the PayrollDeductionCalendarVO, each Calendar Cell is notified. If the Calendar Cell
+			 * represents the same month of the PayrollDeductionCalendarVO being supplied, then it needs
+			 * to graphically represent it in its Calendar.
+			 */
+			private function payrollDeductionCalendarVOsUpdated(event:CollectionEvent):void
+			{	
+				var payrollDeductionCalendarVO:XML = new ArrayCollection(event.items).getItemAt(0) as XML;
+				
+				var payrollDeductionDate:Date = getPayrollDeductionDate(payrollDeductionCalendarVO);
+				
+				var targetMonth:Number = getTargetMonth();
+				
+				if (payrollDeductionDate.month == targetMonth)
+				{
+					var dateRangeEntry:Object = {rangeStart:payrollDeductionDate, rangeEnd:payrollDeductionDate};
+					
+					dateRangeCollection.addItem(dateRangeEntry);
+					
+					this.selectedRanges = dateRangeCollection.toArray();
+				}
+			}
+			
+			/**
+			 * Converts the specified payrollDeductionCalendarVO.PayrollDeductionDate to a Date object.
+			 */
+			private function getPayrollDeductionDate(payrollDeductionCalendarVO:XML):Date
+			{
+				var payrollDeductionDateString:String = payrollDeductionCalendarVO.PayrollDeductionDate[0];
+				
+				var payrollDeductionDate:Date = new Date(payrollDeductionDateString);
+				
+				return payrollDeductionDate;				
+			}
+			
+			/**
+			* This CalendarCell has a selectableRange defined in its original
+			* setup via rangeStart and rangeEnd Date objects. We can use
+			* the rangeStart (always) to determine the target month for this
+			* CalendarCell. For example, of the rangeStart Date is "05/09/2003", then
+			* the targetMonth would be "8" (months are zero indexed).
+			*/
+			private function getTargetMonth():Number
+			{
+				var rangeStartDate:Date = selectableRange.rangeStart as Date;
+				
+				var targetMonth:Number = rangeStartDate.month;
+				
+				return targetMonth;
+			}
+			
+			/**
+			* Set the default state.
+			*/
+			private function init():void
+			{
+				this.yearNavigationEnabled = false;
+				
+				this.allowDisjointSelection = true;
+				
+				this.allowMultipleSelection = false;
+				
+				this.showToday = false;
+				
+				this.doubleClickEnabled = true;
+				
+				// Never allow weekends
+				this.disabledDays = [0, 6];	
+				
+				addEventListener(MouseEvent.CLICK, mouseClickedHandler); 
+			}
+			
+			private function mouseClickedHandler(event:MouseEvent):void
+			{
+				event.stopPropagation();
+				
+				trace(event.cancelable);
+				
+				trace(event.bubbles);
+				
+				trace("here"); 
+			}
+		]]>
+	</mx:Script>
+	
+</mx:DateChooser>

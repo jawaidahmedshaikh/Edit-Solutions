@@ -1,0 +1,904 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           targetNamespace="http://xmlns.calcfocus.com/services/calc" xmlns="http://xmlns.calcfocus.com/services/calc"
+           version="1.0">
+    <xs:complexType name="Result">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="code" type="xs:int" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="Header">
+        <xs:sequence>
+            <xs:element type="xs:string" name="refGUID" maxOccurs="1" minOccurs="0"/>
+            <xs:element type="xs:dateTime" name="dateTime" maxOccurs="1" minOccurs="0"/>
+            <xs:element type="Result" name="result" maxOccurs="1" minOccurs="0"/>
+            <xs:element type="xs:string" name="parser" maxOccurs="1" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AddressAssociation">
+        <xs:sequence>
+            <xs:element type="xs:string" name="addressGUID"/>
+            <xs:element type="AddressType" name="addressType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Rate">
+        <xs:sequence>
+            <xs:element type="xs:int" name="year" maxOccurs="1" minOccurs="1"/>
+            <xs:element type="xs:double" name="rate" maxOccurs="1" minOccurs="1"/>
+            <xs:element type="xs:double" name="guaranteedRate" maxOccurs="1" minOccurs="0"/>
+            <xs:element type="xs:int" name="endYear" maxOccurs="1" minOccurs="0"/>
+            <xs:element type="xs:boolean" name="toMaturityIndicator" maxOccurs="1" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="YearValue">
+        <xs:sequence>
+            <xs:element type="xs:int" name="year" maxOccurs="1" minOccurs="1"/>
+            <xs:element type="xs:double" name="value" maxOccurs="1" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="NameValue">
+        <xs:sequence>
+            <xs:element type="xs:string" name="name" maxOccurs="1" minOccurs="1"/>
+            <xs:element type="xs:string" name="value" maxOccurs="1" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="HistoricalTransaction">
+        <xs:sequence>
+            <xs:element name="type" type="TransactionType" maxOccurs="1" minOccurs="1"/>
+            <xs:element name="effectiveDate" type="xs:date" maxOccurs="1" minOccurs="0"/>
+            <xs:element name="amount" type="xs:double" maxOccurs="1" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="PaymentMode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Annual"/>
+            <xs:enumeration value="SemiAnnual"/>
+            <xs:enumeration value="Quarterly"/>
+            <xs:enumeration value="Monthly"/>
+            <xs:enumeration value="FourWeekly"/>
+            <xs:enumeration value="Semimonthly"/>
+            <xs:enumeration value="Biweekly"/>
+            <xs:enumeration value="Weekly"/>
+            <xs:enumeration value="Eigthly"/>
+            <xs:enumeration value="Ninthly"/>
+            <xs:enumeration value="NinthlySemi"/>
+            <xs:enumeration value="NinthlyFourTimes"/>
+            <xs:enumeration value="Tenthly"/>
+            <xs:enumeration value="TenthlySemi"/>
+            <xs:enumeration value="TenthlyFourTimes"/>
+            <xs:enumeration value="Eleventhly"/>
+            <xs:enumeration value="FourtyEightAYear"/>
+            <xs:enumeration value="SinglePay"/>
+            <xs:enumeration value="None"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PaymentMethod">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DirectBill"/>
+            <xs:enumeration value="ElectronicFundTransfer"/>
+            <xs:enumeration value="CreditCard"/>
+            <xs:enumeration value="ListBill"/>
+            <xs:enumeration value="NoBilling"/>
+            <xs:enumeration value="OnWaiver"/>
+            <xs:enumeration value="AutomaticPremiumLoan"/>
+            <xs:enumeration value="AutomaticPremiumOffset"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DeathBenefitOption">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Level"/>
+            <xs:enumeration value="Increasing"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AmountOrPercent">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Amount"/>
+            <xs:enumeration value="Percent"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AssetType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Savings"/>
+            <xs:enumeration value="IRA"/>
+            <xs:enumeration value="RetirementPlan"/>
+            <xs:enumeration value="Other"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AssetSubType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Plan401k"/>
+            <xs:enumeration value="Plan403b"/>
+            <xs:enumeration value="Plan457"/>
+            <xs:enumeration value="Roth"/>
+            <xs:enumeration value="Traditional"/>
+            <xs:enumeration value="Retirement"/>
+            <xs:enumeration value="NonRetirement"/>
+            <xs:enumeration value="Other"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="RoleType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PrimaryInsured"/>
+            <xs:enumeration value="SecondaryInsured"/>
+            <xs:enumeration value="Owner"/>
+            <xs:enumeration value="Applicant"/>
+            <xs:enumeration value="Beneficiary"/>
+            <xs:enumeration value="Trustee"/>
+            <xs:enumeration value="Grantor"/>
+            <xs:enumeration value="Payor"/>
+            <xs:enumeration value="Agent"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Relation">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Primary"/>
+            <xs:enumeration value="Partner"/>
+            <xs:enumeration value="Child"/>
+            <xs:enumeration value="Grandchild"/>
+            <xs:enumeration value="Parent"/>
+            <xs:enumeration value="Other"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="OutputInstruction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="MoneyPurchase"/>
+            <xs:enumeration value="AnnualStatement"/>
+            <xs:enumeration value="Illustration"/>
+            <xs:enumeration value="ReturnSolveValueOnly"/>
+            <xs:enumeration value="LevelMaturityPremium"/>
+            <xs:enumeration value="TransactionSummary"/>
+            <xs:enumeration value="CycleUpToCurrentDate"/>
+            <xs:enumeration value="IRSCycleConsequences"/>
+            <xs:enumeration value="EventCycleConsequences"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="LoanInterestAssumption">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Capitalize"/>
+            <xs:enumeration value="PayInCash"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GenderBlend">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="None"/>
+            <xs:enumeration value="Even"/>
+            <xs:enumeration value="HighM"/>
+            <xs:enumeration value="HighF"/>
+            <xs:enumeration value="AllM"/>
+            <xs:enumeration value="AllF"/>
+            <xs:enumeration value="MedHighF"/>
+            <xs:enumeration value="MedHighM"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ClassCode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="LevelA"/>
+            <xs:enumeration value="LevelB"/>
+            <xs:enumeration value="LevelC"/>
+            <xs:enumeration value="Executives"/>
+            <xs:enumeration value="NonExecutives"/>
+            <xs:enumeration value="FullTime"/>
+            <xs:enumeration value="PartTime"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="StartDateType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SpecifiedDate"/>
+            <xs:enumeration value="NextAnniversary"/>
+            <xs:enumeration value="NextModeaversary"/>
+            <xs:enumeration value="NextMonthaversary"/>
+            <xs:enumeration value="NextMonthaversaryPlusOne"/>
+            <xs:enumeration value="NumberOfMonthsAhead"/>
+            <xs:enumeration value="StartAge"/>
+            <xs:enumeration value="StartYear"/>
+            <xs:enumeration value="PolicyEffectiveDate"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="IncomeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Salary"/>
+            <xs:enumeration value="Rental"/>
+            <xs:enumeration value="SocialSecurity"/>
+            <xs:enumeration value="Pension"/>
+            <xs:enumeration value="Other"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="EndDateType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SpecifiedDate"/>
+            <xs:enumeration value="MaturityDate"/>
+            <xs:enumeration value="NumberOfEvents"/>
+            <xs:enumeration value="NumberOfYears"/>
+            <xs:enumeration value="EndAge"/>
+            <xs:enumeration value="EndYear"/>
+            <xs:enumeration value="None"/>
+            <xs:enumeration value="Solve"/>
+            <xs:enumeration value="NextAnniversary"/>
+            <xs:enumeration value="Age85"/>
+            <xs:enumeration value="Age100"/>
+            <xs:enumeration value="PaidUpDate"/>
+            <xs:enumeration value="NextMonthaversary"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="BaseIndicator">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Base"/>
+            <xs:enumeration value="Rider"/>
+            <xs:enumeration value="Projection"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Gender">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Male"/>
+            <xs:enumeration value="Female"/>
+            <xs:enumeration value="NonDistinct"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TobaccoUse">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Smoker"/>
+            <xs:enumeration value="Nonsmoker"/>
+            <xs:enumeration value="SmokerNondistinct"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="MarriageStatus">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NotMarried"/>
+            <xs:enumeration value="Married"/>
+            <xs:enumeration value="NotApplicable"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="CoverageLevel">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="LOWStrike"/>
+            <xs:enumeration value="LossOfWork"/>
+            <xs:enumeration value="High"/>
+            <xs:enumeration value="Low"/>
+            <xs:enumeration value="IndividualOnly"/>
+            <xs:enumeration value="IndividualAndPartner"/>
+            <xs:enumeration value="IndividualAndChildren"/>
+            <xs:enumeration value="IndividualAndFamily"/>
+            <xs:enumeration value="StopsAfterRiderExercise"/>
+            <xs:enumeration value="ContinuesAfterRiderExercise"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AddressType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Residence"/>
+            <xs:enumeration value="Mailing"/>
+            <xs:enumeration value="Business"/>
+            <xs:enumeration value="SecondHome"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="InterestAssumption">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Current"/>
+            <xs:enumeration value="MidPoint"/>
+            <xs:enumeration value="Guaranteed"/>
+            <xs:enumeration value="InitialPeriodGuaranteeFixedThereafterInput"/>
+            <xs:enumeration value="InitialPeriodGuaranteeFixedThereafterRate"/>
+            <xs:enumeration value="InputFromRequest"/>
+            <xs:enumeration value="Input"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="MortalityAssumption">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Current"/>
+            <xs:enumeration value="MidPoint"/>
+            <xs:enumeration value="Guaranteed"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="YesNo">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Yes"/>
+            <xs:enumeration value="No"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="BenefitReductionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="None"/>
+            <xs:enumeration value="Schedule"/>
+            <xs:enumeration value="SingleReductionMaximumDurationAndAge"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PremiumType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="GuidelineLevel"/>
+            <xs:enumeration value="GuidelineSingle"/>
+            <xs:enumeration value="Minimum"/>
+            <xs:enumeration value="MinimumToIssue"/>
+            <xs:enumeration value="PaidToDate"/>
+            <xs:enumeration value="PaidUpAdditions"/>
+            <xs:enumeration value="Planned"/>
+            <xs:enumeration value="SecondaryGuarantee"/>
+            <xs:enumeration value="SevenPay"/>
+            <xs:enumeration value="Target"/>
+            <xs:enumeration value="TargetPremiumAtIllustrationStart"/>
+            <xs:enumeration value="Reinstatement"/>
+            <xs:enumeration value="ReinstatementDeficit"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SolveGoalType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Endow"/>
+            <xs:enumeration value="AccountValue"/>
+            <xs:enumeration value="CashSurrenderValue"/>
+            <xs:enumeration value="LoanBalance"/>
+            <xs:enumeration value="FacePremiumSolve"/>
+            <xs:enumeration value="MaximumLevelPremium"/>
+            <xs:enumeration value="MinimumFace"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="FacePremiumSolveType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="AnnualPremium"/>
+            <xs:enumeration value="ModalPremium"/>
+            <xs:enumeration value="GuidelineLevelPremium"/>
+            <xs:enumeration value="GuidelineSinglePremium"/>
+            <xs:enumeration value="SevenPayPremium"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GoalAmountExpressedAs">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SpecifiedAmount"/>
+            <xs:enumeration value="PercentageOfDeathBenefit"/>
+            <xs:enumeration value="PercentageOfTotalFaceAmount"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TransactionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Activate"/>
+            <xs:enumeration value="ActuarialValues"/>
+            <xs:enumeration value="Anniversary"/>
+            <xs:enumeration value="Annuitization"/>
+            <xs:enumeration value="AnnuityPremium"/>
+            <xs:enumeration value="AnnuityPayout"/>
+            <xs:enumeration value="AutomaticPremiumLoan"/>
+            <xs:enumeration value="BenefitsChange"/>
+            <xs:enumeration value="BenefitsDecrease"/>
+            <xs:enumeration value="BenefitsIncrease"/>
+            <xs:enumeration value="CoverageAnniversary"/>
+            <xs:enumeration value="DeathBenefitOptionChange"/>
+            <xs:enumeration value="EndOfGuaranteePeriod"/>
+            <xs:enumeration value="EndOfProcessing"/>
+            <xs:enumeration value="EndOfYearValues"/>
+            <xs:enumeration value="FutureLifeProjectionAnniversaryInvestmentFundUpdateTransaction"/>
+            <xs:enumeration value="IndexedFundCredit"/>
+            <xs:enumeration value="Lapse"/>
+            <xs:enumeration value="Loan"/>
+            <xs:enumeration value="LoanRepayment"/>
+            <xs:enumeration value="Monthaversary"/>
+            <xs:enumeration value="Maturity"/>
+            <xs:enumeration value="NonforfeitureETI"/>
+            <xs:enumeration value="NonforfeitureRPU"/>
+            <xs:enumeration value="PaidUpAdditionsPremium"/>
+            <xs:enumeration value="PartialSurrender"/>
+            <xs:enumeration value="PolicySuspense"/>
+            <xs:enumeration value="PolicyTermination"/>
+            <xs:enumeration value="PreLapse"/>
+            <xs:enumeration value="Premium"/>
+            <xs:enumeration value="Refund"/>
+            <xs:enumeration value="Renewal"/>
+            <xs:enumeration value="RiderAdd"/>
+            <xs:enumeration value="RiderTerminate"/>
+            <xs:enumeration value="TenThirtyFiveExchange"/>
+            <xs:enumeration value="TobaccoUseChange"/>
+            <xs:enumeration value="UnderwritingClassChange"/>
+            <xs:enumeration value="UnderwritingChange"/>
+            <xs:enumeration value="ChangeDividendOption"/>
+            <xs:enumeration value="ChangeFTRPremium"/>
+            <xs:enumeration value="WithdrawalToBasisThenLoan"/>
+            <xs:enumeration value="ExerciseGMWB"/>
+            <xs:enumeration value="GMWBWithdrawal"/>
+            <xs:enumeration value="AfterTaxWithdrawal"/>
+
+            <xs:enumeration value="ChangePaymentMethod"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TransactionRequestAmountRule">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CalculatedPremium"/>
+            <xs:enumeration value="CurrentAmount"/>
+            <xs:enumeration value="None"/>
+            <xs:enumeration value="PercentageOfInvestment"/>
+            <xs:enumeration value="SpecifiedAmount"/>
+            <xs:enumeration value="Solve"/>
+            <xs:enumeration value="TargetPremium"/>
+            <xs:enumeration value="SevenPayPremium"/>
+            <xs:enumeration value="MaximumAllowed"/>
+            <xs:enumeration value="GuidelineSinglePremium"/>
+            <xs:enumeration value="GuidelineLevelPremium"/>
+            <xs:enumeration value="MinimumPremium"/>
+            <xs:enumeration value="GracePremium"/>
+            <xs:enumeration value="LoanRepaymentGracePremium"/>
+            <xs:enumeration value="ReinstatementPremium"/>
+            <xs:enumeration value="FullyPayOffLoan"/>
+            <xs:enumeration value="IncreaseByPercentage"/>
+            <xs:enumeration value="DecreaseByPercentage"/>
+            <xs:enumeration value="ProjectAutomaticIncreases"/>
+            <xs:enumeration value="Formula"/>
+			<xs:enumeration value="BenefitChange"/>
+            <xs:enumeration value="LastMonthlyDeductionPremium"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PolicyAdminStatus">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Pending"/>
+            <xs:enumeration value="Active"/>
+            <xs:enumeration value="PreLapse"/>
+            <xs:enumeration value="Lapsed"/>
+            <xs:enumeration value="Terminated"/>
+            <xs:enumeration value="NonForfeiture"/>
+            <xs:enumeration value="OnWaiver"/>
+            <xs:enumeration value="Matured"/>
+            <xs:enumeration value="FundPay"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="FundType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Fixed"/>
+            <xs:enumeration value="Loan"/>
+            <xs:enumeration value="Deficit"/>
+            <xs:enumeration value="Variable"/>
+            <xs:enumeration value="Indexed"/>
+            <xs:enumeration value="Inflation"/>
+            <xs:enumeration value="Premium"/>
+            <xs:enumeration value="Shadow"/>
+            <xs:enumeration value="DividendsOnDeposit"/>
+            <xs:enumeration value="Pooled"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="FundSubtype">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Standard"/>
+            <xs:enumeration value="Preferred"/>
+            <xs:enumeration value="AnnualIncome"/>
+            <xs:enumeration value="BequestAmount"/>
+            <xs:enumeration value="Investment"/>
+            <xs:enumeration value="None"/>
+            <xs:enumeration value="DeemedCashValue"/>
+            <xs:enumeration value="MinimumGuaranteedValue"/>
+            <xs:enumeration value="Holding"/>
+            <xs:enumeration value="NoLapseGuarantee"/>
+            <xs:enumeration value="RollUpWithdrawalBenefitBase"/>
+            <xs:enumeration value="InterestSensitiveWholeLife"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GuaranteePeriod">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="OneYear"/>
+            <xs:enumeration value="TwoYears"/>
+            <xs:enumeration value="ThreeYears"/>
+            <xs:enumeration value="FourYears"/>
+            <xs:enumeration value="FiveYears"/>
+            <xs:enumeration value="SixYears"/>
+            <xs:enumeration value="SevenYears"/>
+            <xs:enumeration value="EightYears"/>
+            <xs:enumeration value="NineYears"/>
+            <xs:enumeration value="TenYears"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="FaceDeterminationRule">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="None"/>
+            <xs:enumeration value="InputValue"/>
+            <xs:enumeration value="DerivedFromParent"/>
+            <xs:enumeration value="Solve"/>
+            <xs:enumeration value="FaceSolveBasedOnPremium"/>
+            <xs:enumeration value="SolveLowestFaceToAvoidMEC"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="FaceInputValueRule">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="None"/>
+            <xs:enumeration value="InputAnyAmount"/>
+            <xs:enumeration value="InputFromFixedNumberOfSpecifiedOptions"/>
+            <xs:enumeration value="InputInIncrementsFromMinAndMax"/>
+            <xs:enumeration value="ForceSingleValue"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AnnualIncomeGoal">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SpecifiedAmountAcrossAllProducts"/>
+            <xs:enumeration value="FixedPercentageOfLumpSumInvestment"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ProductAllocationMethod">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="AllocationSpecifiedInRequest"/>
+            <xs:enumeration value="CompareDifferentAllocationMixtures"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="FundAllocationType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Default"/>
+            <xs:enumeration value="DirectedDeduction"/>
+            <xs:enumeration value="Transaction"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="FundAllocationSubType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Policy"/>
+            <xs:enumeration value="Personal"/>
+            <xs:enumeration value="PolicyAndPersonal"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TypeOfCollege">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="InStatePublic"/>
+            <xs:enumeration value="OutStatePublic"/>
+            <xs:enumeration value="Private"/>
+            <xs:enumeration value="Community"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="InsuranceLevelType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Custom"/>
+            <xs:enumeration value="Needs"/>
+            <xs:enumeration value="BudgetBased"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DebtType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Mortgage"/>
+            <xs:enumeration value="CreditCard"/>
+            <xs:enumeration value="StudentLoans"/>
+            <xs:enumeration value="CarLoan"/>
+            <xs:enumeration value="Other"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="UnderwritingClass">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Standard"/>
+            <xs:enumeration value="Preferred"/>
+            <xs:enumeration value="PreferredPlus"/>
+            <xs:enumeration value="One"/>
+            <xs:enumeration value="Two"/>
+            <xs:enumeration value="Three"/>
+            <xs:enumeration value="Four"/>
+            <xs:enumeration value="Five"/>
+            <xs:enumeration value="Six"/>
+            <xs:enumeration value="Seven"/>
+            <xs:enumeration value="Eight"/>
+            <xs:enumeration value="Nine"/>
+            <xs:enumeration value="Ten"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="NeedType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Bequest"/>
+            <xs:enumeration value="Income"/>
+            <xs:enumeration value="ChildCare"/>
+            <xs:enumeration value="College"/>
+            <xs:enumeration value="Debt"/>
+            <xs:enumeration value="Savings"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PolicyType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="UniversalLife"/>
+            <xs:enumeration value="WholeLife"/>
+            <xs:enumeration value="TermLife"/>
+            <xs:enumeration value="VariableUniversalLife"/>
+            <xs:enumeration value="IndexedUniversalLife"/>
+            <xs:enumeration value="FixedAnnuity"/>
+            <xs:enumeration value="VariableAnnuity"/>
+            <xs:enumeration value="IndexedAnnuity"/>
+            <xs:enumeration value="ImmediateFixedAnnuity"/>
+            <xs:enumeration value="ImmediateVariableAnnuity"/>
+            <xs:enumeration value="LongTermDisability"/>
+            <xs:enumeration value="ShortTermDisability"/>
+            <xs:enumeration value="Dental"/>
+            <xs:enumeration value="CriticalIllness"/>
+            <xs:enumeration value="RetirementInvestments"/>
+            <xs:enumeration value="PreRetirementInvestments"/>
+            <xs:enumeration value="Accident"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SolveValueType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Amount"/>
+            <xs:enumeration value="DurationInYears"/>
+            <xs:enumeration value="FaceAmount"/>
+            <xs:enumeration value="InternalRateOfReturn"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TransactionNoteType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PremiumRejectedDEFRA"/>
+            <xs:enumeration value="PremiumReducedTAMRA"/>
+            <xs:enumeration value="PremiumRejectedTAMRA"/>
+            <xs:enumeration value="PolicyBecameMEC"/>
+            <xs:enumeration value="UnnecessaryPremiumDetected"/>
+            <xs:enumeration value="MaximumLoanExceeded"/>
+            <xs:enumeration value="PolicyLapse"/>
+            <xs:enumeration value="TAMRALookbackViolation"/>
+            <xs:enumeration value="PremiumForcedInDEFRA"/>
+            <xs:enumeration value="PremiumRejectedAdministrative"/>
+            <xs:enumeration value="PolicyWasReinstated"/>
+            <xs:enumeration value="PolicyOverloaned"/>
+            <xs:enumeration value="PremiumForcedOutDEFRA"/>
+            <xs:enumeration value="DBOChange"/>
+            <xs:enumeration value="RiderTermination"/>
+            <xs:enumeration value="PremiumHasChanged"/>
+            <xs:enumeration value="LumpSumPremiumOccurred"/>
+            <xs:enumeration value="LoanRepaymentOccurred"/>
+            <xs:enumeration value="LoanRepaidInFull"/>
+            <xs:enumeration value="LoanOccurred"/>
+            <xs:enumeration value="PartialWithdrawalOccurred"/>
+            <xs:enumeration value="PaymentModeHasChanged"/>
+            <xs:enumeration value="BaseFaceUpdate"/>
+            <xs:enumeration value="DividendOptionChanged"/>
+            <xs:enumeration value="ScheduledFTRPremiumChange"/>
+            <xs:enumeration value="UnderwritingChangeOccurred"/>
+            <xs:enumeration value="PremiumPaidToEscapeGrace"/>
+            <xs:enumeration value="LoanRepaymentToEscapeGrace"/>
+			<xs:enumeration value="MaximumLoanExceeded"/>
+			<xs:enumeration value="PartialWithdrawalNotPossible"/>
+			<xs:enumeration value="PartialWithdrawalGreaterThanFace"/>
+			<xs:enumeration value="LoanBelowMinimum"/>
+            <xs:enumeration value="Refund"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="IllustrationType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PointOfSale"/>
+            <xs:enumeration value="Reillustration"/>
+            <xs:enumeration value="AtIssue"/>
+            <xs:enumeration value="Inforce"/>
+            <xs:enumeration value="AnnualStatement"/>
+            <xs:enumeration value="GraceInsufficient"/>
+            <xs:enumeration value="GraceOverloan"/>
+            <xs:enumeration value="GraceConservation"/>
+            <xs:enumeration value="Reinstatement"/>
+            <xs:enumeration value="NonPayment"/>
+            <xs:enumeration value="RiderExpiry"/>
+            <xs:enumeration value="InterestBill"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PartyFamilyRelationshipType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Primary"/>
+            <xs:enumeration value="Partner"/>
+            <xs:enumeration value="Child"/>
+            <xs:enumeration value="Grandchild"/>
+            <xs:enumeration value="Parent"/>
+            <xs:enumeration value="Other"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PerceptionOfHealth">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="WorseThanPeers"/>
+            <xs:enumeration value="SameAsPeers"/>
+            <xs:enumeration value="BetterThanPeers"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PartyType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Individual"/>
+            <xs:enumeration value="Business"/>
+            <xs:enumeration value="Trust"/>
+            <xs:enumeration value="Charity"/>
+            <xs:enumeration value="Other"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="RetirementGoalPriority">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CashBequestPriority"/>
+            <xs:enumeration value="BalancedPriority"/>
+            <xs:enumeration value="IncomePriority"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="LifetimeFinancialAdviceMode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="InsuranceRecommendationOnly"/>
+            <xs:enumeration value="InsuranceRecommendationOnlyProjectFuture"/>
+            <xs:enumeration value="RetirementProductsOnlyProjectFuture"/>
+            <xs:enumeration value="InsuranceRecommendationRetirementProductsProjectFuture"/>
+            <xs:enumeration value="InvestmentOnlyProjectFuture"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="RetirementProjectionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Linear"/>
+            <xs:enumeration value="MonteCarlo"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="LifeEventType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Child"/>
+            <xs:enumeration value="CitizenshipChange"/>
+            <xs:enumeration value="DeathInFamily"/>
+            <xs:enumeration value="Divorce"/>
+            <xs:enumeration value="Marriage"/>
+            <xs:enumeration value="HomePurchase"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ProductCategory">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Annuity"/>
+            <xs:enumeration value="Life"/>
+            <xs:enumeration value="Dental"/>
+            <xs:enumeration value="Disability"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="FutureLifeProjectionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Stochastic"/>
+            <xs:enumeration value="DefaultInputs"/>
+            <xs:enumeration value="PoorInitialInvestmentPerformance"/>
+            <xs:enumeration value="PoorLateInvestmentPerformance"/>
+            <xs:enumeration value="HighInflation"/>
+            <xs:enumeration value="EarlyDeath"/>
+            <xs:enumeration value="LateDeath"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="LifeInsuranceRecommendationFaceDeterminationRule">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Maximum"/>
+            <xs:enumeration value="Average"/>
+            <xs:enumeration value="Smart"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ReportType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PDF"/>
+            <xs:enumeration value="CSV"/>
+            <xs:enumeration value="XML_CONTEXT"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="EliminationPeriod">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="90"/>
+            <xs:enumeration value="180"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="CoverageBenefitLevelCode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Bronze"/>
+            <xs:enumeration value="Silver"/>
+            <xs:enumeration value="Gold"/>
+            <xs:enumeration value="Platinum"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DividendOption">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Cash"/>
+            <xs:enumeration value="PaidUpInsurance"/>
+            <xs:enumeration value="OneYearTerm"/>
+            <xs:enumeration value="PremiumReduction"/>
+            <xs:enumeration value="RepayLoanBalance"/>
+            <xs:enumeration value="RepayLoanInterest"/>
+            <xs:enumeration value="FlexibleTerm"/>
+            <xs:enumeration value="AccumulateAtInterest"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="NonforfeitureOption">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="RPU"/>
+            <xs:enumeration value="ETI"/>
+            <xs:enumeration value="APL"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ProductOfferReason">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="AttainedAge"/>
+            <xs:enumeration value="LifeEvent"/>
+            <xs:enumeration value="ProductFeature"/>
+            <xs:enumeration value="GuaranteedOrSimplifiedIssue"/>
+            <xs:enumeration value="BatchOffer"/>
+            <xs:enumeration value="LifeNeedsAnalysis"/>
+            <xs:enumeration value="RetirementProjection"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GuaranteedSimplifiedOfferType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NewBusinessGuaranteedIssue"/>
+            <xs:enumeration value="LifeEventGuaranteedIssueIncrease"/>
+            <xs:enumeration value="AnnualEnrollmentGuaranteedIssueIncrease"/>
+            <xs:enumeration value="SpecialEnrollmentIncrease"/>
+            <xs:enumeration value="NewBusinessSimplifiedIssue"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SimplifiedIssueDeterminationRule">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="None"/>
+            <xs:enumeration value="KnockoutQuestions"/>
+            <xs:enumeration value="KnockoutQuestionsPlusHealthScore"/>
+            <xs:enumeration value="HealthScore"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ReinstatementRule">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NoGapInCoverage"/>
+            <xs:enumeration value="GapInCoverage"/>
+            <xs:enumeration value="None"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ReinstatementLoanRule">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="RepayLoanBalance"/>
+            <xs:enumeration value="ReinstateLoan"/>
+            <xs:enumeration value="None"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="IllustrationStatus">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="AtIssue"/>
+            <xs:enumeration value="Inforce"/>
+            <xs:enumeration value="PreIssue"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DefinitionOfLifeInsurance">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="GuidelinePremiumTest"/>
+            <xs:enumeration value="CashValueAccumulationTest"/>
+            <xs:enumeration value="PolicyholderElected"/>
+            <xs:enumeration value="NotApplicable"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="BuySell">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Buy"/>
+            <xs:enumeration value="Sell"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="CreditDebit">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Credit"/>
+            <xs:enumeration value="Debit"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AccountingAccountType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Cash"/>
+            <xs:enumeration value="FederalPremiumTax"/>
+            <xs:enumeration value="LoanDisbursement"/>
+            <xs:enumeration value="LoanIncrease"/>
+            <xs:enumeration value="PremiumCharge"/>
+            <xs:enumeration value="PremiumFirstYear"/>
+            <xs:enumeration value="PremiumIncome"/>
+            <xs:enumeration value="PremiumRenewal"/>
+            <xs:enumeration value="PremiumSuspense"/>
+            <xs:enumeration value="StatePremiumTax"/>
+            <xs:enumeration value="Separate"/>
+            <xs:enumeration value="CapitalizedLoanInterest"/>
+            <xs:enumeration value="COI"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ScenarioType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Current"/>
+            <xs:enumeration value="CurrentInput"/>
+            <xs:enumeration value="Guaranteed"/>
+            <xs:enumeration value="GuaranteedInput"/>
+            <xs:enumeration value="MidPoint"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ScenarioDescriptionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NoPremium"/>
+            <xs:enumeration value="CurrentPremium"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="IllustrationProjection">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Inforce"/>
+            <xs:enumeration value="WhatIf"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SupplementalReportType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="InternalRateOfReturn"/>
+            <xs:enumeration value="DEFRATAMRA"/>
+            <xs:enumeration value="AlternateProductsTaxComparison"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="EchoPeriodType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="StopsOnRiderExerciseDate"/>
+            <xs:enumeration value="ContinuesAfterRiderExerciseDate"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

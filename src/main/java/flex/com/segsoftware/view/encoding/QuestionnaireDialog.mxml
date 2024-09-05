@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:custom="com.segsoftware.view.custom.*"
+	layout="absolute" 
+	width="1022" 
+	height="592"
+	title="Questionnaire Dialog"
+	showCloseButton="true"	
+	close="mx.managers.PopUpManager.removePopUp(this)">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.event.SEGEvent;
+			import mx.managers.PopUpManager;
+		]]>
+	</mx:Script>
+	
+	
+	<mx:DataGrid 
+		id="questionnaireResponseDataGrid"
+		dataProvider="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.QuestionnaireResponseVO}" left="10" right="10" top="10" bottom="10">
+		<mx:columns>
+			<mx:DataGridColumn 
+				headerText="ID" 
+				width="20">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Label text="{data.FilteredQuestionnaireVO.QuestionnaireVO.QuestionnaireId}"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn 
+				headerText="Question" 
+				dataField="col2"
+				width="60">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Label text="{data.FilteredQuestionnaireVO.QuestionnaireVO.QuestionnaireDescription}"/>
+					</mx:Component>
+				</mx:itemRenderer>				
+			</mx:DataGridColumn>
+			<mx:DataGridColumn 
+				headerText="Response" 
+				dataField="col3"
+				width="20"
+				color="blue">
+				<mx:itemRenderer>
+ 		    		<mx:Component>
+ 		    			<mx:HBox>
+ 			    			<mx:Script>
+ 			    				<![CDATA[
+ 			    					import com.segsoftware.model.CodeTable;
+ 			    				]]>
+ 			    			</mx:Script> 
+ 			    		
+							<custom:SEGComboBox 
+								dataProvider="{CodeTable.getInstance().responseCodeTableVOs}"
+								labelField="CodeDesc"
+								valueField="Code" 
+								valueObjectVO="{data as XML}"
+								valueObjectVOField="ResponseCT"
+								width="100%"												
+								/>
+						</mx:HBox>
+ 		    		</mx:Component>
+				</mx:itemRenderer>			
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:ControlBar horizontalAlign="right">
+		<mx:Button 
+			label="Load /Reload Q's"
+			click="CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_FILTERED_QUESTIONNAIRES, null))"/>
+		<mx:Button 
+			label="OK"
+			click="mx.managers.PopUpManager.removePopUp(this)"
+			/>
+	</mx:ControlBar>
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.SEGModelLocator;
+		]]>
+	</mx:Script>
+	
+</mx:TitleWindow>

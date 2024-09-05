@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="com.editsolutions.prd.vo.DataHeader" table="PRD_DataHeader"  >
+        <id name="dataHeaderPK" column="PRD_DataHeaderPK" type="long">
+              <generator class="identity"/>
+        </id>
+
+        <property name="setupFK" column="PRD_SetupFK" type="long"/>
+        <property name="prdDate" column="PRD_Date" type="date"/>
+        <property name="comments" column="Comments"/>
+        <property name="addDate" column="AddDate" type="date"/>
+        <property name="addUser" column="AddUser"/>
+        <property name="modDate" column="ModDate" type="date"/>
+        <property name="modUser" column="ModUser"/>
+        <property name="statusCT" column="StatusCT"/>
+        <property name="testPrd" type="java.lang.Boolean">
+           <column name="isTest" sql-type="tinyint"/>
+        </property>
+
+<!--
+        <bag name="payrollDeductionDatas" table="PRD_Data" lazy="true" fetch="select" cascade="none" order-by="PRD_RecordFK">
+            <key>
+                <column name="PRD_DataHeaderFK" not-null="true" />
+            </key>
+            <one-to-many class="com.editsolutions.prd.vo.PayrollDeductionData" />
+        </bag>
+  -->
+        
+        <!-- 
+        <bag name="dataIssues" table="PRD_DataIssues" lazy="false" fetch="select" cascade="none">
+            <key>
+                <column name="PRD_DataHeaderFK" not-null="true" />
+            </key>
+            <one-to-many class="com.editsolutions.prd.vo.DataIssue" />
+        </bag>
+         -->
+
+        <many-to-one name="prdSettings" lazy="false" class="com.editsolutions.prd.vo.PRDSettings"
+                column="PRD_SetupFK" unique="true" insert="false" update="false"/>
+
+    </class>
+</hibernate-mapping>
+

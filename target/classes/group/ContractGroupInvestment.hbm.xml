@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="group.ContractGroupInvestment" table="&quot;ContractGroupInvestment&quot;"  >
+        <id name="ContractGroupInvestmentPK" column="&quot;ContractGroupInvestmentPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ProcessDate" column="&quot;ProcessDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AccumulatedUnits" column="&quot;AccumulatedUnits&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="FilteredFundFK" column="&quot;FilteredFundFK&quot;"/>
+        <property name="ChargeCodeFK" column="&quot;ChargeCodeFK&quot;"/>
+
+        <property name="ContractGroupFK" column="&quot;ContractGroupFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="ContractGroup"
+            column="&quot;ContractGroupFK&quot;"
+            class="group.ContractGroup"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="reinsurance.ContractTreaty" table="&quot;ContractTreaty&quot;"  >
+        <id name="ContractTreatyPK" column="&quot;ContractTreatyPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ReinsuranceIndicatorCT" column="&quot;ReinsuranceIndicatorCT&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ReinsuranceClassCT" column="&quot;ReinsuranceClassCT&quot;"/>
+        <property name="TreatyTypeCT" column="&quot;TreatyTypeCT&quot;"/>
+        <property name="RetentionAmount" column="&quot;RetentionAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PoolPercentage" column="&quot;PoolPercentage&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ReinsuranceTypeCT" column="&quot;ReinsuranceTypeCT&quot;"/>
+        <property name="TableRatingCT" column="&quot;TableRatingCT&quot;"/>
+        <property name="FlatExtra" column="&quot;FlatExtra&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="FlatExtraAge" column="&quot;FlatExtraAge&quot;"/>
+        <property name="FlatExtraDuration" column="&quot;FlatExtraDuration&quot;"/>
+        <property name="PercentExtra" column="&quot;PercentExtra&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PercentExtraAge" column="&quot;PercentExtraAge&quot;"/>
+        <property name="PercentExtraDuration" column="&quot;PercentExtraDuration&quot;"/>
+        <property name="MaxReinsuranceAmount" column="&quot;MaxReinsuranceAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TreatyOverrideInd" column="&quot;TreatyOverrideInd&quot;"/>
+        <property name="PolicyOverrideInd" column="&quot;PolicyOverrideInd&quot;"/>
+        <property name="Status" column="&quot;Status&quot;"/>
+
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;" insert="false" update="false"/>
+        <property name="TreatyFK" column="&quot;TreatyFK&quot;" insert="false" update="false"/>
+        <property name="ContractGroupFK" column="&quot;ContractGroupFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"
+            />
+
+        <many-to-one
+            name="ContractGroup"
+            column="&quot;ContractGroupFK&quot;"
+            class="group.ContractGroup"
+            cascade="none"
+            />
+
+        <many-to-one
+            name="Treaty"
+            column="&quot;TreatyFK&quot;"
+            class="reinsurance.Treaty"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>
+

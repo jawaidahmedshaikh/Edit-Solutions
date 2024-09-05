@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Gregg (Systems Engineering Group, LLC) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="ValidationVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="InstructionName" type="xs:string"/>
+				<xs:element name="Message" type="xs:string"/>
+				<xs:element name="Severity" type="xs:string"/>
+				<xs:element name="Reporting" type="xs:string"/>
+				<xs:element name="Stack" type="xs:string"/>
+				<xs:element name="MyDate" type="xs:date"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="staging.Case" table="&quot;CASE&quot;"  >
+        <id name="CasePK" column="&quot;CASEPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="StagingFK" column="&quot;STAGINGFK&quot;" insert="false" update="false"/>
+
+        <property name="ContractGroupNumber" column="&quot;CONTRACTGROUPNUMBER&quot;"/>
+        <property name="ContractGroupType" column="&quot;CONTRACTGROUPTYPE&quot;"/>
+
+        <property name="CaseStatus" column="&quot;CASESTATUS&quot;"/>
+        <property name="CaseType" column="&quot;CASETYPE&quot;"/>
+        <property name="CreationDate" column="&quot;CREATIONDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="DomicileState" column="&quot;DOMICILESTATE&quot;"/>
+        <property name="CorporateName" column="&quot;CORPORATENAME&quot;"/>
+        <property name="AddressLine1" column="&quot;ADDRESSLINE1&quot;"/>
+
+        <property name="AddressLine2" column="&quot;ADDRESSLINE2&quot;"/>
+        <property name="AddressLine3" column="&quot;ADDRESSLINE3&quot;"/>
+        <property name="AddressLine4" column="&quot;ADDRESSLINE4&quot;"/>
+
+        <property name="City" column="&quot;CITY&quot;"/>
+        <property name="State" column="&quot;STATE&quot;"/>
+        <property name="Zip" column="&quot;ZIP&quot;"/>
+
+        <property name="ActiveEligibilityHours" column="ActiveEligibilityHours"/>
+        <property name="IneligibilityPeriodUnits" column="IneligibilityPeriodUnits" />
+        <property name="IneligibilityPeriodType" column="IneligibilityPeriodType"/>
+
+        <property name="SicCode" column="&quot;SICCODE&quot;"/>
+        <property name="GroupTrustState" column="&quot;GROUPTRUSTSTATE&quot;"/>
+
+        <set name="Groups" table="&quot;GROUP&quot;" inverse="true"  cascade="all">
+            <key column="&quot;CASEFK&quot;"/>
+            <one-to-many class="staging.Group"/>
+        </set>           
+
+        <set name="Enrollments" table="&quot;ENROLLMENT&quot;" inverse="true"  cascade="all">
+            <key column="&quot;CASEFK&quot;"/>
+            <one-to-many class="staging.Enrollment"/>
+        </set>
+
+        <set name="CaseStatusHistories" table="&quot;CASESTATUSHISTORY&quot;" inverse="true"  cascade="all">
+            <key column="&quot;CASEFK&quot;"/>
+            <one-to-many class="staging.CaseStatusHistory"/>
+        </set>
+
+        <set name="FilteredProducts" table="&quot;FILTEREDPRODUCT&quot;" inverse="true"  cascade="all">
+            <key column="&quot;CASEFK&quot;"/>
+            <one-to-many class="staging.FilteredProduct"/>
+        </set>
+
+        <many-to-one
+            name="Staging"
+            column="&quot;STAGINGFK&quot;"
+            class="staging.Staging"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

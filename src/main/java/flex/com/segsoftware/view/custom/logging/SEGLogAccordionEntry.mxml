@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" 
+	explicitMinHeight="110" 
+	label="{determineEventLabel()}"
+	icon="{determineEventIcon()}"
+	>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.containers.HBox;
+			import com.segsoftware.model.logging.SEGLogEntry;
+			import mx.controls.Image;
+			import com.segsoftware.utility.Util;
+
+			
+			private var _logEntry:SEGLogEntry;
+			
+			[Bindable]
+			public function set logEntry(logEntry:SEGLogEntry):void
+            {
+             	this._logEntry = logEntry;  
+            } 
+            
+			public function get logEntry():SEGLogEntry
+            {
+             	return this._logEntry;  
+            } 
+            
+            private function determineEventLabel():String
+            {
+            	var fourSpaces:String = "    ";  	
+            	
+            	var eventName:String = Util.padStringWithSpaces(this._logEntry.eventName, 50);
+            	
+            	var commandName:String = Util.padStringWithSpaces(this._logEntry.command, 60);
+            	
+            	return eventName + fourSpaces + this._logEntry.timeStamp + fourSpaces + commandName;
+            }
+            
+            private function determineEventIcon():Class
+            {
+            	return this._logEntry.highestLevelSEGLogMessage.segLogMessageType.messageIcon;	
+            }
+            
+		]]>
+	</mx:Script>
+	
+	<!-- Leave room for the vertical scroll bar on the width for entries with many messages -->
+	<mx:DataGrid width="99%" height="100%"
+		id="logEntryDataGrid"
+		dataProvider="{logEntry.segLogMessages}"
+		>
+	
+		<mx:columns>
+			<mx:DataGridColumn 
+				headerText="Message Type" 
+				dataField="messageType"
+				width="200">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:HBox>
+							<mx:Image id="messageTypeIcon" source="{data.segLogMessageType.messageIcon}"/>
+							<mx:Text width="100%" text="{data.segLogMessageType.messageType}" />
+						</mx:HBox>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn 
+				headerText="Message" 
+				dataField="message"
+				>
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Label text="{data.message}"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+</mx:VBox>

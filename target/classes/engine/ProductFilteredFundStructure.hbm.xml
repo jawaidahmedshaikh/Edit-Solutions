@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.ProductFilteredFundStructure" table="&quot;ProductFilteredFundStructure&quot;" lazy="true">
+    
+        <cache usage="read-write"/>
+    
+        <id name="ProductFilteredFundStructurePK" column="&quot;ProductFilteredFundStructurePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ProductStructureFK" column="&quot;ProductStructureFK&quot;"/>
+        <property name="FilteredFundFK" column="&quot;FilteredFundFK&quot;"/>
+
+<!--       <set name="ControlBalances" table="&quot;ControlBalance&quot;" inverse="true"  cascade="all" >-->
+<!--            <key column="&quot;CompanyFilteredFundStructureFK&quot;"/>-->
+<!--            <one-to-many class="engine.ControlBalance"/>-->
+<!--       </set>-->
+
+
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Deanna Lataille (Systems Engineering Group, LLC) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:element name="InvestmentRateVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="InvestmentRatePK" type="xs:long"/>
+				<xs:element name="InvestmentFK" type="xs:long"/>
+				<xs:element name="FundType" type="xs:string"/>
+				<xs:element name="IndexingMethod" type="xs:string"/>
+				<xs:element name="IndexCapMinimum" type="xs:double"/>
+				<xs:element name="ParticipationRate" type="xs:double"/>
+				<xs:element name="IndexMargin" type="xs:double"/>
+				<xs:element name="IndexCapRateGuarPeriod" type="xs:integer"/>
+				<xs:element name="MVAStartingGuarPeriod" type="xs:integer"/>
+				<xs:element name="PremiumBonusDuration" type="xs:integer"/>
+				<xs:element name="TotalPremPercentAllowed" type="xs:double"/>
+				<xs:element name="MinimumTransferAmount" type="xs:double"/>
+				<xs:element name="CurrentRate" type="xs:double"/>
+				<xs:element name="BonusRate" type="xs:double"/>
+				<xs:element name="InitialGuaranteedPeriod" type="xs:double"/>
+				<xs:element name="CurrentRateDate" type="xs:string"/>
+				<xs:element name="GuarIntRate" type="xs:double"/>
+				<xs:element name="BeginningIndexValue">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EndingIndexValue" type="xs:decimal"/>
+				<xs:element name="StartingIndexValue">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

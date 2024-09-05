@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="staging.Enrollment" table="&quot;ENROLLMENT&quot;"  >
+        <id name="EnrollmentPK" column="&quot;ENROLLMENTPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="CaseFK" column="&quot;CASEFK&quot;" insert="false" update="false"/>
+
+        <property name="BeginningPolicyDate" column="&quot;BEGINNINGPOLICYDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="EndingPolicyDate" column="&quot;ENDINGPOLICYDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="EnrollmentType" column="&quot;ENROLLMENTTYPE&quot;"/>
+        <property name="NumberOfEligibles" column="&quot;NUMBEROFELIGIBLES&quot;"/>
+
+        <property name="OfferDateNeeded" column="&quot;OFFERDATENEEDED&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AnticipatedEnrollmentDate" column="&quot;ANTICIPATEDENROLLMENTDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AnticipatedInhouseDate" column="&quot;ANTICIPATEDINHOUSEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <set name="ProjectedBusinessByMonths" table="&quot;PROJECTEDBUSINESSBYMONTH&quot;" inverse="true"  cascade="all">
+            <key column="&quot;ENROLLMENTFK&quot;"/>
+            <one-to-many class="staging.ProjectedBusinessByMonth"/>
+        </set>
+
+        <set name="BatchContractSetups" table="&quot;BATCHCONTRACTSETUP&quot;" inverse="true"  cascade="all">
+            <key column="&quot;ENROLLMENTFK&quot;"/>
+            <one-to-many class="staging.BatchContractSetup"/>
+        </set>
+
+        <set name="EnrollmentLeadServiceAgents" table="&quot;ENROLLMENTLEADSERVICEAGENT&quot;" inverse="true" cascade="all">
+            <key column="&quot;ENROLLMENTFK&quot;"/>
+            <one-to-many class="staging.EnrollmentLeadServiceAgent"/>
+        </set>
+
+        <set name="EnrollmentStates" table="&quot;ENROLLMENTSTATE&quot;" inverse="true" cascade="all">
+            <key column="&quot;ENROLLMENTFK&quot;"/>
+            <one-to-many class="staging.EnrollmentState"/>
+        </set>
+
+        <set name="CaseProductUnderwritings" table="&quot;CASEPRODUCTUNDERWRITING&quot;" inverse="true" cascade="all">
+            <key column="&quot;ENROLLMENTFK&quot;"/>
+            <one-to-many class="staging.CaseProductUnderwriting"/>
+        </set>
+
+        <many-to-one
+            name="StagingCase"
+            column="&quot;CASEFK&quot;"
+            class="staging.Case"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

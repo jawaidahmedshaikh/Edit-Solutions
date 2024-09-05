@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.AgentHierarchyAllocation" table="&quot;AgentHierarchyAllocation&quot;"  >
+        <id name="AgentHierarchyAllocationPK" column="&quot;AgentHierarchyAllocationPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="AgentHierarchyFK" column="&quot;AgentHierarchyFK&quot;" insert="false" update="false"/>
+
+        <property name="StartDate" column="&quot;StartDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="StopDate" column="&quot;StopDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AllocationPercent" column="&quot;AllocationPercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <many-to-one
+            name="AgentHierarchy"
+            column="&quot;AgentHierarchyFK&quot;"
+            class="contract.AgentHierarchy"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>
+

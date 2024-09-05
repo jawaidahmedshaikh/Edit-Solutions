@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" width="988" height="420"
+	showCloseButton="true" 
+	title="More Info Dialog"
+	layout="absolute"
+	close="mx.managers.PopUpManager.removePopUp(this)">
+
+	<mx:Style source="../css/segSoftware.css"/>	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.SEGModelLocator;
+			import mx.managers.PopUpManager;
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.model.CodeTable;
+		]]>
+	</mx:Script>	
+	
+	<mx:Panel layout="absolute" title="More Information" left="10" right="10" bottom="10" top="20">
+		<mx:Form left="10" top="10" height="246">
+			<mx:FormItem label="Last Name:" width="100%">
+				<mx:TextInput text="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.ClientDetailVO.LastName}" editable="false"/>
+			</mx:FormItem>
+			<mx:FormItem label="First Name:">
+				<mx:TextInput text="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.ClientDetailVO.FirstName}" editable="false"/>
+			</mx:FormItem>
+			<mx:FormItem label="Middle:">
+				<mx:TextInput text="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.ClientDetailVO.MiddleName}" editable="false"/>
+			</mx:FormItem>
+			<mx:FormItem label="Tax ID:">
+				<mx:TextInput text="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.ClientDetailVO.TaxIdentification}" editable="false"/>
+			</mx:FormItem>
+			<mx:FormItem label="DOB:">
+				<mx:TextInput text="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.ClientDetailVO.BirthDate}" editable="false"/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:Form top="10" left="297" height="246">
+			<mx:FormItem label="Employee ID:">
+				<mx:TextInput text="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.ClientDetailVO.TaxIdentification}" editable="false"/>
+			</mx:FormItem>
+			<mx:FormItem label="Gender:">
+				<mx:TextInput text="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.ClientDetailVO.GenderCT}" editable="false"/>
+			</mx:FormItem>
+			<mx:FormItem label="Occupation:">
+				<mx:TextInput text="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.ClientDetailVO.Occupation}" editable="false"/>
+			</mx:FormItem>
+			<mx:FormItem label="Rel. to Employee:">
+				<mx:TextInput text="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.RelationshipToEmployeeCT}" editable="false"/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:ControlBar>
+			<mx:Canvas width="100%">
+			</mx:Canvas>
+		</mx:ControlBar>				
+		<mx:Form height="246" width="288" left="626" top="10">
+			<mx:FormItem label="Address 1:">
+				<mx:TextInput text="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.ClientDetailVO.ClientAddressVO.AddressLine1}" editable="false"/>
+			</mx:FormItem>
+			<mx:FormItem label="Address 2:">
+				<mx:TextInput text="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.ClientDetailVO.ClientAddressVO.AddressLine2}" editable="false"/>
+			</mx:FormItem>
+			<mx:FormItem label="Address 3:">
+				<mx:TextInput text="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.ClientDetailVO.ClientAddressVO.AddressLine3}" editable="false"/>
+			</mx:FormItem>
+			<mx:FormItem label="Address 4:">
+				<mx:TextInput text="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.ClientDetailVO.ClientAddressVO.AddressLine4}" editable="false"/>
+			</mx:FormItem>
+			<mx:FormItem label="City:">
+				<mx:TextInput text="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.ClientDetailVO.ClientAddressVO.City}" editable="false"/>
+			</mx:FormItem>
+			<mx:FormItem label="State:">
+				<mx:TextInput text="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.ClientDetailVO.ClientAddressVO.StateCT}" editable="false"/>
+			</mx:FormItem>
+			<mx:FormItem label="Zip:">
+				<mx:TextInput text="{SEGModelLocator.getInstance().selectedAppEntryClientDetailVO.ClientDetailVO.ClientAddressVO.ZipCode}" editable="false"/>
+			</mx:FormItem>
+		</mx:Form>
+	</mx:Panel>
+
+</mx:TitleWindow>

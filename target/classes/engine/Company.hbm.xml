@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.Company" table="&quot;Company&quot;" lazy="true">
+    
+        <cache usage="read-write"/>
+        
+        <id name="CompanyPK" column="&quot;CompanyPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="CompanyName" column="&quot;CompanyName&quot;"/>
+        <property name="PolicyNumberPrefix" column="&quot;PolicyNumberPrefix&quot;"/>
+        <property name="PolicyNumberSequenceNumber" column="&quot;PolicyNumberSequenceNumber&quot;"/>
+        <property name="PolicySequenceLength" column="&quot;PolicySequenceLength&quot;"/>
+        <property name="BillingCompanyNumber" column="&quot;BillingCompanyNumber&quot;"/>
+        <property name="PolicyNumberSuffix" column="&quot;PolicyNumberSuffix&quot;"/>
+
+        <set name="ProductStructures" table="&quot;ProductStructure&quot;" inverse="true"   cascade="all">
+             <key column="&quot;CompanyFK&quot;"/>
+             <one-to-many class="engine.ProductStructure"/>
+         </set>
+
+    </class>
+</hibernate-mapping>

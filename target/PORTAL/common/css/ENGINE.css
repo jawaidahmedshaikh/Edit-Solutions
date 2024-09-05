@@ -1,0 +1,171 @@
+/* Style sheet for the ENGINE System */
+
+/* Body Styles */
+body {
+    font:bold 10pt Verdana,Arial,sans-serif;
+    text-align: left;
+    margin-top: 5;
+    margin-left: 5;
+    color: #30548E;                  /* blue */
+    background-color: #99BBBB;
+    /*background-image: url(/ENGINE/images/bgrock.gif);*/
+}
+
+body.forPopupDialog {
+
+    background-color: #DDDDDD
+}
+
+body.withLogo {
+    font:bold 10pt Verdana,Arial,sans-serif;
+    text-align: left;
+    margin-top: 0;
+    margin-left: 0;
+    color: #30548E;	                /* blue */
+    background-image: url(/ENGINE/images/bgrock.gif);
+    /*background-attachment: fixed;*/
+    /*background-image:  url(/ENGINE/images/engine2.gif);
+    background-repeat: no-repeat;
+    background-position: right top;*/
+}
+
+body.withNoImage  {
+   font:bold 10pt Verdana,Arial,sans-serif;
+    text-align: left;
+    margin-top: 5;
+    margin-left: 5;
+    color: #30548E;                  /* blue */
+    background-color: #FFFFFF;
+    background-image: none;
+}
+
+div.copyRight {
+    font: 8pt Arial,sans-serif;
+    text-align: center;
+    color: #30548E;                 /* blue */
+}
+
+h1  {
+    color: #30548E;	                /* blue */
+}
+h1.help, h2.help, h4.help {
+    color: #006633;                 /* green */
+}
+
+/* Table Styles */
+table {
+    font:bold 8pt Verdana, Arial, sans-serif;
+    text-align: left;
+    color: #30548E;                 /* blue */
+}
+table.toolbar {
+    text-align: center;
+    background-color: #30548E;      /* blue */
+}
+table.treeHeading  {
+    font-family: sans-serif;
+    font-Size: 9pt; font-weight: bold;
+    text-align: center;
+    color: #FFFFFF;                 /* white */
+    background-color: #006633;      /* green */
+}
+th.dataHeading {
+    text-align: center;
+    color: #FFFFFF;                 /* white */
+    background-color: #30548E;      /* blue  */
+}
+th.dataHeading2 {
+    text-align: left;
+    color: #FFFFFF;                /* white */
+    background-color: #30548E;     /* blue  */
+}
+td.heading  {
+    font:bold 12pt Verdana, Arial, sans-serif;
+    text-align: center;
+    color: #30548E;                /* blue  */
+}
+td.dataHeading {
+    text-align: right;
+    color: #30548E;                /* blue */
+}
+td.buttons {
+    text-align: right;
+}
+td.bp  {    /* break point */
+    text-align: left;
+    color: #a0365b;                 /* FISSION red */
+    background-color: #A9A9A9;      /* dark grey */
+}
+td.ci  {   /* current instruction */
+    text-align: left;
+    background-color: #D3D3D3;      /* light grey */
+}
+td.ln  {   /* line number */
+    text-align: right;
+    background-color: #A9A9A9;      /* dark grey */
+}
+td.requiredField  {
+    text-align: left;
+    color: #FF0000;                 /* red */
+}
+td.productHeading  {
+    font-Size: 12pt;
+    font-weight: bold;
+    text-align: left;
+    color: #30548E;                 /* blue */
+}
+td.treeHeading  {
+    font:bold 9pt sans-serif;
+    text-align: center;
+    vertical-align: text-top;
+    color: #FFFFFF;                 /* white */
+    background-color:#006633;       /* green */
+}
+td.toolbar  {
+    text-align: center;
+    background-color: #30548E;      /* blue */
+}
+td.errorMessage  {
+    text-align: left;
+    color: #FF0000;                 /* red */
+}
+tr.link  {
+    color: #0000FF;                 /* blue */
+    text-decoration:none;
+}
+tr.linkHover  {
+    color: #FF0000;                 /* red */
+}
+/* Tree Styles */
+a:hover {
+    color: #FF0000;                 /* red */
+}
+a:visited {
+    color: #0000FF;                 /* blue */
+}
+a {
+    color: #0000FF;                 /* blue */
+    text-decoration:none;
+}
+.look {
+    font:bold 8pt Verdana, Arial, sans-serif;
+}
+.look2 {
+    font:bold 8pt Verdana, Arial, sans-serif;
+}
+.folding {
+    cursor:hand;
+}
+.hidden  {
+    visibility:hidden;
+}
+
+div.code-container {
+	border-color:black; 
+	border-style:solid; 
+	border-width:1;  
+	font-size: 14px;
+	background-color: white; 
+}
+
+@import url("/theme/css/environment.css");

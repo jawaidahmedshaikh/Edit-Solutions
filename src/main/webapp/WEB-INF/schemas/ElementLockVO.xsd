@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.2 U (http://www.xmlspy.com) by Jason Joyal (JJ Inc) -->
+<xs:schema   xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:element name="ElementLockVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ElementLockPK" type="xs:long"/>
+				<xs:element name="Username">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LockDateTime">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="35"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ElementFK" type="xs:long"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

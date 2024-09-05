@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+     <class name="com.editsolutions.prd.vo.ImportRecord" table="PRD_Record"  >
+        <id name="importRecordPK" column="PRD_RecordPK" type="long">
+              <generator class="identity"/>
+        </id>
+
+        <property name="accountNumber" column="AccountNumber"/>
+        <property name="groupNumber" column="GroupNumber"/>
+        <property name="deductionDate" column="DeductionDate" type="date"/>
+        <property name="billiblePremium" column="BilliblePremium"/>
+        <property name="billingCompany" column="BillingCompany"/>
+        <property name="billingFrequency" column="BillingFrequency"/>
+        <property name="deductionAmount" column="DeductionAmount"/>
+        <property name="currentFaceAmount" column="CurrentFaceAmount"/>
+        <property name="currentAge" column="CurrentAge"/>
+        <property name="departmentLocation" column="DepartmentLocation"/>
+        <property name="employeeID" column="EmployeeID"/>
+        <property name="employeeLastName" column="EmployeeLastName"/>
+        <property name="employeeFirstName" column="EmployeeFirstName"/>
+        <property name="employeeMI" column="EmployeeMI"/>
+        <property name="insuredLastName" column="InsuredLastName"/>
+        <property name="insuredFirstName" column="InsuredFirstName"/>
+        <property name="insuredMI" column="InsuredMI"/>
+        <property name="insuredGender" column="InsuredGender"/>
+        <property name="insuredDOB" column="InsuredDOB" type="date"/>
+        <property name="issueAge" column="issueAge"/>
+        <property name="employeeGender" column="EmployeeGender"/>
+        <property name="employeeName" column="employeeName"/>
+        <property name="street1" column="Street1"/>
+        <property name="street2" column="Street2"/>
+        <property name="city" column="City"/>
+        <property name="state" column="State"/>
+        <property name="zip" column="Zip"/>
+        <property name="insuredName" column="InsuredName"/>
+        <property name="relationshipCode" column="relationshipCode"/>
+        <property name="ssn" column="SSN"/>
+        <property name="smoker" column="Smoker"/>
+        <property name="employerName" column="EmployerName"/>
+        <property name="policyCoverageEffectiveDate" column="PolicyCoverageEffectiveDate" type="date"/>
+        <property name="policyNumber" column="PolicyNumber"/>
+        <property name="policyTerminationEffectiveDate" column="PolicyTermEffectiveDate" type="date"/>
+        <property name="applicationDate" column="ApplicationDate" type="date"/>
+        <property name="terminationDate" column="terminationDate" type="date"/>
+        <property name="productType" column="ProductType"/>
+        <property name="policyProductCode" column="PolicyProductCode"/>
+        <property name="status" column="Status"/>
+        <property name="policyStatus" column="PolicyStatus"/>
+        <property name="billMode" column="BillMode"/>
+        <property name="modePremium" column="modePremium"/>
+        <property name="system" column="System"/>
+        <property name="billingForm" column="BillingForm"/>
+        <property name="ablacInd" column="AblacInd"/>
+        <property name="changeType" column="ChangeType"/>
+        <property name="changeReason" column="ChangeReason"/>
+        <property name="lntCode" column="LntCode"/>
+        <property name="instypeShortLabel" column="InstypeShortLabel"/>
+        <property name="policyEffectiveDate" column="PolicyEffectiveDate" type="date"/>
+        <property name="FILLER" column="FILLER"/>
+        <property name="test" type="java.lang.Boolean">
+           <column name="isTest" sql-type="tinyint"/>
+        </property>
+
+
+    </class>
+</hibernate-mapping>

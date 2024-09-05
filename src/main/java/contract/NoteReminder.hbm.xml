@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.NoteReminder" table="&quot;NoteReminder&quot;"  >
+        <id name="NoteReminderPK" column="&quot;NoteReminderPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="Sequence" column="&quot;Sequence&quot;"/>
+        <property name="Note" column="&quot;Note&quot;"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+        <property name="NoteTypeCT" column="&quot;NoteTypeCT&quot;"/>
+        <property name="NoteQualifierCT" column="&quot;NoteQualifierCT&quot;"/>
+
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>
+

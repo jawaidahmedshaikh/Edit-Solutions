@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://www.segsoftware.com"
+            elementFormDefault="qualified">
+  <xsd:element name="BillGroupSummaries">
+    <xsd:annotation>
+      <xsd:documentation>
+        A sample element
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element name="BillGroupSummary">
+          <xsd:complexType>
+            <xsd:choice>
+              <xsd:element name="GroupName"/>
+              <xsd:element name="ExtractDate"/>
+              <xsd:element name="DueDate"/>
+              <xsd:element name="Representative"/>
+              <xsd:element name="TotalBilledAmount"/>
+              <xsd:element name="TotalPaidAmount"/>
+              <xsd:element name="Difference"/>
+            </xsd:choice>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

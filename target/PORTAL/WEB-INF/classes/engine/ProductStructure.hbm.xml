@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.ProductStructure" table="&quot;ProductStructure&quot;" lazy="true">
+        
+        <cache usage="read-write"/>
+        
+        <id name="ProductStructurePK" column="&quot;ProductStructurePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="MarketingPackageName" column="&quot;MarketingPackageName&quot;"/>
+        <property name="GroupProductName" column="&quot;GroupProductName&quot;"/>
+        <property name="AreaName" column="&quot;AreaName&quot;"/>
+        <property name="BusinessContractName" column="&quot;BusinessContractName&quot;"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+        <property name="AccountingClosePeriod" column="&quot;AccountingClosePeriod&quot;"/>
+        <property name="TypeCodeCT" column="&quot;TypeCodeCT&quot;"/>
+        <property name="HedgeFundInterimAccountFK" column="&quot;HedgeFundInterimAccountFK&quot;"/>
+        <property name="ExternalProductName" column="&quot;ExternalProductName&quot;"/>
+        <property name="GroupTypeCT" column="&quot;GroupTypeCT&quot;"/>
+
+        <property name="CompanyFK" column="&quot;CompanyFK&quot;" insert="false" update="false"/>
+        <property name="ProductTypeCT" column="&quot;ProductTypeCT&quot;"/>
+
+        <set name="FilteredFunds" table="&quot;ProductFilteredFundStructure&quot;" lazy="true" cascade="none">
+            <key column="&quot;ProductStructureFK&quot;"/>
+            <many-to-many class="engine.FilteredFund" column="&quot;FilteredFundFK&quot;"/>
+        </set>
+
+        <set name="AreaValues" table="&quot;FilteredAreaValue&quot;" inverse="true" lazy="true" cascade="all">
+            <key column="&quot;ProductStructureFK&quot;"/>
+            <many-to-many class="engine.AreaValue" column="&quot;AreaValueFK&quot;"/>
+        </set>
+
+        <set name="Rules" table="&quot;ProductRuleStructure&quot;" inverse="true" lazy="true" cascade="all">
+            <key column="&quot;ProductStructureFK&quot;"/>
+            <many-to-many class="engine.Rules" column="&quot;RulesFK&quot;"/>
+
+        </set>
+
+       <many-to-one
+            name="Company"
+            column="&quot;CompanyFK&quot;"
+            class="engine.Company"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

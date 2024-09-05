@@ -1,0 +1,1365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+		   xmlns:custom="com.segsoftware.view.custom.*"
+		   width="100%" height="858" initialize="init()">
+
+	<mx:Style source="../css/segSoftware.css"/>	
+ 
+	<mx:Script> 
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import com.segsoftware.command.AppEntryCommand;
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.event.SEGEvent;
+			import com.segsoftware.model.ClientSegment;
+			import com.segsoftware.model.CodeTable;
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.model.encoding.ContractClient;
+			import com.segsoftware.utility.EventBroker;
+			import com.segsoftware.utility.Util;
+			
+			import mx.binding.utils.BindingUtils;
+			import mx.binding.utils.ChangeWatcher;
+			import mx.collections.ArrayCollection;
+			import mx.collections.XMLListCollection;
+			import mx.controls.Alert;
+			import mx.controls.TextInput;
+			import mx.events.CloseEvent;
+			import mx.events.DataGridEvent;
+			import mx.events.DataGridEventReason;
+			import mx.events.FlexEvent;
+			import mx.managers.*;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable] public var productXML:XMLListCollection;
+			//[Bindable] public var candidateRiderXML:XMLListCollection;
+			[Bindable] public var policyPrefix:String;
+			[Bindable] public var policySuffix:String;
+			[Bindable] public var policySequence:int; 	
+			/**
+			* A convenience reference.
+			*/
+			public var dispatcher:CairngormEventDispatcher = CairngormEventDispatcher.getInstance();
+			
+			/**
+			* Stores reference(s) to each SEGCombobox used for the Bene Amt/Percent drop down.
+			* For the life of me I can't get the drop-downs to reset once the Split Equally checkbox
+			* is checked even though the backend Model is updated. I have opted to grunt this out
+			* by manually storing references to the drop downs and resetting them when needed.
+			*/
+   		    public var beneAllocationTypeComboBoxes:ArrayCollection = new ArrayCollection();			
+
+			import com.segsoftware.view.encoding.ClientSelectDialog;
+			
+			/**
+			 *	Initialization function.
+			 *  Sets necessary objects into the SEGModelLocator for later access.
+			 */
+			private function init():void
+			{
+				SEGModelLocator.getInstance().splitEquallyCheckBox = splitEquallyCheckBox;
+				EventBroker.subscribe("BatchContractSetupSelected", batchContractSetupSelectedHandler);
+			}
+			
+		
+			private function batchContractSetupSelectedHandler(event:Event):void
+			{
+				var selectedBatchContractSetupVO:XML = SEGModelLocator.getInstance().selectedBatchContractSetupVO;
+// 				var filteredProductVO:XML = SEGModelLocator.getInstance().candidateFilteredProductVOs;
+//				var productStructureVO:XML = filteredProductVO.ProductStructureVO[0];
+			
+				
+				var billingModeCT:String = selectedBatchContractSetupVO.ContractGroupVO.BillScheduleVO.BillingModeCT;
+				
+				if (billingModeCT == "Annual" || billingModeCT == "SemiAnn" || billingModeCT == "Quart")
+		        {
+		            this.deductionAmountOverride.enabled = false;
+		            this.deductionAmountEffectiveDate.enabled = false;
+		        }
+		        else
+		        {
+		            this.deductionAmountOverride.enabled = true;
+		            this.deductionAmountEffectiveDate.enabled = true;
+		        }
+			}
+			
+			 /*	
+			 * Pops-up the ClientSelectDialog and registers the onCloseClientSelectDialog() function
+			 * as the callback function to be notified when the dialog is closed. The callback allows
+			 * the application to gather data from the dialog. 
+			 */
+			private function showClientSelectDialog():void
+			{
+				// Clear any previous search results.
+				SEGModelLocator.getInstance().searchedForAppEntryClientDetailVOs.removeAll();
+				
+				var clientSelectDialog:ClientSelectDialog = PopUpManager.createPopUp(this, com.segsoftware.view.encoding.ClientSelectDialog, true) as ClientSelectDialog;	
+				
+				PopUpManager.centerPopUp(clientSelectDialog);
+			}
+			
+			/**
+			 * Pops-up the dialog so that Roles can be declared for the currently selected Client.
+			 */
+			public function showRolesDialog():void
+			{
+				var rolesDialog:RolesDialog = PopUpManager.createPopUp(this, RolesDialog, true) as RolesDialog;
+				
+				PopUpManager.centerPopUp(rolesDialog);
+			}
+			
+			/**
+			 * Pops-up the More Info Dialog.
+			 */
+			public function showMoreInfoDialog():void
+			{
+				var moreInfoDialog:MoreInfoDialog = PopUpManager.createPopUp(this, MoreInfoDialog, true) as MoreInfoDialog;
+				
+				PopUpManager.centerPopUp(moreInfoDialog);				
+			}
+			
+			/**
+			 * Pops-up the QuestionnaireDialog and registers the clientSelectDialogClose() function
+			 * as the callback function to be notified when the dialog is closed. The callback allows
+			 * the application to gather data from the dialog. 
+			 */
+			public function showQuestionnaireDialog():void
+			{
+				var questionnaireDialog:QuestionnaireDialog = PopUpManager.createPopUp(this, com.segsoftware.view.encoding.QuestionnaireDialog, true) as QuestionnaireDialog;	
+				
+				PopUpManager.centerPopUp(questionnaireDialog);
+			}	
+			
+			/**
+			 * Pops-up the RiderClientDialog which allows the user to select an existing 
+			 * ContractClient and GIO option based on the rider type.
+			 */
+			public function showRiderClientDialog():void
+			{
+				if (requiredRiderFieldsSupplied())
+				{
+					var riderClientDialog:RiderClientDialog = PopUpManager.createPopUp(this, com.segsoftware.view.encoding.RiderClientDialog, true) as RiderClientDialog;	
+				
+					riderClientDialog.clientSegment = this.selectedCandidateRiderVOsDataGrid.selectedItem as ClientSegment;
+					
+					PopUpManager.centerPopUp(riderClientDialog);
+				}
+				else
+				{
+					Alert.show("Face Amount is required for Level Term Benefit riders.");
+				}
+			}
+			
+			/**
+			 * Determines whether the required fields for the rider have been supplied by the user or
+			 * not.  For Level Term Benefit riders, a FaceAmount is required.  
+			 * 
+			 * @return true if the user supplied the required information, false otherwise.  True if
+			 * the rider has a coverage that does not have required fields.
+			 */
+			private function requiredRiderFieldsSupplied():Boolean
+			{
+				var clientSegment:ClientSegment = this.selectedCandidateRiderVOsDataGrid.selectedItem as ClientSegment;
+				
+				if (clientSegment.candidateRiderVO.Coverage == "Level Term Benefit")
+				{
+					//	FaceAmount is required
+					if (clientSegment.candidateRiderVO.FaceAmount == "")
+					{
+						return false;
+					}
+					else
+					{
+						return true;
+					}
+				}
+				else
+				{
+					//	The rider has a coverage that does not require fields
+					return true;
+				}
+			}
+			
+			/*
+			private function requiredEOBField():Boolean {
+				var clientSegment:ClientSegment = this.selectedCandidateRiderVOsDataGrid.selectedItem as ClientSegment;
+				if (clientSegment.candidateRiderVO.Coverage == "Extended Benefit Option") {
+					return true;
+				}
+				return false;
+			}
+			*/
+			
+			/**
+			 * The candidate ProductStructure dropdown needs a "calculated" label based
+			 * on the usual Product, ProductType, CompanyName, etc.
+			 */
+			private function formatCandidateProductStructureLabel(object:Object):String
+			{
+				var filteredProductVO:XML = object as XML;
+				
+				var productStructureVO:XML = filteredProductVO.ProductStructureVO[0];
+				
+				return Util.formatProductKey(productStructureVO);
+			}
+						
+			/**
+			 * Generates a new business quote.
+			 */
+			private function showQuoteDialog():void
+			{
+				var quoteDialog:QuoteDialog = PopUpManager.createPopUp(this, com.segsoftware.view.encoding.QuoteDialog, true) as QuoteDialog;	
+				
+				PopUpManager.centerPopUp(quoteDialog);				
+			}
+			
+			/**
+			 * Determines the client's name to display in the name field.  
+			 */ 
+			private function determineDisplayName(item:Object, column:DataGridColumn):String 
+			{
+				var appEntryClientDetailUIVOAsXML:XML = XML (item);
+				
+				var clientDetailVO:XML = appEntryClientDetailUIVOAsXML.ClientDetailVO[0];
+				
+				return Util.determineClientName(clientDetailVO);
+   			}
+   			
+   			/**
+   			 * LabelFunction to display the Coverage column of the selected candidate riders
+   			 */
+   			private function coverageLabelFunction(item:Object, dataGridColumn:DataGridColumn):String
+   			{
+   				var clientSegment:ClientSegment = item as ClientSegment;
+   				
+   				return clientSegment.candidateRiderVO.Coverage;
+   			}
+			
+
+			//contractNumber length not being used.  No reason to call it. deck 12-13-17
+			/*
+			public function setContractLength():void
+			{
+				productXML = SEGModelLocator.getInstance().candidateFilteredProductVOs;				
+					
+				policyPrefix = productXML[0].ProductStructureVO.CompanyVO.PolicyNumberPrefix[0];
+				policySequence = productXML[0].ProductStructureVO.CompanyVO.PolicySequenceLength[0];
+				policySuffix = productXML[0].ProductStructureVO.CompanyVO.PolicyNumberSuffix[0];
+				
+				if (policySuffix == null) {
+					policySuffix = "";
+				}
+				
+				if(policyPrefix && policySequence){
+					contractNumber.maxChars = policyPrefix.length + policySequence + policySuffix.length;
+				}
+			}			
+			*/
+			
+			protected function checkContractNumberExists():Boolean {
+				if (contractNumber.length == 0) {
+					return false;
+				}
+				return true;
+			}
+			
+			protected function validateContractNumber():Boolean {
+				if (!checkContractNumber()) {
+					Alert.show("Contract number doesn't meet requirements");
+					return false;
+				} else
+				return true;
+			}
+			
+			protected function checkContractNumber():Boolean
+			{
+				productXML = SEGModelLocator.getInstance().candidateFilteredProductVOs;				
+				if(!isEscape && (contractNumber.length > 0)){	
+					for(var i:int = 0; i < productXML.length; i++) {
+						policyPrefix = productXML[i].ProductStructureVO.CompanyVO.PolicyNumberPrefix[0];
+						policySequence = productXML[i].ProductStructureVO.CompanyVO.PolicySequenceLength[0];
+						policySuffix = productXML[i].ProductStructureVO.CompanyVO.PolicyNumberSuffix[0];
+						
+						if (policySuffix == null) {
+							policySuffix = "";
+						}
+						
+						if(policyPrefix && policySequence) {								
+							var pattern:RegExp = new RegExp('^'+policyPrefix+'[0-9]{'+policySequence
+								+','+policySequence+'}'+policySuffix+'$');
+							
+							if (pattern.test(contractNumber.text)) {
+								return true;
+							} else if ((i + 1) == productXML.length) {
+								return false;
+							}
+						}
+					}
+				}	
+				return true;
+			} 
+		
+			/*
+			protected function checkContractNumber():Boolean
+			{
+				if(!isEscape){
+					if(policyPrefix && policySequence) 
+					{								
+						var pattern:RegExp = new RegExp('^'+policyPrefix+'[0-9]{'+policySequence+','+policySequence+'}'+policySuffix+'$');
+						
+						if (!pattern.test(contractNumber.text)) 
+						{
+							Alert.show("Contract number doesn't meet requirements");
+							return false;
+						}			
+					}
+				}
+				
+				return true;
+			} 
+			*/
+			
+			protected function checkWaiverOfPremiumAdd():void
+			{
+				var rider:String = candidateCandidateRiderVOsDataGrid.selectedItem.Coverage[0];
+			
+				if( rider.indexOf("Waiver of Premium") >= 0 )
+				{
+					var dp:Object = selectedCandidateRiderVOsDataGrid.dataProvider;
+					var dpArray:Array = dp.toArray();
+					
+					for each(var cs:ClientSegment in dpArray)
+					{
+						var coverage:String = cs.candidateRiderVO.Coverage[0];
+						
+						if( coverage.indexOf("Waiver of Premium") >=0 )
+						{
+							Alert.show("Cannot add " + rider);	
+							return;
+						}
+					}
+				}				
+				
+				dispatcher.dispatchEvent(new SEGEvent(SEGController.EVENT_SELECT_CANDIDATERIDERS, formData));	
+				
+			}
+			
+			protected function checkWaiverOfPremiumSave():Boolean
+			{
+				var count:int = 0;
+				
+				var dp:Object = selectedCandidateRiderVOsDataGrid.dataProvider;
+				var dpArray:Array = dp.toArray();
+					
+				for each(var cs:ClientSegment in dpArray)
+				{
+					var coverage:String = cs.candidateRiderVO.Coverage[0];
+						
+					if( coverage.indexOf("Waiver of Premium") >=0 )
+					{
+						count++;						
+					}
+				}								
+				
+				if(count > 1)
+					return true;
+				else
+					return false;
+			}
+			
+			protected function checkChildTermRider():Boolean
+			{	
+				var dp:Object = selectedCandidateRiderVOsDataGrid.dataProvider;
+				var dpArray:Array = dp.toArray();
+				
+				for each(var cs:ClientSegment in dpArray)
+				{
+					var coverage:String = cs.candidateRiderVO.Coverage[0];
+					
+					if(coverage.indexOf("Child Term Rider") >= 0)
+					{							
+						var units:String = cs.candidateRiderVO.Units[0];
+						if(units.length > 0)
+  							return true;
+						else
+							return false;
+					}
+				}
+				
+				return true;
+			}
+			
+			protected function checkLevelTermBenefit():Boolean
+			{
+				var dp:Object = selectedCandidateRiderVOsDataGrid.dataProvider;
+				var dpArray:Array = dp.toArray();
+				
+				for each(var cs:ClientSegment in dpArray)
+				{
+					var coverage:String = cs.candidateRiderVO.Coverage[0];
+			
+					if( coverage.indexOf("Level Term Benefit") >=0 )
+					{						
+						var faceAmount:String = cs.candidateRiderVO.FaceAmount[0];
+						if(faceAmount.length > 0)
+ 							return true;
+						else
+							return false;
+					}
+				}
+				
+				return true;
+			}
+
+			protected function checkRestorationOfBenefits():Boolean
+			{
+				var dp:Object = selectedCandidateRiderVOsDataGrid.dataProvider;
+				var dpArray:Array = dp.toArray();
+				
+				for each(var cs:ClientSegment in dpArray)
+				{
+					var coverage:String = cs.candidateRiderVO.Coverage[0];
+					
+					if( coverage.indexOf("Restoration of Benefits Rider") >=0 )
+					{						
+						var rstMultiple:String = cs.candidateRiderVO.EOBMultiple[0];
+						if(rstMultiple.length > 0) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				}
+				
+				return true;
+			}
+			
+			protected function checkExtensionOfBenefits():Boolean
+			{
+				var dp:Object = selectedCandidateRiderVOsDataGrid.dataProvider;
+				var dpArray:Array = dp.toArray();
+				
+				for each(var cs:ClientSegment in dpArray)
+				{
+					var coverage:String = cs.candidateRiderVO.Coverage[0];
+					
+					if( coverage.indexOf("Extended Benefit Option") >=0 )
+					{						
+						var eobMultiple:String = cs.candidateRiderVO.EOBMultiple[0];
+						if(eobMultiple.length > 0) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				}
+				
+				return true;
+			}
+			
+			protected function saveValidation(savemode:int):void
+			{
+				var proceed:Boolean = true;
+				var alertString:String = "";
+				
+				if(!checkContractNumberExists()) {
+					alertString += "Please enter a contract number\r\n";
+					proceed = false;
+				}
+
+				if(!checkContractNumber()) {
+					alertString += "Contract number doesn't meet requirements\r\n";
+					proceed = false;
+				}
+
+				if(!checkChildTermRider())
+				{
+					alertString += "Please enter Units for Child Term Rider\r\n";
+					proceed = false;
+				}
+				if(!checkLevelTermBenefit())
+				{
+					alertString += "Please enter Face Amount for Level Term Benefit\r\n";
+					proceed = false;
+				}
+				if(!checkExtensionOfBenefits())
+				{
+					alertString += "Please enter Multiple for Extension of Benefits\r\n";
+					proceed = false;
+				}
+				if(!checkRestorationOfBenefits())
+				{
+					alertString += "Please enter Multiple for Restoration of Benefits Rider\r\n";
+					proceed = false;
+				}
+				if(checkWaiverOfPremiumSave())
+				{
+					alertString += "Cannot have two waiver of premium riders\r\n";
+					proceed = false;
+				}
+				if(proceed){
+					formData.commandMode = savemode;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_APPENTRY, formData));
+					// removed Insured from selectedClientRolesHolder
+		
+				}else{
+					Alert.show(alertString);
+				}
+			}
+			
+			protected function appEntryClientDetailVOsDataGrid_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(appEntryClientDetailVOsDataGrid.selectedIndex>-1){
+					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_SHOW_CLIENTROLE_INFORMATION, formData));
+					debugger.text = appEntryClientDetailVOsDataGrid.selectedItem.toString();
+				}
+			}
+			
+			private var isEscape:Boolean = false;
+			
+			protected function contractNumber_keyUpHandler(event:KeyboardEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(event.charCode==Keyboard.ESCAPE){
+					isEscape = true;
+					faceAmount.setFocus();
+				}else{
+					isEscape = false;
+				}
+			}
+
+			public function deductionFrequencyDescFunc(item:Object):String { 
+				var deductionFrequencyDesc:String = item as String;
+				return deductionFrequencyDesc;
+			} 
+
+			public function codeLocLabelFunc(item:Object):String { 
+				var departmentLocationVO:XML = item as XML;
+				var deptLocCode:String = departmentLocationVO.DeptLocCode;
+				var deptLocName:String = departmentLocationVO.DeptLocName;
+				return deptLocCode + " - " + deptLocName;
+			} 
+
+			/**
+			 * Holder for selected roles to compare for duplicate client assignment.
+			 */
+			public function selectClientRole(item:Object):void {
+
+				
+				for each (var highlightedCandidateClientRoleUIVO:XML in item.highlightedCandidateClientRoleUIVOs) {
+					var selectedRoleType:String = highlightedCandidateClientRoleUIVO.RoleTypeDesc[0].toString();
+				    if (SEGModelLocator.getInstance().selectedClientRolesHolder.indexOf(selectedRoleType) >= 0) {
+					    Alert.show("One or more of the roles selected are already assigned to another client.");
+						return;
+				    } 
+					if ((selectedRoleType != "Term Insured") && (selectedRoleType != "Primary Beneficiary")) {
+				        SEGModelLocator.getInstance().selectedClientRolesHolder.
+							push(highlightedCandidateClientRoleUIVO.RoleTypeDesc.children()[0].toString());
+					}
+			    }
+                dispatcher.dispatchEvent(
+						          new SEGEvent(SEGController.EVENT_SELECT_CANDIDATECLIENTROLES, item));
+		    }
+			
+			public function deselectClientRole(item:Object):void {
+				for each (var highlightedSelectedClientRoleUIVO:XML in item.highlightedSelectedClientRoleUIVOs) {
+					var removeRole:String = highlightedSelectedClientRoleUIVO.RoleTypeDesc.children()[0].toString();
+					var index:int = SEGModelLocator.getInstance().selectedClientRolesHolder.indexOf(removeRole);
+					if (index >= 0) {
+						SEGModelLocator.getInstance().selectedClientRolesHolder.splice(index, 1);
+					}
+			    }
+			    dispatcher.dispatchEvent(
+						   new SEGEvent(SEGController.EVENT_DESELECT_CANDIDATECLIENTROLES, item));
+			}
+			
+		]]>
+	</mx:Script>	
+	
+	<mx:Model id="formData">
+		<formData>
+			<highlightedCandidateClientRoleUIVOs>{candidateClientRoleUIVOsDataGrid.selectedItems}</highlightedCandidateClientRoleUIVOs>
+			<highlightedSelectedClientRoleUIVOs>{selectedClientRoleUIVOsDataGrid.selectedItems}</highlightedSelectedClientRoleUIVOs>
+			
+			<highlightedCandidateCandidateRiderVOs>{candidateCandidateRiderVOsDataGrid.selectedItems}</highlightedCandidateCandidateRiderVOs>
+			<highlightedClientSegments>{selectedCandidateRiderVOsDataGrid.selectedItems}</highlightedClientSegments>						
+			
+			<productKeyVO>{productKey.selectedItem}</productKeyVO>
+			
+			
+			<BeneficiariesEquallySplit>{splitEquallyCheckBox.selected}</BeneficiariesEquallySplit>
+			
+			<GeneratePRASETest>{generatePRASETestCheckBox.selected}</GeneratePRASETest>
+			
+			<candidateClientRoleUIVOsDataGrid>{candidateClientRoleUIVOsDataGrid}</candidateClientRoleUIVOsDataGrid>
+			<candidateCandidateRiderVOsDataGrid>{candidateCandidateRiderVOsDataGrid}</candidateCandidateRiderVOsDataGrid>
+			
+			<commandMode/>
+		</formData>
+	</mx:Model>
+	
+	<!--
+	<mx:Validator id="productKeyValidator" source="{productKey}" property="selectedItem" required="true" triggerEvent="null"/>		
+	<mx:DateValidator id="effectiveDateValidator" allowedFormatChars="/" source="{effectiveDate}" property="text" required="true" triggerEvent="null"/>	
+	<mx:DateValidator id="applicationSignedDateValidator" allowedFormatChars="/" source="{applicationSignedDate}" property="text" required="true" triggerEvent="null"/>		
+	<mx:Validator id="applicationSignedStateValidator" source="{applicationSignedState}" property="selectedItem" required="true" triggerEvent="null"/>	
+	-->
+	
+	<mx:Binding destination="SEGModelLocator.getInstance().selectedAppEntryClientDetailVO"
+				source="appEntryClientDetailVOsDataGrid.selectedItem as XML"/>
+	
+	<mx:Panel left="10" right="10" top="10" height="198" layout="horizontal"
+			  title="Contract Information">
+		<mx:VBox height="152" horizontalAlign="right" paddingBottom="0" paddingLeft="0"
+				 paddingRight="0" paddingTop="0">
+			<mx:HBox height="149" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0">
+				<mx:Form height="142" paddingBottom="0" paddingLeft="0" paddingRight="0"
+						 paddingTop="0" verticalGap="4">
+					<mx:FormItem label="App Signed State:">
+						<custom:SEGComboBox id="applicationSignedState"
+											dataProvider="{CodeTable.getInstance().filteredStateCodeTableVOs}"
+											labelField="CodeDesc" valueField="Code"
+											valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+											valueObjectVOField="ApplicationSignedStateCT"/> 
+					</mx:FormItem>
+					<mx:FormItem label="Issue State:">
+							<custom:SEGComboBox id="issueState"
+												dataProvider="{CodeTable.getInstance().filteredStateCodeTableVOs}"
+												labelField="CodeDesc" valueField="Code"
+												valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+												valueObjectVOField="IssueStateCT"/> 
+					</mx:FormItem>
+					<mx:FormItem label="Group Plan:">
+						<custom:SEGComboBox id="groupPlan"
+											dataProvider="{CodeTable.getInstance().groupPlanCodeTableVOs}"
+											labelField="CodeDesc" valueField="Code"
+											valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+											valueObjectVOField="GroupPlan"/> 
+					</mx:FormItem>	
+					<mx:FormItem label="1035 Exchange Ind:">
+						<custom:SEGComboBox id="exchangeIndComboBox"
+											dataProvider="{CodeTable.getInstance().yesNoCodeTableVOs}"
+											labelField="CodeDesc" selectedIndex="0"
+											valueField="Code"
+											valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+											valueObjectVOField="ExchangeInd"/> 
+					</mx:FormItem>
+					<mx:FormItem label="MEC Status:">
+						<custom:SEGComboBox id="mecStatusComboBox"
+											dataProvider="{CodeTable.getInstance().mecCodeTableVOs}"
+											labelField="CodeDesc" selectedIndex="1"
+											valueField="Code"
+											valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+											valueObjectVOField="MECStatusCT"/> 
+					</mx:FormItem>
+				</mx:Form>
+				<mx:Form height="143" paddingBottom="0" paddingLeft="0" paddingRight="0"
+						 paddingTop="0" verticalGap="4">
+					<mx:FormItem label="Effective Date:">
+						<custom:SEGDateField id="effectiveDate" editable="true"
+											 formatString="MM/DD/YYYY" required="false"
+											 text="{SEGModelLocator.getInstance().segmentInformationVO.EffectiveDate}"
+											 valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+											 valueObjectVOField="EffectiveDate"/>	
+					</mx:FormItem>
+					<mx:FormItem label="App Signed Date:">
+						<custom:SEGDateField id="applicationSignedDate" editable="true"
+											 required="false"
+											 text="{SEGModelLocator.getInstance().segmentInformationVO.ApplicationSignedDate}"
+											 valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+											 valueObjectVOField="ApplicationSignedDate"/>
+					</mx:FormItem>
+				<mx:FormItem label="Rated Gender:">
+						<custom:SEGComboBox id="ratedGender"
+											dataProvider="{CodeTable.getInstance().filteredRatedGenderCodeTableVOs}"
+											labelField="CodeDesc" valueField="Code"
+											valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+											valueObjectVOField="RatedGenderCT"/> 
+					</mx:FormItem>
+					<mx:FormItem label="Underwriting Class:">
+						<custom:SEGComboBox id="underwritingClass"
+											dataProvider="{CodeTable.getInstance().underwritingClassCodeTableVOs}"
+											labelField="CodeDesc" valueField="Code"
+											valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+											valueObjectVOField="UnderwritingClassCT"/> 
+					</mx:FormItem>
+				
+			        <mx:FormItem label="Scheduled Premium:">
+						<custom:SEGTextInput id="scheduledPremium" width="80" text=""
+											 valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+											 valueObjectVOField="ScheduledPremium"/>	
+					</mx:FormItem>
+				</mx:Form>
+				<mx:Form height="144" indicatorGap="10" paddingBottom="0" paddingLeft="0"
+						 paddingRight="0" paddingTop="0" verticalGap="4">
+					<mx:FormItem label="Product Key:">
+						<custom:SEGComboBox id="productKey"
+											change="CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_FILTER_CODETABLES, formData));"
+											dataProvider="{SEGModelLocator.getInstance().candidateFilteredProductVOs}"
+											labelFunction="{formatCandidateProductStructureLabel}"
+											valueField="FilteredProductPK"
+											valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+											valueObjectVOField="FilteredProductPK"/> 
+					</mx:FormItem>
+					<mx:FormItem label="DBO:">
+						<custom:SEGComboBox dataProvider="{CodeTable.getInstance().filteredDeathBenefitOptionCodeTableVOs}"
+											labelField="CodeDesc" valueField="Code"
+											valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+											valueObjectVOField="DeathBenefitOptionCT"/> 
+					</mx:FormItem>
+					<mx:FormItem label="NFO:" alpha="0.8" backgroundAlpha="1.0">
+						<custom:SEGComboBox dataProvider="{CodeTable.getInstance().filteredNonForfeitureOptionCodeTableVOs}"
+											labelField="CodeDesc" valueField="Code"
+											valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+											valueObjectVOField="NonForfeitureOptionCT"/> 
+					</mx:FormItem>
+					<mx:FormItem width="237" height="23" label="Ded Freq:">
+						<custom:SEGTextInput id="deductionFrequencyDesc" width="141"
+											 borderColor="#ECF2F6" enabled="false"
+											 text="{SEGModelLocator.getInstance().deductionFrequencyDesc}"
+											 valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+											 valueObjectVOField="DeductionFrequencyDesc"/>	
+					</mx:FormItem>
+					<mx:Button height="19" label="Set Defaults"
+							   click="
+							   mecStatusComboBox.selectedIndex = 0;
+							   exchangeIndComboBox.selectedIndex = 1;
+							   formData.commandMode = AppEntryCommand.COMMAND_MODE_SET_DEFAULTS;
+							   CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_APPENTRY, formData));
+							   "/>
+				</mx:Form>
+			</mx:HBox>
+		</mx:VBox>
+		<mx:VRule height="125"/>
+		<mx:Form height="149" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0"
+				 verticalGap="4">
+			<mx:FormItem label="Contract #">
+				<custom:SEGTextInput id="contractNumber" focusOut="validateContractNumber()"
+									 keyUp="contractNumber_keyUpHandler(event)"
+									 text="{SEGModelLocator.getInstance().segmentInformationVO.ContractNumber}"
+									 valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+									 valueObjectVOField="ContractNumber"/>	
+			</mx:FormItem>
+			<mx:FormItem label="Face Amount:">
+				<custom:SEGTextInput id="faceAmount"
+									 text="{SEGModelLocator.getInstance().segmentInformationVO.FaceAmount}"
+									 valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+									 valueObjectVOField="FaceAmount"/>	
+			</mx:FormItem>
+			<mx:FormItem label="Dept/Loc:">
+				<custom:SEGComboBox id="departmentLocation"
+									dataProvider="{SEGModelLocator.getInstance().departmentLocationVOs}"
+									labelFunction="codeLocLabelFunc"
+									valueField="DepartmentLocationPK"
+									valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+									valueObjectVOField="DepartmentLocationPK"/> 
+			</mx:FormItem>
+			<mx:FormItem label="Deduction Amount:">
+				<custom:SEGTextInput id="deductionAmountOverride"
+									 text="{SEGModelLocator.getInstance().segmentInformationVO.DeductionAmountOverride}"
+									 valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+									 valueObjectVOField="DeductionAmountOverride"/>	
+			</mx:FormItem>
+			<mx:FormItem label="Ded Amnt Eff Date:">
+				<custom:SEGDateField id="deductionAmountEffectiveDate" editable="true"
+									 formatString="MM/DD/YYYY" required="false"
+									 text="{SEGModelLocator.getInstance().segmentInformationVO.DeductionAmountEffectiveDate}"
+									 valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+									 valueObjectVOField="DeductionAmountEffectiveDate"/>	
+			</mx:FormItem>
+		</mx:Form>
+		<mx:TextArea id="debugger" visible="false" width="100%" height="100%" includeInLayout="false"/>
+	</mx:Panel>
+	
+	<mx:VBox left="10" right="10" top="216" bottom="68" verticalAlign="top">
+			
+		<mx:HBox left="10" right="10" top="238" width="100%" height="180" paddingBottom="0"
+				 paddingLeft="0" paddingRight="0" paddingTop="0">
+		</mx:HBox>
+		<mx:HBox left="10" right="10" width="100%" height="198" paddingBottom="0" paddingLeft="0"
+				 paddingRight="0" paddingTop="0" verticalAlign="middle" verticalCenter="105.5">
+			<mx:Panel left="10" right="10" bottom="15" width="20%" height="180" layout="absolute"
+					  title="Candidate Roles">
+				<mx:DataGrid id="candidateClientRoleUIVOsDataGrid" left="0" right="0" top="0"
+							 bottom="0" allowMultipleSelection="true"
+							 dataProvider="{SEGModelLocator.getInstance().candidateClientRoleUIVOs}">
+					<mx:columns>
+						<mx:DataGridColumn dataField="RoleTypeDesc" headerText="Role"
+										   wordWrap="false">
+									<mx:Script>
+										<![CDATA[
+											import com.segsoftware.model.SEGModelLocator;
+											import mx.collections.ArrayList;
+
+											/**
+											 * 
+											 */
+											override public function set data(value:Object):void {
+												super.data = value;
+												
+											}	
+										]]>
+									</mx:Script>
+							
+							
+							<!--<mx:itemRenderer>
+								<mx:Component>
+									<mx:TextInput text="{data.RoleTypeDesc}" editable="false"/>
+								</mx:Component>
+							</mx:itemRenderer>-->
+						</mx:DataGridColumn>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:Panel>
+			<mx:VBox>
+				<mx:Button y="527" width="49"
+						   click="Util.selectAllRows(candidateClientRoleUIVOsDataGrid); selectClientRole(formData)"
+						   horizontalCenter="-9"
+						   icon="@Embed('../assets/icons/arrow_DoubleRight.png')"/>
+				<mx:Button y="557" width="49" click="selectClientRole(formData)"
+						   horizontalCenter="-9"
+						   icon="@Embed('../assets/icons/arrow_SingleRight.png')"/>
+				<mx:Button y="587" width="49" click="deselectClientRole(formData)"
+						   horizontalCenter="-9"
+						   icon="@Embed('../assets/icons/arrow_SingleLeft.png')"/>
+				<mx:Button y="617" width="49"
+						   click="Util.selectAllRows(selectedClientRoleUIVOsDataGrid); deselectClientRole(formData)"
+						   horizontalCenter="-9"
+						   icon="@Embed('../assets/icons/arrow_DoubleLeft.png')"/>	
+			</mx:VBox>
+			<mx:Panel width="80%" height="178" layout="absolute" title="Selected Roles">
+				<mx:DataGrid id="selectedClientRoleUIVOsDataGrid" left="0" right="0" top="0"
+							 bottom="0"
+							 dataProvider="{SEGModelLocator.getInstance().selectedClientRoleUIVOs}"
+							 editable="true">
+
+					<mx:columns>
+						<mx:DataGridColumn id="roleColumn" editable="false" headerText="Role">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:Text text="{data.RoleTypeDesc}"/>
+								</mx:Component>
+							</mx:itemRenderer>					
+						</mx:DataGridColumn>
+						 
+						<mx:DataGridColumn color="blue" editable="false" headerText="Class">
+							    	<mx:itemRenderer>
+							    		<mx:Component>
+							    			<mx:HBox horizontalScrollPolicy="off"
+													 verticalScrollPolicy="off">
+							    				<mx:Script>
+	 					    					<![CDATA[
+	 					    						import com.segsoftware.model.CodeTable;
+	 					    						
+	 					    						/**
+	 					    						* A hard-coded edit to disable the 'Class' drop-down
+	 					    						* for any clientRole that is NOT 'Insured' or 'TermInsured'.
+	 					    						*/
+	 					    						private function shouldDisable(event:Event):void
+	 					    						{
+	 					    							var segComboBox:SEGComboBox = event.currentTarget as SEGComboBox;
+	 					    							
+	 					    							var clientRoleUIVO:XML = segComboBox.valueObjectVO;
+	 					    							
+	 					    							var roleTypeCode:String = clientRoleUIVO.RoleTypeCode;
+	 					    							
+	 					    							if (roleTypeCode != "Insured" && roleTypeCode != "TermInsured")
+	 					    							{
+															segComboBox.enabled = false;	 					    								
+	 					    							}
+	 					    							else
+	 					    							{
+	 					    								segComboBox.enabled = true;
+	 					    							}
+	 					    						}
+	 					    					]]>
+	 					    					
+	 					    				</mx:Script>
+							    						
+							    			<custom:SEGComboBox width="100%"
+																change="                 shouldDisable(event);                "
+																dataProvider="{CodeTable.getInstance().filteredClassCodeTableVOs}"
+																labelField="CodeDesc"
+																valueField="Code"
+																valueObjectVO="{data as XML}"
+																valueObjectVOField="ClassTypeCode"/>
+							    			</mx:HBox>
+							    		</mx:Component>
+							    	</mx:itemRenderer>
+						    </mx:DataGridColumn> 					    
+							    
+						<mx:DataGridColumn color="blue" editable="false" headerText="Table Rating">
+							<mx:itemRenderer>
+							    		<mx:Component>
+							    			<mx:HBox horizontalScrollPolicy="off"
+													 verticalScrollPolicy="off">
+							    				<mx:Script>
+	 					    					<![CDATA[
+	 					    						import com.segsoftware.model.CodeTable;
+	 					    					]]>
+	 					    				</mx:Script>	 					    		
+							    			
+							    			<custom:SEGComboBox width="100%"
+																dataProvider="{CodeTable.getInstance().filteredTableRatingCodeTableVOs}"
+																labelField="CodeDesc"
+																valueField="Code"
+																valueObjectVO="{data as XML}"
+																valueObjectVOField="TableRatingCode"/>					    			
+							    			</mx:HBox>
+							    		</mx:Component>
+							</mx:itemRenderer>					
+						</mx:DataGridColumn>
+												
+						<mx:DataGridColumn color="blue" dataField="BeneficiaryAllocation"
+										   editable="true" headerText="Bene Alloc"/>
+						
+						<mx:DataGridColumn color="blue" editable="false"
+										   headerText="Bene (x 100%/Amt)">
+							<mx:itemRenderer>
+							    		<mx:Component>
+							    			<mx:HBox horizontalScrollPolicy="off"
+													 verticalScrollPolicy="off">
+							    				<mx:Script>
+	 					    					<![CDATA[
+	 					    						import com.segsoftware.model.CodeTable;
+	 					    						import mx.collections.XMLListCollection;
+	 					    						import mx.collections.ArrayCollection;
+	 					    						
+										            [Bindable]
+										            public var benePercentAmount:XML = 
+										            
+										            					<Items>
+										            						<Item>
+										            							<label>Amount</label>
+										            							<data>AMOUNT</data>
+										            						</Item>
+										            						<Item>
+										            							<label>Percent</label>
+										            							<data>PERCENT</data>
+										            						</Item>;
+										            					</Items>
+													
+													/**
+													* There is a variable defined earlier called 'beneAllocationTypeComboBoxes'.
+													* Read the comment there to know why I am doing this.
+													*/
+													private function registerForClear(event:Event):void
+													{
+														var segComboBox:SEGComboBox = event.currentTarget as SEGComboBox;
+														
+														if (segComboBox.valueObjectVOField == 'BeneficiaryAllocationType')
+														{
+															if (!outerDocument.beneAllocationTypeComboBoxes.contains(segComboBox))
+															{
+																outerDocument.beneAllocationTypeComboBoxes.addItem(segComboBox);
+															}															
+														}														
+													}										            					
+	 					    					]]>	
+	 					    				</mx:Script>	 					    		
+							    			
+							    			<custom:SEGComboBox width="100%"
+																dataProvider="{benePercentAmount.Item}"
+																initialize="registerForClear(event)"
+																labelField="label" valueField="data"
+																valueObjectVO="{data as XML}"
+																valueObjectVOField="BeneficiaryAllocationType"/>					    			
+							    			</mx:HBox>
+							    		</mx:Component>
+							</mx:itemRenderer>					
+						</mx:DataGridColumn>	
+						
+						<mx:DataGridColumn color="blue" dataField="BeneficiaryRelationshipToInsured"
+										   editable="true" headerText="Bene Rel to Ins"/>
+							
+					</mx:columns>
+				</mx:DataGrid>
+				<mx:ControlBar horizontalAlign="right" paddingBottom="0" paddingTop="0">
+					<custom:SEGCheckBox id="estateOfTheInsuredCheckBox" label="Estate Of The Insured"
+										noValue="N"
+										valueObjectVO="{SEGModelLocator.getInstance().segmentInformationVO}"
+										valueObjectVOField="EstateOfTheInsured" yesValue="Y"/>	
+					<mx:CheckBox id="splitEquallyCheckBox" label="Split Beneficiaries Equally"
+								 change="                  // Vision doesn't want to do anything when selecting the SplitBene checkbox.                  // They simply want to be notified of the confict. They will make the                   // adjustments. In short, user-entered Amounts and the checked SplitBene can't                  // exist at the same time. 03/31/2008 GF                                  //if (splitEquallyCheckBox.selected)                  //{                    // Read my comment about the 'beneAllocationTypeComboBoxes' variable                   // above to justify this witchcraft.                   //for each (var segComboBox:SEGComboBox in beneAllocationTypeComboBoxes)                   //{                   // segComboBox.selectedIndex = -1;                    //}                            //dispatcher.dispatchEvent(new SEGEvent(SEGController.EVENT_SPLIT_BENEFICIARIES_EQUALLY, null));                            //SEGModelLocator.getInstance().selectedClientRoleUIVOs.refresh();                                //}                 "/>
+				</mx:ControlBar>
+			</mx:Panel>
+		</mx:HBox>
+		<mx:HBox left="9" right="10" bottom="40" width="100%" height="165" paddingBottom="0"
+				 paddingLeft="0" paddingRight="0" paddingTop="0" verticalAlign="middle">
+			<mx:Panel left="10" right="10" width="20%" height="100%" layout="absolute"
+					  title="Candidate Riders/Benefits">
+				<mx:DataGrid id="candidateCandidateRiderVOsDataGrid" left="0" right="0" top="0"
+							 bottom="0" allowMultipleSelection="true"
+							 dataProvider="{SEGModelLocator.getInstance().candidateCandidateRiderVOs}"
+							 editable="false">
+					<mx:columns>
+						<mx:DataGridColumn dataField="Coverage" headerText="Coverage"/>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:Panel>
+			<mx:VBox>
+				<mx:Button y="527" width="49"
+						   click="Util.selectAllRows(candidateCandidateRiderVOsDataGrid);      dispatcher.dispatchEvent(new SEGEvent(SEGController.EVENT_SELECT_CANDIDATERIDERS, formData))      "
+						   horizontalCenter="-9"
+						   icon="@Embed('../assets/icons/arrow_DoubleRight.png')"/>
+				<mx:Button y="557" width="49" click="checkWaiverOfPremiumAdd();"
+						   horizontalCenter="-9"
+						   icon="@Embed('../assets/icons/arrow_SingleRight.png')"/>
+				<mx:Button y="587" width="49"
+						   click="dispatcher.dispatchEvent(new SEGEvent(SEGController.EVENT_DESELECT_CANDIDATERIDERS, formData))"
+						   horizontalCenter="-9"
+						   icon="@Embed('../assets/icons/arrow_SingleLeft.png')"/>
+				<mx:Button y="617" width="49"
+						   click="Util.selectAllRows(selectedCandidateRiderVOsDataGrid);       dispatcher.dispatchEvent(new SEGEvent(SEGController.EVENT_DESELECT_CANDIDATERIDERS, formData))"
+						   horizontalCenter="-9"
+						   icon="@Embed('../assets/icons/arrow_DoubleLeft.png')"/>	
+			</mx:VBox>		
+			
+			<!--
+				For the selected candidateRider dataGrid, we are now using a collection of ClientSegment objects instead
+				of a collection of candidateRiderVOs.  But the data for the columns is in the candidateRiderVO in the
+				ClientSegment.  Had difficulty using itemEditors to manually put the user-entered data into the
+				candidateRiderVO.  So added getters and setters on ClientSegment for the faceAmount, units, and eobMultiple 
+				columns.  The getters and setters go to the candidateRiderVO to get/set the information.  Now the
+				dataGrid can work as it normally does - i.e. using the dataField to call the getter/setter.  It's a cheat
+				but so is the whole ClientSegment object.  Saves me the hassle of using itemEditors (which I couldn't get
+				to work) and labelFunctions.
+			-->	
+			<mx:Panel width="80%" height="100%" layout="absolute" title="Selected Riders/Benefits">
+				<mx:DataGrid id="selectedCandidateRiderVOsDataGrid" left="0" right="0" top="0"
+							 bottom="0"
+							 dataProvider="{SEGModelLocator.getInstance().clientSegments}"
+							 editable="true">
+					<mx:columns>
+						<mx:DataGridColumn editable="false" headerText="Coverage"
+										   labelFunction="coverageLabelFunction"/>
+						<mx:DataGridColumn width="140" color="blue" editable="false"
+										   headerText="Group Plan">
+	 					    	<mx:itemRenderer>
+	 					    		<mx:Component>
+	 					    			<mx:HBox horizontalScrollPolicy="off"
+												 verticalScrollPolicy="off">
+		 					    			<mx:Script>
+		 					    				<![CDATA[
+		 					    					import com.segsoftware.model.CandidateRiderHelper;
+		 					    					import com.segsoftware.model.ClientSegment;
+		 					    					import com.segsoftware.model.CodeTable;
+		 					    					
+		 					    				]]>
+		 					    			</mx:Script> 
+		 					    		
+											<custom:SEGComboBox id="groupPlanComboBox" width="100%"
+																dataProvider="{CodeTable.getInstance().groupPlanCodeTableVOs}"
+																labelField="CodeDesc"
+																valueField="Code"
+																valueObjectVO="{data.candidateRiderVO}"
+																valueObjectVOField="GroupPlan"/>
+										</mx:HBox>
+	 					    		</mx:Component>
+	 					    	</mx:itemRenderer>						
+						</mx:DataGridColumn>	
+							
+											<mx:DataGridColumn width="140" color="blue"
+															   editable="false"
+															   headerText="Underwriting Class">
+	 					    	<mx:itemRenderer>
+	 					    		<mx:Component>
+	 					    			<mx:HBox horizontalScrollPolicy="off"
+												 verticalScrollPolicy="off">
+		 					    			<mx:Script>
+		 					    				<![CDATA[
+		 					    					import com.segsoftware.model.ClientSegment;
+		 					    					import com.segsoftware.model.CodeTable;		 					    					
+		 					    				]]>
+		 					    			</mx:Script> 
+		 					    		
+											<custom:SEGComboBox id="underwritingClassComboBox"
+																width="100%"
+																dataProvider="{CodeTable.getInstance().underwritingClassCodeTableVOs}"
+																labelField="CodeDesc"
+																valueField="Code"
+																valueObjectVO="{data.candidateRiderVO}"
+																valueObjectVOField="UnderwritingClassCT"/>
+										</mx:HBox>
+	 					    		</mx:Component>
+	 					    	</mx:itemRenderer>						
+						</mx:DataGridColumn>										
+			<mx:DataGridColumn width="180" color="blue" editable="false" headerText="Rated Gender">
+	 					    	<mx:itemRenderer>
+	 					    		<mx:Component>
+	 					    			<mx:HBox horizontalScrollPolicy="off"
+												 verticalScrollPolicy="off">
+		 					    			<mx:Script>
+		 					    				<![CDATA[
+		 					    					import com.segsoftware.model.ClientSegment;
+		 					    					import com.segsoftware.model.CodeTable;
+		 					    					
+		 					    				]]>
+		 					    			</mx:Script> 
+		 					    		
+											<custom:SEGComboBox id="ratedGenderCTComboBox"
+																width="100%"
+																dataProvider="{CodeTable.getInstance().filteredRatedGenderCodeTableVOs}"
+																labelField="CodeDesc"
+																valueField="Code"
+																valueObjectVO="{data.candidateRiderVO}"
+																valueObjectVOField="RatedGenderCT"/>
+										</mx:HBox>
+	 					    		</mx:Component>
+	 					    	</mx:itemRenderer>						
+						</mx:DataGridColumn>										
+			
+			
+						<mx:DataGridColumn color="blue" dataField="units" editable="true"
+										   headerText="Units"/>
+						
+						<mx:DataGridColumn color="blue" dataField="faceAmount" editable="true"
+										   headerText="Face Amount"/>
+
+						<mx:DataGridColumn color="blue" dataField="eobMultiple" editable="false"
+										   headerText="Multiple">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:HBox horizontalScrollPolicy="off" verticalScrollPolicy="off">
+										<mx:Script>
+											<![CDATA[
+												import com.segsoftware.model.SEGModelLocator;
+												import mx.collections.ArrayList;
+												
+												[Bindable]
+												public var eobMultipleData:XML =  
+													<Items>
+														<Item>
+															<label>1</label>
+															<data>1</data>
+														</Item>
+														<Item>
+															<label>2</label>
+															<data>2</data>
+														</Item>;
+													</Items>;
+												
+												[Bindable]
+												public var rstMultipleData:XML =  
+													<Items>
+														<Item>
+															<label>25</label>
+															<data>25</data>
+														</Item>
+														<Item>
+															<label>50</label>
+															<data>50</data>
+														</Item>;
+													</Items>;
+												
+												[Bindable]
+												public var multipleData:XML;
+												
+												/**
+												 * Display multiple drop-down for EOB/ENP/RST riders
+												 */
+												override public function set data(value:Object):void {
+													super.data = value;
+														
+													if (data.candidateRiderVO != null) {
+														
+														if (data.candidateRiderVO.Coverage == "Extended Benefit Option") {
+															multipleData = eobMultipleData;
+															eobMultipleComboBox.visible = true;
+														} else if (data.candidateRiderVO.Coverage == "EOB on LTC with 30 Day Elimination Period") {
+															multipleData = eobMultipleData;
+															eobMultipleComboBox.visible = true;
+														} else if (data.candidateRiderVO.Coverage == "EOB - State of CA") {
+															multipleData = eobMultipleData;
+															eobMultipleComboBox.visible = true;
+														} else if (data.candidateRiderVO.Coverage == "Extension of Benefits - No Paid Up Benefits") {
+															multipleData = eobMultipleData;
+															eobMultipleComboBox.visible = true;
+														} else if (data.candidateRiderVO.Coverage == "ENP on LTC with 30 Day Elimination Period") {
+															multipleData = eobMultipleData;
+															eobMultipleComboBox.visible = true;
+														} else if (data.candidateRiderVO.Coverage == "ENP - State of CA") {
+															multipleData = eobMultipleData;
+															eobMultipleComboBox.visible = true;
+														} else if (data.candidateRiderVO.Coverage == "Restoration of Benefits Rider") {
+															multipleData = rstMultipleData;
+															eobMultipleComboBox.visible = true;
+														} else {
+															eobMultipleComboBox.visible = false;
+														}
+													}
+												}	
+											]]>
+										</mx:Script> 
+										
+										<custom:SEGComboBox id="eobMultipleComboBox" width="100%"
+															dataProvider="{multipleData.Item}"
+															labelField="label" valueField="data"
+															valueObjectVO="{data.candidateRiderVO}"
+															valueObjectVOField="EOBMultiple"/>
+									</mx:HBox>
+								</mx:Component>
+							</mx:itemRenderer>	
+						</mx:DataGridColumn>
+						
+						<mx:DataGridColumn color="blue" dataField="" editable="false"
+										   headerText="Client...">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:HBox>
+					    				<mx:Script>
+ 				    					<![CDATA[
+ 				    						import com.segsoftware.model.CodeTable;
+ 				    						
+ 				    						/**
+ 				    						 * Only show the Client... link for certain rider types
+ 				    						 * The criteria is specified in the rider's GIOSelectionAllowed
+ 				    						 * parameter.
+ 				    						 * 
+ 				    						 * Since the LinkButton does not have get/set methods, we can't simply
+ 				    						 * do a change= to initiate the checking.  Instead, wrap with an
+ 				    						 * HBox which does have get/set and override its set method.
+ 				    						 */
+ 				    						override public function set data(value:Object):void
+ 				    						{
+ 				    							super.data = value;
+ 				    							
+ 				    							if (data != null)
+ 				    							{
+	 				    							var allowRiderClientSelection:String = data.candidateRiderVO.AllowRiderClientSelection;
+	
+													if (allowRiderClientSelection == "Y")
+	 				    							{
+														riderClientLinkButton.enabled = true;	 					    								
+	 				    							}
+	 				    							else
+	 				    							{
+	 				    								riderClientLinkButton.enabled = false;
+	 				    							}
+	 				    						}
+ 				    						}
+ 				    					]]>
+	 					    					
+	 					    			</mx:Script>
+							    			
+										<mx:LinkButton id="riderClientLinkButton" label="Client..."
+													   click="outerDocument.showRiderClientDialog()"/>
+									</mx:HBox>																		
+								</mx:Component>
+							</mx:itemRenderer>	
+						</mx:DataGridColumn>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:Panel>
+		</mx:HBox>
+	</mx:VBox>		
+	
+	<mx:HBox left="10" right="10" bottom="10" height="50" horizontalAlign="right"
+			 verticalAlign="bottom">
+		<mx:HBox left="10" right="10" top="10" width="100%" height="18" horizontalAlign="left"
+				 verticalAlign="middle">
+			<mx:Label fontWeight="bold" text="Case:"/>
+			<mx:Text text="{SEGModelLocator.getInstance().selectedBatchContractSetupVO.ContractGroupVO.ContractGroupVO.ContractGroupNumber}"/>
+			<mx:Spacer/>
+			<mx:Label fontWeight="bold" text="Case Name:"/>
+			<mx:Label width="125"
+					  text="{SEGModelLocator.getInstance().selectedBatchContractSetupVO.ContractGroupVO.ContractGroupVO.ClientRoleVO.ClientDetailVO.CorporateName}"
+					  truncateToFit="true"/>  <!-- truncate the text, otherwise a long case name will cause horizontal and vertical scroll bars to appear -->
+			<mx:Spacer/>
+			<mx:Label fontWeight="bold" text="Group:"/>
+			<mx:Text text="{SEGModelLocator.getInstance().selectedBatchContractSetupVO.ContractGroupVO.ContractGroupNumber}"/>
+			<mx:Spacer/>
+			<mx:Label fontWeight="bold" text="Batch ID:"/>
+			<mx:Text text="{SEGModelLocator.getInstance().selectedBatchContractSetupVO.BatchID}"/>
+			<mx:Button label="Refresh Roles"
+					   click="{CairngormEventDispatcher.getInstance().dispatchEvent(         new SEGEvent(SEGController.EVENT_SHOW_CLIENTROLE_INFORMATION, formData));}"/>
+		</mx:HBox>	
+		
+		<custom:SEGPRASETestCheckBox id="generatePRASETestCheckBox"/>
+		
+		<mx:Button right="220" bottom="10" label="Quote/Validate"
+				   click="    showQuoteDialog();    formData.commandMode = AppEntryCommand.COMMAND_MODE_QUOTE;    CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_APPENTRY, formData));       "
+				   enabled="false"/>
+		<mx:VRule height="20"/>
+		<mx:Button right="295" bottom="10" label="Skip"
+				   click="    formData.commandMode = AppEntryCommand.COMMAND_MODE_SKIP;    CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_APPENTRY, formData));    "/>
+		<mx:VRule height="20"/>
+		<mx:Button id="saveAndNewInsuredButton" right="71" bottom="10" label="Save &amp; New Insured"
+				   click="saveValidation(AppEntryCommand.COMMAND_MODE_SAVE_NEXT_NEW_INSURED);"/>
+		<mx:Button id="saveAndNextButton" right="10" bottom="10" label="Save &amp; Next"
+				   click="saveValidation(AppEntryCommand.COMMAND_MODE_SAVE_NEXT);    "/>
+	</mx:HBox>
+	<mx:Panel x="10" y="216" width="100%" height="188" layout="absolute" title="Client Information">
+		<mx:DataGrid id="appEntryClientDetailVOsDataGrid" left="0" right="0" top="0"
+					 bottom="0" allowMultipleSelection="false"
+					 click="appEntryClientDetailVOsDataGrid_clickHandler(event)"
+					 dataProvider="{SEGModelLocator.getInstance().appEntryClientDetailUIVOs}"
+					 editable="true" selectable="true">
+			<mx:columns>
+				<mx:DataGridColumn width="200" editable="false" headerText="Name"
+								   labelFunction="determineDisplayName">
+				</mx:DataGridColumn>
+				<mx:DataGridColumn dataField="TaxId" editable="false" headerText="Tax ID">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Text text="{data.ClientDetailVO.TaxIdentification}"/>
+						</mx:Component>
+					</mx:itemRenderer>					
+				</mx:DataGridColumn>
+				<mx:DataGridColumn dataField="DOB" editable="false" headerText="DOB">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Text text="{data.ClientDetailVO.BirthDate}"/>
+						</mx:Component>
+					</mx:itemRenderer>					
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="110" color="blue" editable="false"
+								   headerText="Relation to Employee">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:HBox horizontalScrollPolicy="off"
+										 verticalScrollPolicy="off">
+									<mx:Script>
+										<![CDATA[
+											import com.segsoftware.model.CodeTable;
+										]]>
+									</mx:Script> 
+								
+									<custom:SEGComboBox width="100%"
+														dataProvider="{CodeTable.getInstance().filteredRelationshipToEmployeeVOs}"
+														labelField="CodeDesc"
+														valueField="Code"
+														valueObjectVO="{data as XML}"
+														valueObjectVOField="RelationshipToEmployeeCT"/>
+								</mx:HBox>
+							</mx:Component>
+						</mx:itemRenderer>						
+				</mx:DataGridColumn>
+				<mx:DataGridColumn color="blue" dataField="EmployeeIdentification"
+								   editable="true" headerText="Employee ID"/>	
+				<mx:DataGridColumn dataField="" editable="false" headerText="Address Info...">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:LinkButton label="More..."
+										   click="outerDocument.showMoreInfoDialog()"/>																		
+						</mx:Component>
+					</mx:itemRenderer>	
+				</mx:DataGridColumn>
+	
+				<mx:DataGridColumn dataField="" editable="false"
+								   headerText="Questionnaire...">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:LinkButton label="Questionnaire..."
+										   click="           outerDocument.showQuestionnaireDialog()"/>																			</mx:Component>
+					</mx:itemRenderer>						
+				</mx:DataGridColumn>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:ControlBar horizontalAlign="right" paddingBottom="0" paddingTop="0">
+			<mx:Button label="Add" click="showClientSelectDialog()"/>
+		</mx:ControlBar>
+	</mx:Panel>
+	
+</mx:Canvas>

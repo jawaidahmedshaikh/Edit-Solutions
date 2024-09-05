@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:custom="com.segsoftware.view.custom.*" 
+	layout="absolute" 
+	width="500" 
+	height="278"
+	title="Batch Delay Dialog"  
+	showCloseButton="true"
+	close="mx.managers.PopUpManager.removePopUp(this);">
+
+	<mx:Style source="../css/segSoftware.css"/>	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.event.SEGEvent;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import mx.collections.XMLListCollection;
+			import mx.managers.PopUpManager;
+			
+			import com.segsoftware.model.CodeTable;
+			
+			/**
+			 * The label field of a ComboBox does not have the ability to 
+			 * drill down in an XML hierarchy. We need to compensate for that.
+			 */
+			private function showRequirementDescription(object:Object):String
+			{
+				var filteredRequirementVO:XML = object as XML;
+				
+				var requirementVO:XML = filteredRequirementVO.RequirementVO[0];
+				
+				return requirementVO.RequirementDescription;
+			}			
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Panel layout="horizontal" left="10" right="10" top="10" bottom="10" title="Detail">
+		<mx:Form>
+			<mx:FormItem label="# Days Added:">
+				<custom:SEGTextInput
+					valueObjectVO="{SEGModelLocator.getInstance().newValueObjectVO.BatchProgressLogVO[0]}"
+					valueObjectVOField="DaysAdded"/>
+			</mx:FormItem>
+			<mx:FormItem label="Reason:">
+				<custom:SEGComboBox 
+					id="requirementDescription" 
+					labelFunction="{showRequirementDescription}"
+					valueField="FilteredRequirementPK"
+					dataProvider="{SEGModelLocator.getInstance().caseFilteredRequirementVOs}" 
+					valueObjectVO="{SEGModelLocator.getInstance().newValueObjectVO.BatchProgressLogVO[0]}"
+					valueObjectVOField="FilteredRequirementFK"/> 
+			</mx:FormItem>
+			<mx:FormItem label="Description:">
+				<custom:SEGTextInput
+					valueObjectVO="{SEGModelLocator.getInstance().newValueObjectVO.BatchProgressLogVO[0]}"
+					valueObjectVOField="Description"/>				
+			</mx:FormItem>
+		</mx:Form>
+		<mx:ControlBar horizontalAlign="right">
+			<mx:Button label="OK" 
+				click="CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_ADD_BATCHPROGRESSLOG_ENTRY, null));
+					mx.managers.PopUpManager.removePopUp(this)"/>
+		</mx:ControlBar>
+	</mx:Panel>
+	
+</mx:TitleWindow>

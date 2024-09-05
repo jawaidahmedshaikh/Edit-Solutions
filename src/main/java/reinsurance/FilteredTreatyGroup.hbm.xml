@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="reinsurance.FilteredTreatyGroup" table="&quot;FilteredTreatyGroup&quot;"  >
+        <id name="FilteredTreatyGroupPK" column="&quot;FilteredTreatyGroupPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ProductStructureFK" column="&quot;ProductStructureFK&quot;"/>
+        <property name="TreatyGroupFK" column="&quot;TreatyGroupFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="TreatyGroup"
+            column="&quot;TreatyGroupFK&quot;"
+            class="reinsurance.TreatyGroup"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>
+

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="agent.BonusContributingProduct" table="&quot;BonusContributingProduct&quot;">
+
+        <id name="BonusContributingProductPK" column="&quot;BonusContributingProductPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ProductStructureFK" column="&quot;ProductStructureFK&quot;"/>
+
+        <many-to-one
+                name="BonusCriteria"
+                column="&quot;BonusCriteriaFK&quot;"
+                class="agent.BonusCriteria"
+                cascade="none"
+                />
+
+    </class>
+</hibernate-mapping>

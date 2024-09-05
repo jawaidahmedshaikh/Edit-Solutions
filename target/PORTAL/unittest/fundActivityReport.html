@@ -1,0 +1,69 @@
+<!--
+ * User: sprasad
+ * Date: Mar 10, 2008
+ * Time: 12:45:59 PM
+ *
+ * (c) 2000-2008 Systems Engineering Group, LLC.  All Rights Reserved
+ * Systems Engineering Group, LLC Proprietary and confidential.  Any use is
+ * subject to the license agreement. 
+ -->
+<html>
+<head>
+<title>Fund Activity Report (Input)</title>
+
+<script src="/PORTAL/common/javascript/formatDateFunctions.js"></script>
+<script src="/PORTAL/common/javascript/calendarSelector.js"></script>
+<script src="/PORTAL/common/javascript/commonJavascriptFunctions.js"></script>
+
+<script language="Javascript1.2">
+  var f = null;
+
+  function init()
+  {
+      f = document.fundActivityReportForm;
+  }
+</script>
+
+
+<link href="/PORTAL/common/css/PORTAL.css" rel="stylesheet" type="text/css">
+</head>
+
+<body onload="init()">
+<form name= "fundActivityReportForm" method="post" action="fundActivityReport.jsp">
+<table width="100%" border="0" cellspacing="0" cellpadding="5">
+  <tr>
+    <td align="center">
+      <h5>Fund Activity Report</h5>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <fieldset>
+      <legend>Fund Activity Report&nbsp;</legend>
+      <table width="100%" border="0" cellspacing="0" cellpadding="5">
+        <tr>
+          <td align="right" width="25%" nowrap>Start Cycle Date:</td>
+          <td align="left" width="25%">
+            <input type="text" name="startCycleDate" maxlength="10" size="10" tabindex="2" onKeyUp="DateFormat(this,this.value,event,false)" onBlur="DateFormat(this,this.value,event,true)">
+            <a href="javascript:show_calendar('f.startCycleDate', f.startCycleDate.value);"><img src="/PORTAL/common/images/calendarIcon.gif" width="16" height="16" border="0" alt="Select a date from the calendar"></a>
+          </td>
+          <td>&nbsp;</td>
+          <td align="right" width="25%" nowrap>End Cycle Date:</td>
+          <td align="left" width="25%">
+            <input type="text" name="endCycleDate" maxlength="10" size="10" tabindex="2" onKeyUp="DateFormat(this,this.value,event,false)" onBlur="DateFormat(this,this.value,event,true)">
+            <a href="javascript:show_calendar('f.endCycleDate', f.endCycleDate.value);"><img src="/PORTAL/common/images/calendarIcon.gif" width="16" height="16" border="0" alt="Select a date from the calendar"></a>
+          </td>
+        </tr>
+      </table>
+      </fieldset>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <input type="submit" name="submit" value= " Submit  ">
+      <input type="reset" name="cancel" value= " Cancel  ">
+    </td>
+  </tr>
+</table>
+</body>                                          
+</html> 

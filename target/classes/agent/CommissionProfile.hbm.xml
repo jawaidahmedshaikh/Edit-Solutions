@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="agent.CommissionProfile" table="&quot;CommissionProfile&quot;" >
+        <id name="CommissionProfilePK" column="&quot;CommissionProfilePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="TrailStatus" column="&quot;TrailStatus&quot;"/>
+        <property name="ContractCodeCT" column="&quot;ContractCodeCT&quot;"/>
+        <property name="CommissionLevelCT" column="&quot;CommissionLevelCT&quot;"/>
+        <property name="CommissionOptionCT" column="&quot;CommissionOptionCT&quot;"/>
+        
+<!--        
+        <set name="AgentGroups" table="&quot;AgentGroup&quot;" inverse="true"  cascade="save-update" >
+            <key column="&quot;CommissionProfileFK&quot;"/>
+            <one-to-many class="agent.AgentGroup"/>
+        </set>
+-->
+        <set name="ContributingProfiles" table="&quot;ContributingProfile&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;CommissionProfileFK&quot;"/>
+            <one-to-many class="agent.ContributingProfile"/>
+        </set>
+        
+        <set name="PlacedAgentCommissionProfiles" table="&quot;PlacedAgentCommissionProfile&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;CommissionProfileFK&quot;"/>
+            <one-to-many class="agent.PlacedAgentCommissionProfile"/>
+        </set>        
+
+        <set name="AgentSnapshots" table="&quot;AgentSnapshot&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;CommissionProfileFK&quot;"/>
+            <one-to-many class="contract.AgentSnapshot"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

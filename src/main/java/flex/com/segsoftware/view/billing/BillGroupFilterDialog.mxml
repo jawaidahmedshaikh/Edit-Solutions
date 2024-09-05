@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="372" 
+	height="338"
+	title="List Bill Search Dialog"  
+	showCloseButton="true"
+	close="mx.managers.PopUpManager.removePopUp(this)">
+	
+	<mx:Style source="../css/segSoftware.css"/>			
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+		]]>
+	</mx:Script>
+		
+	<mx:Panel layout="absolute" title="Search Options" left="10" right="10" top="10" bottom="10">
+		<mx:Form left="10" right="10" top="10" bottom="10">
+			<mx:FormItem label="Filter Type:">
+				<mx:TextInput/>
+			</mx:FormItem>
+			<mx:FormItem label="From Date:">
+				<mx:DateField editable="true"/>
+			</mx:FormItem>
+			<mx:FormItem label="To Date:">
+				<mx:DateField editable="true"/>
+			</mx:FormItem>
+			<mx:FormItem label="Status:">
+				<mx:ComboBox></mx:ComboBox>
+			</mx:FormItem>
+			<mx:FormItem label="Rep:">
+				<mx:ComboBox></mx:ComboBox>
+			</mx:FormItem>
+		</mx:Form>
+	</mx:Panel>
+	<mx:ControlBar horizontalAlign="right">
+		<mx:Button label="Search" click="mx.managers.PopUpManager.removePopUp(this)"/>
+	</mx:ControlBar>
+	
+</mx:TitleWindow>

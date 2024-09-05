@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="event.CashBatchContract" table="&quot;CashBatchContract&quot;">
+        <id name="CashBatchContractPK" column="&quot;CashBatchContractPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="BatchRecordType" column="&quot;BatchRecordType&quot;"/>
+        <property name="BatchID" column="&quot;BatchID&quot;"/>
+        <property name="CreationDate" column="&quot;CreationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="CreationOperator" column="&quot;CreationOperator&quot;"/>
+        <property name="Amount" column="&quot;Amount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalBatchItems" column="&quot;TotalBatchItems&quot;"/>
+        <property name="AccountingPendingIndicator" column="&quot;AccountingPendingIndicator&quot;"/>
+        <property name="ReleaseIndicator" column="&quot;ReleaseIndicator&quot;"/>
+        <property name="GroupNumber" column="&quot;GroupNumber&quot;"/>
+        <property name="DueDate" column="&quot;DueDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+
+        <property name="CompanyFK" column="&quot;CompanyFK&quot;"/>
+
+        <set name="Suspenses" table="&quot;Suspense&quot;" inverse="true" cascade="all">
+            <key column="&quot;CashBatchContractFK&quot;"/>
+            <one-to-many class="event.Suspense"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

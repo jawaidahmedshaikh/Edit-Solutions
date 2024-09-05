@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="event.OutSuspense" table="&quot;OutSuspense&quot;">
+        <id name="OutSuspensePK" column="&quot;OutSuspensePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ContractSetupFK" column="&quot;ContractSetupFK&quot;" insert="false" update="false"/>
+        <property name="SuspenseFK" column="&quot;SuspenseFK&quot;" insert="false" update="false"/>
+        <property name="Amount" column="&quot;Amount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <many-to-one
+            name="ContractSetup"
+            column="&quot;ContractSetupFK&quot;"
+            class="event.ContractSetup"
+            cascade="none"
+            />
+
+        <many-to-one
+            name="Suspense"
+            column="&quot;SuspenseFK&quot;"
+            class="event.Suspense"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

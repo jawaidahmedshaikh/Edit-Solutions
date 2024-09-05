@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:element name="ErrorLogVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ErrorLogPK" type="xs:long"/>
+				<xs:element name="CompanyStructureFK" type="xs:long"/>
+				<xs:element name="ElementName" type="xs:string"/>
+				<xs:element name="ElementId" type="xs:string"/>
+				<xs:element name="BaseParamStructure" type="xs:string"/>
+				<xs:element name="BaseParamValue" type="xs:string"/>
+				<xs:element name="CrossParamStructure" type="xs:string"/>
+				<xs:element name="CrossParamValue" type="xs:string"/>
+				<xs:element name="ErrorName" type="xs:string"/>
+				<xs:element name="ErrorValue" type="xs:string"/>
+				<xs:element name="Message" type="xs:string"/>
+				<xs:element name="Severity" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

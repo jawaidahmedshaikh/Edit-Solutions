@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="staging.PayrollDeduction" table="&quot;PAYROLLDEDUCTION&quot;"  >
+        <id name="PayrollDeductionPK" column="&quot;PAYROLLDEDUCTIONPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="PayrollDeductionScheduleFK" column="&quot;PAYROLLDEDUCTIONSCHEDULEFK&quot;" insert="false" update="false"/>
+        <property name="SegmentBaseFK" column="&quot;SEGMENTBASEFK&quot;" insert="false" update="false"/>
+
+        <property name="DeductionAmount" column="&quot;DEDUCTIONAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="FirstPayrollDate" column="&quot;FIRSTPAYROLLDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        
+        <property name="TypeOfChange" column="TypeOfChange"/>
+
+        <many-to-one
+            name="PayrollDeductionSchedule"
+            column="&quot;PAYROLLDEDUCTIONSCHEDULEFK&quot;"
+            class="staging.PayrollDeductionSchedule"
+            cascade="none"/>
+
+        <many-to-one
+            name="SegmentBase"
+            column="&quot;SEGMENTBASEFK&quot;"
+            class="staging.SegmentBase"
+            cascade="none"/> 
+
+    </class>
+</hibernate-mapping>

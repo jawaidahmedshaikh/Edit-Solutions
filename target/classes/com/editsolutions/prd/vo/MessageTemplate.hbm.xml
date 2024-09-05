@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="com.editsolutions.prd.vo.MessageTemplate" table="PRD_MessageTemplate"  >
+        <id name="messageTemplatePK" column="PRD_MessageTemplatePK" type="long">
+              <generator class="identity"/>
+        </id>
+
+        <property name="messageTypeCT" column="MessageTypeCT"/>
+        <property name="name" column="MessageName"/>
+        <property name="messageText" column="MessageText"/>
+        <property name="addDate" column="AddDate" type="date"/>
+        <property name="addUser" column="AddUser"/>
+        <property name="modDate" column="ModDate" type="date"/>
+        <property name="modUser" column="ModUser"/>
+
+    </class>
+</hibernate-mapping>

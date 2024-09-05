@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:conversion="com.segsoftware.view.conversion.*"
+	width="100%" 
+	height="100%"
+	dropShadowEnabled="false" 
+	verticalScrollPolicy="auto" 
+	borderStyle="none" 
+	backgroundColor="#b3c0c6"
+	title="&lt;{GroupNode.DEFAULT_GROUP_NAME}&gt;"
+	headerHeight="12"
+	creationComplete="{SEGModelLocator.getInstance().groupDesignUI = this}">
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.utility.Util;
+			import mx.managers.PopUpManager;
+			import mx.events.MoveEvent;
+			import mx.events.DragEvent;
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.model.conversion.*;
+			import mx.controls.TextInput;
+			import mx.collections.ArrayCollection;
+			import mx.controls.List;
+			import mx.controls.Button;
+			
+			/**
+			* The explicit height of each record row.
+			*/
+			public static var RECORDNODE_HEIGHT:int = 230; 
+		
+			/**
+			* Adds a new RecordNode as the last element in 
+			* the list of RecordNodes.
+			*/
+			private function addRecordNode():void
+			{				
+				var recordNode:RecordNode = new RecordNode();
+
+				SEGModelLocator.getInstance().groupNode.childNodes.addItem(recordNode);
+			}
+			
+			/**
+			* Removes the selected row from this GroupNode's RecordNode collection.
+			*/
+			private function removeSelectedRow():void
+			{
+				if (recordNodeList.selectedItem)
+				{
+					var recordNodeIndex:int = recordNodeList.selectedIndex;
+					
+					SEGModelLocator.getInstance().groupNode.childNodes.removeItemAt(recordNodeIndex);
+					
+					this.recordNodeList.selectedItem = null;
+				}				
+			}
+			
+			private function generateXML():void
+			{
+				var groupXML:XML = SEGModelLocator.getInstance().groupNode.marshal();
+				
+				this.xmlTextArea.text = groupXML.toString();
+			}
+			
+			/**
+			* Renders the dialog for saving a new Conversion Template (i.e. the current Group.Record.Column.
+			*/
+			private function showAddConversionTemplateDialog():void
+			{
+				var conversionTemplateDialog:AddCloneConversionTemplateDialog = PopUpManager.createPopUp(this, com.segsoftware.view.conversion.AddCloneConversionTemplateDialog, true) as AddCloneConversionTemplateDialog;	
+							
+				conversionTemplateDialog.dialogState = AddCloneConversionTemplateDialog.STATE_ADD;							
+							
+				PopUpManager.centerPopUp(conversionTemplateDialog);								
+			}	
+			
+			/**
+			* Sorting algorithm for the ConversionTemplate.TemplateName column.
+			*/
+			private function sortNameCompareFunction(obj1:Object, obj2:Object):int 	
+			{
+				var conversionTemplate1:ConversionTemplate = obj1 as ConversionTemplate;
+				
+				var conversionTemplate2:ConversionTemplate = obj2 as ConversionTemplate;
+				
+				var conversionTemplate1Name:String = conversionTemplate1.templateName.toUpperCase();
+				
+				var converstionTemplate2Name:String = conversionTemplate2.templateName.toUpperCase();
+				
+				return Util.compareStrings(conversionTemplate1Name, converstionTemplate2Name);
+			}		
+			
+			/**
+			* The selected ConversionTemplate must have its XML unmarshalled to that of
+			* a GroupNode.RecordNode.ColumnNode composition.
+			*/
+			private function renderSelectedConversionTemplate():void
+			{	
+				var groupNode:GroupNode = new GroupNode();
+				
+				var selectedConversionTemplate:ConversionTemplate = conversionTemplateDataGrid.selectedItem as ConversionTemplate;
+				
+				var groupNodeXML:XML = new XML(SEGModelLocator.getInstance().selectedConversionTemplateDesign.templateText);
+				
+				groupNode.unmarshal(groupNodeXML);
+				
+				SEGModelLocator.getInstance().groupNode = groupNode;
+			}
+			
+			/**
+			* This will most likely be used after a new ConversionTemplate has been added
+			* the collection of ConversionTemplates and it needs to be selected programmatically.
+			*/
+			public function setSelectedConversionTemplate(templateName:String):void
+			{
+				for each (var conversionTemplate:ConversionTemplate in conversionTemplateDataGrid.dataProvider)
+				{
+					if (conversionTemplate.templateName == templateName)
+					{
+						conversionTemplateDataGrid.selectedItem = conversionTemplate;
+						
+						break;
+					}					
+				}				
+			}
+			
+			/**
+			* We won't allow empty spaces when representing, well, empty spaces.
+			* It's difficult to manage. We will represent spaces as some other character.
+			*/
+			private function maskSpaces(event:Event):void
+			{
+				var pattern:RegExp = / /;
+				
+				var currentNoDateText:String = this.noDateTextField.text;
+				
+				var newNoDateText:String = currentNoDateText.replace(pattern, GroupNode.NO_DATE_SPACE_MASK);
+				
+				this.noDateTextField.text = newNoDateText;
+			}
+			
+			/**
+			* Determine the correct index of the selected date format to render for the
+			* current GroupNode.
+			*/
+			[Bindable(event="groupNodeChangeEvent")] private function get dateFormatSelectedIndex():int
+			{
+				var dateFormatIndex:int = -1;
+				
+				if (SEGModelLocator.getInstance().groupNode)
+				{
+					var groupDateFormat:String = SEGModelLocator.getInstance().groupNode.dateFormat;
+					
+					var index:int = -1;
+					
+					for each (var dateFormat:Object in dateFormats)
+					{
+						index++;
+						
+						if ((dateFormat.data as String) == groupDateFormat)
+						{
+							dateFormatIndex = index;
+						}													
+					}
+				}
+				
+				return dateFormatIndex;	
+			}
+		]]>
+	</mx:Script>
+	
+    <mx:ArrayCollection id="dateFormats">
+        <mx:source>
+            <mx:Object label="MMddyyyy" data="MMddyyyy"/>
+            <mx:Object label="MM/dd/yyyy" data="MM/dd/yyyy"/>
+            <mx:Object label="MM-dd-yyyy" data="MM-dd-yyyy"/>
+        </mx:source>
+    </mx:ArrayCollection>
+
+
+
+	<mx:Binding source="conversionTemplateDataGrid.selectedItem as ConversionTemplate" destination="SEGModelLocator.getInstance().selectedConversionTemplateDesign"/>
+	<mx:Validator id="dateFormatComboBoxValidator" source="{dateFormatComboBox}" property="selectedItem" required="true" triggerEvent=""/>
+	<mx:Validator id="minDateValidator" source="{minDateTextField}" property="text" required="true" triggerEvent=""/>
+	<mx:Validator id="maxDateValidator" source="{maxDateTextField}" property="text" required="true" triggerEvent=""/>		
+	<mx:Validator id="noDateValidator" source="{noDateTextField}" property="text" required="true" triggerEvent=""/>		
+
+	<mx:HDividedBox 
+		width="100%" 
+		height="100%"
+		id="hDividedBox">
+		<mx:VBox 
+			height="100%"
+			verticalGap="0" 
+			width="20%" 
+			id="savedGroupsVBox">
+			<mx:Button label="Saved Templates" width="100%" height="15"/>					
+			<conversion:TemplateList 
+				id="conversionTemplateDataGrid" 
+				width="100%" 
+				height="100%"
+				change=
+				"
+					renderSelectedConversionTemplate();
+					this.dispatchEvent(new Event('groupNodeChangeEvent'));
+				"
+				dataProvider="{SEGModelLocator.getInstance().conversionTemplates}"/>			
+		</mx:VBox>
+		<mx:VBox width="60%" height="100%">
+			<mx:Button label="Template Design" width="100%" height="15"/>
+			<mx:List 
+				dataProvider="{SEGModelLocator.getInstance().groupNode.childNodes}"
+				id="recordNodeList"
+				width="100%"
+				height="100%"
+				backgroundColor="#b3c0c6"
+				paddingTop="5"
+				paddingBottom="5"
+				paddingLeft="5"
+				paddingRight="5" 
+				borderStyle="solid" 
+				borderThickness="1" 
+				borderColor="#000000"
+				dragEnabled="true"
+				dropEnabled="false"
+				rowHeight="{RECORDNODE_HEIGHT}"
+				dragMoveEnabled="true" 
+				themeColor="#98E0DF"
+				>
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:HBox>
+							<conversion:RecordDesign 
+								recordNode="{data as RecordNode}" 
+								width="100%" 
+								height="100%"
+								/>
+						</mx:HBox>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:List>
+		</mx:VBox>
+		<mx:VBox height="100%" verticalGap="0" width="20%">
+			<mx:Button label="Template as XML" width="100%" height="15"/>		
+			<mx:TextArea 
+				text="{SEGModelLocator.getInstance().groupNode.asXML.toXMLString()}"
+				id="xmlTextArea"
+				width="100%" 
+				height="100%" 
+				editable="false"/>			
+		</mx:VBox>			
+	</mx:HDividedBox>
+	<mx:ControlBar 
+		id="groupDesignControlBar"
+		horizontalAlign="right"
+		height="25" 
+		verticalAlign="middle"
+		paddingTop="0"
+		paddingBottom="0">
+		<mx:HBox width="50%" height="100%" verticalAlign="middle">
+			<mx:Label text="Rec Type Length:"/>
+			<mx:TextInput 
+				id="recordTypeLengthTextInput" 
+				maxChars="3"
+				text="{SEGModelLocator.getInstance().groupNode.recordTypeLength}"
+				enabled="{SEGModelLocator.getInstance().groupNode != null}"
+				change=
+				"
+					SEGModelLocator.getInstance().groupNode.recordTypeLength = new Number(this.recordTypeLengthTextInput.text)
+				"/>
+			<mx:Label text="Date Format:"/>
+			<mx:ComboBox
+				id="dateFormatComboBox"
+				prompt="Please Select"
+				enabled="{SEGModelLocator.getInstance().groupNode != null}"
+				selectedIndex="{dateFormatSelectedIndex}"
+				dataProvider="{dateFormats}"
+				change=
+				"
+					SEGModelLocator.getInstance().groupNode.dateFormat = dateFormatComboBox.selectedItem.data as String;
+				">
+			</mx:ComboBox>				
+			<mx:Label text="Min Date:"/>
+			<mx:TextInput 
+				id="minDateTextField"
+				text="{SEGModelLocator.getInstance().groupNode.minDate}"
+				enabled="{SEGModelLocator.getInstance().groupNode != null}"				
+				change=
+				"
+					SEGModelLocator.getInstance().groupNode.minDate = this.minDateTextField.text;
+				" 				
+				width="80"/>
+			<mx:Label text="Max Date:"/>
+			<mx:TextInput 
+				id="maxDateTextField"
+				text="{SEGModelLocator.getInstance().groupNode.maxDate}"
+				enabled="{SEGModelLocator.getInstance().groupNode != null}"				
+				change=
+				"
+					SEGModelLocator.getInstance().groupNode.maxDate = this.maxDateTextField.text;
+				" 				
+				width="80"/>
+			<mx:Label text="No Date:"/>				
+			<mx:TextInput 
+				id="noDateTextField"
+				text="{SEGModelLocator.getInstance().groupNode.noDate}"
+				enabled="{SEGModelLocator.getInstance().groupNode != null}"				
+				change=
+				"
+					maskSpaces(event);
+					
+					SEGModelLocator.getInstance().groupNode.noDate = this.noDateTextField.text;
+				" 				
+				width="80" 
+/>
+		</mx:HBox>
+		<mx:HBox width="50%" height="100%" horizontalAlign="right" verticalAlign="middle">
+			<mx:Button 
+				label="Add"
+				click=
+				"
+					SEGModelLocator.getInstance().groupNode = new GroupNode();
+				
+					this.addRecordButton.enabled = true;
+					
+					this.removeRecordButton.enabled = true;
+				"
+				enabled="{SEGModelLocator.getInstance().groupNode == null}"
+				/>
+			<mx:VRule height="20"/>
+			<mx:Button 
+				id="saveButton"
+				label="Save" 
+				toolTip="Save/Update this Template"
+				click=
+				"
+					if (Util.validate(dateFormatComboBoxValidator, minDateValidator, maxDateValidator, noDateValidator).length == 0)
+					{
+						showAddConversionTemplateDialog()						
+					}				
+				"
+				enabled="{SEGModelLocator.getInstance().groupNode != null}"/>
+			<mx:VRule height="20"/>
+			<mx:Button 
+				label="Cancel"
+				click=
+				"
+					SEGModelLocator.getInstance().groupNode = null;
+					
+					SEGModelLocator.getInstance().selectedConversionTemplateDesign = null;
+					
+					this.addRecordButton.enabled = false;
+					
+					this.removeRecordButton.enabled = false;
+					
+					this.conversionTemplateDataGrid.selectedItem = null;
+				"
+				enabled="{SEGModelLocator.getInstance().groupNode != null}"
+				/>
+			<mx:Spacer width="10"/>
+			<mx:Button 
+				id="removeRecordButton"
+				label="Rec -"
+				click="removeSelectedRow()"
+				enabled="{SEGModelLocator.getInstance().groupNode != null}"				
+				/>
+			<mx:VRule height="20"/>
+			<mx:Button 
+				id="addRecordButton"
+				enabled="{SEGModelLocator.getInstance().groupNode != null}"				
+				label="Rec +"
+				click="addRecordNode()"/>
+		</mx:HBox>
+	</mx:ControlBar>
+</mx:Panel>

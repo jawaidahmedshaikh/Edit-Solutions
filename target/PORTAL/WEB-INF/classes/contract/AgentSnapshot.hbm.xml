@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.AgentSnapshot" table="&quot;AgentSnapshot&quot;"  >
+        <id name="AgentSnapshotPK" column="&quot;AgentSnapshotPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="HierarchyLevel" column="&quot;HierarchyLevel&quot;"/>
+
+        <property name="CommissionOverrideAmount" column="&quot;CommissionOverrideAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CommissionOverridePercent" column="&quot;CommissionOverridePercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="CommHoldAmountOverride" column="&quot;CommHoldAmountOverride&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CommHoldReleaseDateOverride" column="&quot;CommHoldReleaseDateOverride&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="AgentHierarchyFK" column="&quot;AgentHierarchyFK&quot;" insert="false" update="false"/>
+        <property name="PlacedAgentFK" column="&quot;PlacedAgentFK&quot;" insert="false" update="false"/>
+        <property name="CommissionProfileFK" column="&quot;CommissionProfileFK&quot;" insert="false" update="false"/>
+
+        <property name="AdvanceAmount" column="&quot;AdvanceAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AdvanceRecovery" column="&quot;AdvanceRecovery&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ServicingAgentIndicator" column="&quot;ServicingAgentIndicator&quot;"/>
+        <property name="AdvancePercent" column="&quot;AdvancePercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RecoveryPercent" column="&quot;RecoveryPercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        
+        <many-to-one
+            name="AgentHierarchy"
+            column="&quot;AgentHierarchyFK&quot;"
+            class="contract.AgentHierarchy"
+            cascade="none"/>
+
+        <many-to-one
+            name="PlacedAgent"
+            column="&quot;PlacedAgentFK&quot;"
+            class="agent.PlacedAgent"
+            cascade="none"/>
+
+        <many-to-one
+            name="CommissionProfile"
+            column="&quot;CommissionProfileFK&quot;"
+            class="agent.CommissionProfile"
+            cascade="none"/>
+
+        <set name="CommissionHistories" table="&quot;CommissionHistry&quot;" inverse="true"  cascade="all">
+            <key column="&quot;AgentSnapshotFK&quot;"/>
+            <one-to-many class="event.CommissionHistory"/>
+        </set>      
+
+    </class>
+</hibernate-mapping>
+

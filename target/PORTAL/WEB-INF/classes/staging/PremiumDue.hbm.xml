@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.PremiumDue" table="&quot;PREMIUMDUE&quot;"  >
+        <id name="PremiumDuePK" column="&quot;PREMIUMDUEPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SegmentBaseFK" column="&quot;SEGMENTBASEFK&quot;" insert="false" update="false"/>
+
+        <property name="BillAmount" column="&quot;BILLAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DeductionAmount" column="&quot;DEDUCTIONAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NumberOfDeductions" column="&quot;NUMBEROFDEDUCTIONS&quot;"/>
+
+        <property name="EffectiveDate" column="&quot;EFFECTIVEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="PendingExtractIndicator" column="&quot;PENDINGEXTRACTINDICATOR&quot;"/>
+        <property name="PriorBillAmount" column="&quot;PRIORBILLAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="PriorDeductionAmount" column="&quot;PRIORDEDUCTIONAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SpecialFrequencyPremium" column="&quot;SPECIALFREQUENCYPREMIUM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="DeductionAmountOverride" column="DEDUCTIONAMOUNTOVERRIDE" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="BillAmountOverride" column="BILLAMOUNTOVERRIDE" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <set name="CommissionPhases" table="&quot;COMMISSIONPHASE&quot;" inverse="true"   cascade="all">
+            <key column="&quot;PREMIUMDUEFK&quot;"/>
+            <one-to-many class="staging.CommissionPhase"/>
+        </set>
+
+        <many-to-one
+            name="SegmentBase"
+            column="&quot;SEGMENTBASEFK&quot;"
+            class="staging.SegmentBase"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

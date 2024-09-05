@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:custom="com.segsoftware.view.custom.*"	
+	layout="absolute" 
+	width="412" 
+	height="312" 
+	title="Over/Under Adjustment Dialog"
+	showCloseButton="true"
+	close="mx.managers.PopUpManager.removePopUp(this)"	>
+
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.*;
+			import com.segsoftware.utility.*;
+			import mx.managers.PopUpManager;
+		]]>
+	</mx:Script>
+
+
+	<mx:Form x="10" y="10">
+		<mx:FormItem label="(+) Funds Amount:">
+			<mx:TextInput 
+				editable="false" 
+				text="{Util.getCurrencyFormatter().format(SEGModelLocator.getInstance().overUnderAdjustment.fundsAmount)}"/>
+		</mx:FormItem>
+		<mx:FormItem label=" (-) Allocated Amount:">
+			<mx:TextInput editable="false" text="{Util.getCurrencyFormatter().format(SEGModelLocator.getInstance().overUnderAdjustment.allocatedAmount)}"/>
+		</mx:FormItem>
+		<mx:FormItem label="(-) Overage Amount:" color="#0000ff">
+			<mx:TextInput text="{Util.getCurrencyFormatter().format(SEGModelLocator.getInstance().overUnderAdjustment.overageFundsAmount)}" editable="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="(+) Shortage Funds Amount:" color="#0000ff">
+			<mx:TextInput text="{Util.getCurrencyFormatter().format(SEGModelLocator.getInstance().overUnderAdjustment.shortageFundsAmount)}" editable="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="(+) Credit Funds Amount:" color="#0000ff">
+			<mx:TextInput text="{Util.getCurrencyFormatter().format(SEGModelLocator.getInstance().overUnderAdjustment.creditFundsAmount)}" editable="true"/>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:HRule width="157"/>
+		</mx:FormItem>
+		<mx:FormItem label="(=) Balance:">
+			<mx:TextInput text="{SEGModelLocator.getInstance().overUnderAdjustment.balance}"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:ControlBar horizontalAlign="right">
+		<mx:Button 
+			label="OK"
+			click="mx.managers.PopUpManager.removePopUp(this)"/>
+	</mx:ControlBar>
+	
+</mx:TitleWindow>

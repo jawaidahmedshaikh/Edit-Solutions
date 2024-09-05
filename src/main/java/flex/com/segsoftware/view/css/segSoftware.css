@@ -1,0 +1,73 @@
+/* CSS file */
+
+Application , TitleWindow, Grid, Canvas
+{
+	backgroundColor:#94aab4;
+}
+
+/*
+	This is not 'taking' in Flex 2. I have been manually
+	setting these properties.
+*/
+ControlBar.SEGControlBar
+{
+	padding-bottom:5;
+	padding-top:0;
+	vertical-align:middle;	
+}
+
+Panel
+{
+	/*backgroundColor:#f7f7f7;*/
+	/*backgroundColor:#94aab4;*/	
+	backgroundColor:#b3c0c6;
+	border-style:solid;
+	border-color:#ffffff;
+}	
+
+/* 
+	Trying to keep same as SEGHBox 
+*/
+VBox.SEGVBox
+{
+	padding-bottom:0;
+	padding-top:0;
+	vertical-gap:1;	
+	horizontal-gap:1;
+}
+
+/* 
+	Trying to keep same as SEGVBox.
+	Used to group Panels, DataGrids etc. removing
+	much of the padding, etc.
+*/
+HBox.SEGHBox
+{
+	padding-bottom:0;
+	padding-top:0;
+	vertical-gap:1;	
+	horizontal-gap:1;
+}
+
+Button.SEGButtonHeader
+{
+	corner-radius:0;
+	height:15px;
+}
+
+/*
+	Normally when components are disabled (TextInput, TextArea, Button, etc.), the
+	text is nearly unreadable. We are making it darker so that
+	it is more readable.
+*/
+UIComponent.SEGDisabledText
+{
+	disabled-color:black;
+}
+
+
+
+
+
+
+

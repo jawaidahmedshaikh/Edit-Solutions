@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="client.ClientDetail" table="&quot;ClientDetail&quot;"  >
+        <id name="ClientDetailPK" column="&quot;ClientDetailPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ClientIdentification" column="&quot;ClientIdentification&quot;"/>
+        <property name="TaxIdentification" column="&quot;TaxIdentification&quot;"/>
+        <property name="LastName" column="&quot;LastName&quot;"/>
+        <property name="FirstName" column="&quot;FirstName&quot;"/>
+        <property name="MiddleName" column="&quot;MiddleName&quot;"/>
+        <property name="NamePrefix" column="&quot;NamePrefix&quot;"/>
+        <property name="NameSuffix" column="&quot;NameSuffix&quot;"/>
+        <property name="CorporateName" column="&quot;CorporateName&quot;"/>
+        <property name="BirthDate" column="&quot;BirthDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="MothersMaidenName" column="&quot;MothersMaidenName&quot;"/>
+        <property name="Occupation" column="&quot;Occupation&quot;"/>
+        <property name="DateOfDeath" column="&quot;DateOfDeath&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="GenderCT" column="&quot;GenderCT&quot;"/>
+        <property name="TrustTypeCT" column="&quot;TrustTypeCT&quot;"/>
+        <property name="StatusCT" column="&quot;StatusCT&quot;"/>
+        <property name="PrivacyInd" column="&quot;PrivacyInd&quot;"/>
+        <property name="LastOFACCheckDate" column="&quot;LastOFACCheckDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="StateOfDeathCT" column="&quot;StateOfDeathCT&quot;"/>
+        <property name="ResidentStateAtDeathCT" column="&quot;ResidentStateAtDeathCT&quot;"/>
+        <property name="ProofOfDeathReceivedDate" column="&quot;ProofOfDeathReceivedDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="CaseTrackingProcess" column="&quot;CaseTrackingProcess&quot;"/>
+        <property name="NotificationReceivedDate" column="&quot;NotificationReceivedDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="OverrideStatus" column="&quot;OverrideStatus&quot;"/>
+        <property name="SICCodeCT" column="&quot;SICCodeCT&quot;"/>
+        <property name="CompanyFK" column="&quot;CompanyFK&quot;"/>
+
+        <set name="ClientRoles" table="&quot;ClientRole&quot;" inverse="true"  cascade="none">
+            <key column="&quot;ClientDetailFK&quot;"/>
+            <one-to-many class="role.ClientRole"/>
+        </set>
+
+        <set name="CasetrackingNotes" table="&quot;CasetrackingNote&quot;" inverse="true"  cascade="all">
+            <key column="&quot;ClientDetailFK&quot;"/>
+            <one-to-many class="casetracking.CasetrackingNote"/>
+        </set>
+
+        <set name="CaseRequirements" table="&quot;CaseRequirement&quot;" inverse="true"  cascade="all">
+            <key column="&quot;ClientDetailFK&quot;"/>
+            <one-to-many class="casetracking.CaseRequirement"/>
+        </set>
+
+        <set name="ClientAddresses" table="&quot;ClientAddress&quot;" inverse="true"  cascade="all">
+            <key column="&quot;ClientDetailFK&quot;"/>
+            <one-to-many class="client.ClientAddress"/>
+        </set>
+
+        <set name="Preferences" table="&quot;Preference&quot;" inverse="true"  cascade="all">
+            <key column="&quot;ClientDetailFK&quot;"/>
+            <one-to-many class="client.Preference"/>
+        </set>
+
+        <set name="TaxInformations" table="&quot;TaxInformation&quot;" inverse="true"  cascade="all">
+            <key column="&quot;ClientDetailFK&quot;"/>
+            <one-to-many class="client.TaxInformation"/>
+        </set>
+
+        <set name="Suspenses" table="&quot;Suspense&quot;" inverse="true"  cascade="all">
+            <key column="&quot;ClientDetailFK&quot;"/>
+            <one-to-many class="event.Suspense"/>
+        </set>
+
+        <set name="ContactInformations" table="&quot;ContactInformation&quot;" inverse="true"  cascade="all">
+            <key column="&quot;ClientDetailFK&quot;"/>
+            <one-to-many class="client.ContactInformation"/>
+        </set>
+
+    </class>
+</hibernate-mapping>
+

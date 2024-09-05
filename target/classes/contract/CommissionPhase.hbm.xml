@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="contract.CommissionPhase" table="&quot;CommissionPhase&quot;"  >
+        <id name="CommissionPhasePK" column="&quot;CommissionPhasePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="PremiumDueFK" column="&quot;PremiumDueFK&quot;" insert="false" update="false"/>
+        
+        <property name="CommissionPhaseID" column="&quot;CommissionPhaseID&quot;"/>
+        <property name="ExpectedMonthlyPremium" column="&quot;ExpectedMonthlyPremium&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/> 
+        <property name="CommissionTarget" column="&quot;CommissionTarget&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/> 
+        <property name="PrevCumExpectedMonthlyPrem" column="&quot;PrevCumExpectedMonthlyPrem&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="PriorExpectedMonthlyPremium" column="&quot;PriorExpectedMonthlyPremium&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+
+        <many-to-one
+            name="PremiumDue"
+            column="&quot;PremiumDueFK&quot;"
+            class="contract.PremiumDue"
+            cascade="none"
+            />
+            
+        <set name="CommissionablePremiumHistories" table="&quot;CommissionablePremiumHistory&quot;" inverse="true"   cascade="all">
+            <key column="&quot;CommissionPhaseFK&quot;"/>
+            <one-to-many class="event.CommissionablePremiumHistory"/>
+        </set>            
+
+    </class>
+</hibernate-mapping>

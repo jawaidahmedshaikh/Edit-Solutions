@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="event.ContractClientAllocationOvrd" table="&quot;ContractClientAllocationOvrd&quot;" >
+        <id name="ContractClientAllocationOvrdPK" column="&quot;ContractClientAllocationOvrdPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ClientSetupFK" column="&quot;ClientSetupFK&quot;" insert="false" update="false"/>
+        <property name="ContractClientAllocationFK" column="&quot;ContractClientAllocationFK&quot;" insert="false" update="false"/>
+
+    <many-to-one
+            name="ClientSetup"
+            column="&quot;ClientSetupFK&quot;"
+            class="event.ClientSetup"
+            cascade="none"
+            />
+
+    <many-to-one
+            name="ContractClientAllocation"
+            column="&quot;ContractClientAllocationFK&quot;"
+            class="contract.ContractClientAllocation"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

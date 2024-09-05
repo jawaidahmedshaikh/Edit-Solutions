@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Button 	xmlns:mx="http://www.adobe.com/2006/mxml"
+	buttonDown="onClick()"
+	initialize="init()">
+
+	
+	<mx:Script>
+	    
+		<![CDATA[
+			import mx.logging.Log;
+			import mx.events.CollectionEvent;
+			import com.segsoftware.model.logging.*;
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.view.custom.logging.SEGLogMessageDisplayDialog;
+			import mx.managers.PopUpManager;
+			
+			/**
+			 *	This button displays the message from the last log entry.
+			 *  It is colored based on the messageType.  If the user clicks on the
+			 *  button, a dialog is popped up displaying all of the log entries.
+			 */
+
+			/**
+			 *	Initializes the button
+			 */
+			private function init():void
+			{
+				//	If the log entries change, we want to know about it
+				SEGLog.getInstance().segLogEntries.addEventListener(CollectionEvent.COLLECTION_CHANGE, updateButtonInformation);
+			}
+			
+			/**
+			 * 	Updates the button's display information.  This method gets called if the log
+			 *  entries get changed.  
+			 */
+			private function updateButtonInformation(collectionEvent:CollectionEvent):void
+			{
+				if (SEGLog.getInstance().lastSEGLogEntry.highestLevelSEGLogMessage)
+				{
+					this.label = SEGLog.getInstance().lastSEGLogEntry.highestLevelSEGLogMessage.message;
+					//this.setStyle("borderColor", SEGLog.getInstance().lastSEGLogEntry.highestLevelSEGLogMessage.segLogMessageType.messageColor);
+					this.setStyle("icon", SEGLog.getInstance().lastSEGLogEntry.highestLevelSEGLogMessage.segLogMessageType.messageIcon);
+					//this.emphasized = true;					
+				}
+			}
+			
+			/**
+			 *	Displays the message dialog when the user clicks on the button
+			 */
+			private function onClick():void
+			{
+				var segLogMessageDisplayDialog:SEGLogMessageDisplayDialog = PopUpManager.createPopUp(this.parentApplication as DisplayObject, com.segsoftware.view.custom.logging.SEGLogMessageDisplayDialog, true) as SEGLogMessageDisplayDialog;	
+							
+				PopUpManager.centerPopUp(segLogMessageDisplayDialog);
+			}
+		
+		]]>
+		
+	</mx:Script>
+	
+</mx:Button>

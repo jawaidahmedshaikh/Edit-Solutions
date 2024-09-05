@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" 
+	height="100%"
+	explicitMinHeight="110" 
+	label="{determineEventLabel(logEntry.sourceFileName, logEntry.creationTime, logEntry.statusMessage)}">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.encoding.BatchContractImport;
+			import com.segsoftware.utility.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.containers.HBox;
+			import mx.controls.Image;
+			
+			private var _logEntry:BatchContractImport;
+			
+			[Bindable]
+			public function set logEntry(logEntry:BatchContractImport):void
+            {
+             	this._logEntry = logEntry;  
+            } 
+            
+			public function get logEntry():BatchContractImport
+            {
+             	return this._logEntry;  
+            } 
+			
+			public function importRecords(batchImport:BatchContractImport):ArrayCollection {
+				return batchImport.batchContractImportRecords;
+			}
+            
+            private function determineEventLabel(sourceFileName:String, creationTime:Date, statusMessage:String):String
+            {            	
+            	var eventName:String = Util.padStringWithSpaces(sourceFileName, 100);
+				var timeLabel:String = Util.padStringWithSpaces(creationTime.toString(), 100);
+				var contractsLabel:String = Util.padStringWithSpaces(statusMessage, 100);
+				return eventName + "    " + timeLabel + "    " + contractsLabel;					
+            }
+            			
+			private function iconFunction(item:Object):Class
+			{
+				if(item.hasOwnProperty("icon")) {
+					return item.icon;	
+				} else {
+					return null;
+				}
+			}
+			
+			private function runSuccessReport() {
+				navigateToURL(new URLRequest(_logEntry.successReportUrl), "_blank");
+			}
+			
+			private function runErrorReport() {
+				navigateToURL(new URLRequest(_logEntry.errorReportUrl), "_blank");
+			}
+			
+			private function runWarningReport() {
+				navigateToURL(new URLRequest(_logEntry.warningReportUrl), "_blank");
+			}
+            
+		]]>
+	</mx:Script>
+	
+	<mx:TextArea editable="false" name="messageBox" width="100%" height="100%" 
+				 horizontalScrollPolicy="auto" minWidth="600" minHeight="110" verticalScrollPolicy="auto" 
+				 includeInLayout="{logEntry.status == 'ERORR'}" visible="{logEntry.status == 'ERROR'}" 
+				 text="{logEntry.message}" />
+	<mx:VBox width="98%" height="98%" name="wrapper" visible="{logEntry.status != 'ERROR'}" includeInLayout="{logEntry.status != 'ERROR'}">
+		<mx:HBox width="100%" horizontalAlign="left">
+			<mx:Button label="Success Report" icon="@Embed(source='/com/segsoftware/view/assets/icons/bulletSuccess.png')" click="{runSuccessReport();}"/>
+			<mx:Button label="Warning Report" icon="@Embed(source='/com/segsoftware/view/assets/icons/bulletWarning.png')" click="{runWarningReport();}"/>
+			<mx:Button label="Error Report" icon="@Embed(source='/com/segsoftware/view/assets/icons/bulletError.png')" click="{runErrorReport();}"/>
+		</mx:HBox>
+	
+		<mx:AdvancedDataGrid width="98%" height="98%"
+			id="logEntryDataGrid" horizontalScrollPolicy="auto"
+			verticalScrollPolicy="auto"
+			iconFunction="iconFunction">
+			<mx:dataProvider>
+				<mx:HierarchicalData source="{logEntry.importHierarachy}"
+									 childrenField="children" />
+			</mx:dataProvider>
+		
+			<mx:columns>
+				<mx:AdvancedDataGridColumn 
+					headerText="" 
+					dataField="label" />
+			</mx:columns>
+		</mx:AdvancedDataGrid>
+	</mx:VBox>
+</mx:VBox>

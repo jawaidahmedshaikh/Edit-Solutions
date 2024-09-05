@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+     <class name="com.editsolutions.prd.vo.PRDStatistics" table="PRD_Stats"  >
+        <id name="prdStatsPK" column="PRD_StatsPK" type="long">
+              <generator class="identity"/>
+        </id>
+        <property name="prdDate" column="PRD_Date" type="date"/>
+        <property name="total" column="PRD_Total"/>
+        <property name="standardCount" column="PRD_Standard"/>
+        <property name="customCount" column="PRD_Custom"/>
+        <property name="onHoldCount" column="PRD_Hold"/>
+        <property name="issuesCount" column="PRD_Issues"/>
+        <property name="totalGroups" column="TotalGroups"/>
+        <property name="activeGroups" column="ActiveGroups"/>
+        <property name="prdSumTotal" column="PRD_SumTotal"/>
+        <property name="prdCount" column="PRD_Count"/>
+        <property name="changeCount" column="PRD_ChangeCount"/>
+        <property name="newCount" column="PRD_NewCount"/>
+        <property name="terminatedCount" column="PRD_TerminatedCount"/>
+        <property name="asOf" column="AsOf_Timestamp" type="timestamp"/>
+
+    </class>
+</hibernate-mapping>

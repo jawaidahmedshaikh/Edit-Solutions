@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	width="682" 
+	height="522"
+	title="Add Batch Contract Setup Dialog"  
+	showCloseButton="true"
+	close="mx.managers.PopUpManager.removePopUp(this)">
+	
+	<mx:Style source="../css/segSoftware.css"/>	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.event.SEGEvent;
+			import mx.managers.PopUpManager;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.model.SEGModelLocator;			
+		
+			/**
+			 * A convenience reference.
+			 */
+			[Bindable] 
+			private var model:SEGModelLocator = SEGModelLocator.getInstance();
+			
+			/**
+			 * A convenience reference.
+			 */
+			private var dispatcher:CairngormEventDispatcher = CairngormEventDispatcher.getInstance();
+		]]>
+	</mx:Script>
+	
+	<mx:Model id="formData">
+		<formData>
+			<selectedGroupContractGroupVO>{groupDataGrid.selectedItem}</selectedGroupContractGroupVO>
+			<groupNumber>{groupNumber.text}</groupNumber>
+			<groupName>{groupName.text}</groupName>
+		</formData>
+	</mx:Model>
+	
+	<mx:Panel layout="horizontal" title="Search Parameters" left="10" right="10" top="10" bottom="301">
+		<mx:Form>
+			<mx:FormItem label="Group #:">
+				<mx:TextInput id="groupNumber" focusIn="groupName.text=''"/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:VBox height="100%" verticalAlign="middle">
+			<mx:Text text="or"/>
+		</mx:VBox>
+		<mx:Form>
+			<mx:FormItem label="Group Name:">
+				<mx:TextInput id="groupName" focusIn="groupNumber.text=''"/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:ControlBar horizontalAlign="right">
+			<mx:Button label="Search" click="dispatcher.dispatchEvent(new SEGEvent(SEGController.EVENT_GET_GROUPS_BY_GROUPNAME_OR_GROUPNUMBER, formData))"/>
+		</mx:ControlBar>
+	</mx:Panel>
+	<mx:Panel layout="absolute" left="10" right="10" top="175" bottom="10" title="Search Results">
+		<mx:DataGrid id="groupDataGrid" left="0" right="0" 
+			top="0" 
+			bottom="0"
+			dataProvider="{model.searchedForGroupContractGroupVOs}">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Case Name">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Text text="{data.ContractGroupVO.ClientRoleVO.ClientDetailVO.CorporateName}"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Case #">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Text text="{data.ContractGroupVO.ContractGroupNumber}"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Group Name">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Text text="{data.ClientRoleVO.ClientDetailVO.CorporateName}"/>
+						</mx:Component>
+					</mx:itemRenderer>				
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Group #">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Text text="{data.ContractGroupNumber}"/>
+						</mx:Component>
+					</mx:itemRenderer>				
+				</mx:DataGridColumn>				
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:ControlBar horizontalAlign="right">
+			<mx:Button label="OK" 
+				click="dispatcher.dispatchEvent(new SEGEvent(SEGController.EVENT_CREATE_DEFAULT_BATCHCONTRACTSETUP, formData));
+				mx.managers.PopUpManager.removePopUp(this)"/>
+		</mx:ControlBar>
+	</mx:Panel>
+	<mx:ControlBar horizontalAlign="right">
+	</mx:ControlBar>
+	
+</mx:TitleWindow>

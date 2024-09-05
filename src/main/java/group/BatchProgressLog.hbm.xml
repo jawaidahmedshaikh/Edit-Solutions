@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="group.BatchProgressLog" table="&quot;BatchProgressLog&quot;"  >
+        <id name="BatchProgressLogPK" column="&quot;BatchProgressLogPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="DaysAdded" column="&quot;DaysAdded&quot;"/>
+        <property name="Description" column="&quot;Description&quot;"/>
+
+        <property name="BatchContractSetupFK" column="&quot;BatchContractSetupFK&quot;" insert="false" update="false"/>
+        <property name="FilteredRequirementFK" column="&quot;FilteredRequirementFK&quot;" insert="false" update="false"/>
+        
+
+        <many-to-one
+            name="BatchContractSetup"
+            column="&quot;BatchContractSetupFK&quot;"
+            class="group.BatchContractSetup"
+            cascade="none"/>
+            
+        <many-to-one
+            name="FilteredRequirement"
+            column="&quot;FilteredRequirementFK&quot;"
+            class="contract.FilteredRequirement"
+            cascade="none"/>            
+
+    </class>
+</hibernate-mapping>

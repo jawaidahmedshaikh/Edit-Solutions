@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="com.editsolutions.prd.vo.MessageTemplateField" table="PRD_MessageTemplateField"  >
+        <id name="messageTemplateFieldPK" column="PRD_MessageTemplateFieldPK" type="long">
+              <generator class="identity"/>
+        </id>
+
+        <property name="tableName" column="TableName"/>
+        <property name="fieldName" column="FieldName"/>
+        <property name="fieldTitle" column="FieldTitle"/>
+        <property name="transformationFK" column="PRD_TransformationFK" type="long"/>
+
+        <property name="addDate" column="AddDate" type="date"/>
+        <property name="addUser" column="AddUser"/>
+        <property name="modDate" column="ModDate" type="date"/>
+        <property name="modUser" column="ModUser"/>
+        
+        <many-to-one name="transformation" lazy="false" class="com.editsolutions.prd.vo.Transformation"
+             column="PRD_TransformationFK" unique="true" insert="false" update="false"/>
+    </class>
+</hibernate-mapping>

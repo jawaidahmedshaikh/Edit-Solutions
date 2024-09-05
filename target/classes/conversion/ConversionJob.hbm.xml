@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="conversion.ConversionJob" table="&quot;ConversionJob&quot;" lazy="true">
+
+        <id name="ConversionJobPK" column="&quot;ConversionJobPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="JobName" column="&quot;JobName&quot;"/>
+        <property name="FileName" column="&quot;FileName&quot;"/>        
+        <property name="StartTime" column="&quot;StartTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="EndTime" column="&quot;EndTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+
+        <property name="ConversionTemplateFK" column="&quot;ConversionTemplateFK&quot;" insert="false" update="false"/>
+        
+        <many-to-one
+            name="ConversionTemplate"
+            column="&quot;ConversionTemplateFK&quot;"
+            class="conversion.ConversionTemplate"
+            cascade="none"/>
+
+    </class>
+
+</hibernate-mapping>

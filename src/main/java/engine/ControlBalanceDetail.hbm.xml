@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.ControlBalanceDetail" table="&quot;ControlBalanceDetail&quot;"  >
+    
+        <cache usage="read-write"/>
+    
+        <id name="ControlBalanceDetailPK" column="&quot;ControlBalanceDetailPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="NetAssets" column="&quot;NetAssets&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PolicyOwnerValue" column="&quot;PolicyOwnerValue&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AccruedGainLoss" column="&quot;AccruedGainLoss&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalAccruedNetPremiums" column="&quot;TotalAccruedNetPremiums&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalAccruedAdminFees" column="&quot;TotalAccruedAdminFees&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalAccruedCOI" column="&quot;TotalAccruedCOI&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalAccruedReallocations" column="&quot;TotalAccruedReallocations&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalAccruedRRD" column="&quot;TotalAccruedRRD&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalAccruedSurrenders" column="&quot;TotalAccruedSurrenders&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalAccruedContribToMortRsv" column="&quot;TotalAccruedContribToMortRsv&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalAccruedMAndE" column="&quot;TotalAccruedMAndE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalAccruedAdvisoryFees" column="&quot;TotalAccruedAdvisoryFees&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalAccruedMgtFees" column="&quot;TotalAccruedMgtFees&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalAccruedRVPFees" column="&quot;TotalAccruedRVPFees&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalAccruedAdvanceTransfers" column="&quot;TotalAccruedAdvanceTransfers&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="MAndEPayableReceivables" column="&quot;MAndEPayableReceivables&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AdvisoryFeePayablesReceivables" column="&quot;AdvisoryFeePayablesReceivables&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="MgtFeePayablesReceivables" column="&quot;MgtFeePayablesReceivables&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RVPPayablesReceivables" column="&quot;RVPPayablesReceivables&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="UnitBalance" column="&quot;UnitBalance&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AccountingPeriod" column="&quot;AccountingPeriod&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ValuationDate" column="&quot;ValuationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ShareBalance" column="&quot;ShareBalance&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalCashNetPremium" column="&quot;TotalCashNetPremium&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CashGainLoss" column="&quot;CashGainLoss&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalCashAdminFees" column="&quot;TotalCashAdminFees&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalCashCoi" column="&quot;TotalCashCoi&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalCashReallocations" column="&quot;TotalCashReallocations&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalCashRRD" column="&quot;TotalCashRRD&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalCashSurrenders" column="&quot;TotalCashSurrenders&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalCashContribToMortRsv" column="&quot;TotalCashContribToMortRsv&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalCashMAndE" column="&quot;TotalCashMAndE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalCashAdvisoryFees" column="&quot;TotalCashAdvisoryFees&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalCashMgmtFees" column="&quot;TotalCashMgmtFees&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalCashSVAFees" column="&quot;TotalCashSVAFees&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalCashAdvanceTransfers" column="&quot;TotalCashAdvanceTransfers&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NetCash" column="&quot;NetCash&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SharesPurchased" column="&quot;SharesPurchased&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PolicyActivity" column="&quot;PolicyActivity&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="UnitsPurchased" column="&quot;UnitsPurchased&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="ControlBalanceFK" column="&quot;ControlBalanceFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="ControlBalance"
+            column="&quot;ControlBalanceFK&quot;"
+            class="engine.ControlBalance"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

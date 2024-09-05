@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:custom="com.segsoftware.view.custom.*"
+	layout="absolute" width="1048" height="800" 
+	title="Client Select Dialog"  
+	showCloseButton="true"
+	close="mx.managers.PopUpManager.removePopUp(this)"
+	initialize="init()">
+	<mx:states>
+		<mx:State name="quickAdd">
+			<mx:SetProperty target="{commitButton}" name="enabled" value="true"/>
+			<mx:SetProperty target="{clearButton}" name="enabled" value="true"/>
+			<mx:SetProperty target="{quickAddButton}" name="enabled" value="false"/>
+			<mx:SetProperty target="{quickAddHBox}" name="enabled" value="true"/>
+			<mx:SetProperty target="{birthDate}" name="editable" value="true"/>		
+			<mx:SetEventHandler target="{commitButton}" name="click">
+				<mx:handler><![CDATA[formData.valueObjectVOName = SEGModelLocator.MODEL_CLIENTADDRESS;  CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_SAVE_QUICK_ADD_CLIENT, formData)); currentState='']]></mx:handler>
+			</mx:SetEventHandler>
+		</mx:State>
+	</mx:states>
+	
+	<mx:Style source="../css/segSoftware.css"/>	
+	
+	<mx:Script>
+	
+		<![CDATA[
+		
+			import com.adobe.cairngorm.control.CairngormEvent;
+			import com.segsoftware.control.SEGController;
+			import mx.managers.PopUpManager;
+			import com.segsoftware.event.SEGEvent;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import com.segsoftware.model.*;
+			import com.segsoftware.utility.Util;
+			
+			/**
+			 *	Initialization function.
+			 *  Sets necessary objects into the SEGModelLocator for later access.
+			 */
+			private function init():void
+			{
+				SEGModelLocator.getInstance().clientSelectDialog = this;	
+			}
+			
+		   /**
+			* Getter. LastName.
+			*/
+			public function getClientName():String
+			{
+				return clientName.text;
+			}
+			
+			/**
+			 * Renders the dialog that shows additional information (such
+			 * as policy associations) for the selected client.
+			 */
+			public function showMoreClientSelectDialog():void
+			{
+				var moreClientSelectDialog:MoreClientSelectDialog = PopUpManager.createPopUp(this, MoreClientSelectDialog, true) as MoreClientSelectDialog;
+				
+				PopUpManager.centerPopUp(moreClientSelectDialog);					
+			}
+			
+			/**
+			 * Determines the client's name to display in the name field.  
+			 */ 
+			private function determineDisplayName(item:Object, column:DataGridColumn):String 
+			{
+				var clientDetailVOAsXML:XML = XML (item);
+				
+				return Util.determineClientName(clientDetailVOAsXML);
+   			}
+   			
+   			private function search(event:KeyboardEvent=null):void
+   			{
+   				if (!event || event.keyCode == 13)
+   				{
+   					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_CLIENTS_BY_NAME_TAXID_DOB, formData));
+				
+					taxId.text='';
+					clientName.text='';
+					dateOfBirth.text=''
+   				}
+
+   			}
+		]]>
+		
+	</mx:Script>
+	
+	<mx:Model id="formData">
+		<formData>
+			<clientName>{clientName.text}</clientName>			
+			<taxId>{taxId.text}</taxId>
+			<dateOfBirth>{dateOfBirth.text}</dateOfBirth>
+			<selectedAppEntryClientDetailVOs>{appEntryClientDetailVOs.selectedItems}</selectedAppEntryClientDetailVOs>
+			<selectedAppEntryClientDetailVO>{appEntryClientDetailVOs.selectedItem}</selectedAppEntryClientDetailVO>
+			<valueObjectVOName/>
+		</formData>
+	</mx:Model>
+
+	<mx:Panel height="153" layout="absolute" title="Search Criteria" left="10" right="10" top="10">
+		<mx:HBox verticalAlign="middle" y="10" x="10">
+			<mx:Form>
+				<mx:FormItem label="Tax ID:">
+					<custom:SEGTextInput id="taxId" click="clientName.text=''; dateOfBirth.text=''"
+						keyUp="search(event)" />
+				</mx:FormItem>
+			</mx:Form>
+			<mx:Text text="or"/>
+			<mx:Form>
+				<mx:FormItem label="Last/Corporate Name:">
+					<custom:SEGTextInput  id="clientName" width="171" click="taxId.text=''"
+						keyUp="search(event)" />
+				</mx:FormItem>
+			</mx:Form>
+			<mx:Text text="/"/>
+			<mx:Form>
+				<mx:FormItem label="DOB:">
+					<custom:SEGDateField id="dateOfBirth" editable="true" required="false" click="taxId.text=''"/>
+				</mx:FormItem>
+			</mx:Form>
+		</mx:HBox>
+		<mx:ControlBar horizontalAlign="right">
+			<mx:Button label="Search" 
+				click="search()"/>
+		</mx:ControlBar>
+	</mx:Panel>
+	
+	<mx:Panel layout="absolute" title="Search Results" id="panel1" left="10" right="10" top="171" height="233">
+		<mx:DataGrid top="0" left="0" right="0" bottom="0"
+			id="appEntryClientDetailVOs"
+			allowMultipleSelection="false"
+			dataProvider="{SEGModelLocator.getInstance().searchedForAppEntryClientDetailVOs}">
+			<mx:columns>
+				<mx:DataGridColumn labelFunction="determineDisplayName" headerText="Name">
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Tax Id">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Text text="{data.TaxIdentification}"/>
+						</mx:Component>
+					</mx:itemRenderer>				
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="DOB">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Text text="{data.BirthDate}"/>
+						</mx:Component>
+					</mx:itemRenderer>				
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Client Status">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Text text="{data.StatusCT}"/>
+						</mx:Component>
+					</mx:itemRenderer>				
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Policy Info...">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:HBox>
+								
+								<mx:Script>
+									<![CDATA[
+										import com.segsoftware.event.*;
+										import com.adobe.cairngorm.control.CairngormEventDispatcher;
+										import com.segsoftware.control.*;
+									]]>
+								</mx:Script>
+								
+								<mx:LinkButton label="More..." 
+									click="
+									outerDocument.showMoreClientSelectDialog();
+									CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_POLICY_INFORMATION_BY_CLIENTDETAILPK, outerDocument.formData));
+									"/>								
+							</mx:HBox>
+																		
+						</mx:Component>
+					</mx:itemRenderer>				
+				</mx:DataGridColumn>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:ControlBar horizontalAlign="right">
+			<mx:Button label="OK"
+				click="CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_ADD_APPENTRY_CLIENTDETAILS, formData));
+				mx.managers.PopUpManager.removePopUp(this)"/>
+		</mx:ControlBar>
+	</mx:Panel>
+	
+	<mx:Panel id="quickAddPanel" height="45%" layout="horizontal" title="Quick Client Add" left="10" right="10" bottom="10">
+		<mx:HBox id="quickAddHBox" enabled="false" width="100%" height="100%">
+			<mx:Form id="clientDetailForm1" height="255">
+				<mx:FormItem label="Type:">
+					<custom:SEGComboBox 
+						dataProvider="{CodeTable.getInstance().filteredTrustTypeCodeTableVOs}"
+						labelField="CodeDesc"
+						valueField="Code" 
+						valueObjectVO="{SEGModelLocator.getInstance().quickAddClientDetailVO}"
+						valueObjectVOField="TrustTypeCT"
+						/>
+				</mx:FormItem>
+				<mx:FormItem label="Last Name:">
+					<custom:SEGTextInput id="lastName"
+						valueObjectVO="{SEGModelLocator.getInstance().quickAddClientDetailVO}"
+						valueObjectVOField="LastName"
+						text="{SEGModelLocator.getInstance().quickAddClientDetailVO.LastName}"/>
+				</mx:FormItem>
+				<mx:FormItem label="First Name:">
+					<custom:SEGTextInput id="firstName"
+						valueObjectVO="{SEGModelLocator.getInstance().quickAddClientDetailVO}"
+						valueObjectVOField="FirstName"
+						text="{SEGModelLocator.getInstance().quickAddClientDetailVO.FirstName}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Middle:">
+					<custom:SEGTextInput
+						valueObjectVO="{SEGModelLocator.getInstance().quickAddClientDetailVO}"
+						valueObjectVOField="MiddleName"
+						text="{SEGModelLocator.getInstance().quickAddClientDetailVO.MiddleName}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Prefix:">
+					<custom:SEGTextInput
+						valueObjectVO="{SEGModelLocator.getInstance().quickAddClientDetailVO}"
+						valueObjectVOField="NamePrefix"
+						text="{SEGModelLocator.getInstance().quickAddClientDetailVO.NamePrefix}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Suffix:">
+					<custom:SEGTextInput
+						valueObjectVO="{SEGModelLocator.getInstance().quickAddClientDetailVO}"
+						valueObjectVOField="NameSuffix"
+						text="{SEGModelLocator.getInstance().quickAddClientDetailVO.NameSuffix}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Corporate Name:">
+					<custom:SEGTextInput id="corporateNameField"
+						valueObjectVO="{SEGModelLocator.getInstance().quickAddClientDetailVO}"
+						valueObjectVOField="CorporateName"
+						text="{SEGModelLocator.getInstance().quickAddClientDetailVO.CorporateName}"/>
+				</mx:FormItem>
+			</mx:Form>
+			<mx:VBox>
+				<mx:Form  id="clientDetailForm2" enabled="true" >
+					<mx:FormItem label="DOB:">
+						<custom:SEGDateField id="birthDate"
+							valueObjectVO="{SEGModelLocator.getInstance().quickAddClientDetailVO}"
+							valueObjectVOField="BirthDate"
+							text="{SEGModelLocator.getInstance().quickAddClientDetailVO.BirthDate}"
+							required="false"/>
+					</mx:FormItem>
+					<mx:FormItem label="Gender:">
+						<custom:SEGComboBox 
+							dataProvider="{CodeTable.getInstance().genderVOs}"
+							labelField="CodeDesc"
+							valueField="Code" 
+							valueObjectVO="{SEGModelLocator.getInstance().quickAddClientDetailVO}"
+							valueObjectVOField="GenderCT"
+							/>
+					</mx:FormItem>
+					<mx:FormItem label="Occupation:">
+						<custom:SEGTextInput
+							valueObjectVO="{SEGModelLocator.getInstance().quickAddClientDetailVO}"
+							valueObjectVOField="Occupation"
+							text="{SEGModelLocator.getInstance().quickAddClientDetailVO.Occupation}"/>
+					</mx:FormItem>
+					<mx:FormItem label="U.S. Citizen:">
+						<custom:SEGComboBox 
+							dataProvider="{CodeTable.getInstance().filteredYesNoCodeTableVOs}"
+							labelField="CodeDesc"
+							valueField="Code" 
+							valueObjectVO="{SEGModelLocator.getInstance().quickAddTaxInformationVO}"
+							valueObjectVOField="CitizenshipIndCT"
+							/>
+					</mx:FormItem>
+				</mx:Form>
+				<custom:SEGTaxId 
+					id="segTaxId"
+					taxIdTypeDataProvider="{CodeTable.getInstance().filteredTaxIdTypeCodeTableVOs}"
+					taxIdTypeLabelField="CodeDesc"
+					taxIdTypeValueField="Code"
+					taxIdTypeValueObjectVO="{SEGModelLocator.getInstance().quickAddTaxInformationVO}"
+					taxIdTypeValueObjectVOField="TaxIdTypeCT"
+					taxIdValueObjectVO="{SEGModelLocator.getInstance().quickAddClientDetailVO}"
+					taxIdValueObjectVOField="TaxIdentification"
+					taxIdText="{SEGModelLocator.getInstance().quickAddClientDetailVO.TaxIdentification}"
+					/>
+			</mx:VBox>
+			<mx:Form  id="clientAddressForm1">
+				<mx:FormItem label="Address 1:">
+					<custom:SEGTextInput
+						valueObjectVO="{SEGModelLocator.getInstance().quickAddClientAddressVO}"
+						valueObjectVOField="AddressLine1"
+						text="{SEGModelLocator.getInstance().quickAddClientAddressVO.AddressLine1}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Address 2:">
+					<custom:SEGTextInput
+						valueObjectVO="{SEGModelLocator.getInstance().quickAddClientAddressVO}"
+						valueObjectVOField="AddressLine2"
+						text="{SEGModelLocator.getInstance().quickAddClientAddressVO.AddressLine2}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Address 3:">
+					<custom:SEGTextInput
+						valueObjectVO="{SEGModelLocator.getInstance().quickAddClientAddressVO}"
+						valueObjectVOField="AddressLine3"
+						text="{SEGModelLocator.getInstance().quickAddClientAddressVO.AddressLine3}"/>
+				</mx:FormItem>
+				<mx:FormItem label="Address 4:">
+					<custom:SEGTextInput
+						valueObjectVO="{SEGModelLocator.getInstance().quickAddClientAddressVO}"
+						valueObjectVOField="AddressLine4"
+						text="{SEGModelLocator.getInstance().quickAddClientAddressVO.AddressLine4}"/>
+				</mx:FormItem>
+				<mx:FormItem label="City:">
+					<custom:SEGTextInput
+						valueObjectVO="{SEGModelLocator.getInstance().quickAddClientAddressVO}"
+						valueObjectVOField="City"
+						text="{SEGModelLocator.getInstance().quickAddClientAddressVO.City}"/>
+				</mx:FormItem>
+				<mx:FormItem label="State:">
+					<custom:SEGComboBox 
+						labelField="CodeDesc" 
+						valueField="Code"
+						dataProvider="{CodeTable.getInstance().stateCodeTableVOs}"
+						valueObjectVO="{SEGModelLocator.getInstance().quickAddClientAddressVO}"
+						valueObjectVOField="StateCT"/> 
+				</mx:FormItem>
+				<mx:FormItem label="Zip:">
+					<custom:SEGTextInput
+						valueObjectVO="{SEGModelLocator.getInstance().quickAddClientAddressVO}"
+						valueObjectVOField="ZipCode"
+						text="{SEGModelLocator.getInstance().quickAddClientAddressVO.ZipCode}"/>
+				</mx:FormItem>
+			</mx:Form>		
+		</mx:HBox>		
+		<mx:ControlBar horizontalAlign="right">
+			<mx:Button label="Quick Add" id="quickAddButton"
+			click="
+			CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_BEGIN_QUICK_ADD_CLIENT, formData));
+			currentState='quickAdd';
+			stage.focus=lastName"/>
+			
+			<mx:VRule height="20"/>
+			
+			<mx:Button label="Clear" id="clearButton" enabled="false"
+			click="
+			CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_BEGIN_QUICK_ADD_CLIENT, formData));
+			stage.focus=lastName"/>
+			
+			<mx:Button label="Commit" id="commitButton" enabled="false"/>
+		</mx:ControlBar>				
+	</mx:Panel>		
+</mx:TitleWindow>

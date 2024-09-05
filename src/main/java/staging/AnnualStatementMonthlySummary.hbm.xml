@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.AnnualStatementMonthlySummary" table="&quot;ANNUALSTATEMENTMONTHLYSUMMARY&quot;">
+        <id name="AnnualStatementMonthlySummaryPK" column="&quot;ANNUALSTATEMENTMONTHLYSUMMARYPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="AnnualStatementFK" column="&quot;ANNUALSTATEMENTFK&quot;" insert="false" update="false"/>
+
+        <property name="EndDate" column="&quot;ENDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="AccumulationValueAtEndDate" column="&quot;ACCUMULATIONVALUEATENDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SumOfPremiumsPaid" column="&quot;SUMOFPREMIUMSPAID&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SumOfLoans" column="&quot;SUMOFLOANS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SumOfLoanRepayments" column="&quot;SUMOFLOANREPAYMENTS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SumOfWithdrawals" column="&quot;SUMOFWITHDRAWALS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SumOfAdminFees" column="&quot;SUMOFADMINFEES&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SumOfPremiumLoad" column="&quot;SUMOFPREMIUMLOAD&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+  
+        <property name="InterestEarned" column="&quot;INTERESTEARNED&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="BaseCOI" column="&quot;BASECOI&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RiderCOI" column="&quot;RIDERCOI&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="MortalityChargeAndRiderCOI" column="&quot;MORTALITYCHARGEANDRIDERCOI&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="InterestRate" column="&quot;INTERESTRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+            
+        <many-to-one
+            name="AnnualStatement"
+            column="&quot;ANNUALSTATEMENTFK&quot;"
+            class="staging.AnnualStatement"
+            cascade="none"/>
+           
+    </class>
+</hibernate-mapping>
+

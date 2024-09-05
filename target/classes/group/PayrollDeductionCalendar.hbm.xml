@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="group.PayrollDeductionCalendar" table="&quot;PayrollDeductionCalendar&quot;"  >
+        <id name="PayrollDeductionCalendarPK" column="&quot;PayrollDeductionCalendarPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="PayrollDeductionScheduleFK" column="&quot;PayrollDeductionScheduleFK&quot;" insert="false" update="false"/>
+
+        <property name="PayrollDeductionDate" column="&quot;PayrollDeductionDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="PayrollDeductionCodeCT" column="&quot;PayrollDeductionCodeCT&quot;"/>        
+        
+        <many-to-one
+            name="PayrollDeductionSchedule"
+            column="&quot;PayrollDeductionScheduleFK&quot;"
+            class="group.PayrollDeductionSchedule"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

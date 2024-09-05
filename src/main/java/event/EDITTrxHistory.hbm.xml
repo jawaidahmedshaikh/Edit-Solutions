@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="event.EDITTrxHistory" table="&quot;EDITTrxHistory&quot;" >
+        <id name="EDITTrxHistoryPK" column="&quot;EDITTrxHistoryPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="CycleDate" column="&quot;CycleDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="OriginalProcessDateTime" column="&quot;OriginalProcessDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="AccountingPendingStatus" column="&quot;AccountingPendingStatus&quot;" />
+
+        <property name="ControlNumber" column="&quot;ControlNumber&quot;" />
+        <property name="ReleaseDate" column="&quot;ReleaseDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ReturnDate" column="&quot;ReturnDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="OriginalCycleDate" column="&quot;OriginalCycleDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="CorrespondenceTypeCT" column="&quot;CorrespondenceTypeCT&quot;" />
+        <property name="ProcessID" column="&quot;ProcessID&quot;" />
+        <property name="RealTimeInd" column="&quot;RealTimeInd&quot;"/>
+
+        <property name="AddressTypeCT" column="&quot;AddressTypeCT&quot;"/>
+        <property name="ProcessDateTime" column="&quot;ProcessDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+
+        <property name="EDITTrxFK" column="&quot;EDITTrxFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="EDITTrx"
+            column="&quot;EDITTrxFK&quot;"
+            class="event.EDITTrx"
+            cascade="none"
+            />
+
+        <set name="FinancialHistories" table="&quot;FinancialHistory&quot;" inverse="true"  cascade="all">
+            <key column="&quot;EDITTrxHistoryFK&quot;"/>
+            <one-to-many class="event.FinancialHistory"/>
+        </set>
+
+        <set name="WithholdingHistories" table="&quot;WithholdingHistory&quot;" inverse="true"  cascade="all">
+            <key column="&quot;EDITTrxHistoryFK&quot;"/>
+            <one-to-many class="event.WithholdingHistory"/>
+        </set>
+
+        <set name="InSuspenses" table="&quot;InSuspense&quot;" inverse="true"  cascade="all">
+            <key column="&quot;EDITTrxHistoryFK&quot;"/>
+            <one-to-many class="event.InSuspense"/>
+        </set>
+
+        <set name="ChargeHistories" table="&quot;ChargeHistory&quot;" inverse="true"  cascade="all">
+            <key column="&quot;EDITTrxHistoryFK&quot;"/>
+            <one-to-many class="event.ChargeHistory"/>
+        </set>
+
+        <set name="BucketHistories" table="&quot;BucketHistory&quot;" inverse="true"  cascade="all">
+            <key column="&quot;EDITTrxHistoryFK&quot;"/>
+            <one-to-many class="event.BucketHistory"/>
+        </set>
+
+        <set name="CommissionHistories" table="&quot;CommissionHistory&quot;" inverse="true"  cascade="all">
+            <key column="&quot;EDITTrxHistoryFK&quot;"/>
+            <one-to-many class="event.CommissionHistory"/>
+        </set>
+
+        <set name="InvestmentHistories" table="&quot;InvestmentHistory&quot;" inverse="true"  cascade="all">
+            <key column="&quot;EDITTrxHistoryFK&quot;"/>
+            <one-to-many class="event.InvestmentHistory"/>
+        </set>
+
+        <set name="SegmentHistories" table="&quot;SegmentHistory&quot;" inverse="true"  cascade="all">
+            <key column="&quot;EDITTrxHistoryFK&quot;"/>
+            <one-to-many class="event.SegmentHistory"/>
+        </set>
+
+        <set name="CommissionablePremiumHistories" table="&quot;CommissionablePremiumHistory&quot;" inverse="true"  cascade="all">
+            <key column="&quot;EDITTrxHistoryFK&quot;"/>
+            <one-to-many class="event.CommissionablePremiumHistory"/>
+        </set>
+
+        <set name="ReinsuranceHistories" table="&quot;ReinsuranceHistory&quot;" inverse="true"  cascade="all">
+            <key column="&quot;EDITTrxHistoryFK&quot;"/>
+            <one-to-many class="reinsurance.ReinsuranceHistory"/>
+        </set>
+
+
+    </class>
+</hibernate-mapping>

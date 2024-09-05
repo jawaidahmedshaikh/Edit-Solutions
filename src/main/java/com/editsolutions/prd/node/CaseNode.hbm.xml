@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="com.editsolutions.prd.node.CaseNode" table="vw_PRD_Case"  >
+        <id type="long" name="caseSetupPK" column="Case_ContractGroupPK">
+              <generator class="identity"/>
+        </id>
+
+        <property name="caseNumber" column="CaseNumber"/>
+        <property name="caseName" column="CaseName" type="string"/>
+        
+        <bag name="children" table="vw_PRD_Group"
+                inverse="true" lazy="false" fetch="select" cascade="none">
+            <key>
+                <column name="Case_ContractGroupPK" not-null="true" />
+            </key>
+            <one-to-many class="com.editsolutions.prd.node.GroupNode" />
+        </bag>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="group.CaseSetup" table="&quot;CaseSetup&quot;"  >
+        <id name="CaseSetupPK" column="&quot;CaseSetupPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="StateCT" column="&quot;StateCT&quot;"/>
+        <property name="CaseSetupOptionCT" column="&quot;CaseSetupOptionCT&quot;"/>
+        <property name="CaseSetupOptionValueCT" column="&quot;CaseSetupOptionValueCT&quot;"/>
+
+        <property name="ContractGroupFK" column="&quot;ContractGroupFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="ContractGroup"
+            column="&quot;ContractGroupFK&quot;"
+            class="group.ContractGroup"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

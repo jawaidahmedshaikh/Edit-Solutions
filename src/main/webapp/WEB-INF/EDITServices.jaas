@@ -1,0 +1,4 @@
+EDITSolutionsJAAS
+{
+    security.jaas.SEGLoginModule REQUIRED debug=true;
+};

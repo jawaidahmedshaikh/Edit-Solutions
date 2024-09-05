@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.ContractRequirement" table="&quot;ContractRequirement&quot;" lazy="true">
+        <id name="ContractRequirementPK" column="&quot;ContractRequirementPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="RequirementStatusCT" column="&quot;RequirementStatusCT&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="FollowupDate" column="&quot;FollowupDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ReceivedDate" column="&quot;ReceivedDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ExecutedDate" column="&quot;ExecutedDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="FreeFormDescription" column="&quot;FreeFormDescription&quot;"/>
+        <property name="RequirementInformation" column="&quot;RequirementInformation&quot;"/>
+
+
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;" insert="false" update="false"/>
+        <property name="FilteredRequirementFK" column="&quot;FilteredRequirementFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"/>
+
+        <many-to-one
+            name="FilteredRequirement"
+            column="&quot;FilteredRequirementFK&quot;"
+            class="contract.FilteredRequirement"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>
+

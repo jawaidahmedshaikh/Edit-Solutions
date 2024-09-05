@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<!-- stating.CASE root -->
+    <class name="staging.Staging" table="&quot;STAGING&quot;">
+        <id name="StagingPK" column="&quot;STAGINGPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+        <property name="StagingDate" column="&quot;STAGINGDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="EventType" column="&quot;EVENTTYPE&quot;"/>
+
+        <property name="CaseNumber" column="&quot;CASENUMBER&quot;"/>
+        <property name="GroupNumber" column="&quot;GROUPNUMBER&quot;"/>
+        <property name="ContractNumber" column="&quot;CONTRACTNUMBER&quot;"/>
+
+        <property name="CorrespondenceType" column="&quot;CORRESPONDENCETYPE&quot;"/>
+        <property name="RecordCount" column="&quot;RECORDCOUNT&quot;"/>
+        <property name="ControlTotal" column="&quot;CONTROLTOTAL&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        
+        <property name="CompanyName" column="CompanyName"/>
+        <property name="RunDate" column="&quot;RUNDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        
+        <set name="Cases" table="&quot;CASE&quot;" inverse="true"  cascade="all">
+            <key column="&quot;STAGINGFK&quot;"/>
+            <one-to-many class="staging.Case"/>
+        </set>
+
+        <set name="SegmentBases" table="&quot;SEGMENTBASE&quot;" inverse="true"  cascade="all">
+            <key column="&quot;STAGINGFK&quot;"/>
+            <one-to-many class="staging.SegmentBase"/>
+        </set>
+
+        <set name="PayrollDeductionSchedules" table="&quot;PAYROLLDEDUCTIONSCHEDULE&quot;" inverse="true"  cascade="all">
+            <key column="&quot;STAGINGFK&quot;"/>
+            <one-to-many class="staging.PayrollDeductionSchedule"/>
+        </set>
+
+        <set name="BillSchedules" table="&quot;BILLSCHEDULE&quot;" inverse="true"  cascade="all">
+            <key column="&quot;STAGINGFK&quot;"/>
+            <one-to-many class="staging.BillSchedule"/>
+        </set>
+
+        <set name="Accountings" table="&quot;ACCOUNTING&quot;" inverse="true"  cascade="all">
+            <key column="&quot;STAGINGFK&quot;"/>
+            <one-to-many class="staging.Accounting"/>
+        </set>
+
+        <set name="Agents" table="&quot;AGENT&quot;" inverse="true"  cascade="all">
+            <key column="&quot;STAGINGFK&quot;"/>
+            <one-to-many class="staging.Agent"/>
+        </set>
+
+    </class>
+</hibernate-mapping>
+

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" 
+	height="100%" 
+	xmlns:custom="com.segsoftware.view.custom.*">
+
+	<mx:Script>
+		<![CDATA[
+
+			import com.segsoftware.event.SEGEvent;
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.control.SEGController;
+
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import mx.managers.PopUpManager;
+			
+			/**
+			* Displays ConversionJobs for the selected ConversionTemplate.
+			*/
+			private function showConversionJobs():void
+			{
+				if (SEGModelLocator.getInstance().selectedConversionTemplateVO != null)
+				{
+					CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_CONVERSION_JOBS, null));	
+				}
+			}
+			
+			/**
+			* Renders the dialog to enter ConversionJob name.
+			*/
+			private function showConversionJobDialog():void
+			{
+				var newConversionJobDialog:NewConversionJobDialog = PopUpManager.createPopUp(this, com.segsoftware.view.conversion.NewConversionJobDialog, true) as NewConversionJobDialog;	
+							
+				PopUpManager.centerPopUp(newConversionJobDialog);								
+			}
+			
+		]]>
+	</mx:Script>
+
+	<mx:Binding source="conversionJobDataGrid.selectedItem as XML" destination="SEGModelLocator.getInstance().selectedConversionJobVO"/>
+
+	<mx:VBox left="10" right="10" top="10" bottom="10">
+		<mx:Panel width="100%" height="50%" layout="absolute" title="Job">
+			<mx:DataGrid
+				id="conversionJobDataGrid" 
+				left="0" 
+				right="0" 
+				top="0" 
+				bottom="0"
+				dataProvider="{SEGModelLocator.getInstance().conversionJobVOs}"
+				change="CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_CONVERSION_LOGS, null))">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Job Name" dataField="JobName"/>
+					<mx:DataGridColumn headerText="Start Time" dataField="StartTime"/>
+					<mx:DataGridColumn headerText="End Time" dataField="EndTime"/>
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:ControlBar horizontalAlign="right">
+				<custom:SEGFileUpload 
+					id="conversionDataFileName"
+					label="Load Conversion Data" 
+					segEvent="{SEGController.EVENT_LOAD_CONVERSION_DATA}"/>
+				<mx:Button 
+					label="Run New Job" 
+					id="runButton"
+					click="showConversionJobDialog()"/>
+				<mx:Button 
+					label="Show All" 
+					id="showAllButton"
+					click="showConversionJobs()"/>
+			</mx:ControlBar>
+		</mx:Panel>
+		<mx:Panel width="100%" height="50%" layout="absolute" title="Log">
+			<mx:DataGrid
+				id="conversionLogDataGrid" 
+				left="0" 
+				right="0" 
+				top="0" 
+				bottom="0"
+				dataProvider="{SEGModelLocator.getInstance().conversionLogVOs}">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Log Message" dataField="LogMessage"/>
+					<mx:DataGridColumn headerText="Log Level" dataField="LogLevel"/>
+					<mx:DataGridColumn headerText="MaintDateTime" dataField="MaintDateTime"/>
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:Panel>
+		<mx:ControlBar>
+			<mx:Label text="Template Name:"/>
+			<mx:Text text="{SEGModelLocator.getInstance().selectedConversionTemplateVO.templateName}"/>
+			<mx:Text text="Template Desc:"/>
+			<mx:Text text="{SEGModelLocator.getInstance().selectedConversionTemplateVO.templateDescription}"/>			
+		</mx:ControlBar>
+	</mx:VBox>	
+</mx:Canvas>

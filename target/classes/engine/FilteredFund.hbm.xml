@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.FilteredFund" table="&quot;FilteredFund&quot;"  >
+    
+        <cache usage="read-write"/>
+    
+        <id name="FilteredFundPK" column="&quot;FilteredFundPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="FundNumber" column="&quot;FundNumber&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="TerminationDate" column="&quot;TerminationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="PricingDirection" column="&quot;PricingDirection&quot;"/>
+        <property name="GuaranteedDuration" column="&quot;GuaranteedDuration&quot;"/>
+        <property name="IndexingMethodCT" column="&quot;IndexingMethodCT&quot;"/>
+        <property name="FundAdjustmentCT" column="&quot;FundAdjustmentCT&quot;"/>
+        <property name="IndexCapRateGuarPeriod" column="&quot;IndexCapRateGuarPeriod&quot;"/>
+        <property name="PremiumBonusDuration" column="&quot;PremiumBonusDuration&quot;"/>
+        <property name="MinimumTransferAmount" column="&quot;MinimumTransferAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="MVAStartingIndexGuarPeriod" column="&quot;MVAStartingIndexGuarPeriod&quot;"/>
+        <property name="SubscriptionNotificationDays" column="&quot;SubscriptionNotificationDays&quot;"/>
+        <property name="COIReplenishmentDays" column="&quot;COIReplenishmentDays&quot;"/>
+        <property name="DeathDays" column="&quot;DeathDays&quot;"/>
+        <property name="FullSurrenderDays" column="&quot;FullSurrenderDays&quot;"/>
+        <property name="WithdrawalDays" column="&quot;WithdrawalDays&quot;"/>
+        <property name="TransferDays" column="&quot;TransferDays&quot;"/>
+        <property name="LoanDays" column="&quot;LoanDays&quot;"/>
+        <property name="DivisionFeesLiquidationDays" column="&quot;DivisionFeesLiquidationDays&quot;"/>
+        <property name="SubscriptionDaysTypeCT" column="&quot;SubscriptionDaysTypeCT&quot;"/>
+        <property name="COIReplenishmentDaysTypeCT" column="&quot;COIReplenishmentDaysTypeCT&quot;"/>
+        <property name="DeathDaysTypeCT" column="&quot;DeathDaysTypeCT&quot;"/>
+        <property name="FullSurrenderDaysTypeCT" column="&quot;FullSurrenderDaysTypeCT&quot;"/>
+        <property name="WithdrawalDaysTypeCT" column="&quot;WithdrawalDaysTypeCT&quot;"/>
+        <property name="TransferDaysTypeCT" column="&quot;TransferDaysTypeCT&quot;"/>
+        <property name="LoanDaysTypeCT" column="&quot;LoanDaysTypeCT&quot;"/>
+        <property name="DivFeesLiquidatnDaysTypeCT" column="&quot;DivFeesLiquidatnDaysTypeCT&quot;"/>
+        <property name="SubscriptionModeCT" column="&quot;SubscriptionModeCT&quot;"/>
+        <property name="COIReplenishmentModeCT" column="&quot;COIReplenishmentModeCT&quot;"/>
+        <property name="DeathModeCT" column="&quot;DeathModeCT&quot;"/>
+        <property name="FullSurrenderModeCT" column="&quot;FullSurrenderModeCT&quot;"/>
+        <property name="WithdrawalModeCT" column="&quot;WithdrawalModeCT&quot;"/>
+        <property name="TransferModeCT" column="&quot;TransferModeCT&quot;"/>
+        <property name="LoanModeCT" column="&quot;LoanModeCT&quot;"/>
+        <property name="DivisionFeesLiquidationModeCT" column="&quot;DivisionFeesLiquidationModeCT&quot;"/>
+        <property name="HoldingAccountFK" column="&quot;HoldingAccountFK&quot;"/>
+        <property name="FundNewClientCloseDate" column="&quot;FundNewClientCloseDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="FundNewDepositCloseDate" column="&quot;FundNewDepositCloseDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ContributionLockUpDuration" column="&quot;ContributionLockUpDuration&quot;"/>
+        <property name="DivisionLevelLockUpDuration" column="&quot;DivisionLevelLockUpDuration&quot;"/>
+        <property name="DivisionLockUpEndDate" column="&quot;DivisionLockUpEndDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="SeparateAccountName" column="&quot;SeparateAccountName&quot;"/>
+        <property name="AnnualSubBucketCT" column="&quot;AnnualSubBucketCT&quot;"/>
+        <property name="PostLockWithdrawalDateCT" column="&quot;PostLockWithdrawalDateCT&quot;"/>
+        <property name="ChargeCodeIndicator" column="&quot;ChargeCodeIndicator&quot;"/>
+        <property name="CategoryCT" column="&quot;CategoryCT&quot;"/>
+        <property name="SeriesToSeriesEligibilityInd" column="&quot;SeriesToSeriesEligibilityInd&quot;"/>
+        <property name="SeriesTransferDays" column="&quot;SeriesTransferDays&quot;"/>
+        <property name="SeriesTransferDaysTypeCT" column="&quot;SeriesTransferDaysTypeCT&quot;"/>
+        <property name="SeriesTransferModeCT" column="&quot;SeriesTransferModeCT&quot;"/>
+        <property name="IncludeInCorrespondenceInd" column="&quot;IncludeInCorrespondenceInd&quot;"/>
+
+        <property name="FundFK" column="&quot;FundFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Fund"
+            column="&quot;FundFK&quot;"
+            class="engine.Fund"
+            cascade="none"/>
+
+        <set name="ProductStructures" table="&quot;ProductFilteredFundStructure&quot;"  cascade="none">
+            <key column="&quot;FilteredFundFK&quot;"/>
+            <many-to-many class="engine.ProductStructure" column="&quot;ProductStructureFK&quot;"/>
+        </set>
+
+        <set name="ChargeCodes" table="&quot;ChargeCode&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;FilteredFundFK&quot;"/>
+            <one-to-many class="engine.ChargeCode"/>
+        </set>
+
+        <set name="UnitValues" table="&quot;UnitValues&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;FilteredFundFK&quot;"/>
+            <one-to-many class="engine.UnitValues"/>
+        </set>
+
+        <set name="Fees" table="&quot;Fee&quot;" lazy="true" inverse="true" cascade="all">
+            <key column="&quot;FilteredFundFK&quot;"/>
+            <one-to-many class="engine.Fee"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

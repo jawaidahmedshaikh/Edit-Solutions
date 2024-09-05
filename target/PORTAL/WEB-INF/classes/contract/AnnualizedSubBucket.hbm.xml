@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.AnnualizedSubBucket" table="&quot;AnnualizedSubBucket&quot;"  >
+        <id name="AnnualizedSubBucketPK" column="&quot;AnnualizedSubBucketPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="EDITTrxFK" column="&quot;EDITTrxFK&quot;" insert="false" update="false"/>
+        <property name="SBEffDate" column="&quot;SBEffDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="SBCurrentRate" column="&quot;SBCurrentRate&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="SBCurrentEndDate" column="&quot;SBCurrentEndDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="SBBaseRate" column="&quot;SBBaseRate&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SBBaseEndDate" column="&quot;SBBaseEndDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="SBGuarMinRate1" column="&quot;SBGuarMinRate1&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SBGuarMinEndDate1" column="&quot;SBGuarMinEndDate1&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="SBGuarMinRate2" column="&quot;SBGuarMinRate2&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="SBGuarMinEndDate2" column="&quot;SBGuarMinEndDate2&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="SBNumberBuckets" column="&quot;SBNumberBuckets&quot;"/>
+        <property name="SBFundValue" column="&quot;SBFundValue&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="BucketFK" column="&quot;BucketFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Bucket"
+            column="&quot;BucketFK&quot;"
+            class="contract.Bucket"
+            cascade="none"/>
+
+        <many-to-one
+            name="EDITTrx"
+            column="&quot;EDITTrxFK&quot;"
+            class="event.EDITTrx"
+            cascade="none"/>
+
+
+    </class>
+</hibernate-mapping>

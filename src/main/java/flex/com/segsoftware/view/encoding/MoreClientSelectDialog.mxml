@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" width="732" height="480"
+	showCloseButton="true" 
+	title="Client Policy Info"
+	layout="absolute"
+	close="mx.managers.PopUpManager.removePopUp(this)">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.SEGModelLocator;
+			import mx.managers.PopUpManager;
+		]]>
+	</mx:Script>
+	<mx:Panel layout="absolute" title="Policy Info" left="10" right="10" top="10" bottom="10" horizontalAlign="center" verticalAlign="middle">
+		<mx:DataGrid left="0" right="0" 
+			top="0" 
+			bottom="0"
+			dataProvider="{SEGModelLocator.getInstance().searchedForPolicyInformationVOs}">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Contract Number" dataField="ContractNumber"/>
+				<mx:DataGridColumn headerText="Segment Status" dataField="SegmentStatusCT"/>
+				<mx:DataGridColumn headerText="Role">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Text text="{data.ContractClientVO.ClientRoleVO.RoleTypeCT}"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Business Contract">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Text text="{data.ProductStructureVO.BusinessContractName}"/>
+						</mx:Component>
+					</mx:itemRenderer>				
+				</mx:DataGridColumn>				
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:Panel>
+	
+</mx:TitleWindow>

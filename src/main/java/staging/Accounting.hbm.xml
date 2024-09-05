@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.Accounting" table="&quot;ACCOUNTING&quot;">
+        <id name="AccountingPK" column="&quot;ACCOUNTINGPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="StagingFK" column="&quot;STAGINGFK&quot;" insert="false" update="false"/>
+
+        <property name="CompanyName" column="&quot;COMPANYNAME&quot;"/>
+        <property name="MarketingPackage" column="&quot;MARKETINGPACKAGE&quot;"/>
+        <property name="BusinessContract" column="&quot;BUSINESSCONTRACT&quot;"/>
+
+        <property name="ContractNumber" column="&quot;CONTRACTNUMBER&quot;"/>
+        <property name="QualNonQual" column="&quot;QUALNONQUAL&quot;"/>
+        <property name="OptionCode" column="&quot;OPTIONCODE&quot;"/>
+
+        <property name="TransactionCode" column="&quot;TRANSACTIONCODE&quot;"/>
+        <property name="ReversalInd" column="&quot;REVERSALIND&quot;"/>
+        <property name="MemoCode" column="&quot;MEMOCODE&quot;"/>
+
+        <property name="StateCode" column="&quot;STATECODE&quot;"/>
+        <property name="AccountNumber" column="&quot;ACCOUNTNUMBER&quot;"/>
+        <property name="AccountName" column="&quot;ACCOUNTNAME&quot;"/>
+
+        <property name="Amount" column="&quot;AMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DebitCreditInd" column="&quot;DEBITCREDITIND&quot;"/>
+        <property name="EffectiveDate" column="&quot;EFFECTIVEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="ProcessDate" column="&quot;PROCESSDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="FundNumber" column="&quot;FUNDNUMBER&quot;"/>
+        <property name="OutOfBalanceInd" column="&quot;OUTOFBALANCEIND&quot;"/>
+
+        <property name="AccountingPendingStatus" column="&quot;ACCOUNTINGPENDINGSTATUS&quot;"/>
+        <property name="QualifiedType" column="&quot;QUALIFIEDTYPE&quot;"/>
+        <property name="OriginalContractNumber" column="&quot;ORIGINALCONTRACTNUMBER&quot;"/>
+
+        <property name="AccountingProcessDate" column="&quot;ACCOUNTINGPROCESSDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AccountingPeriod" column="&quot;ACCOUNTINGPERIOD&quot;"/>
+        <property name="EDITTrxFK" column="&quot;EDITTRXFK&quot;"/>
+
+        <property name="ChargeCode" column="&quot;CHARGECODE&quot;"/>
+        <property name="DistributionCode" column="&quot;DISTRIBUTIONCODE&quot;"/>
+        <property name="ReinsurerNumber" column="&quot;REINSURERNUMBER&quot;"/>
+
+        <property name="TreatyGroupNumber" column="&quot;TREATYGROUPNUMBER&quot;"/>
+        <property name="CertainDuration" column="&quot;CERTAINDURATION&quot;"/>
+        <property name="ContractClientFK" column="&quot;CONTRACTCLIENTFK&quot;" insert="false" update="false"/>
+
+        <property name="AgentFK" column="&quot;AGENTFK&quot;" insert="false" update="false"/>
+        <property name="CaseNumber" column="&quot;CASENUMBER&quot;"/>
+        <property name="CaseName" column="&quot;CASENAME&quot;"/>
+
+        <property name="GroupNumber" column="&quot;GROUPNUMBER&quot;"/>
+        <property name="GroupName" column="&quot;GROUPNAME&quot;"/>
+        <property name="BatchControl" column="&quot;BATCHCONTROL&quot;"/>
+
+        <property name="Source" column="&quot;SOURCE&quot;"/>
+        <property name="IssueDate" column="&quot;ISSUEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="OriginalIssueDate" column="&quot;ORIGINALISSUEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="CheckNumber" column="&quot;CHECKNUMBER&quot;"/>
+        <property name="Operator" column="&quot;OPERATOR&quot;"/>
+
+        <many-to-one
+            name="ContractClient"
+            column="&quot;CONTRACTCLIENTFK&quot;"
+            class="staging.ContractClient"
+            cascade="none"/>
+
+        <many-to-one
+            name="Agent"
+            column="&quot;AGENTFK&quot;"
+            class="staging.Agent"
+            cascade="none"/>
+
+        <many-to-one
+            name="Staging"
+            column="&quot;STAGINGFK&quot;"
+            class="staging.Staging"
+            cascade="none"/>
+    </class>
+</hibernate-mapping>
+

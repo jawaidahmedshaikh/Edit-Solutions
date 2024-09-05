@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="client.ContactInformation" table="&quot;ContactInformation&quot;"  >
+        <id name="ContactInformationPK" column="&quot;ContactInformationPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ContactTypeCT" column="&quot;ContactTypeCT&quot;"/>
+        <property name="PhoneEmail" column="&quot;PhoneEmail&quot;"/>
+        <property name="Name" column="&quot;Name&quot;"/>
+
+        <property name="ClientDetailFK" column="&quot;ClientDetailFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="ClientDetail"
+            column="&quot;ClientDetailFK&quot;"
+            class="client.ClientDetail"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>
+

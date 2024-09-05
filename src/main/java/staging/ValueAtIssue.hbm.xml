@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.ValueAtIssue" table="&quot;VALUEATISSUE&quot;"  >
+        <id name="ValueAtIssuePK" column="&quot;VALUEATISSUEPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="EffectiveDate" column="&quot;EFFECTIVEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="GuaranteedPremium" column="&quot;GUARANTEEDPREMIUM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="IncreaseAmount" column="&quot;INCREASEAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="SegmentRiderFK" column="&quot;SEGMENTRIDERFK&quot;" insert="false" update="false"/>
+
+
+        <many-to-one
+            name="SegmentRider"
+            column="&quot;SEGMENTRIDERFK&quot;"
+            class="staging.SegmentRider"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>
+

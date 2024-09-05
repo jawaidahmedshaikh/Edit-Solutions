@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ApplicationControlBar 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="568" 
+	height="300"
+	xmlns:logging="com.segsoftware.view.custom.logging.*">
+	
+	<!--
+		A control bar for dialog windows (non-application windows).  It is similar to the
+		SEGApplicationControlBar but there is no Go To menu.  Simply displays
+		the log message area/button 
+	-->
+	 
+	<mx:Script>
+		<![CDATA[
+			import flash.net.navigateToURL;
+			import com.segsoftware.model.logging.SEGLog;
+			import mx.events.*;
+			
+			
+		]]>
+	</mx:Script>	
+	
+	
+	<mx:HBox right="0" horizontalAlign="right" width="100%">
+		 <logging:SEGMessageArea /> 
+	</mx:HBox>
+				
+			
+		
+</mx:ApplicationControlBar>

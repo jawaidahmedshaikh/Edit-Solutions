@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.ControlBalance" table="&quot;ControlBalance&quot;"  >
+    
+        <cache usage="read-write"/>
+    
+        <id name="ControlBalancePK" column="&quot;ControlBalancePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="EndingUnitBalance" column="&quot;EndingUnitBalance&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="EndingDollarBalance" column="&quot;EndingDollarBalance&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="EndingShareBalance" column="&quot;EndingShareBalance&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="EndingBalanceCycleDate" column="&quot;EndingBalanceCycleDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="DFCASHEndingShareBalance" column="&quot;DFCASHEndingShareBalance&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="ProductFilteredFundStructureFK" column="&quot;ProductFilteredFundStructureFK&quot;" insert="false" update="false"/>
+<!--        <property name="FilteredFundFK" column="&quot;FilteredFundFK&quot;" insert="false" update="false"/>-->
+<!--        <property name="CompanyStructureFK" column="&quot;CompanyStructureFK&quot;" insert="false" update="false"/>-->
+        <property name="ChargeCodeFK" column="&quot;ChargeCodeFK&quot;" insert="false" update="false"/>
+
+<!--        <many-to-one-->
+<!--            name="CompanyFilteredFundStructure"-->
+<!--            column="&quot;CompanyFilteredFundStructureFK&quot;"-->
+<!--            class="engine.CompanyFilteredFundStructure"-->
+<!--            cascade="none"/>-->
+<!--        <many-to-one-->
+<!--            name="CompanyFilteredFundStructure"-->
+<!--            column="&quot;FilteredFundFK&quot;"-->
+<!--            class="engine.CompanyFilteredFundStructure"-->
+<!--            cascade="none"/>-->
+<!--        <many-to-one-->
+<!--            name="CompanyFilteredFundStructure"-->
+<!--            column="&quot;CompanyStructureFK&quot;"-->
+<!--            class="engine.CompanyFilteredFundStructure"-->
+<!--            cascade="none"/>-->
+
+    </class>
+</hibernate-mapping>

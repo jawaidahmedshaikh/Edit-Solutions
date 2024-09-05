@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="accounting.Account" table="&quot;Account&quot;">
+    
+        <cache usage="read-write"/>
+    
+        <id name="AccountPK" column="&quot;AccountPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+        <property name="AccountNumber" column="&quot;AccountNumber&quot;"/>
+        <property name="AccountName" column="&quot;AccountName&quot;"/>
+        <property name="Effect" column="&quot;Effect&quot;"/>
+        <property name="AccountDescription" column="&quot;AccountDescription&quot;"/>
+
+        <property name="ElementStructureFK" column="&quot;ElementStructureFK&quot;" insert="false" update="false"/>
+    </class>
+</hibernate-mapping>
+

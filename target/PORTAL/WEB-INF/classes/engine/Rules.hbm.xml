@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="engine.Rules" table="&quot;Rules&quot;" lazy="true">
+        
+        <cache usage="read-write"/>
+        
+        <id name="RulesPK" column="&quot;RulesPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="RuleName" column="&quot;RuleName&quot;"/>
+        <property name="ProcessName" column="&quot;ProcessName&quot;"/>
+        <property name="EventName" column="&quot;EventName&quot;"/>
+        <property name="EventTypeName" column="&quot;EventTypeName&quot;"/>
+        <property name="SubRuleName" column="&quot;SubRuleName&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+        <property name="Description" column="&quot;Description&quot;"/>
+
+        <set name="ProductStructures" table="&quot;ProductRuleStructure&quot;" lazy="true" cascade="none">
+            <key column="&quot;RulesFK&quot;"/>
+            <many-to-many class="engine.ProductStructure" column="&quot;ProductStructureFK&quot;"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

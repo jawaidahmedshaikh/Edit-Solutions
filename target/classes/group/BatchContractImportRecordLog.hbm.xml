@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 12, 2015 12:18:07 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="group.BatchContractImportRecordLog" table="BatchContractImportRecordLog" lazy="false">
+        <id name="batchContractImportRecordLogPK" type="java.lang.Long" 
+        	column="BatchContractImportRecordLogPK" >
+            <generator class="native" />
+        </id>
+        <property name="batchContractImportRecordFK" type="java.lang.Long">
+            <column name="BatchContractImportRecordFK" />
+        </property>
+        <property name="status" type="java.lang.String">
+        	<column name="Status" />
+        </property>
+        <property name="creationTime" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType">
+            <column name="CreationTime" />
+        </property>
+        <property name="message" type="java.lang.String">
+            <column name="Message" />
+        </property>
+        
+        <many-to-one name="batchContractImportRecord" class="group.BatchContractImportRecord" 
+        	not-null="true" column="BatchContractImportRecordFK" insert="false" update="false"/>
+    </class>
+</hibernate-mapping>

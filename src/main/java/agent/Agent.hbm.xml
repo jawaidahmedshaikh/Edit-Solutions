@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="agent.Agent" table="&quot;Agent&quot;" >
+        <id name="AgentPK" column="&quot;AgentPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="HireDate" column="&quot;HireDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="TerminationDate" column="&quot;TerminationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AgentStatusCT" column="&quot;AgentStatusCT&quot;"/>
+        <property name="AgentTypeCT" column="&quot;AgentTypeCT&quot;"/>
+
+        <property name="WithholdingStatus" column="&quot;WithholdingStatus&quot;"/>
+        <property name="Department" column="&quot;Department&quot;"/>
+        <property name="Region" column="&quot;Region&quot;"/>
+        <property name="Branch" column="&quot;Branch&quot;"/>
+
+        <property name="IntDebitBalStatusCT" column="&quot;IntDebitBalStatusCT&quot;"/>
+        <property name="HoldCommStatus" column="&quot;HoldCommStatus&quot;"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+
+        <property name="DisbursementAddressTypeCT" column="&quot;DisbursementAddressTypeCT&quot;"/>
+        <property name="CorrespondenceAddressTypeCT" column="&quot;CorrespondenceAddressTypeCT&quot;"/>
+        <property name="AgentNumber" column="&quot;AgentNumber&quot;"/>
+
+        <property name="CompanyFK" column="&quot;CompanyFK&quot;"/>
+
+        <set name="ClientRoles" table="&quot;ClientRole&quot;" inverse="true" cascade="all">
+            <key column="&quot;AgentFK&quot;"/>
+            <one-to-many class="role.ClientRole"/>
+        </set>
+
+        <set name="AgentContracts" table="&quot;AgentContract&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;AgentFK&quot;"/>
+            <one-to-many class="agent.AgentContract"/>
+        </set>
+
+        <set name="AgentLicenses" table="&quot;AgentLicense&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;AgentFK&quot;"/>
+            <one-to-many class="agent.AgentLicense"/>
+        </set>
+
+        <set name="Redirects" table="&quot;Redirect&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;AgentFK&quot;"/>
+            <one-to-many class="agent.Redirect"/>
+        </set>
+<!--
+        <set name="AgentGroups" table="&quot;AgentGroup&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;AgentFK&quot;"/>
+            <one-to-many class="agent.AgentGroup"/>
+        </set>
+-->
+        <set name="CheckAdjustments" table="&quot;CheckAdjustment&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;AgentFK&quot;"/>
+            <one-to-many class="agent.CheckAdjustment"/>
+        </set>
+
+        <set name="AgentRequirements" table="&quot;AgentRequirement&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;AgentFK&quot;"/>
+            <one-to-many class="agent.AgentRequirement"/>
+        </set>
+
+        <set name="AgentHierarchies" table="&quot;AgentHierarchy&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;AgentFK&quot;"/>
+            <one-to-many class="contract.AgentHierarchy"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

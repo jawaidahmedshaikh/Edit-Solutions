@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Deanna Lataille (Systems Engineering Group, LLC) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:include schemaLocation="./EngineDB.xsd"/>
+	<xs:element name="TaxExtractDetailVO">
+		<xs:annotation>
+			<xs:documentation>Document to be fed into PRASE for the generation of GAAP Reserves </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TaxExtractPK" type="xs:long"/>
+				<xs:element name="TransactionType" type="xs:string"/>
+				<xs:element name="ProcessDate" type="xs:string"/>
+				<xs:element name="EffectiveDate" type="xs:string"/>
+				<xs:element name="QualNonQualIndicator" type="xs:string"/>
+				<xs:element name="QualifiedType" type="xs:string"/>
+				<xs:element name="MarketingPackageName" type="xs:string"/>
+				<xs:element name="BusinessContractName" type="xs:string"/>
+				<xs:element name="OwnerDateOfBirth" type="xs:string"/>
+				<xs:element name="PayeeLastName" type="xs:string"/>
+				<xs:element name="PayeeFirstName" type="xs:string"/>
+				<xs:element name="PayeeCorporateName" type="xs:string"/>
+				<xs:element name="OwnerLastName" type="xs:string"/>
+				<xs:element name="OwnerFirstName" type="xs:string"/>
+				<xs:element name="NetAmount" type="xs:string"/>
+				<xs:element name="TaxForm" type="xs:string"/>
+				<xs:element name="AddressLine1" type="xs:string"/>
+				<xs:element name="AddressLine2" type="xs:string"/>
+				<xs:element name="AddressLine3" type="xs:string"/>
+				<xs:element name="AddressLine4" type="xs:string"/>
+				<xs:element name="City" type="xs:string"/>
+				<xs:element name="State" type="xs:string"/>
+				<xs:element name="Zip" type="xs:string"/>
+				<xs:element name="TaxYear" type="xs:string"/>
+				<xs:element name="TaxIdType" type="xs:string"/>
+				<xs:element name="TaxID" type="xs:string"/>
+				<xs:element name="ContractNumber" type="xs:string"/>
+				<xs:element name="GrossAmount" type="xs:string"/>
+				<xs:element name="TaxableBenefit" type="xs:string"/>
+				<xs:element name="FederalWithholdingAmount" type="xs:string"/>
+				<xs:element name="StateWithholdingAmount" type="xs:string"/>
+				<xs:element name="LocalWithholdingAmount" type="xs:string"/>
+				<xs:element name="AccumValue" type="xs:string"/>
+				<xs:element name="DistributionCode" type="xs:string"/>
+				<xs:element name="ContractClientAllocationPct" type="xs:string"/>
+				<xs:element name="ReduceTaxable" type="xs:string"/>
+				<xs:element name="DepositType" type="xs:string"/>
+				<xs:element name="AgentNumber" type="xs:string"/>
+				<xs:element name="Amount51099R" type="xs:string" nillable="true"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

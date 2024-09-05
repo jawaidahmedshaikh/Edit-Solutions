@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="agent.BonusCriteria" table="&quot;BonusCriteria&quot;">
+
+        <id name="BonusCriteriaPK" column="&quot;BonusCriteriaPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="BonusAmount" column="&quot;BonusAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ExcessBonusAmount" column="&quot;ExcessBonusAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="BonusBasisPoint" column="&quot;BonusBasisPoint&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ExcessBonusBasisPoint" column="&quot;ExcessBonusBasisPoint&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ExcessPremiumLevel" column="&quot;ExcessPremiumLevel&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PremiumLevelFK" column="&quot;PremiumLevelFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+                name="PremiumLevel"
+                column="&quot;PremiumLevelFK&quot;"
+                class="agent.PremiumLevel"
+                cascade="none"
+                />
+
+        <set name="BonusContributingProducts" table="&quot;BonusContributingProducts&quot;" inverse="true"  cascade="all">
+            <key column="&quot;BonusCriteriaFK&quot;"/>
+            <one-to-many class="agent.BonusContributingProduct"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

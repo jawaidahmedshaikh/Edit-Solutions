@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:scriptProcessor="com.segsoftware.view.scriptProcessor.*"
+	layout="absolute"
+	title="Script Processor Results"
+	initialize="init()" 
+	width="1200" 
+	height="800">
+	
+
+	<mx:Style source="../css/segSoftware.css"/>		
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import com.segsoftware.model.scriptProcessor.SPRecordedRun;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import mx.collections.*;
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.event.*;
+			import com.segsoftware.model.*;
+			import com.segsoftware.model.scriptProcessor.SPRecordedOperator;
+			import mx.utils.ArrayUtil;
+			import mx.events.*;
+			
+			private var _spInputDocuments:XMLListCollection;
+			private var _spOutputDocuments:XMLListCollection;
+			private var _spScriptLines:ArrayCollection;
+			private var _spResults:ArrayCollection;
+			
+			[Bindable]
+			public function set spScriptLines(spScriptLines:ArrayCollection):void
+            {
+             	this._spScriptLines = spScriptLines;
+            } 
+            
+            public function get spScriptLines():ArrayCollection
+            {
+            	return this._spScriptLines;
+            }
+            
+            [Bindable]
+			public function set spInputDocuments(spInputDocuments:XMLListCollection):void
+            {
+             	this._spInputDocuments = spInputDocuments;
+            } 
+            
+            public function get spInputDocuments():XMLListCollection
+            {
+            	return this._spInputDocuments;
+            }
+            
+            [Bindable]
+			public function set spOutputDocuments(spOutputDocuments:XMLListCollection):void
+            {
+             	this._spOutputDocuments = spOutputDocuments;
+            } 
+            
+            public function get spOutputDocuments():XMLListCollection
+            {
+            	return this._spOutputDocuments;
+            }
+            
+            [Bindable]
+            public function set spResults(spResults:ArrayCollection):void
+            {
+            	this._spResults = spResults;
+            }
+            
+            public function get spResults():ArrayCollection
+            {
+            	return this._spResults;
+            }
+			
+			
+			private function init():void
+			{
+				spResults = SEGModelLocator.getInstance().spResults;
+				
+				//	Set a listener on the spResults so when the data comes in from the back end,
+				//	the default operator will be set in the comboBox
+				spResults.addEventListener(CollectionEvent.COLLECTION_CHANGE, loadOperatorComboBoxItems);
+
+				//	Call the command to get the recorded data
+				getRecordedData();
+			}
+			
+			/**
+			 * Loads the data into the Operator combo box and sets the default operator
+			 */
+			private function loadOperatorComboBoxItems(event:CollectionEvent):void
+			{
+				if (event.kind == CollectionEventKind.ADD)
+				{
+					operatorComboBox.dataProvider = SEGModelLocator.getInstance().spResults;
+				
+					setOperatorSelectedItem(event);
+				
+					//	Load the Run comboBox right away so don't end up with a default Operator and no default Run
+					loadRunComboBoxItems();
+				}
+			}
+			
+			/**
+			 * Determines the default operator to be displayed and sets the selected item
+			 * on the combo box.  The default operator is the operator who is currently 
+			 * logged in.  If that operator does not exist in the list, the first operator
+			 * is displayed.
+			 */
+			private function setOperatorSelectedItem(event:CollectionEvent):void
+			{
+				var loggedInOperator:String = SEGModelLocator.getInstance().operator;
+				
+				var spRecordedOperator:SPRecordedOperator = SPRecordedOperator (event.items[0]);
+				
+				if (spRecordedOperator.operator == loggedInOperator)
+				{
+					//	The newly added SPRecordedOperator is the same as the one logged in, make it
+					//	the selected operator in the comboBox
+					var dataProvider:Object = operatorComboBox.dataProvider;
+				
+					for (var i:int=0; i < dataProvider.length; i++)
+					{
+						var dataProviderItem:SPRecordedOperator = SPRecordedOperator (operatorComboBox.dataProvider[i]);
+						
+						if (dataProviderItem == spRecordedOperator)
+						{
+							operatorComboBox.selectedItem = dataProviderItem;	
+						}
+					}
+				}
+			}
+			
+			/**
+			 * Loads the run information into the comboBox.  The first item in the list is set as the selected
+			 * item and the documents and scriptLines are loaded.
+			 */
+			private function loadRunComboBoxItems():void
+			{
+				var selectedOperator:SPRecordedOperator = SPRecordedOperator (operatorComboBox.selectedItem);	
+				
+				var spRecordedRuns:ArrayCollection = selectedOperator.spRecordedRuns;
+				
+				sortByRunInformation(spRecordedRuns);
+
+				runComboBox.dataProvider = spRecordedRuns;
+				
+				//	Set the selected item to the first one in the list.  
+				//	This is needs to be set so the loading of documents and script lines gets set correctly
+				runComboBox.selectedItem = spRecordedRuns.getItemAt(0);
+				
+				loadDocumentsAndScriptLines();
+			}
+			
+			/**
+			 * Loads the document information and the script lines into their components
+			 */
+			private function loadDocumentsAndScriptLines():void
+			{
+				var selectedRun:SPRecordedRun = SPRecordedRun (runComboBox.selectedItem);
+				
+				spInputDocuments = selectedRun.inputDocuments;
+				spOutputDocuments = selectedRun.outputDocuments;
+				spScriptLines = selectedRun.scriptLines;	
+			}
+			
+			/**
+			 * Sorts the list of runs by the runInformation
+			 */
+			private function sortByRunInformation(spRecordedRuns:ArrayCollection):void
+			{
+				/* Create the SortField object */
+                var sortField:SortField = new SortField();
+                sortField.name = "runInformation";
+                sortField.descending = true;
+                sortField.numeric = false;
+
+                /* Create the Sort object and add the SortField object to it */
+                var sort:Sort = new Sort();
+                sort.fields = [sortField];
+
+                /* Set the ArrayCollection object's sort property and refresh the ArrayCollection. */
+                spRecordedRuns.sort = sort;
+                spRecordedRuns.refresh();
+   			}
+   			
+   			/**
+   			 *	Calls the command that gets the SP recorded results
+   			 */
+   			private function getRecordedData():void
+   			{
+   				CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_SCRIPT_PROCESSOR_RESULTS, null));	
+   			}
+   			
+   			/**
+   			 *  Clears all of the recorded data for the selected operator
+   			 */
+   			private function clearOperatorData():void
+   			{
+   				CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_CLEAR_RECORDED_OPERATOR_DATA, formData));		
+   			}
+   			
+   			/**
+   			 *	Exports the selected run's data to an xml file in the export directory defined in the config
+   			 *  file.
+   			 */
+   			private function exportRunData():void
+   			{
+   				CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_EXPORT_RUN_DATA, formData));	
+   			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Model id="formData">
+	    <formData>
+	    	<SPRecordedOperator>{operatorComboBox.selectedItem}</SPRecordedOperator>
+	        <SPRecordedRun>{runComboBox.selectedItem}</SPRecordedRun>
+	    </formData>
+	</mx:Model>
+	
+	<mx:HBox width="100%" height="15%" >
+		<mx:VBox>
+			<mx:Form>
+				<mx:FormItem label="Operator">
+					<mx:ComboBox 
+						id="operatorComboBox"
+						dataProvider="{spResults}"
+						labelField="operator"
+						change="loadRunComboBoxItems()">
+					</mx:ComboBox>
+				</mx:FormItem>
+				<mx:FormItem label="Run">
+					<mx:ComboBox 
+						id="runComboBox"
+						labelField="runInformation"
+						change="loadDocumentsAndScriptLines()">
+					</mx:ComboBox>		
+				</mx:FormItem>
+			</mx:Form>
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Form>
+				<mx:FormItem>
+					<mx:Button label="Clear Operator" click="clearOperatorData()">
+					</mx:Button>
+				</mx:FormItem>
+				<mx:FormItem>
+					<mx:Button label="Export Run" click="exportRunData()">
+					</mx:Button>
+				</mx:FormItem>
+			</mx:Form>
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Form>
+				<mx:FormItem>
+					<mx:Button label="Refresh" click="getRecordedData()">
+					</mx:Button>
+				</mx:FormItem>
+			</mx:Form>
+		</mx:VBox>
+	</mx:HBox>
+		
+	<mx:HDividedBox  width="100%" height="100%" y="116">
+	
+		<mx:VDividedBox  width="40%" height="100%" y="116">
+			<scriptProcessor:DocumentDisplay 
+				title="Input Documents" 
+				width="100%" 
+				height="50%" 
+				documents="{spInputDocuments}">
+			</scriptProcessor:DocumentDisplay>
+			
+			<scriptProcessor:DocumentDisplay 
+				title="Output Documents" 
+				width="100%" 
+				height="50%" 
+				documents="{spOutputDocuments}">
+			</scriptProcessor:DocumentDisplay>
+		</mx:VDividedBox>
+		
+		<scriptProcessor:ScriptLineDisplay 
+			title="Script Lines" 
+			width="60%" 
+			height="100%" 
+			spScriptLines="{spScriptLines}">
+		</scriptProcessor:ScriptLineDisplay>
+	
+	
+	</mx:HDividedBox>
+	
+</mx:TitleWindow>

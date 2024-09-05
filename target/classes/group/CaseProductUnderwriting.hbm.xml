@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="group.CaseProductUnderwriting" table="&quot;CaseProductUnderwriting&quot;"  >
+        <id name="CaseProductUnderwritingPK" column="&quot;CaseProductUnderwritingPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="Grouping" column="&quot;Grouping&quot;"/>
+        <property name="Field" column="&quot;Field&quot;"/>
+        <property name="Qualifier" column="&quot;Qualifier&quot;"/>
+        <property name="Value" column="&quot;Value&quot;"/>
+        <property name="RelationshipToEmployeeCT" column="&quot;RelationshipToEmployeeCT&quot;"/>
+        <property name="RequiredOptionalCT" column="&quot;RequiredOptionalCT&quot;"/>
+
+        <property name="EnrollmentFK" column="&quot;EnrollmentFK&quot;" insert="false" update="false"/>
+        <property name="DepartmentLocationFK" column="&quot;DepartmentLocationFK&quot;" insert="false" update="false"/>
+        <property name="FilteredProductFK" column="&quot;FilteredProductFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Enrollment"
+            column="&quot;EnrollmentFK&quot;"
+            class="group.Enrollment"
+            cascade="none"/>
+
+        <many-to-one
+            name="DepartmentLocation"
+            column="&quot;DepartmentLocationFK&quot;"
+            class="group.DepartmentLocation"
+            cascade="none"/>
+
+        <many-to-one
+            name="FilteredProduct"
+            column="&quot;FilteredProductFK&quot;"
+            class="contract.FilteredProduct"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

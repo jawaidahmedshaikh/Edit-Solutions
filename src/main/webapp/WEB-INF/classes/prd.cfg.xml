@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+	<property name="connection.datasource">java:comp/env/jdbc/editsolutions</property>
+	<property name="hibernate.max_fetch_depth">6</property>
+	<property name="hibernate.default_schema">dbo</property>
+	<property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
+	<property name="hibernate.dialect">edit.services.db.hibernate.SQLServer2008Dialect</property>
+	<property name="show_sql">false</property>
+
+        <mapping resource="com/editsolutions/prd/vo/CaseSetup.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/GroupSetup.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/PRDSettings.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/DataHeader.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/PayrollDeductionData.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/FileTemplate.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/FileTemplateField.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/DataIssue.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/SourceField.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/MessageTemplate.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/MessageTemplateField.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/SetupContact.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/ChangeLog.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/Transformation.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/ImportRecord.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/SampleImportRecord.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/Notification.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/PRDExclusion.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/Note.hbm.xml"></mapping>
+	    <mapping resource="com/editsolutions/prd/vo/AppSetting.hbm.xml"></mapping>
+	    <mapping resource="com/editsolutions/prd/vo/BusinessDay.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/DeductionScheduleDay.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/PRDStatistics.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/node/NotificationNode.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/node/PRDNode.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/node/GroupNode.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/node/CaseNode.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/Batch.hbm.xml"></mapping>
+        <mapping resource="com/editsolutions/prd/vo/BatchDetail.hbm.xml"></mapping>
+
+
+	<!-- -->
+
+	<mapping resource="logging/Log.hbm.xml"></mapping>
+        <mapping resource="logging/LogColumn.hbm.xml"></mapping>
+        <mapping resource="logging/LogEntry.hbm.xml"></mapping>
+	<mapping resource="logging/LogColumnEntry.hbm.xml"></mapping>
+
+    </session-factory>
+</hibernate-configuration>

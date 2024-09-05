@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ehcache>
+    <diskStore path="java.io.tmpdir"/>
+
+    <cache name="org.hibernate.cache.UpdateTimestampsCache"
+           maxElementsInMemory="50000"
+           eternal="true"
+           overflowToDisk="true"/>
+
+    <cache name="org.hibernate.cache.StandardQueryCache"
+           maxElementsInMemory="50000"
+           eternal="true"
+           timeToIdleSeconds="900"
+           timeToLiveSeconds="900"
+           overflowToDisk="true"
+           diskPersistent="true"
+           diskExpiryThreadIntervalSeconds="600"
+           memoryStoreEvictionPolicy="LFU"
+            />
+
+    <defaultCache
+            maxElementsInMemory="50000"
+            eternal="true"
+            timeToIdleSeconds="900"
+            timeToLiveSeconds="900"
+            overflowToDisk="true"
+            diskPersistent="true"
+            diskExpiryThreadIntervalSeconds="600"
+            memoryStoreEvictionPolicy="LFU"
+            />
+
+	<cache
+	    name="engine.AreaKey"
+	    maxElementsInMemory="2000"
+        eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.AreaValue"
+	    maxElementsInMemory="2000"
+        eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.ChargeCode"
+	    maxElementsInMemory="1000"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.Company"
+	    maxElementsInMemory="50"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.ControlBalance"
+	    maxElementsInMemory="50"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.ControlBalanceDetail"
+	    maxElementsInMemory="50"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.Fee"
+	    maxElementsInMemory="50"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.FilteredAreaValue"
+	    maxElementsInMemory="5000"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.FilteredFund"
+	    maxElementsInMemory="50"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.Fund"
+	    maxElementsInMemory="50"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.ProductFilteredFundStructure"
+	    maxElementsInMemory="50"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.ProductRuleStructure"
+	    maxElementsInMemory="2000"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.ProductStructure"
+	    maxElementsInMemory="50"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.Rules"
+	    maxElementsInMemory="1000"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.Script"
+	    maxElementsInMemory="2000"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.ScriptLine"
+	    maxElementsInMemory="10000"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.TableDef"
+	    maxElementsInMemory="200"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.TableKeys"
+	    maxElementsInMemory="5000"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+	
+	<cache
+	    name="engine.UnitValues"
+	    maxElementsInMemory="50"
+	    eternal="true"
+        timeToIdleSeconds="900"
+        timeToLiveSeconds="900"
+        overflowToDisk="true"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+	/>
+</ehcache>

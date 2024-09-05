@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.CalculatedValues" table="&quot;CALCULATEDVALUES&quot;">
+        <id name="CalculatedValuesPK" column="&quot;CALCULATEDVALUESPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SegmentBaseFK" column="&quot;SEGMENTBASEFK&quot;" insert="false" update="false"/>
+
+        <property name="CashValue" column="&quot;CASHVALUE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CashSurrenderValue" column="&quot;CASHSURRENDERVALUE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LoanPrincipal" column="&quot;LOANPRINCIPAL&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="UnitValues" column="&quot;UNITVALUES&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ReserveAmount" column="&quot;RESERVEAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PaidUpTermVested" column="&quot;PAIDUPTERMVESTED&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="LoanBalance" column="&quot;LOANBALANCE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LastLoanActivityDate" column="&quot;LASTLOANACTIVITYDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LastLoanDate" column="&quot;LASTLOANDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="PolicyDuration" column="&quot;POLICYDURATION&quot;"/>
+        <property name="AccumLTCClaims" column="&quot;ACCUMLTCCLAIMS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AccumHomeCareClaims" column="&quot;ACCUMHOMECARECLAIMS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="LTCNumberOfMonthsPaid" column="&quot;LTCNUMBEROFMONTHSPAID&quot;"/>
+        <property name="HomeCareNumberOfMonthsPaid" column="&quot;HOMECARENUMBEROFMONTHSPAID&quot;"/>
+        <property name="AccumWithdrawalAmount" column="&quot;ACCUMWITHDRAWALAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="AccumWithdrawalUnits" column="&quot;ACCUMWITHDRAWALUNITS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AccumCriticalCareAmount" column="&quot;ACCUMCRITICALCAREAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AccountingDate" column="&quot;ACCOUNTINGDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ExitCode" column="&quot;EXITCODE&quot;"/>
+
+        <property name="PaidUpTermDate" column="&quot;PAIDUPTERMDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ReducedDBAge" column="&quot;REDUCEDDBAGE&quot;"/>
+        <property name="LTCConfinementAmount" column="&quot;LTCCONFINEMENTAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="LTCHHCAmount" column="&quot;LTCHHCAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LTCWaitingPeriod" column="&quot;LTCWAITINGPERIOD&quot;"/>
+        <property name="LTCEliminationPeriod" column="&quot;LTCELIMINATIONPERIOD&quot;"/>
+
+        <property name="GuarPaidUpPurchasePremium" column="&quot;GUARPAIDUPPURCHASEPREMIUM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CurrentInterestRate" column="&quot;CURRENTINTERESTRATE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="ContractSurrValGuar" column="&quot;CONTRACTSURRVALGUAR&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CurrentMVACharge" column="&quot;CURRENTMVACHARGE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="GuaranteedPremiumPercent" column="&quot;GUARANTEEDPREMIUMPERCENT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PriorYearEndAccountValue" column="&quot;PRIORYEARENDACCOUNTVALUE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PriorYearEndCashSurrenderValue" column="&quot;PRIORYEARENDCASHSURRENDERVALUE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PriorYearEndMinAcctValue" column="&quot;PRIORYEARENDMINACCTVALUE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PriorYearSurrenderValue" column="&quot;PRIORYEARSURRENDERVALUE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalMinAccountValue" column="&quot;TOTALMINACCOUNTVALUE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="WithdrawalSinceInception" column="&quot;WITHDRAWALSINCEINCEPTION&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CoverageFee" column="&quot;COVERAGEFEE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PremiumsPaid" column="&quot;PREMIUMSPAID&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <many-to-one
+            name="SegmentBase"
+            column="&quot;SEGMENTBASEFK&quot;"
+            class="staging.SegmentBase"
+            cascade="none"/>
+    </class>
+</hibernate-mapping>
+

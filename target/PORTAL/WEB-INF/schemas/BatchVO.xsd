@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group) -->
+<xs:schema targetNamespace="http://www.seg.com/vo" xmlns="http://www.seg.com/vo" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="file:///C:/FISSION/edit/common/schemas/ContractDB.xsd"/>
+	<xs:include schemaLocation="file:///C:/FISSION/edit/common/schemas/ClientDB.xsd"/>
+	<xs:include schemaLocation="file:///C:/FISSION/edit/common/schemas/AccumulationVO.xsd"/>
+	<xs:include schemaLocation="file:///C:/FISSION/edit/common/schemas/ErrorLogVO.xsd"/>
+	<xs:include schemaLocation="./EDITSolutions.xsd"/>
+	<xs:include schemaLocation="./AccumulationVO.xsd"/>
+	<xs:include schemaLocation="./TransactionVO.xsd"/>
+	<xs:include schemaLocation="./ErrorLogVO.xsd"/>
+	<xs:element name="BatchVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="SegmentVO"/>
+				<xs:element ref="TransactionVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="UniqueBatchId" type="xs:string"/>
+				<xs:element name="EffectiveDate" type="xs:string"/>
+				<xs:element ref="TransactionPriorityVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="AccumulationVO" minOccurs="0"/>
+				<xs:element ref="ErrorLogVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="ErrorSwitch" type="xs:boolean"/>
+				<xs:element name="noEditingExceptionSwitch" type="xs:boolean"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

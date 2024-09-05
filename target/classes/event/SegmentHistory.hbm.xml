@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="event.SegmentHistory" table="&quot;SegmentHistory&quot;"   >
+
+        <id name="SegmentHistoryPK" column="&quot;SegmentHistoryPK&quot;" type="long" >
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;" insert="false" update="false"/>
+        <property name="PrevSegmentStatus" column="&quot;PrevSegmentStatus&quot;" />
+        <property name="PrevFaceAmount" column="&quot;PrevFaceAmount&quot;"  type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PrevAnnualPremium" column="&quot;PrevAnnualPremium&quot;"  type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PrevLastAnniversaryDate" column="&quot;PrevLastAnniversaryDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="PriorPaidToDate" column="&quot;PriorPaidToDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="GuarPaidUpTerm" column="&quot;GuarPaidUpTerm&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NonGuarPaidUpTerm" column="&quot;NonGuarPaidUpTerm&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="StatusCT" column="&quot;StatusCT&quot;" />
+        <property name="PriorRateClass" column="&quot;PriorRateClass&quot;" />
+
+        <property name="EDITTrxHistoryFK" column="&quot;EDITTrxHistoryFK&quot;" insert="false" update="false" />
+        
+        <property name="BillScheduleFK" column="&quot;BillScheduleFK&quot;" insert="false" update="false"/>
+        
+        <property name="PriorTerminationDate" column="&quot;PriorTerminationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <many-to-one
+            name="EDITTrxHistory"
+            column="&quot;EDITTrxHistoryFK&quot;"
+            class="event.EDITTrxHistory"
+            cascade="none"
+
+            />
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"
+
+            />
+            
+        <many-to-one
+            name="BillSchedule"
+            column="&quot;BillScheduleFK&quot;"
+            class="billing.BillSchedule"
+            cascade="none"
+
+            />
+
+    </class>
+</hibernate-mapping>

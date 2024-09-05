@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<!-- stating.CASE root -->
+    <class name="staging.ErrorLog" table="&quot;ERRORLOG&quot;">
+        <id name="ErrorLogPK" column="&quot;ERRORLOGPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SegmentBaseFK" column="&quot;SEGMENTBASEFK&quot;" insert="false" update="false"/>
+
+        <property name="CreationDateTime" column="&quot;CREATIONDATETIME&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="Severity" column="&quot;SEVERITY&quot;"/>
+        <property name="LogMessage" column="&quot;LOGMESSAGE&quot;"/>
+
+        <many-to-one
+            name="SegmentBase"
+            column="&quot;SEGMENTBASEFK&quot;"
+            class="staging.SegmentBase"
+            cascade="none"/>
+    </class>
+</hibernate-mapping>
+

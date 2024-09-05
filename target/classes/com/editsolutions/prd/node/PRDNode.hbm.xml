@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="com.editsolutions.prd.node.PRDNode" table="vw_PRD_Setup"  >
+        <id name="prdSetupPK" column="PRD_SetupPK" type="long"/>
+
+        <bag name="children" table="PRD_Notification"
+                inverse="true" lazy="false" fetch="select" cascade="none">
+            <key>
+                <column name="PRD_SetupFK" not-null="true" />
+            </key>
+            <one-to-many class="com.editsolutions.prd.node.NotificationNode" />
+        </bag>
+    </class>
+</hibernate-mapping>

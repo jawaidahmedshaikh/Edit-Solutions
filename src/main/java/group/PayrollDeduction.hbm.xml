@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="group.PayrollDeduction" table="&quot;PayrollDeduction&quot;"  >
+        <id name="PayrollDeductionPK" column="&quot;PayrollDeductionPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="PayrollDeductionScheduleFK" column="&quot;PayrollDeductionScheduleFK&quot;" insert="false" update="false"/>
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;" insert="false" update="false"/>
+
+        <property name="DeductionAmount" column="&quot;DeductionAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PRDExtractDate" column="&quot;PRDExtractDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="FirstPayrollDate" column="&quot;FirstPayrollDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="TypeOfChange" column="&quot;TypeOfChange&quot;"/>
+
+        <many-to-one
+            name="PayrollDeductionSchedule"
+            column="&quot;PayrollDeductionScheduleFK&quot;"
+            class="group.PayrollDeductionSchedule"
+            cascade="none"/>
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"/> 
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="com.editsolutions.prd.vo.GroupSetup" table="vw_PRD_Group"  >
+        <id name="groupContractPk" column="Group_ContractGroupPK" type="long">
+            <generator class="identity"/> 
+        </id>
+
+        <property name="caseNumber" column="CaseNumber"/>
+        <property name="caseContractPk" column="Case_ContractGroupPK" type="long"/>
+        <property name="groupNumber" column="GroupNumber"/>
+        <property name="effectiveDate" column="EffectiveDate" type="date"/>
+        <property name="terminationDate" column="TerminationDate" type="date"/>
+        <property name="requirementNotifyDayCT" column="RequirementNotifyDayCT"/>
+        <property name="caseTypeCT" column="CaseTypeCT"/>
+        <property name="domicileStateCT" column="DomicileStateCT"/>
+        <property name="groupTrustStateCT" column="GroupTrustStateCT"/>
+        <property name="clientRolePK" column="ClientRolePK" type="long"/>
+        <property name="referenceID" column="ReferenceID"/>
+        <property name="clientDetailPK" column="ClientDetailPK" type="long"/>
+        <property name="groupName" column="GroupName"/>
+        <property name="addressLine1" column="AddressLine1"/>
+        <property name="addressLine2" column="AddressLine2"/>
+        <property name="addressLine3" column="AddressLine3"/>
+        <property name="addressLine4" column="AddressLine4"/>
+        <property name="city" column="City"/>
+        <property name="stateCT" column="StateCT"/>
+        <property name="zipCode" column="ZipCode"/>
+        <property name="changeEffectiveDate" column="ChangeEffectiveDate" type="date"/>
+
+        <property name="addDate" column="AddDate" type="date"/>
+        <property name="addUser" column="AddUser"/>
+        <property name="modDate" column="ModDate" type="date"/>
+        <property name="modUser" column="ModUser"/>
+        <property name="systemCT" column="systemCT"/>
+
+        <many-to-one name="caseSetup" lazy="false" class="com.editsolutions.prd.vo.CaseSetup" 
+        	not-null="true" column="Case_ContractGroupPK" insert="false" update="false"/>
+
+<!--  
+        <many-to-one name="batch" lazy="false" class="com.editsolutions.prd.vo.Batch" 
+        	not-null="true" column="PRD_BatchPK" insert="false" update="false"/>
+-->
+        	
+        <many-to-one name="prdSettings" lazy="false" class="com.editsolutions.prd.vo.PRDSettings"
+                 column="PRD_SetupPK" unique="true"/>
+
+    </class>
+</hibernate-mapping>

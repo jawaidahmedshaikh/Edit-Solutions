@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" 
+	width="550" 
+	height="290" 
+	showCloseButton="true" 
+	title="Add Conversion Template Dialog"
+	close="mx.managers.PopUpManager.removePopUp(this)">
+	<mx:states>
+		<mx:State name="cloneState">
+			<mx:SetProperty name="title" value="Clone Conversion Template Dialog"/>
+			<mx:AddChild relativeTo="{formitem1}" position="before">
+				<mx:FormItem label="Cloned From:">
+					<mx:Text text="N/A" width="288"/>
+				</mx:FormItem>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	
+	<mx:Model id="formData">
+		<formData>
+			<dialogState>{dialogState}</dialogState>
+			<templateName>{templateName.text}</templateName>
+			<templateDescription>{templateDescription.text}</templateDescription>
+		</formData>
+	</mx:Model>
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.event.SEGEvent;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.model.SEGModelLocator;
+			import mx.managers.PopUpManager;
+
+			/**
+			* This dialog can exist in one of two states.
+			* In the ADD state, the user wishes to add a 
+			* brand new conversion template.
+			*/
+			public static var STATE_ADD:int = 0;
+			
+			/**
+			* This dialog can exist in one of two states. In the
+			* CLONE state, the user wishes to clone an existing conversion template.
+			*/
+			public static var STATE_CLONE:int = 1;
+			
+			private var _dialogState:int;
+			
+			/**
+			* @see #STATE_ADD
+			* @see #STATE_CLONE
+			*/
+			public function set dialogState(dialogState:int):void
+			{
+				_dialogState = dialogState;
+				
+				if (_dialogState == STATE_ADD)
+				{
+					this.currentState = '';
+				}
+				else if (_dialogState == STATE_CLONE)
+				{
+					this.currentState = "cloneState";
+				}
+			}
+			
+			/**
+			* @see #STATE_ADD
+			* @see #STATE_CLONE
+			*/
+			[Bindable]
+			public function get dialogState():int
+			{
+				return _dialogState;	
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:Validator id="templateNameValidator" source="{templateName}" property="text" required="true" />
+	<mx:Validator id="templateDescriptionValidator" source="{templateDescription}" property="text" required="true" />	
+		
+	<mx:Panel layout="absolute" left="10" right="10" top="10" bottom="10">
+		<mx:Form left="10" right="10" top="10" bottom="10">
+			<mx:FormItem label="Template Name:" id="formitem1">
+				<mx:TextInput 
+					id="templateName" 
+					width="288"
+					text="{SEGModelLocator.getInstance().selectedConversionTemplateDesign.templateName}"/>
+			</mx:FormItem>
+			<mx:FormItem label="Template Description:">
+				<mx:TextInput 
+					id="templateDescription" 
+					width="288"
+					text="{SEGModelLocator.getInstance().selectedConversionTemplateDesign.templateDescription}"/>
+			</mx:FormItem>
+		</mx:Form>
+	</mx:Panel>
+	<mx:ControlBar horizontalAlign="right" width="472" x="10">
+		<mx:Button 
+			id="commitButton"
+			label="Commit"
+			click=
+			"
+				if (Util.validate(templateNameValidator, templateDescriptionValidator).length == 0)
+				{
+					if (SEGModelLocator.getInstance().selectedConversionTemplateDesign)
+					{
+						CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_UPDATE_CONVERSION_TEMPLATE, formData));												
+					}
+					else
+					{
+						CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_CREATE_CONVERSION_TEMPLATE, formData));						
+					}
+					
+					PopUpManager.removePopUp(this);					
+				}
+			"
+			/>
+	</mx:ControlBar>
+
+</mx:TitleWindow>

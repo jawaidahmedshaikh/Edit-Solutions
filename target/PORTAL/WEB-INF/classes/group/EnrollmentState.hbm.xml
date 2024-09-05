@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="group.EnrollmentState" table="&quot;EnrollmentState&quot;"  >
+        <id name="EnrollmentStatePK" column="&quot;EnrollmentStatePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="StateCT" column="&quot;StateCT&quot;"/>
+        <property name="EnrollmentFK" column="&quot;EnrollmentFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Enrollment"
+            column="&quot;EnrollmentFK&quot;"
+            class="group.Enrollment"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

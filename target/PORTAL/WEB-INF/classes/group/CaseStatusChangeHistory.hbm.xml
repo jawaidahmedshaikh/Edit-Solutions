@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="group.CaseStatusChangeHistory" table="&quot;CaseStatusChangeHistory&quot;"  >
+        <id name="CaseStatusChangeHistoryPK" column="&quot;CaseStatusChangeHistoryPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ContractGroupFK" column="&quot;ContractGroupFK&quot;" insert="false" update="false"/>
+
+        <property name="StatusCT" column="&quot;StatusCT&quot;"/>
+        <property name="ChangeEffectiveDate" column="&quot;ChangeEffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+        <property name="PriorStatusCT" column="&quot;PriorStatusCT&quot;"/>
+
+        <many-to-one
+            name="ContractGroup"
+            column="&quot;ContractGroupFK&quot;"
+            class="group.ContractGroup"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

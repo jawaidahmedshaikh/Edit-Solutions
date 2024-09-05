@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="billing.BillSchedule" table="&quot;BillSchedule&quot;"  >
+        <id name="BillSchedulePK" column="&quot;BillSchedulePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="BillingCompanyCT" column="&quot;BillingCompanyCT&quot;"/>
+        <property name="FirstBillDueDate" column="&quot;FirstBillDueDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LeadDaysOR" column="&quot;LeadDaysOR&quot;"/>
+        <property name="WeekDayCT" column="&quot;WeekDayCT&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>        
+        <property name="TerminationDate" column="&quot;TerminationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>        
+        <property name="StatusCT" column="&quot;StatusCT&quot;"/>
+        <property name="SortOptionCT" column="&quot;SortOptionCT&quot;"/>
+        <property name="BillingConsolidationCT" column="&quot;BillingConsolidationCT&quot;"/>
+        <property name="SocialSecurityMaskCT" column="&quot;SocialSecurityMaskCT&quot;"/>
+        <property name="NumberOfCopiesGroup" column="&quot;NumberOfCopiesGroup&quot;"/>
+        <property name="NumberOfCopiesAgent" column="&quot;NumberOfCopiesAgent&quot;"/>
+        <property name="NextBillExtractDate" column="&quot;NextBillExtractDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="NextBillDueDate" column="&quot;NextBillDueDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LastBillDueDate" column="&quot;LastBillDueDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="BillingModeCT" column="&quot;BillingModeCT&quot;"/>
+        <property name="BillTypeCT" column="&quot;BillTypeCT&quot;"/>
+
+        <property name="CreationOperator" column="&quot;CreationOperator&quot;"/>
+        <property name="CreationDate" column="&quot;CreationDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="RepName" column="&quot;RepName&quot;"/>
+        <property name="RepPhoneNumber" column="&quot;RepPhoneNumber&quot;"/>
+        <property name="BillMethodCT" column="&quot;BillMethodCT&quot;"/>
+
+        <property name="SkipMonthStart1CT" column="&quot;SkipMonthStart1CT&quot;"/>
+        <property name="SkipNumberOfMonths1CT" column="&quot;SkipNumberOfMonths1CT&quot;"/>
+        <property name="SkipMonthStart2CT" column="&quot;SkipMonthStart2CT&quot;"/>
+        <property name="SkipNumberOfMonths2CT" column="&quot;SkipNumberOfMonths2CT&quot;"/>
+        <property name="SkipMonthStart3CT" column="&quot;SkipMonthStart3CT&quot;"/>
+        <property name="SkipNumberOfMonths3CT" column="&quot;SkipNumberOfMonths3CT&quot;"/>
+
+        <property name="FirstDeductionDate" column="&quot;FirstDeductionDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LastDeductionDate" column="&quot;LastDeductionDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="DeductionFrequencyCT" column="&quot;DeductionFrequencyCT&quot;"/>
+        
+        <property name="RequiredPremiumAmount" column="&quot;RequiredPremiumAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TransitionPeriodEndDate" column="&quot;TransitionPeriodEndDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="BillChangeStartDate" column="&quot;BillChangeStartDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="VarMonthDedChangeStartDate" column="&quot;VarMonthDedChangeStartDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ChangeEffectiveDate" column="&quot;ChangeEffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LastPremiumChangeStartDate" column="&quot;LastPremiumChangeStartDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="EFTDraftDay" column="&quot;EFTDraftDay&quot;"/>
+        <property name="EFTDraftDayStartMonthCT" column="&quot;EFTDraftDayStartMonthCT&quot;"/>
+
+        <set name="BillGroups" table="&quot;BillGroup&quot;" inverse="true"   cascade="all">
+            <key column="&quot;BillScheduleFK&quot;"/>
+            <one-to-many class="billing.BillGroup"/>
+        </set>
+
+        <set name="Segments" table="&quot;Segment&quot;" inverse="true"   cascade="all">
+            <key column="&quot;BillScheduleFK&quot;"/>
+            <one-to-many class="contract.Segment"/>
+        </set>
+
+        <set name="ContractGroups" table="&quot;ContractGroup&quot;" inverse="true"   cascade="all">
+            <key column="&quot;BillScheduleFK&quot;"/>
+            <one-to-many class="group.ContractGroup"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

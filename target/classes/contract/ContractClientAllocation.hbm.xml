@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.ContractClientAllocation" table="&quot;ContractClientAllocation&quot;"  >
+        <id name="ContractClientAllocationPK" column="&quot;ContractClientAllocationPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="AllocationPercent" column="&quot;AllocationPercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="OverrideStatus" column="&quot;OverrideStatus&quot;"/>
+        <property name="AllocationDollars" column="&quot;AllocationDollars&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SplitEqual" column="&quot;SplitEqual&quot;"/>
+
+        <property name="ContractClientFK" column="&quot;ContractClientFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="ContractClient"
+            column="&quot;ContractClientFK&quot;"
+            class="contract.ContractClient"
+            cascade="none"/>
+
+
+        <set name="ContractClientAllocationOvrds" table="&quot;ContractClientAllocationOvrd&quot;" inverse="true"   cascade="all">
+            <key column="&quot;ContractClientAllocationFK&quot;"/>
+            <one-to-many class="event.ContractClientAllocationOvrd"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="com.editsolutions.prd.node.NotificationNode" table="PRD_Notification"  >
+        <id name="notificationPK" column="PRD_NotificationPK" type="long">
+              <generator class="identity"/>
+        </id>
+
+        <property name="prdSetupFK" column="PRD_SetupFK"/>
+        <property name="originalNotificationPK" column="originalPRD_NotificationPK"/>
+        <property name="messageText" column="MessageText"/>
+        <property name="messageSubject" column="MessageSubject"/>
+        <property name="emailTo" column="EmailTo"/>
+        <property name="emailCC" column="EmailCC"/>
+        <property name="emailBCC" column="EmailBCC"/>
+        <property name="dateSent" column="DateSent" type="date"/>
+        <property name="dueDate" column="DueDate" type="date"/>
+        <property name="notifyStatus" column="StatusCT"/>
+        <property name="hasAttachment" column="HasAttachment" type="boolean"/>
+        <property name="fileAttachmentName" column="FileAttachmentName"/>
+
+
+    </class>
+</hibernate-mapping>

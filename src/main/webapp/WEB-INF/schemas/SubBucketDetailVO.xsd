@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Deanna Lataille (Systems Engineering Group, LLC) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="SubBucketDetailVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SBEffDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SBCurrentRate" type="xs:decimal"/>
+				<xs:element name="SBCurrentEndDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SBBaseRate" type="xs:decimal"/>
+				<xs:element name="SBBaseEndDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SBGuarMinRate1" type="xs:decimal"/>
+				<xs:element name="SBGuarMinEndDate1">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SBGuarMinRate2" type="xs:decimal"/>
+				<xs:element name="SBGuarMinEndDate2">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SBNumberBuckets" type="xs:integer"/>
+				<xs:element name="SBFundValue" type="xs:decimal"/>
+				<xs:element name="SBChangeInFundValue" type="xs:decimal"/>
+				<xs:element name="EquityIndexHedgeDetailFK" type="xs:long"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

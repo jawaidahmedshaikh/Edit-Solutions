@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<!-- stating.CASE root -->
+    <class name="staging.CaseStatusHistory" table="&quot;CASESTATUSHISTORY&quot;">
+        <id name="CaseStatusHistoryPK" column="&quot;CASESTATUSHISTORYPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="CaseFK" column="&quot;CASEFK&quot;" insert="false" update="false"/>
+
+        <property name="EffectiveDate" column="&quot;EFFECTIVEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="Status" column="&quot;STATUS&quot;"/>
+        <property name="Operator" column="&quot;OPERATOR&quot;"/>
+
+        <property name="MaintDateTime" column="&quot;MAINTDATETIME&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="PriorStatus" column="&quot;PRIORSTATUS&quot;"/>
+
+        <many-to-one
+            name="StagingCase"
+            column="&quot;CASEFK&quot;"
+            class="staging.Case"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>
+

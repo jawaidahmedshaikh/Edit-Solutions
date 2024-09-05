@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+     <class name="com.editsolutions.prd.vo.DeductionScheduleDay" table="vw_PRD_DeductionScheduleDay"  >
+        <id name="deductionScheduleDayPK" column="PRD_DeductionScheduleDayPK" type="long">
+              <generator class="identity"/>
+        </id>
+        <property name="prdSetupFK" column="PRD_SetupFK" not-null="true"/>
+        <property name="prdDueDate" column="PRD_DueDate" type="date" not-null="true"/>
+        <property name="payrollDeductionCodeCT" column="PayrollDeductionCodeCT" not-null="true"/>
+        <property name="payrollDeductionScheduleFK" column="PayrollDeductionScheduleFK" />
+        <property name="addDate" column="AddDate"/>
+        <property name="addUser" column="Adduser"/>
+        <property name="modDate" column="modDate"/>
+        <property name="modUser" column="ModUser"/>
+
+    </class>
+</hibernate-mapping>

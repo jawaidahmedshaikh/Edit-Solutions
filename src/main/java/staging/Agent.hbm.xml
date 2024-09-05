@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.Agent" table="&quot;AGENT&quot;">
+        <id name="AgentPK" column="&quot;AGENTPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="StagingFK" column="&quot;STAGINGFK&quot;" insert="false" update="false"/>
+
+        <property name="HireDate" column="&quot;HIREDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="TerminationDate" column="&quot;TERMINATIONDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AgentStatus" column="&quot;AGENTSTATUS&quot;"/>
+
+        <property name="AgentType" column="&quot;AGENTTYPE&quot;"/>
+        <property name="Department" column="&quot;DEPARTMENT&quot;"/>
+        <property name="Region" column="&quot;REGION&quot;"/>
+
+        <property name="Branch" column="&quot;BRANCH&quot;"/>
+        <property name="DisbursementAddressType" column="&quot;DISBURSEMENTADDRESSTYPE&quot;"/>
+        <property name="CorrespondenceAddressType" column="&quot;CORRESPONDENCEADDRESSTYPE&quot;"/>
+
+        <property name="AgentNumber" column="&quot;AGENTNUMBER&quot;"/>
+        <property name="LastName" column="&quot;LASTNAME&quot;"/>
+        <property name="FirstName" column="&quot;FIRSTNAME&quot;"/>
+
+        <property name="MiddleName" column="&quot;MIDDLENAME&quot;"/>
+        <property name="AddressLine1" column="&quot;ADDRESSLINE1&quot;"/>
+        <property name="AddressLine2" column="&quot;ADDRESSLINE2&quot;"/>
+
+        <property name="AddressLine3" column="&quot;ADDRESSLINE3&quot;"/>
+        <property name="AddressLine4" column="&quot;ADDRESSLINE4&quot;"/>
+        <property name="City" column="&quot;CITY&quot;"/>
+
+        <property name="State" column="&quot;STATE&quot;"/>
+        <property name="Zip" column="&quot;ZIP&quot;"/>
+        <property name="ClientID" column="&quot;CLIENTID&quot;"/>
+
+        <property name="TaxIdentification" column="&quot;TAXIDENTIFICATION&quot;"/>
+        <property name="CorporateName" column="&quot;CORPORATENAME&quot;"/>
+        <property name="SplitPercent" column="&quot;SPLITPERCENT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="AdvancePercent" column="&quot;ADVANCEPERCENT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RecoveryPercent" column="&quot;RECOVERYPERCENT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ServicingAgentIndicator" column="&quot;SERVICINGAGENTINDICATOR&quot;"/>
+
+        <property name="GroupFYEarn" column="&quot;GROUPFYEARN&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="GroupRnwlEarn" column="&quot;GROUPRNWLEARN&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="GrpAdvances" column="&quot;GRPADVANCES&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="IndFYEarn" column="&quot;INDFYEARN&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="IndRnwlEarn" column="&quot;INDRNWLEARN&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="IndAdvances" column="&quot;INDADVANCES&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="YTDGroupFYEarn" column="&quot;YTDGROUPFYEARN&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="YTDGroupRnwlEarn" column="&quot;YTDGROUPRNWLEARN&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="YTDGrpAdvances" column="&quot;YTDGRPADVANCES&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="YTDIndFYEarn" column="&quot;YTDINDFYEARN&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="YTDIndRnwlEarn" column="&quot;YTDINDRNWLEARN&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="YTDIndAdvances" column="&quot;YTDINDADVANCES&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="CommBalance" column="&quot;COMMBALANCE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LifetimeCommBalance" column="&quot;LIFETIMECOMMBALANCE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LifetimeAdvanceBalance" column="&quot;LIFETIMEADVANCEBALANCE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="PhoneNumber" column="&quot;PHONENUMBER&quot;"/>
+        
+        <property name="Advances" column="&quot;ADVANCES&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AgentBalance" column="&quot;AGENTBALANCE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="Chargebacks" column="&quot;CHARGEBACKS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="FirstYearEarning" column="&quot;FIRSTYEAREARNING&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ManualAdjustments" column="&quot;MANUALADJUSTMENTS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="OutstandingAdvanceBalance" column="&quot;OUTSTANDINGADVANCEBALANCE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ProjectedCommissionBalance" column="&quot;PROJECTEDCOMMISSIONBALANCE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="Recoveries" column="&quot;RECOVERIES&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RenewalEarning" column="&quot;RENEWALEARNING&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="YTDGrpAdvancesOnly" column="&quot;YTDGRPADVANCESONLY&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="YTDGrpChargeback" column="&quot;YTDGRPCHARGEBACK&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="YTDGrpRecoveries" column="&quot;YTDGRPRECOVERIES&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="YTDIndAdvancesOnly" column="&quot;YTDINDADVANCESONLY&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="YTDIndChargeback" column="&quot;YTDINDCHARGEBACK&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="YTDIndRecoveries" column="&quot;YTDINDRECOVERIES&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="LastStatementAmount" column="&quot;LASTSTATEMENTAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="MinimumCheckAmount" column="&quot;MINIMUMCHECKAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="HoldCheckIndicator" column="&quot;HOLDCHECKINDICATOR&quot;"/>
+
+        <property name="SituationCode" column="&quot;SITUATIONCODE&quot;"/>
+        <property name="AgentLevel" column="&quot;AGENTLEVEL&quot;"/>
+
+        <set name="Accountings" table="&quot;ACCOUNTING&quot;" inverse="true"   cascade="all">
+            <key column="&quot;AGENTFK&quot;"/>
+            <one-to-many class="staging.Accounting"/>
+        </set>
+
+        <set name="CommissionActivities" table="&quot;COMMISSIONACTIVITY&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;AGENTFK&quot;"/>
+            <one-to-many class="staging.CommissionActivity"/>
+        </set>
+
+        <many-to-one
+            name="Staging"
+            column="&quot;STAGINGFK&quot;"
+            class="staging.Staging"
+            cascade="none"/>
+            
+        <many-to-one
+            name="SegmentBase"
+            column="SegmentBaseFK"
+            class="staging.SegmentBase"
+            cascade="none"/>
+    </class>
+</hibernate-mapping>
+

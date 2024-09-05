@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="com.editsolutions.prd.vo.FileTemplateField" table="PRD_FileTemplateField"  >
+        <id name="fileTemplateFieldPK" column="PRD_FileTemplateFieldPK" type="long">
+              <generator class="identity"/>
+        </id>
+
+        <property name="fileTemplateFK" column="PRD_FileTemplateFK"/>
+        <property name="fieldTitle" column="FieldTitle"/>
+        <property name="fieldOrder" column="FieldOrder"/>
+        <property name="defaultValue" column="DefaultValue"/>
+        <property name="transformationFK" column="PRD_TransformationFK" type="long"/>
+        <property name="sourceFieldFK" column="PRD_SourceFieldFK" type="long"/>
+        <property name="fieldLength" column="FieldLength"/>
+        <property name="doCompare" type="java.lang.Boolean">
+           <column name="DoCompare" sql-type="tinyint"/>
+        </property>
+        <property name="sortBy" type="java.lang.Boolean">
+           <column name="SortBy" sql-type="tinyint"/>
+        </property>
+        <property name="addDate" column="AddDate" type="date"/>
+        <property name="addUser" column="AddUser"/>
+        <property name="modDate" column="ModDate" type="date"/>
+        <property name="modUser" column="ModUser"/>
+
+
+        <many-to-one name="transformation" lazy="false" class="com.editsolutions.prd.vo.Transformation"
+             column="PRD_TransformationFK" unique="true" insert="false" update="false"/>
+
+        <many-to-one name="sourceField" lazy="false" class="com.editsolutions.prd.vo.SourceField"
+                 column="PRD_SourceFieldFK" unique="true" insert="false" update="false"/>
+
+                 
+                 
+                 
+<!--
+        <bag name="PRDDatas" table="PRD_Data"
+                inverse="true" lazy="false" fetch="select" cascade="none">
+            <key>
+                <column name="PRD_FileTemplateFieldPK" not-null="true" />
+            </key>
+            <one-to-many class="com.editsolutions.prd.vo.PRDData" />
+        </bag>
+-->
+                 
+
+    </class>
+</hibernate-mapping>

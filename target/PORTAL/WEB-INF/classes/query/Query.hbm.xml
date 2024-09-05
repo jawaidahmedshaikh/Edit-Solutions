@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="query.Query" table="&quot;Query&quot;">
+        <id name="QueryPK" column="&quot;QueryPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="Description" column="&quot;Description&quot;"/>
+        <property name="Expression" column="&quot;Expression&quot;"/>
+        <property name="Name" column="&quot;Name&quot;"/>
+        <property name="Type" column="&quot;Type&quot;"/>
+        <property name="DatabaseName" column="&quot;DatabaseName&quot;"/>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Deanna Lataille (Systems Engineering Group, LLC) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="./NaturalDocVO.xsd"/>
+	<xs:include schemaLocation="./ProjectionsVO.xsd"/>
+	<xs:include schemaLocation="./ProjectionSurrenderChargeVO.xsd"/>
+	<xs:include schemaLocation="./ActivitySummaryVO.xsd"/>
+	<xs:include schemaLocation="./EDITSolutions.xsd"/>
+	<xs:include schemaLocation="./InvestmentRateVO.xsd"/>
+	<xs:include schemaLocation="./ENGINEDB.xsd"/>
+	<xs:include schemaLocation="./CalculatedValuesVO.xsd"/>
+        <xs:include schemaLocation="./GIOOptionValueVO.xsd"/>
+	<xs:element name="CorrespondenceDetailVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CorrespondenceDetailPK" type="xs:long"/>
+				<xs:element name="CorrespondenceType" type="xs:string"/>
+				<xs:element name="GuaranteedRate" type="xs:double"/>
+				<xs:element name="CurrentRate" type="xs:double"/>
+				<xs:element name="BonusRate" type="xs:double"/>
+				<xs:element name="FreeLookDays" type="xs:int"/>
+				<xs:element name="InitialGuaranteePeriod" type="xs:int"/>
+				<xs:element name="CurrentIntRateDate" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="10"/>
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RMDOption">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RMDAmount">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SeventyAndHalfDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FixedGuaranteedMinimumInterestRate" type="xs:decimal"/>
+				<xs:element name="PremiumBonusPercentage" type="xs:decimal"/>
+				<xs:element ref="NaturalDocVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ProductStructureVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ProjectionsVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ProjectionSurrenderChargeVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="ActivitySummaryVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="InvestmentRateVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="CalculatedValuesVO" minOccurs="0" maxOccurs="unbounded"/>
+                                <xs:element ref="GIOOptionValueVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

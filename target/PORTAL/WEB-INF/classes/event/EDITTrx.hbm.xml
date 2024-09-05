@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="event.EDITTrx" table="&quot;EDITTrx&quot;" >
+        <id name="EDITTrxPK" column="&quot;EDITTrxPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="Status" column="&quot;Status&quot;"/>
+        <property name="PendingStatus" column="&quot;PendingStatus&quot;"/>
+        <property name="SequenceNumber" column="&quot;SequenceNumber&quot;"/>
+
+        <property name="TaxYear" column="&quot;TaxYear&quot;"/>
+        <property name="TrxAmount" column="&quot;TrxAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DueDate" column="&quot;DueDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="TransactionTypeCT" column="&quot;TransactionTypeCT&quot;"/>
+
+        <property name="TrxIsRescheduledInd" column="&quot;TrxIsRescheduledInd&quot;"/>
+        <property name="ReapplyEDITTrxFK" column="&quot;ReapplyEDITTrxFK&quot;"/>
+        <property name="CommissionStatus" column="&quot;CommissionStatus&quot;"/>
+        <property name="LookBackInd" column="&quot;LookBackInd&quot;"/>
+
+        <property name="OriginatingTrxFK" column="&quot;OriginatingTrxFK&quot;"/>
+        <property name="NoCorrespondenceInd" column="&quot;NoCorrespondenceInd&quot;"/>
+        <property name="NoAccountingInd" column="&quot;NoAccountingInd&quot;"/>
+        <property name="NoCommissionInd" column="&quot;NoCommissionInd&quot;"/>
+        <property name="ZeroLoadInd" column="&quot;ZeroLoadInd&quot;"/>
+
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+        <property name="NotificationAmount" column="&quot;NotificationAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NotificationAmountReceived" column="&quot;NotificationAmountReceived&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="TransferTypeCT" column="&quot;TransferTypeCT&quot;"/>
+        <property name="AdvanceNotificationOverride" column="&quot;AdvanceNotificationOverride&quot;"/>
+        <property name="AccountingPeriod" column="&quot;AccountingPeriod&quot;"/>
+        <property name="ReinsuranceStatus" column="&quot;ReinsuranceStatus&quot;"/>
+
+        <property name="BonusCommissionAmount" column="&quot;BonusCommissionAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ExcessBonusCommissionAmount" column="&quot;ExcessBonusCommissionAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="DateContributionExcess" column="&quot;DateContributionExcess&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="TransferUnitsType" column="&quot;TransferUnitsType&quot;"/>
+
+        <property name="ClientSetupFK" column="&quot;ClientSetupFK&quot;" insert="false" update="false"/>
+		<property name="NoCheckEFT" column="&quot;NoCheckEFT&quot;"/>
+        <property name="NewPolicyNumber" column="&quot;NewPolicyNumber&quot;"/>
+		<property name="InterestProceedsOverride" column="&quot;InterestProceedsOverride&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ReversalReasonCodeCT" column="&quot;ReversalReasonCodeCT&quot;"/>
+        <property name="CheckAdjustmentFK" column="&quot;CheckAdjustmentFK&quot;" insert="false" update="false"/>
+        <property name="TrxPercent" column="&quot;TrxPercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="OriginalAccountingPeriod" column="&quot;OriginalAccountingPeriod&quot;"/>
+        <property name="AuthorizedSignatureCT" column="&quot;AuthorizedSignatureCT&quot;"/>
+        <property name="NotTakenOverrideInd" column="&quot;NotTakenOverrideInd&quot;"/>
+
+        <property name="ForceoutMinBalInd" column="&quot;ForceoutMinBalInd&quot;"/>
+        <property name="PremiumDueCreatedIndicator" column="&quot;PremiumDueCreatedIndicator&quot;"/>
+        <property name="BillAmtEditOverrideInd" column="&quot;BillAmtEditOverrideInd&quot;"/>
+        <property name="ZeroInterestIndicator" column="&quot;ZeroInterestIndicator&quot;"/>
+        <property name="TerminationTrxFK" column="&quot;TerminationTrxFK&quot;"/>
+
+        <property name="SelectedRiderPK" column="&quot;SelectedRiderPK&quot;"/>
+        <property name="OriginalAmount" column="&quot;OriginalAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <set name="EDITTrxHistories" table="&quot;EDITTrxHistory&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;EDITTrxFK&quot;"/>
+            <one-to-many class="event.EDITTrxHistory"/>
+        </set>
+
+        <set name="Deposits" table="&quot;Deposits&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;EDITTrxFK&quot;"/>
+            <one-to-many class="contract.Deposits"/>
+        </set>
+
+        <set name="AnnualizedSubBuckets" table="&quot;AnnualizedSubBucket&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;EDITTrxFK&quot;"/>
+            <one-to-many class="contract.AnnualizedSubBucket"/>
+        </set>
+
+        <set name="EDITTrxCorrespondences" table="&quot;EDITTrxCorrespondence&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;EDITTrxFK&quot;"/>
+            <one-to-many class="event.EDITTrxCorrespondence"/>
+        </set>
+
+        <set name="OverdueCharges" table="&quot;OverdueCharge&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;EDITTrxFK&quot;"/>
+            <one-to-many class="event.OverdueCharge"/>
+        </set>
+        
+        <set name="OverdueChargesSettled" table="&quot;OverdueChargeSettled&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;EDITTrxFK&quot;"/>
+            <one-to-many class="event.OverdueChargeSettled"/>
+        </set>
+        
+        <set name="AccountingDetails" table="&quot;AccountingDetail&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;EDITTrxFK&quot;"/>
+            <one-to-many class="accounting.AccountingDetail"/>
+        </set>
+
+        <set name="PremiumDues" table="&quot;PremiumDue&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;EDITTrxFK&quot;"/>
+            <one-to-many class="contract.PremiumDue"/>
+        </set>
+
+        <many-to-one
+            name="ClientSetup"
+            column="&quot;ClientSetupFK&quot;"
+            class="event.ClientSetup"
+            cascade="none"
+            />
+
+         <many-to-one
+            name="CheckAdjustment"
+            column="&quot;CheckAdjustmentFK&quot;"
+            class="agent.CheckAdjustment"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

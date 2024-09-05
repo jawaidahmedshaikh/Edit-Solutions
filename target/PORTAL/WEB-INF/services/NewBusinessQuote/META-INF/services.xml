@@ -1,0 +1,10 @@
+<service name="NewBusinessQuote" scope="application">
+    <description>
+        New Business Quote Service
+    </description>
+    <messageReceivers>
+        <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
+                         class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+    </messageReceivers>
+    <parameter name="ServiceClass">webservice.service.rpc.NewBusinessQuoteImpl</parameter>
+</service>

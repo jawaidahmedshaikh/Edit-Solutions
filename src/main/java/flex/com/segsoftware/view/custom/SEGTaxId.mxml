@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:custom="com.segsoftware.view.custom.*"
+	xmlns:validators="com.segsoftware.view.custom.validators.*"
+	initialize="init()"
+	 height="86">
+	
+	<!--
+	This component consists of ComboBox to display the available tax Id types and a TextInput to
+	enter the tax id.  The tax id must be in a specific format based on the selected tax id type.
+	For example, if the type is Social Security, the taxId field must be ###-##-####.  The user is
+	allowed to enter the field with or without dashes.  Once focus is off of the tax id field, the 
+	tax id's format is checked.  The allowable format is all numbers with or without dashes.  If 
+	dashes exist, the dashes must be in the appropriate positions based on tax id type.  The amount 
+	of digits allowed is also based on tax id type. 
+	
+	If the tax id has been entered in the allowable format but is just missing the dashes, the tax id is 
+	formatted to include the dashes.  The TaxIdValidator checks for the allowable format.
+	-->
+	
+	<validators:TaxIdValidator id="taxIdValidator" 
+		required="false"        
+		source="{this.taxID}" 
+		taxIdTypeVO="{this.taxIDType.selectedItem as XML}"
+		property="text"
+		valid="formatTaxId(event)"/>
+
+	
+	<mx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import mx.collections.*;
+			import com.segsoftware.model.*;
+			import mx.validators.*;
+			import com.segsoftware.utility.*;
+			import mx.validators.ValidationResult;
+			import mx.events.ValidationResultEvent;
+
+			private static var DASH:String = "-";
+
+			
+			//////////////// Tax ID Fields //////////////////////////////////////////
+			
+			/**
+			 * The VO from which the taxId 'text' will be taken from or applied to.
+			 */			
+			private var _taxIdValueObjectVO:XML;
+			
+		    /**
+		  	 * The taxId's VO.TextField that will be read-from/written-to.
+			 */
+			private var _taxIdValueObjectVOField:String;
+			
+			/**
+			 * The taxId's 'text'
+			 */
+			private var _taxIdText:String;
+			
+			
+			public function get taxIdValueObjectVO():XML
+			{
+				return _taxIdValueObjectVO;	
+			}
+			
+			[Bindable]
+			public function set taxIdValueObjectVO(taxIdValueObjectVO:XML):void
+			{
+				_taxIdValueObjectVO = taxIdValueObjectVO;
+			}
+			
+			public function get taxIdValueObjectVOField():String
+			{
+				return _taxIdValueObjectVOField;	
+			}
+			
+			[Bindable]
+			public function set taxIdValueObjectVOField(taxIdValueObjectVOField:String):void
+			{
+				_taxIdValueObjectVOField = taxIdValueObjectVOField;
+			}
+			
+			public function get taxIdText():String
+			{
+				return _taxIdText;	
+			}
+			
+			[Bindable]
+			public function set taxIdText(taxIdText:String):void
+			{
+				_taxIdText = taxIdText;
+			}
+			
+			/////////////////////  TaxID Type Fields /////////////////////////////////
+			
+			/**
+			 * The field in the taxIDType VO that should
+			 * be used to uniquely identify a VO. 
+			 */
+			private var _taxIdTypeValueField:String;
+			
+			/**
+			 * The labelField property on the TaxId Type's ComboBox.
+			 */
+			private var _taxIdTypeLabelField:String;
+			
+    		/**
+    		* Data provider for ComboBox
+    		*/
+    	    private var _taxIdTypeDataProvider:XMLListCollection;			
+		
+			/**
+			* The VO that contains the taxId type data
+			*/
+			private var _taxIdTypeValueObjectVO:XML;
+			
+			/**
+			 * The field on the VO that will be updated when the ComboBox changes
+			 */
+			private var _taxIdTypeValueObjectVOField:String;
+			
+			
+			public function get taxIdTypeValueField():String
+			{
+				return _taxIdTypeValueField;	
+			}
+			
+			[Bindable]
+			public function set taxIdTypeValueField(taxIdTypeValueField:String):void
+			{
+				_taxIdTypeValueField = taxIdTypeValueField;
+			}
+			
+			public function get taxIdTypeLabelField():String
+			{
+				return _taxIdTypeLabelField;	
+			}
+			
+			[Bindable]
+			public function set taxIdTypeLabelField(taxIdTypeLabelField:String):void
+			{
+				_taxIdTypeLabelField = taxIdTypeLabelField;
+			}
+			
+			public function get taxIdTypeDataProvider():XMLListCollection
+			{
+				return _taxIdTypeDataProvider;	
+			}
+			
+			[Bindable]
+			public function set taxIdTypeDataProvider(taxIdTypeDataProvider:XMLListCollection):void
+			{
+				_taxIdTypeDataProvider = taxIdTypeDataProvider;
+			}
+			
+			public function get taxIdTypeValueObjectVO():XML
+			{
+				return _taxIdTypeValueObjectVO;	
+			}
+			
+			[Bindable]
+			public function set taxIdTypeValueObjectVO(taxIdTypeValueObjectVO:XML):void
+			{
+				_taxIdTypeValueObjectVO = taxIdTypeValueObjectVO;
+			}
+			
+			public function get taxIdTypeValueObjectVOField():String
+			{
+				return _taxIdTypeValueObjectVOField;	
+			}
+			
+			[Bindable]
+			public function set taxIdTypeValueObjectVOField(taxIdTypeValueObjectVOField:String):void
+			{
+				_taxIdTypeValueObjectVOField = taxIdTypeValueObjectVOField;
+			}
+			
+			/**
+			 * Initialize
+			 */
+			private function init():void
+			{
+				//this.taxID.addEventListener(FocusEvent.FOCUS_OUT, formatTaxId);
+			}
+			
+			/**
+			 * Checks to see if the tax id is already properly formatted (i.e. contains dashes)
+			 * and if not, formats it (i.e. adds dashes) 
+			 */
+			private function formatTaxId(validationResultEvent:ValidationResultEvent):void
+			{
+				if (validationResultEvent.type == ValidationResultEvent.VALID)
+				{
+					var formattedTaxId:String = this.taxID.text;
+					
+					if (! taxIdProperlyFormatted())
+					{
+						formattedTaxId = formatIt();
+					}
+					
+					this.updateTaxIdValueObjectVO(formattedTaxId);	
+				}
+			}
+			
+			/**
+			 *	Determines if the taxId is in the correct format based on the selected
+			 *  taxId type
+			 *
+			 *  returns true if the tax Id is already formatted correctly for the selected taxId type,
+			 *          false otherwise
+			 */
+			private function taxIdProperlyFormatted():Boolean
+			{
+				var selectedItem:XML = this.taxIDType.selectedItem as XML;
+				
+				var taxIdType:String = selectedItem.Code;
+				
+				if (taxIdType == TaxIdValidator.SOCIAL_SECURITY_TAXID_TYPE)
+				{
+					return properlyFormattedForSocialSecurityNumber();
+				}
+				else if (taxIdType == TaxIdValidator.CORPORATE_TAXID_TYPE)
+				{
+					return properlyFormattedForCorporateId();
+				}
+				else
+				{
+					//	It's some other type that does not require formatting
+					return true;
+				}
+			}
+			
+			/**
+			 * Formats the tax id to the proper format based on the selected tax id type
+			 */
+			private function formatIt():String
+			{
+				var selectedItem:XML = this.taxIDType.selectedItem as XML;
+				
+				var taxIdType:String = selectedItem.Code;
+				
+				if (this.taxID.text.length > 0)
+				{
+					if (taxIdType == TaxIdValidator.SOCIAL_SECURITY_TAXID_TYPE)
+					{
+						return formatSocialSecurityNumber();
+					}
+					else if (taxIdType == TaxIdValidator.CORPORATE_TAXID_TYPE)
+					{
+						return formatCorporateId();
+					}
+				}
+				
+				return this.taxID.text;
+			}
+			
+			/**
+			 *	Determines if the tax id is in the proper format for a social security number
+			 */
+			private function properlyFormattedForSocialSecurityNumber():Boolean
+			{
+				var	resultsWithDashes:Array = this.taxID.text.match(TaxIdValidator.SOCIAL_SECURITY_FORMAT_WITH_DASHES);
+				
+				if (resultsWithDashes != null)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}	
+			}
+			
+			/**
+			 *	Determines if the tax id is in the proper format for a corporate id
+			 */
+			private function properlyFormattedForCorporateId():Boolean
+			{
+				var	resultsWithDashes:Array = this.taxID.text.match(TaxIdValidator.CORPORATE_FORMAT_WITH_DASHES);
+				
+				if (resultsWithDashes != null)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}	
+			}
+			
+			/**
+			 *	Formats the tax id to the social security format
+			 */
+			private function formatSocialSecurityNumber():String
+			{
+				var formattedTaxId:String;
+				
+				var firstThreeDigits:String = this.taxID.text.substring(0, 3);
+				var secondTwoDigits:String = this.taxID.text.substring(3, 5);
+				var lastFourDigits:String = this.taxID.text.substring(5, 9);
+				
+				formattedTaxId = firstThreeDigits + SEGTaxId.DASH + secondTwoDigits + SEGTaxId.DASH + lastFourDigits;
+				
+				return formattedTaxId;	
+			}
+			
+			/**
+			 *	Formats the tax id to the corporate id format
+			 */
+			private function formatCorporateId():String
+			{
+				var formattedTaxId:String;
+				
+				var firstTwoDigits:String = this.taxID.text.substring(0, 2);
+				var lastNineDigits:String = this.taxID.text.substring(2, 11);
+				
+				formattedTaxId = firstTwoDigits + SEGTaxId.DASH + lastNineDigits;
+				
+				return formattedTaxId;	
+			}
+			
+			/**
+			 *	Updates the VO with the properly formatted tax id
+			 */
+			private function updateTaxIdValueObjectVO(formattedTaxId:String):void
+			{				
+				if ((taxIdValueObjectVO != null) && (taxIdValueObjectVOField != null))
+				{
+					Util.updateValueObjectVO(taxIdValueObjectVO, taxIdValueObjectVOField, formattedTaxId);					
+				}
+			}	
+			
+		]]>
+	</mx:Script>
+	
+	
+	<mx:FormItem label="Tax ID Type:" >  
+		<custom:SEGComboBox id="taxIDType"
+			dataProvider="{taxIdTypeDataProvider}"
+			labelField="{taxIdTypeLabelField}"
+			valueField="{taxIdTypeValueField}" 
+			valueObjectVO="{taxIdTypeValueObjectVO}"
+			valueObjectVOField="{taxIdTypeValueObjectVOField}"
+			change="taxIdValidator.validate()" />
+	</mx:FormItem>
+ 	<mx:FormItem label="Tax ID:" >
+		<custom:SEGTextInput id="taxID"
+			valueObjectVO="{taxIdValueObjectVO}"
+			valueObjectVOField="{taxIdValueObjectVOField}"
+			text="{taxIdText}"/>
+	</mx:FormItem>
+		
+</mx:Form>

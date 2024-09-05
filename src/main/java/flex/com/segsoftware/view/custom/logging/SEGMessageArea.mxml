@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:model.logging="com.segsoftware.model.logging.*"
+	xmlns:logging="com.segsoftware.view.custom.logging.*" 
+	xmlns:custom="com.segsoftware.view.custom.*"
+	>
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.logging.*;
+			
+		]]>
+	</mx:Script>
+	
+	<mx:HBox left="0" height="100%" width="70%" horizontalAlign="left">
+		<mx:Label text="{SEGLog.getInstance().businessMessage}"	fontWeight="bold" condenseWhite="true" width="50%"/>
+	</mx:HBox>
+
+	<mx:HBox width="10%">
+		<!-- empty space between the message and the log button -->
+		<mx:Label />
+	</mx:HBox>
+	
+    <mx:HBox right="0" height="100%" width="20%" horizontalAlign="right">
+   		<logging:SEGLogButton  icon="@Embed('../../assets/icons/activity.png')" /> 
+    </mx:HBox> 
+
+</mx:HBox>

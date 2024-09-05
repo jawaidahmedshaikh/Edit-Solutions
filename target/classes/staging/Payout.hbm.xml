@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.Payout" table="&quot;Payout&quot;"  >
+        <id name="PayoutPK" column="&quot;PAYOUTPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="PaymentStartDate" column="&quot;PAYMENTSTARTDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="CertainDuration" column="&quot;CERTAINDURATION&quot;"/>
+        <property name="PostJune1986Investment" column="&quot;POSTJUNE1986INVESTMENT&quot;"/>
+        <property name="PaymentAmount" column="&quot;PAYMENTAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ReducePercent1" column="&quot;REDUCEPERCENT1&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ReducePercent2" column="&quot;REDUCEPERCENT2&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TotalExpectedReturnAmount" column="&quot;TOTALEXPECTEDRETURNAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="FinalDistributionAmount" column="&quot;FINALDISTRIBUTIONAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ExclusionRatio" column="&quot;EXCLUSIONRATION&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="YearlyTaxableBenefit" column="&quot;YEARLYTAXABLEBENEFIT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        
+        <property name="FinalPaymentDate" column="&quot;FINALPAYMENTDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LastCheckDate" column="&quot;LASTCHECKDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="NextPaymentDate" column="&quot;NEXTPAYMENTDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ExclusionAmount" column="&quot;EXCLUSIONAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CertainPeriodEndDate" column="&quot;CERTAINPERIODENDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="PaymentFrequency" column="&quot;PAYMENTFREQUENCY&quot;"/>
+        <property name="LastDayOfMonthInd" column="&quot;LASTDAYOFMONTHIND&quot;"/>
+
+        <property name="SegmentBaseFK" column="&quot;SEGMENTBASEFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="SegmentBase"
+            column="&quot;SEGMENTBASEFK&quot;"
+            class="staging.SegmentBase"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>
+

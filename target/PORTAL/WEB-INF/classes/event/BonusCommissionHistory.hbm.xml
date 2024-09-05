@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="event.BonusCommissionHistory" table="&quot;BonusCommissionHistory&quot;">
+
+        <id name="BonusCommissionHistoryPK" column="&quot;BonusCommissionHistoryPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="BonusUpdateStatus" column="&quot;BonusUpdateStatus&quot;"/>
+        <property name="AccountingPendingStatus" column="&quot;AccountingPendingStatus&quot;"/>
+        <property name="BonusUpdateDateTime" column="&quot;BonusUpdateDateTime&quot;"
+                  type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="UpdateReason" column="&quot;UpdateReason&quot;"/>
+        <property name="TransactionTypeCT" column="&quot;TransactionTypeCT&quot;"/>
+                  
+        <property name="Amount" column="&quot;Amount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="CommissionHistoryFK" column="&quot;CommissionHistoryFK&quot;" insert="false" update="false"/>
+        <property name="ParticipatingAgentFK" column="&quot;ParticipatingAgentFK&quot;" insert="false" update="false"/>
+
+        <many-to-one name="CommissionHistory" column="&quot;CommissionHistoryFK&quot;" class="event.CommissionHistory"
+                     cascade="none"/>
+        <many-to-one name="ParticipatingAgent" column="&quot;ParticipatingAgentFK&quot;"
+                     class="agent.ParticipatingAgent" cascade="none"/>
+
+        <set name="AppliedPremiumLevels" table="&quot;AppliedPremiumLevel&quot;" inverse="true" cascade="all">
+            <key column="&quot;BonusCommissionHistoryFK&quot;"/>
+            <one-to-many class="agent.AppliedPremiumLevel"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:custom="com.segsoftware.view.custom.*"
+	layout="absolute" width="1000" height="700" 
+	title="Batch Transmittal Dialog"		
+	showCloseButton="true"
+	close="PopUpManager.removePopUp(this)">
+	
+	<mx:Style source="../css/segSoftware.css"/>		
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.event.SEGEvent;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import com.segsoftware.model.SEGModelLocator;
+			import mx.collections.XMLListCollection;
+			import mx.managers.PopUpManager;
+			import com.segsoftware.model.CodeTable;
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.control.SEGController;
+						
+			/**
+			 * Renders the AddDaysReason dialog.
+			 */
+			private function showAddDaysAddedReasonDialog():void
+			{
+				formData.valueObjectVOName = SEGModelLocator.MODEL_BATCHPROGRESSLOG;
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_INSTANTIATE_VALUEOBJECTVO, formData));
+				
+				var batchProgressLogDialog:AddBatchProgressLogDialog = PopUpManager.createPopUp(this, com.segsoftware.view.encoding.AddBatchProgressLogDialog, true) as AddBatchProgressLogDialog;	
+							
+				PopUpManager.centerPopUp(batchProgressLogDialog);					
+			}
+			
+			/**
+			* Renders the AddBatchProductLogDialog.
+			*/
+			private function showAddBatchProductLogDialog():void
+			{				
+				formData.valueObjectVOName = SEGModelLocator.MODEL_BATCHPRODUCTLOG;
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_INSTANTIATE_VALUEOBJECTVO, formData));				
+				
+				var addBatchProductLogDialog:AddBatchProductLogDialog = PopUpManager.createPopUp(this, com.segsoftware.view.encoding.AddBatchProductLogDialog, true) as AddBatchProductLogDialog;	
+							
+				PopUpManager.centerPopUp(addBatchProductLogDialog);						
+			}
+			
+			/**
+			 * The candidate ProductStructure dropdown needs a "calculated" label based
+			 * on the usual Product, ProductType, CompanyName, etc.
+			 */
+			public function formatCandidateProductStructureLabel(object:Object):String
+			{
+				var filteredProductVO:XML = object as XML;
+				
+				return Util.formatProductKey(filteredProductVO.ProductStructureVO[0]);
+			}
+			
+			/**
+			 * The label field of a ComboBox does not have the ability to 
+			 * drill down in an XML hierarchy. We need to compensate for that.
+			 */
+			public function showRequirementDescription(batchProgressLogVO:XML):String
+			{
+				var requirementDescription:String = "N/A";
+				
+				if (batchProgressLogVO != null)
+				{
+					var filteredRequirementFK:XML = batchProgressLogVO.FilteredRequirementFK[0];
+					
+					var caseFilteredRequirementVOs:XMLListCollection = SEGModelLocator.getInstance().caseFilteredRequirementVOs;
+					
+					for each (var caseFilteredRequirementVO:XML in caseFilteredRequirementVOs)
+					{
+						var filteredRequirementPK:XML = caseFilteredRequirementVO.FilteredRequirementPK[0];
+						
+						if (filteredRequirementFK.text() ==  filteredRequirementPK.text())
+						{
+							requirementDescription = caseFilteredRequirementVO.RequirementVO[0].RequirementDescription;
+							
+							break;
+						}
+					}
+				}
+				
+				return requirementDescription;
+			}				
+		]]>
+	</mx:Script>
+	
+	<mx:Model id="formData">
+		<formData>
+			<valueObjectVOName/>
+		</formData>
+	</mx:Model>
+		
+	<mx:VBox horizontalAlign="right" left="10" right="10" top="163" bottom="10">
+
+		<mx:Panel height="50%" layout="absolute" title="Days Added Log" width="100%">
+			<mx:DataGrid 
+				id="daysAddedReasonDataGrid"
+				editable="true"
+				left="0" 
+				right="0" 
+				top="0" 
+				bottom="0"
+				dataProvider="{SEGModelLocator.getInstance().batchProgressLogVOs}">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Days Added" dataField="DaysAdded" width="10" color="blue"/>
+					
+					<mx:DataGridColumn 
+							headerText="Reason"
+	 					    width="45"
+	 					    editable="false">
+	 					    	<mx:itemRenderer>
+	 					    		<mx:Component>
+	 					    			<mx:HBox width="100%">
+	 					    				<mx:Script>
+	 					    					<![CDATA[
+	 					    						import com.segsoftware.model.*;
+	 					    					]]>
+	 					    				</mx:Script>
+	 					    				
+	 					    				<mx:Text text="{outerDocument.showRequirementDescription(data as XML)}"/>
+	
+	 					    			</mx:HBox>
+	 					    		</mx:Component>
+	 					    	</mx:itemRenderer>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="Description" dataField="Description" width="45" color="blue"/>
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:ControlBar horizontalAlign="right">
+				<mx:Button label="Add" 
+				click="showAddDaysAddedReasonDialog()"/>
+			</mx:ControlBar>
+		</mx:Panel>
+		
+		<mx:Panel height="50%" layout="absolute" title="Product Log" left="10" right="10" bottom="10" width="100%">
+			<mx:DataGrid left="0" right="0" 
+				top="0" 
+				bottom="0"
+				editable="true"
+				dataProvider="{SEGModelLocator.getInstance().batchProductLogVOs}">
+				<mx:columns>
+					<mx:DataGridColumn 
+							headerText="Product Key"
+	 					    width="60"
+	 					    color="blue"
+	 					    editable="false">
+	 					    	<mx:itemRenderer>
+	 					    		<mx:Component>
+	 					    			<mx:HBox>
+	 					    				<mx:Script>
+	 					    					<![CDATA[
+	 					    						import com.segsoftware.model.*;
+	 					    					]]>
+	 					    				</mx:Script>	 					    		
+											<custom:SEGComboBox 
+												dataProvider="{SEGModelLocator.getInstance().candidateFilteredProductVOs}"
+												labelFunction="{outerDocument.formatCandidateProductStructureLabel}"
+												valueField="FilteredProductPK"
+												valueObjectVO="{data as XML}"
+												valueObjectVOField="FilteredProductFK" 
+												/>
+										</mx:HBox>
+	 					    		</mx:Component>
+	 					    	</mx:itemRenderer>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="# Apps Received (estimated)" 
+						dataField="NumberOfAppsReceived" 
+						editable="true"
+						color="blue"
+						width="20"/>
+					<mx:DataGridColumn headerText="# Apps Added (actual)" 
+						editable="false" 
+						width="20">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:HBox>
+										<mx:Script>
+											<![CDATA[
+												import com.segsoftware.model.*;
+											]]>
+										</mx:Script>
+										
+										<mx:Text text="{SEGModelLocator.getInstance().selectedBatchContractSetupVO.NumberOfContracts}"/>
+									</mx:HBox>
+								</mx:Component>
+							</mx:itemRenderer>
+					</mx:DataGridColumn>
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:ControlBar horizontalAlign="right">
+				<mx:Button label="Add" click="showAddBatchProductLogDialog()"/>
+			</mx:ControlBar>
+		</mx:Panel>
+
+	</mx:VBox>	
+	<mx:Panel height="145" layout="horizontal" title="Work Summary" left="10" right="10" top="10" horizontalAlign="left">
+		<mx:Form>
+			<mx:FormItem label="Receipt Date:">
+				<custom:SEGDateField
+					valueObjectVO="{SEGModelLocator.getInstance().selectedBatchContractSetupVO}"
+					valueObjectVOField="ReceiptDate"
+					editable="true"
+					required="false"
+					text="{SEGModelLocator.getInstance().selectedBatchContractSetupVO.ReceiptDate}"/>	
+					
+			</mx:FormItem>
+			<mx:FormItem label="Number Of Workdays:">
+				<custom:SEGTextInput
+					valueObjectVO="{SEGModelLocator.getInstance().selectedBatchContractSetupVO}"
+					valueObjectVOField="NumberOfWorkdays"
+					text="{SEGModelLocator.getInstance().selectedBatchContractSetupVO.NumberOfWorkdays}"
+					editable="true"/>				
+		
+			</mx:FormItem>
+		</mx:Form>
+		<mx:Form>
+			<mx:FormItem label="Application Type:">
+				<custom:SEGComboBox 
+					labelField="CodeDesc"
+					valueField="Code"
+					id="applicationTypeCT" 
+					dataProvider="{CodeTable.getInstance().applicationTypeCodeTableVOs}"
+					valueObjectVO="{SEGModelLocator.getInstance().selectedBatchContractSetupVO}"
+					valueObjectVOField="ApplicationTypeCT"/> 
+			</mx:FormItem>
+			<mx:FormItem label="Enrollment Method:">
+				<custom:SEGComboBox 
+					labelField="CodeDesc"
+					valueField="Code"
+					id="enrollmentMethodCT" 
+					dataProvider="{CodeTable.getInstance().enrollmentMethodCodeTableVOs}"
+					valueObjectVO="{SEGModelLocator.getInstance().selectedBatchContractSetupVO}"
+					valueObjectVOField="EnrollmentMethodCT"/> 
+			</mx:FormItem>			
+		</mx:Form>
+		<mx:Form>
+		</mx:Form>
+	</mx:Panel>
+	<mx:ControlBar horizontalAlign="right">
+		<mx:Button label="OK" 
+			click="CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_UPDATE_BATCH_TRANSMITTED_DETAILS, formData));
+			PopUpManager.removePopUp(this)"/>
+	</mx:ControlBar>
+</mx:TitleWindow>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="agent.ParticipatingAgent" table="&quot;ParticipatingAgent&quot;">
+
+        <id name="ParticipatingAgentPK" column="&quot;ParticipatingAgentPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ProduceCheckInd" column="&quot;ProduceCheckInd&quot;"/>
+        <property name="BonusProgramOverrideInd" column="&quot;BonusProgramOverrideInd&quot;"/>
+        <property name="BonusTaxableAmount" column="&quot;BonusTaxableAmount&quot;"
+                  type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LastStatementDateTime" column="&quot;LastStatementDateTime&quot;"
+                  type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="LastCheckDateTime" column="&quot;LastCheckDateTime&quot;"
+                  type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="LastCheckAmount" column="&quot;LastCheckAmount&quot;"
+                  type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="BonusProgramFK" column="&quot;BonusProgramFK&quot;" insert="false" update="false"/>
+        <property name="PlacedAgentFK" column="&quot;PlacedAgentFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+                name="BonusProgram"
+                column="&quot;BonusProgramFK&quot;"
+                class="agent.BonusProgram"
+                cascade="none"
+                />
+
+        <many-to-one
+                name="PlacedAgent"
+                column="&quot;PlacedAgentFK&quot;"
+                class="agent.PlacedAgent"
+                cascade="none"
+                />
+
+
+        <set name="PremiumLevels" table="&quot;PremiumLevel&quot;" inverse="true" cascade="all">
+            <key column="&quot;ParticipatingAgentFK&quot;"/>
+            <one-to-many class="agent.PremiumLevel"/>
+        </set>
+
+        <set name="BonusCommissionHistories" table="&quot;BonusCommissionHisory&quot;" inverse="true" cascade="all">
+            <key column="&quot;ParticipatingAgentFK&quot;"/>
+            <one-to-many class="event.BonusCommissionHistory"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

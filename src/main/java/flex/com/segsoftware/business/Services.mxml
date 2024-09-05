@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cairngorm:ServiceLocator 
+	xmlns:mx="http://www.adobe.com/2006/mxml"    
+	xmlns:cairngorm="com.adobe.cairngorm.business.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.business.ServiceLocator;
+			import com.segsoftware.command.SEGRequest;
+			import com.segsoftware.model.SEGModelBuilder;
+			
+			import mx.collections.ItemResponder;
+			import mx.collections.XMLListCollection;
+			import mx.rpc.AsyncToken;
+			import mx.rpc.http.HTTPService;			
+			
+			// when running in Flash builder, make sure an appropriate <base href="..."> tag is specified in the hosting html page 
+			private static  var BASE_URL:String = "/PORTAL";
+			
+			/**
+			 * Posts a file to the specified URL and calls successFunction upon success.
+			 */
+			public static function postFile(relativeUrl:String, fileRef:FileReference, successFunction:Function, failureFunction:Function):void {
+				var request:URLRequest = new URLRequest(BASE_URL + relativeUrl);
+				request.requestHeaders.push(new URLRequestHeader("accept", "application/json, text/*"));
+				fileRef.addEventListener(Event.COMPLETE, successFunction);
+				fileRef.addEventListener(IOErrorEvent.IO_ERROR, failureFunction);
+				
+				fileRef.addEventListener(HTTPStatusEvent.HTTP_STATUS, function(evt:HTTPStatusEvent) {
+					if(evt.status != 200) {
+						failureFunction(evt);
+					}
+				});
+				fileRef.upload(request, "file");
+			}
+			
+			/**
+			 * Performs a RESTful HTTP GET request and calls a function upon success
+			 */
+			public static function issueHttpGet(relativeUrl:String, successFunction:Function, failureFunction:Function):void {
+				var request:URLRequest = new URLRequest(BASE_URL + relativeUrl);
+				request.requestHeaders.push(new URLRequestHeader("pragma", "no-cache"));
+				var loader:URLLoader = new URLLoader();
+				loader.dataFormat = URLLoaderDataFormat.TEXT;
+				
+				loader.addEventListener(Event.COMPLETE, successFunction);
+				loader.addEventListener(IOErrorEvent.IO_ERROR, failureFunction);
+				loader.load(request);
+			}
+			
+			/**
+			* Static service name when accessing SEG services over HTTP/Post.
+			*/
+			public static var SEG_HTTP_SERVICE:String = "segHttpService";
+			
+			/**
+			 * Invoking a service via HTTP/Post requires the information as defined by a SEGRequest.
+			 * 
+			 * @see SEGRequest
+			 */
+			public static function dispatchServiceRequest(segRequest:SEGRequest):void
+			{
+				var service:mx.rpc.http.HTTPService = ServiceLocator.getInstance().getHTTPService(Services.SEG_HTTP_SERVICE);
+				
+				service.request.segRequestVO = segRequest.getAsXML();
+				
+				var token:AsyncToken = service.send();
+				
+				var itemResponder:ItemResponder = new ItemResponder(segRequest.resultFunction, segRequest.faultFunction);			
+				
+				token.addResponder(itemResponder);		
+			} 			
+		]]>
+	</mx:Script>
+	
+	<!-- Use this while running standalone, or set an appropriate <base href="..."> tag in the host page -->
+	
+	<mx:HTTPService 
+		url="http://localhost:8080/PORTAL/test/webservice/segServiceDispatcher.jsp" 
+		id="segHttpService" 
+		
+		method="post" 
+		resultFormat="e4x">
+	</mx:HTTPService>
+	
+
+	<!-- Use this while running in Tomcat -->
+	<!--
+	<mx:HTTPService 
+		url="/PORTAL/test/webservice/segServiceDispatcher.jsp" 
+		id="segHttpService" 
+		
+		method="post" 
+		resultFormat="e4x">
+	</mx:HTTPService>	
+    -->
+	
+</cairngorm:ServiceLocator>

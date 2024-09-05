@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300">
+	<mx:DataGrid height="23" left="10" right="10" top="10">
+		<mx:columns>
+			<mx:DataGridColumn headerText="S"/>
+			<mx:DataGridColumn headerText="M"/>
+			<mx:DataGridColumn headerText="T"/>
+			<mx:DataGridColumn headerText="W"/>
+			<mx:DataGridColumn headerText="T"/>
+			<mx:DataGridColumn headerText="F"/>												
+			<mx:DataGridColumn headerText="S"/>		
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:DataGrid width="380" y="41" x="10" height="249">
+		<mx:columns>
+			<mx:DataGridColumn headerText=""/>
+			<mx:DataGridColumn headerText=""/>
+			<mx:DataGridColumn headerText="1"/>
+			<mx:DataGridColumn headerText="2"/>
+			<mx:DataGridColumn headerText="3"/>
+			<mx:DataGridColumn headerText="4"/>												
+			<mx:DataGridColumn headerText="5"/>			
+		</mx:columns>
+	</mx:DataGrid>
+
+
+	
+</mx:Canvas>

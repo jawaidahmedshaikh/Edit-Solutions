@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.Fund" table="&quot;Fund&quot;"  >
+    
+        <cache usage="read-write"/>
+    
+        <id name="FundPK" column="&quot;FundPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="Name" column="&quot;Name&quot;"/>
+        <property name="FundType" column="&quot;FundType&quot;"/>
+        <property name="PortfolioNewMoneyStatusCT" column="&quot;PortfolioNewMoneyStatusCT&quot;"/>
+        <property name="ShortName" column="&quot;ShortName&quot;"/>
+        <property name="ExcludeFromActivityFileInd" column="&quot;ExcludeFromActivityFileInd&quot;"/>
+        <property name="TypeCodeCT" column="&quot;TypeCodeCT&quot;"/>
+        <property name="ReportingFundName" column="&quot;ReportingFundName&quot;"/>
+        <property name="LoanQualifierCT" column="&quot;LoanQualifierCT&quot;"/>
+
+        <set name="FilteredFunds" table="&quot;FilteredFund&quot;" inverse="true"  cascade="all">
+            <key column="&quot;FundFK&quot;"/>
+            <one-to-many class="engine.FilteredFund"/>
+        </set>
+    </class>
+</hibernate-mapping>
+

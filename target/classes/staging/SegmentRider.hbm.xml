@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<!-- stating.CASE root -->
+    <class name="staging.SegmentRider" table="&quot;SEGMENTRIDER&quot;">
+        <id name="SegmentRiderPK" column="&quot;SEGMENTRIDERPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SegmentBaseFK" column="&quot;SEGMENTBASEFK&quot;" insert="false" update="false"/>
+
+        <property name="EffectiveDate" column="&quot;EFFECTIVEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="TerminationDate" column="&quot;TERMINATIONDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="SegmentStatus" column="&quot;SEGMENTSTATUS&quot;"/>
+
+        <property name="OptionCode" column="&quot;OPTIONCODE&quot;"/>
+        <property name="RatedGenderCT" column="&quot;RATEDGENDERCT&quot;"/>
+        <property name="UnderwritingClassCT" column="&quot;UNDERWRITINGCLASSCT&quot;"/>
+        <property name="GroupPlan" column="&quot;GROUPPLAN&quot;"/>
+        <property name="Units" column="&quot;UNITS&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="FaceAmount" column="&quot;FACEAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="PaidToDate" column="&quot;PAIDTODATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AnnualPremium" column="&quot;ANNUALPREMIUM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AgeAtIssue" column="&quot;AGEATISSUE&quot;"/>
+        
+        <property name="OriginalUnits" column="OriginalUnits" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        
+        <property name="SegmentName" column="&quot;SEGMENTNAME&quot;"/>
+
+        <property name="EOBCum" column="EOBCUM" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="EOBMaximum" column="EOBMAXIMUM" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="MultipleFactor" column="MULTIPLEFACTOR"/>
+
+        <property name="GuarPaidUpTerm" column="&quot;GUARPAIDUPTERM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NonGuarPaidUpTerm" column="&quot;NONGUARPAIDUPTERM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="OneYearTerm" column="&quot;ONEYEARTERM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="GIOOption" column="&quot;GIOOPTION&quot;" />
+
+
+        <many-to-one
+            name="SegmentBase"
+            column="&quot;SEGMENTBASEFK&quot;"
+            class="staging.SegmentBase"
+            cascade="none"/>
+
+        <set name="ValueAtIssues" table="&quot;VALUEATISSUE&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SEGMENTRIDERFK&quot;"/>
+            <one-to-many class="staging.ValueAtIssue"/>
+        </set>
+
+        <set name="ContractClients" table="&quot;CONTRACTCLIENT&quot;" inverse="true"   cascade="all">
+            <key column="&quot;SEGMENTRIDERFK&quot;"/>
+            <one-to-many class="staging.ContractClient"/>
+        </set>
+
+    </class>
+</hibernate-mapping>
+

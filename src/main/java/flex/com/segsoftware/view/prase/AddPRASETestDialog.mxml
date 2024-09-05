@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" 
+	width="410" 
+	height="332" 
+	xmlns:custom="com.segsoftware.view.custom.*" 
+	title="Add PRASE Test Dialog"
+	showCloseButton="true"
+	close="mx.managers.PopUpManager.removePopUp(this)"
+	initialize="init()"
+	>
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.control.SEGController;
+			import mx.managers.PopUpManager;
+	
+			/**
+			* Init.
+			*/
+			private function init():void
+			{
+				Util.dispatchEvent(SEGController.EVENT_GET_ALL_PRODUCTSTRUCTURES, null);	
+			}
+			
+			/**
+			 * The ProductStructure dropdown needs a "calculated" label based
+			 * on the usual Product, ProductType, CompanyName, etc.
+			 */
+			private function formatProductStructureLabel(object:Object):String
+			{
+				var productStructureVO:XML = object as XML;
+				
+				return Util.formatProductKey(productStructureVO);
+			}				
+		]]>
+	</mx:Script>
+	
+	<mx:Model id="formData">
+		<formData>
+			<description>{description.text}</description>
+			<effectiveDate>{effectiveDate.text}</effectiveDate>
+			<process>{process.text}</process>
+			<event>{event.text}</event>
+			<eventType>{eventType.text}</eventType>
+			<productStructurePK>{(productStructure.selectedItem as XML).ProductStructurePK[0]}</productStructurePK>
+		</formData>
+	</mx:Model>
+	
+	<mx:Validator id="descriptionValidator" source="{description}" property="text" required="true" />
+	<mx:Validator id="effectiveDateValidator" source="{effectiveDate}" property="text" required="true" />
+	<mx:Validator id="processValidator" source="{process}" property="text" required="true" />
+	<mx:Validator id="eventValidator" source="{event}" property="text" required="true" />
+	<mx:Validator id="eventTypeValidator" source="{eventType}" property="text" required="true" />
+	<mx:Validator id="productStructureValidator" source="{productStructure}" property="selectedItem" required="true" />
+		
+	<mx:Form x="10" y="10">
+		<mx:FormItem label="Description:">
+			<mx:TextInput id="description"/>
+		</mx:FormItem>
+		<mx:FormItem label="Effective Date:">
+			<custom:SEGDateField id="effectiveDate" required="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Process:">
+			<mx:TextInput id="process"/>
+		</mx:FormItem>
+		<mx:FormItem label="Event:">
+			<mx:TextInput id="event"/>
+		</mx:FormItem>
+		<mx:FormItem label="Event Type:">
+			<mx:TextInput id="eventType"/>
+		</mx:FormItem>
+		<mx:FormItem label="Product Structure:">
+			<custom:SEGComboBox
+				id="productStructure" 
+				labelFunction="formatProductStructureLabel"
+				valueField="ProductStructurePK"
+				dataProvider="{SEGModelLocator.getInstance().productStructureVOs}"
+				width="100%"/>
+</mx:FormItem>
+	</mx:Form>
+	<mx:ControlBar horizontalAlign="right">
+		<mx:Button 
+			label="Commit"
+			click=
+			"
+				if (Util.validate(descriptionValidator, effectiveDateValidator, processValidator, eventValidator, eventTypeValidator, productStructureValidator).length == 0)
+				{
+					Util.dispatchEvent(SEGController.EVENT_CREATE_PRASETEST, formData);
+				
+					mx.managers.PopUpManager.removePopUp(this)
+				}
+			"/>
+	</mx:ControlBar>
+	
+</mx:TitleWindow>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:CheckBox xmlns:mx="http://www.adobe.com/2006/mxml" initialize="init()">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.XMLListCollection;
+			import com.segsoftware.utility.Util;
+			
+			/**
+			* The VO from which the 'text' will be taken from or applied to.
+			*/			
+			private var _valueObjectVO:XML;
+			
+			/**
+			* The VO.TextField that will be read-from/written-to.
+			*/
+			private var _valueObjectVOField:String;
+			
+			/**
+			 * The value to set in the VO for "selected = true".
+			 * Defaults to 'Y'.
+			 */
+			private var _yesValue:String = 'Y';
+			
+			/**
+			* The value to set in the VO for "selected = false";
+			* Defaults to 'N'.
+			*/
+			private var _noValue:String = 'N';
+			
+			/**
+			 * Core initialization.
+			 */
+			private function init():void
+			{
+				addEventListener(Event.CHANGE, updateValueObjectVO);
+			}
+			
+			/**
+			* @see #_yesValue
+			*/
+			[Bindable]
+			public function set yesValue(yesValue:String):void
+			{
+				this._yesValue = yesValue;
+			}
+			
+			/**
+			* @see #_yesValue
+			*/
+			public function get yesValue():String
+			{
+				return this._yesValue;
+			}
+			
+			/**
+			* @see #_noValue
+			*/
+			[Bindable]
+			public function set noValue(noValue:String):void
+			{
+				this._noValue = noValue;
+			}
+			
+			/**
+			* @see #_noValue
+			*/
+			public function get noValue():String
+			{
+				return this._noValue;
+			}			
+			
+			/**
+			* @see #_valueObjectVOField
+			*/
+			[Bindable]
+			public function set valueObjectVOField(valueObjectVOField:String):void
+			{
+				_valueObjectVOField = valueObjectVOField;
+				
+				initializeSEGCheckBox();
+			}
+			
+			/**
+			* @see #_valueObjectVOField
+			*/
+			public function get valueObjectVOField():String
+			{
+				return _valueObjectVOField;	
+			}
+			
+			/**
+			* @see #_valueObjectVO
+			*/
+			[Bindable]
+			public function set valueObjectVO(valueObjectVO:XML):void
+			{
+				_valueObjectVO = valueObjectVO;
+				
+				initializeSEGCheckBox();
+			}
+			
+			/**
+			* @see #_valueObjectVO
+			*/
+			public function get valueObjectVO():XML
+			{
+				return _valueObjectVO;	
+			}
+			
+			/**
+			 * Changes to the TextInput need to be bidirectional. By
+			 * default, the TextField can 'read' from the VO, but can 
+			 * not apply changes to the VO. I had tried bidirectional
+			 * Bindings, but this did not work. I suspect it has something
+			 * to do with the fact that we are 'trying' to Bind to the
+			 * elements of an XML type as opposed to the properties of 
+			 * an actual object. We  try to mimic this bidirectional 
+			 * Binding with simple event handling.
+			 */
+			private function updateValueObjectVO(event:Event):void
+			{				
+				if ((valueObjectVO != null) && (valueObjectVOField != null))
+				{
+					Util.updateValueObjectVO(valueObjectVO, valueObjectVOField, getYesNoValue());					
+				}
+			}		
+			
+			/**
+			* The user may have specified a distinct value to
+			* represent "selected = true". e.g. 'Y', or "YES" or "T".
+			* Similar for false.
+			* @see #_yesValue
+			* @see #_noValue
+			*/
+			private function getYesNoValue():String
+			{
+				if (selected)
+				{
+					return yesValue;
+				}				
+				else
+				{
+					return noValue;
+				}
+			}
+			
+			/**
+			* Initializes the CheckBox once the VO and VOField are established.
+			*/
+			private function initializeSEGCheckBox():void
+			{
+				if (valueObjectVO != null)
+				{
+					if (valueObjectVOField != null)
+					{
+						var initialValue:String = Util.getValueObjectVOValue(valueObjectVO, valueObjectVOField);
+						
+						if (initialValue == yesValue)
+						{
+							this.selected = true;	
+						}
+						else if (initialValue == noValue)
+						{
+							this.selected = false;
+						}
+					}
+				}								
+			}
+		]]>
+	</mx:Script>
+	
+</mx:CheckBox>

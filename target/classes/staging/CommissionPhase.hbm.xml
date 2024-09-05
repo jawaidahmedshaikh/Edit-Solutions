@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.CommissionPhase" table="&quot;COMMISSIONPHASE&quot;"  >
+        <id name="CommissionPhasePK" column="&quot;COMMISSIONPHASEPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="PremiumDueFK" column="&quot;PREMIUMDUEFK&quot;" insert="false" update="false"/>
+
+        <property name="CommissionPhaseId" column="&quot;COMMISSIONPHASEID&quot;"/>
+        <property name="ExpectedMonthlyPremium" column="&quot;EXPECTEDMONTHLYPREMIUM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PrevCumExpectedMonthlyPrem" column="&quot;PREVCUMEXPECTEDMONTHLYPREM&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="EffectiveDate" column="&quot;EFFECTIVEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <many-to-one
+            name="PremiumDue"
+            column="&quot;PREMIUMDUEFK&quot;"
+            class="staging.PremiumDue"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="event.FinancialHistory" table="&quot;FinancialHistory&quot;"   >
+
+        <id name="FinancialHistoryPK" column="&quot;FinancialHistoryPK&quot;" type="long" >
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="GrossAmount" column="&quot;GrossAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NetAmount" column="&quot;NetAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CheckAmount" column="&quot;CheckAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="FreeAmount" column="&quot;FreeAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TaxableBenefit" column="&quot;TaxableBenefit&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DisbursementSourceCT" column="&quot;DisbursementSourceCT&quot;"/>
+        <property name="PriorDeathBenefitOption" column="&quot;PriorDeathBenefitOption&quot;"/>
+        <property name="UnnecessaryPremiumInd" column="&quot;UnnecessaryPremiumInd&quot;"/>
+
+        <property name="Liability" column="&quot;Liability&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CommissionableAmount" column="&quot;CommissionableAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="MaxCommissionAmount" column="&quot;MaxCommissionAmount&quot;"  type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CostBasis" column="&quot;CostBasis&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AccumulatedValue" column="&quot;AccumulatedValue&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="SurrenderValue" column="&quot;SurrenderValue&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PriorDueDate" column="&quot;PriorDueDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="PriorExtractDate" column="&quot;PriorExtractDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="PriorLapsePendingDate" column="&quot;PriorLapsePendingDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="PriorLapseDate" column="&quot;PriorLapseDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="PriorFixedAmount" column="&quot;PriorFixedAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="GuarAccumulatedValue" column="&quot;GuarAccumulatedValue&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PrevGuidelineSinglePremium" column="&quot;PrevGuidelineSinglePremium&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="PrevGuidelineLevelPremium" column="&quot;PrevGuidelineLevelPremium&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PrevTamra" column="&quot;PrevTamra&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PrevCumGLP" column="&quot;PrevCumGLP&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PrevTamraInitAdjValue" column="&quot;PrevTamraInitAdjValue&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PrevTamraStartDate" column="&quot;PrevTamraStartDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="PrevComplexChangeValue" column="&quot;PrevComplexChangeValue&quot;" />
+        <property name="PrevMECGuidelineSinglePrem" column="&quot;PrevMECGuidelineSinglePrem&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="PrevMECGuidelineLevelPrem" column="&quot;PrevMECGuidelineLevelPrem&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PrevMECStatusCT" column="&quot;PrevMECStatusCT&quot;"/>
+        <property name="PrevMECDate" column="&quot;PrevMECDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="PrevMAPEndDate" column="&quot;PrevMAPEndDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="TaxableIndicator" column="&quot;TaxableIndicator&quot;" />
+        <property name="NetAmountAtRisk" column="&quot;NetAmountAtRisk&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PriorCostBasis" column="&quot;PriorCostBasis&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="PriorRecoveredCostBasis" column="&quot;PriorRecoveredCostBasis&quot;"  type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DistributionCodeCT" column="&quot;DistributionCodeCT&quot;" />
+        <property name="NetIncomeAttributable" column="&quot;NetIncomeAttributable&quot;"  type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="InterestProceeds" column="&quot;InterestProceeds&quot;"  type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PrevChargeDeductAmount" column="&quot;PrevChargeDeductAmount&quot;"  type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PriorInitialCYAccumValue" column="&quot;PriorInitialCYAccumValue&quot;"  type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PrevTotalFaceAmount" column="&quot;PrevTotalFaceAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="InsuranceInforce" column="&quot;InsuranceInforce&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PriorTotalActiveBeneficiaries" column="&quot;PriorTotalActiveBeneficiaries&quot;" />
+        <property name="PriorRemainingBeneficiaries" column="&quot;PriorRemainingBeneficiaries&quot;" />
+        <property name="PriorSettlementAmount" column="&quot;PriorSettlementAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType" />
+        <property name="PriorLastSettlementValDate" column="&quot;PriorLastSettlementValDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType" />
+        <property name="SevenPayRate" column="&quot;SevenPayRate&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CurrentDeathBenefit" column="&quot;CurrentDeathBenefit&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CurrIntRate" column="&quot;CurrIntRate&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CurrentCorridorPercent" column="&quot;CurrentCorridorPercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SurrenderCharge" column="&quot;SurrenderCharge&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="Duration" column="&quot;Duration&quot;"/>
+
+        <property name="EDITTrxHistoryFK" column="&quot;EDITTrxHistoryFK&quot;" insert="false" update="false" />
+
+        <many-to-one
+            name="EDITTrxHistory"
+            column="&quot;EDITTrxHistoryFK&quot;"
+            class="event.EDITTrxHistory"
+            cascade="none"
+
+            />
+
+    </class>
+</hibernate-mapping>

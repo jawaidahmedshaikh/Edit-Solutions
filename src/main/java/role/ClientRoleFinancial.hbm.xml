@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="role.ClientRoleFinancial" table="&quot;ClientRoleFinancial&quot;"  >
+        <id name="ClientRoleFinancialPK" column="&quot;ClientRoleFinancialPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="LastStatementDateTime" column="&quot;LastStatementDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="LastCheckDateTime" column="&quot;LastCheckDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="LastCheckAmount" column="&quot;LastCheckAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AdvanceAmt" column="&quot;AdvanceAmt&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AdvRecoveredAmt" column="&quot;AdvRecoveredAmt&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CommBalance" column="&quot;CommBalance&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="FirstYearCum" column="&quot;FirstYearCum&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RenewalCum" column="&quot;RenewalCum&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NYPrem" column="&quot;NYPrem&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NYComm" column="&quot;NYComm&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="RedirectBalance" column="&quot;RedirectBalance&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="IDBAmount" column="&quot;IDBAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="IDBLastValDate" column="&quot;IDBLastValDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="DBAmount" column="&quot;DBAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AmountTaxableYTD" column="&quot;AmountTaxableYTD&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LastBonusCheckDateTime" column="&quot;LastBonusCheckDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="BonusBalance" column="&quot;BonusBalance&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="StatementProducedInd" column="&quot;StatementProducedInd&quot;"/>
+        <property name="LastStatementAmount" column="&quot;LastStatementAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LifetimeCommBalance" column="&quot;LifetimeCommBalance&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="LifetimeAdvanceBalance" column="&quot;LifetimeAdvanceBalance&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PriorLastStatementDateTime" column="&quot;PriorLastStatementDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+
+        <property name="ClientRoleFK" column="&quot;ClientRoleFK&quot;" insert="false" update="false"/>
+        
+        <many-to-one
+            name="clientRole"
+            column="&quot;ClientRoleFK&quot;"
+            class="role.ClientRole"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>
+

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Button 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	initialize="init()">
+	<mx:Script>
+	<![CDATA[
+		import com.adobe.cairngorm.control.CairngormEventDispatcher;
+		import com.segsoftware.control.SEGController;
+		import com.segsoftware.event.SEGEvent;
+		
+		import flash.net.FileReference;
+		
+		/**
+		* The Flex object that handles displaying the system file dialog, and
+		* aquiring the file reference.
+		*/
+		private var _fileRef:FileReference;
+		
+		/** Indicates if a reference to the file will be returned in the event data.
+		 * Otherwise, only the file name is sent back in the event.*/
+		private var _returnFileReference:Boolean = false;
+		
+		/**
+		* The name of the selected file.
+		*/
+		[Bindable]
+		private var fileName:String;
+		
+		/**
+		* The user-specified event that will be dispatched upon selecting the
+		* file name.
+		*/
+		private var _segEvent:String;
+
+		private function init():void
+		{
+			addEventListener(MouseEvent.CLICK, fileBrowse);			
+		}
+		
+		/**
+		* @see #_segEvent
+		*/
+		[Bindable]
+		public function set segEvent(segEvent:String):void
+		{
+			this._segEvent = segEvent;
+		}
+
+		/**
+		* @see #_segEvent
+		*/		
+		public function get segEvent():String
+		{
+			return _segEvent;
+		}
+
+		/**
+		* Pops-up the system-specific file-browser and specifies the 
+		* result-handling function.
+		*/
+		private function fileBrowse(event:MouseEvent):void
+		{
+			this._fileRef = new FileReference();
+			
+			_fileRef.addEventListener(Event.SELECT, selectHandler);
+			
+			_fileRef.browse();
+		}
+		
+		/**
+		* Upon selecting a file, the request is dispatched to the back-end.
+		*/
+		private function selectHandler(event:Event):void 
+		{	
+			fileName = _fileRef.name;
+			
+			if(_returnFileReference) {
+				CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(this.segEvent, _fileRef));
+			} else {
+				CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(this.segEvent, fileName));	
+			}
+		}
+		
+		public function get fileRef():FileReference {
+			return this._fileRef;
+		}
+		
+		public function set returnFileReference(val:Boolean) {
+			_returnFileReference = val;
+		}
+	]]>
+	</mx:Script>
+	
+	<mx:Model id="formData">
+		<formData>
+			<fileName>{fileName}</fileName>
+		</formData>
+	</mx:Model>
+</mx:Button>

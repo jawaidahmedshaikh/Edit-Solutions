@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Deanna Lataille (Systems Engineering Group, LLC) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="./QuoteVO.xsd"/>
+	<xs:element name="SeparateAcctValByCaseVO">
+		<xs:annotation>
+			<xs:documentation>This VO will be used to create Separate Account Values By Case Reports</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SeparateAcctValDetailByCaseVO" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ContractNumber" type="xs:string"/>
+							<xs:element ref="ClientDetailVO" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element name="InvestmentInformationVO" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="QuoteInvestmentVO"/>
+										<xs:element name="FundName" type="xs:string"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="AdvanceTransfers" type="xs:decimal" minOccurs="0"/>
+				<xs:element name="ReportCompanyName" type="xs:string" minOccurs="0"/>
+				<xs:element name="RunDate" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,165 @@
+package security.jaas;
+
+//import test.security.principal.*;
+
+import javax.security.auth.spi.*;
+import javax.security.auth.*;
+import javax.security.auth.login.*;
+import javax.security.auth.callback.*;
+import java.util.*;
+import java.security.*;
+
+import security.component.*;
+import security.*;
+import edit.common.vo.*;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: gfrosti
+ * Date: Dec 15, 2003
+ * Time: 3:27:15 PM
+ * To change this template use Options | File Templates.
+ */
+public class SEGLoginModule implements LoginModule
+{
+    private Subject subject; // client has same reference
+    private CallbackHandler callbackHandler;
+    private Map sharedState; // client has same reference
+    private Map options;
+    private boolean loginSuccessful = false;
+    private boolean commitSuccessful = false;
+    private Operator operator;
+
+    public void initialize(Subject subject, CallbackHandler callbackHandler, Map sharedState, Map options)
+    {
+        this.subject = subject;
+        this.callbackHandler = callbackHandler;
+        this.sharedState = sharedState;
+        this.options = options;
+    }
+
+    public boolean login() throws LoginException
+    {
+        try
+        {
+            NameCallback nameCallback = new NameCallback("name: ");
+
+            PasswordCallback passwordCallback = new PasswordCallback("password: ", false);
+
+            callbackHandler.handle(new Callback[]{nameCallback, passwordCallback});
+
+            String username = nameCallback.getName();
+
+            String password = new String(passwordCallback.getPassword());
+
+            operator = Operator.findByOperatorNameAndPasswordAndPasswordStatus(username, password, Password.STATUS_ACTIVE);
+
+            if (operator != null)
+            {
+                loginSuccessful = true;
+            }
+            else
+            {
+                loginSuccessful = false;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+
+            loginSuccessful = false;
+
+            throw new FailedLoginException(e.getMessage());
+        }
+
+        return loginSuccessful;
+    }
+
+    public boolean commit() throws LoginException
+    {
+        if (! loginSuccessful)
+        {
+            operator = null;
+
+            commitSuccessful = false;
+        }
+        else
+        {
+            try
+            {
+                Role[] roles = operator.getRoles();
+
+                if (roles == null)
+                {
+                    commitSuccessful = false;
+
+                    throw new LoginException("Operator Has Not Been Mapped To Any Role");
+                }
+                else
+                {
+                    // Map Roles
+                    for (int i = 0; i < roles.length; i++)
+                    {
+                        String roleName = ((RoleVO) roles[i].getVO()).getName();
+
+                        subject.getPrincipals().add(new SEGPrincipal(roleName, SEGPrincipal.TYPE_ROLE));
+                    }
+
+                    // Map PK
+                    subject.getPrincipals().add(new SEGPrincipal(operator.getPK() + "", SEGPrincipal.TYPE_PK));
+
+                    // Map Session Id
+                    SecuritySession securitySession = new SecuritySession();
+
+                    securitySession.setSubject(subject);
+
+                    securitySession.setOperator(operator);
+
+                    subject.getPrincipals().add(new SEGPrincipal(((SecuritySessionVO) securitySession.getVO()).getSessionId(), SEGPrincipal.TYPE_SESSION_ID));
+
+                    subject.setReadOnly();
+
+                    SecuritySession.registerSecuritySession(((SecuritySessionVO) securitySession.getVO()).getSessionId(), securitySession);
+
+                    commitSuccessful = true;
+                }
+            }
+            catch (Exception e)
+            {
+                System.out.println(e);
+
+                e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+
+                throw new LoginException(e.getMessage());
+            }
+            finally
+            {
+                operator = null;
+            }
+        }
+
+        return commitSuccessful;
+    }
+
+    public boolean abort() throws LoginException
+    {
+        return false;
+    }
+
+    public boolean logout() throws LoginException
+    {
+        Set principals = subject.getPrincipals();
+
+        for (Iterator i = principals.iterator(); i.hasNext();)
+        {
+            SEGPrincipal segPrincipal = (SEGPrincipal) i.next();
+
+            if (segPrincipal.getType() == SEGPrincipal.TYPE_SESSION_ID)
+            {
+                SecuritySession.unregisterSecuritySession(segPrincipal.getName());
+            }
+        }
+
+        return true;
+    }
+}

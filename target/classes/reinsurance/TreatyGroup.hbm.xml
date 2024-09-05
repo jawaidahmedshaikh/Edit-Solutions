@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="reinsurance.TreatyGroup" table="&quot;TreatyGroup&quot;"  >
+        <id name="TreatyGroupPK" column="&quot;TreatyGroupPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="TreatyGroupNumber" column="&quot;TreatyGroupNumber&quot;"/>
+
+        <set name="Treaties" table="&quot;Treaty&quot;" inverse="true"  cascade="all">
+            <key column="&quot;TreatyGroupFK&quot;"/>
+            <one-to-many class="reinsurance.Treaty"/>
+        </set>
+
+        <set name="FilteredTreatyGroups" table="&quot;FilteredTreatyGroup&quot;" inverse="true"  cascade="all">
+            <key column="&quot;TreatyGroupFK&quot;"/>
+            <one-to-many class="reinsurance.FilteredTreatyGroup"/>
+        </set>
+
+    </class>
+</hibernate-mapping>
+

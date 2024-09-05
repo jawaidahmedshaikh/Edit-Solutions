@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.TableDef" table="&quot;TableDef&quot;"  >
+        
+        <cache usage="read-write"/>
+        
+        <id name="TableDefPK" column="&quot;TableDefPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="TableName" column="&quot;TableName&quot;"/>
+        <property name="AccessType" column="&quot;AccessType&quot;"/>
+        <property name="LockDateTime" column="&quot;LockDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+
+        <set name="TableKeys" table="&quot;TableKeys&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;TableDefFK&quot;"/>
+            <one-to-many class="engine.TableKeys"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

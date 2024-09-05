@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	If specified via EDITServicesConfig.AllowPRASETest as 'Y', this 
+	checkbox will make itself visible so that the user has the
+	option to flag PRASE to store inputs/outputs for future testing.
+-->
+<mx:CheckBox 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	initialize="init()">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.SEGModelLocator;
+			
+			/**
+			* Intialization.
+			*/
+			private function init():void
+			{
+				this.label = "PRASETest";
+				
+				if (SEGModelLocator.getInstance().allowPRASETest)
+				{
+					this.visible = true;
+					
+					this.selected = false;
+				}
+				else
+				{
+					this.visible = false;
+					
+					this.selected = false;
+				}
+			}
+		]]>
+	</mx:Script>
+</mx:CheckBox>

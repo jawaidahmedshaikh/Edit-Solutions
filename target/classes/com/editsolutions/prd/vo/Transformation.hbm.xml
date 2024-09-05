@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="com.editsolutions.prd.vo.Transformation" table="PRD_Transformation"  >
+        <id name="transformationPK" column="PRD_TransformationPK" type="long">
+              <generator class="identity"/>
+        </id>
+
+        <property name="name" column="TransformationName"/>
+        <property name="description" column="TransformationDescription"/>
+        <property name="sql" column="TransformationSQL"/>
+        <property name="whereClause" column="WhereClause"/>
+        <property name="addDate" column="AddDate" type="date"/>
+        <property name="addUser" column="AddUser"/>
+        <property name="modDate" column="ModDate" type="date"/>
+        <property name="modUser" column="ModUser"/>
+        
+  
+
+        
+    </class>
+</hibernate-mapping>

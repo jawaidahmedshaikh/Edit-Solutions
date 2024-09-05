@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="event.OverdueChargeSettled" table="&quot;OverdueChargeSettled&quot;" >
+        <id name="OverdueChargeSettledPK" column="&quot;OverdueChargeSettledPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SettledCoi" column="&quot;SettledCoi&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SettledAdmin" column="&quot;SettledAdmin&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="SettledExpense" column="&quot;SettledExpense&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="EDITTrxFK" column="&quot;EDITTrxFK&quot;" insert="false" update="false"/>
+        <property name="OverdueChargeFK" column="&quot;OverdueChargeFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="EDITTrx"
+            column="&quot;EDITTrxFK&quot;"
+            class="event.EDITTrx"
+            cascade="none"
+            />
+
+        <many-to-one
+            name="OverdueCharge"
+            column="&quot;OverdueChargeFK&quot;"
+            class="event.OverdueCharge"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

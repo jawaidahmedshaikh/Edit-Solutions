@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:custom="com.segsoftware.view.custom.*"	
+	layout="absolute" 
+	width="400" 
+	height="300"
+	showCloseButton="true" 
+	title="Conversion Template Validation Dialog"
+	close="mx.managers.PopUpManager.removePopUp(this)">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+		]]>
+	</mx:Script>
+	
+	<custom:SEGTextArea left="10" right="10" top="10" bottom="10"/>
+	
+</mx:TitleWindow>

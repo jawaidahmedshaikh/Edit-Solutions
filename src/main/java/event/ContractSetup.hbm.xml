@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="event.ContractSetup" table="&quot;ContractSetup&quot;"  >
+        <id name="ContractSetupPK" column="&quot;ContractSetupPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="PolicyAmount" column="&quot;PolicyAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DeathStatusCT" column="&quot;DeathStatusCT&quot;"/>
+        <property name="CostBasis" column="&quot;CostBasis&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AmountReceived" column="&quot;AmountReceived&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ClaimStatusCT" column="&quot;ClaimStatusCT&quot;" />
+        <property name="ComplexChangeTypeCT" column="&quot;ComplexChangeTypeCT&quot;"/>
+        <property name="ComplexChangeNewValue" column="&quot;ComplexChangeNewValue&quot;" />
+        <property name="SuppressDecreaseFaceInd" column="&quot;SuppressDecreaseFaceInd&quot;" />
+        <property name="UserInvestmentOverrideInd" column="&quot;UserInvestmentOverrideInd&quot;" />
+
+        <property name="DateOfDeath" column="&quot;DateOfDeath&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="CareTypeCT" column="&quot;CareTypeCT&quot;"/>
+        <property name="ConditionCT" column="&quot;ConditionCT&quot;"/>
+
+        <property name="GroupSetupFK" column="&quot;GroupSetupFK&quot;"  insert="false" update="false"/>
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;"  insert="false" update="false"/>
+
+        <many-to-one
+            name="GroupSetup"
+            column="&quot;GroupSetupFK&quot;"
+            class="event.GroupSetup"
+            cascade="none"
+            />
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"
+            />
+
+        <set name="InvestmentAllocationOverrides" table="&quot;InvestmentAllocationOverride&quot;" inverse="true"   cascade="all">
+            <key column="&quot;ContractSetupFK&quot;"/>
+            <one-to-many class="event.InvestmentAllocationOverride"/>
+        </set>
+
+        <set name="ClientSetups" table="&quot;ClientSetup&quot;" inverse="true"   cascade="all">
+            <key column="&quot;ContractSetupFK&quot;"/>
+            <one-to-many class="event.ClientSetup"/>
+        </set>
+
+        <set name="OutSuspenses" table="&quot;OutSuspense&quot;" inverse="true"   cascade="all">
+            <key column="&quot;ContractSetupFK&quot;"/>
+            <one-to-many class="event.OutSuspense"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

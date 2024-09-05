@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lang>
+	<main>	
+		<item id="language">			
+			<en>english</en>
+			<fr>french</fr>
+		</item>				
+	</main> 
+	<navigation>		
+		<item id="addButton">
+			<fr>Ajouter</fr>
+			<en>Add</en>
+		</item>
+		<item id="commitButton">
+			<fr>Enregistrer</fr>
+			<en>Commit</en>
+		</item>	
+	</navigation>
+</lang>

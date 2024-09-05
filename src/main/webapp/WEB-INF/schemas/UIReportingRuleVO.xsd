@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.2 U (http://www.xmlspy.com) by Jason Joyal (JJ Inc) -->
+<xs:schema  xmlns:xs="http://www.w3.org/2001/XMLSchema"  elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:include schemaLocation="./ReportingDB.xsd"/>
+	<xs:element name="UIReportingRuleVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<!--<xs:element ref="TemplateStructureVO"/>
+				<xs:element ref="TemplateVO"/>-->
+				<xs:element name="ReportingRulePK" type="xs:long"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

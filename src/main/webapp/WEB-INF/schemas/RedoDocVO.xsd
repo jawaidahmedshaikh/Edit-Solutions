@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Deanna Lataille (Systems Engineering Group, LLC) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group) -->
+<xs:schema elementFormDefault="unqualified" attributeFormDefault="unqualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="./GeneralAccountArrayVO.xsd"/>
+	<xs:include schemaLocation="./OverdueChargeRemainingVO.xsd"/>
+	<xs:include schemaLocation="./InvestmentArrayVO.xsd"/>
+	<xs:include schemaLocation="./EDITSolutions.xsd"/>
+	<xs:include schemaLocation="./BaseSegmentVO.xsd"/>
+	<xs:include schemaLocation="./SupplementalSegmentVO.xsd"/>
+	<xs:include schemaLocation="./RiderSegmentVO.xsd"/>
+	<xs:include schemaLocation="./DeathInformationVO.xsd"/>
+	<xs:include schemaLocation="./TamraRetestVO.xsd"/>
+	<xs:element name="RedoDocVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RedoDocPK" type="xs:long"/>
+				<xs:element ref="BaseSegmentVO"/>
+				<xs:element ref="RiderSegmentVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="SupplementalSegmentVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="GroupSetupVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="OverdueChargeRemainingVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="InvestmentArrayVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="DeathInformationVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="TamraRetestVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="GroupRate" type="xs:decimal"/>
+				<xs:element name="GroupNoParticipants" type="xs:int"/>
+				<xs:element name="WithdrawalsTaxYTD">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RMDTaxYTD">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PriorCYAccumulatedValue">
+					<xs:simpleType>
+						<xs:restriction base="xs:decimal">
+							<xs:totalDigits value="19"/>
+							<xs:fractionDigits value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PremiumToDate" type="xs:decimal"/>
+				<xs:element name="PremiumYearToDate" type="xs:decimal"/>
+				<xs:element name="PremiumCalYearToDate" type="xs:decimal"/>
+				<xs:element name="NetWithdrawalsYearToDate" type="xs:decimal"/>
+				<xs:element name="NetWithdrawalsToDate" type="xs:decimal"/>
+				<xs:element name="PremiumSinceLast7PayDate" type="xs:decimal"/>
+				<xs:element name="WithdrawalsSinceLast7PayDate" type="xs:decimal"/>
+				<xs:element name="CumInitialPremium" type="xs:decimal"/>
+				<xs:element name="Cum1035Premium" type="xs:decimal"/>
+				<xs:element name="NumberWithdrawalsPolYearToDate" type="xs:int"/>
+				<xs:element name="NumberTransfersPolYearToDate" type="xs:int"/>
+				<xs:element name="OwnersPremiumTaxState" type="xs:string"/>
+				<xs:element name="InsuredResidenceState" type="xs:string"/>
+				<xs:element name="InsuredGender" type="xs:string"/>
+				<xs:element name="InsuredDateOfBirth" type="xs:string"/>
+				<xs:element name="InsuredIssueAge" type="xs:int"/>
+				<xs:element name="InsuredClass" type="xs:string"/>
+				<xs:element name="InsuredUnderwritingClass" type="xs:string"/>
+				<xs:element name="InsuredRatedGender" type="xs:string" nillable="true"/>
+				<xs:element name="TaxDateOfBirth">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="10"/>
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LastLoanCapAmount" type="xs:decimal"/>
+				<xs:element name="GeneralAccountArrayVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

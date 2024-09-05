@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" width="562" height="422"
+	showCloseButton="true" 
+	title="Rider Client Selection"
+	layout="absolute"
+	creationComplete="onCreationComplete()"
+	close="mx.managers.PopUpManager.removePopUp(this)">
+
+	<mx:Style source="../css/segSoftware.css"/>	
+	
+	<!--
+		This dialog allows the user to associate a client to a rider and/or select a GIO option
+		
+		For some riders, the user is selecting a client to put on the rider.  For other riders,
+		the user is selecting a client simply to identify which gio options should be shown.  
+		
+		This is a very specialized dialog in that it has very specific business requirements.
+		Tried putting those requirements on the back end as much as possible.  Did this by
+		setting tags in the CandidateRiderVO that tell the front-end what to do.  
+		
+		If the selected rider has AllowRiderClientSelection set to anything other "Y", the user
+		can't even see this dialog.
+		
+		If the selected rider has GIOSelectionAllowed set to "N", the gio option box is
+		not enabled.
+		
+		What clients are listed in the clientDataGrid depends on the allowable role for 
+		the selected rider (AllowableRole tag).  When building the dataProvider for the 
+		clientDataGrid, the appEntry's client's role is compared to the one that is allowed
+		for the selected rider and added if it is a match.
+		
+		The ContactClientAllowed tag is used to determine if the user selected a client to
+		put it on the rider or simply to select a gio option.  This tag is not used in this
+		dialog.  It is used when building the data to go to the back-end. 
+		
+		NOTE:  This dialog could have been split into 2 separate dialogs - one where the user
+		is simply picking a person to get to a GIO option, the other where the user is 
+		picking a person to actually attach it to the rider (and no GIO option is allowed).
+		But the original requirements dictated the need for 1 dialog.  The requirements for
+		handling these special riders has changed many times in just a couple of months.
+		And there may be more changes, especially as different customers start to use this
+		feature.  For now, the dialog serves its purpose. 
+	-->
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.encoding.ContractClient;
+			import mx.collections.*;
+			import com.segsoftware.model.ClientSegment;
+			import com.segsoftware.model.SEGModelLocator;
+			import mx.managers.PopUpManager;
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.model.CodeTable;
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.event.*;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import mx.events.*;
+			
+			
+
+			/**
+			 * Formatting information for GIO options
+			 */
+			private static var GIO_FIRST_NUMBER_OF_DIGITS:int = 3;
+			
+			/**
+			 * DataProvider for the client DataGrid.  The data provider must be built because
+			 * only certain types of clients should be displayed depending on the rider type.
+			 */
+			private var _clientDataProvider:ArrayCollection = new ArrayCollection();
+			
+			/**
+			 * ClientSegment object for the selected rider. If the user has already been in
+			 * this dialog, the ClientSegment will have the previous selected client and gio
+			 * option.
+			 */
+			private var _clientSegment:ClientSegment;
+			
+			/**
+			 * Boolean stating whether the GIO option ComboBox should be enabled or not.
+			 * For certain riders, it will be enabled, for others it won't.
+			 */
+			private var _gioComboBoxEnableStatus:Boolean = true;
+			
+			
+			
+			[Bindable]
+			public function get clientDataProvider():ArrayCollection
+			{
+				return _clientDataProvider;
+			}
+			
+			public function set clientDataProvider(clientDataProvider:ArrayCollection):void
+			{
+				_clientDataProvider = clientDataProvider;
+			}
+			
+			public function get clientSegment():ClientSegment
+			{
+				return _clientSegment;
+			}
+			
+			[Bindable]
+			public function set clientSegment(clientSegment:ClientSegment):void
+			{
+				_clientSegment = clientSegment;
+			}
+			
+			[Bindable]
+			public function get gioComboBoxEnableStatus():Boolean
+			{
+				return _gioComboBoxEnableStatus;
+			}
+			
+			public function set gioComboBoxEnableStatus(gioComboBoxEnableStatus:Boolean):void
+			{
+				_gioComboBoxEnableStatus = gioComboBoxEnableStatus;
+			}
+			
+			
+			
+			
+			/**
+			 * On creation complete - get the data for the dialog and "pre-select" items
+			 */
+			private function onCreationComplete():void
+			{
+				loadClientDataProvider();
+				
+				preSelectClient();
+				//preSelectGIOOption();
+				
+				//getGIOOptions();
+				setGIOComboBoxEnableStatus();				
+			}
+			
+			/**
+			 * Selects the client in the clientDataGrid if a client was previously selected 
+			 * for this rider 
+			 */
+			private function preSelectClient():void
+			{
+				if (clientSegment.contractClient != null)
+				{
+					//	A client was previously selected, default the selection to
+					//	this client
+					for (var i:int=0; i < clientDataGrid.dataProvider.length; i++)
+					{
+						var dataProviderItem:ContractClient = ContractClient (clientDataGrid.dataProvider[i]);
+						
+						if (dataProviderItem.appEntryClientDetailUIVO == clientSegment.contractClient.appEntryClientDetailUIVO &&
+						    dataProviderItem.clientRoleUIVO == clientSegment.contractClient.clientRoleUIVO)
+						{
+							clientDataGrid.selectedItem = dataProviderItem;
+							
+							//	Selecting the item via code is not the same as the user selecting
+							//	the item - it doesn't trigger the data grid's change event.  So we
+							//	will do it here, manually.
+							loadGIOOptions();
+						}
+					}
+				}
+			}
+
+			/**
+			 * Formats the GIO Options to display as 3 digits, a hypen
+			 * and the remainder digits
+			 */
+			private function formatGIOOption(item:Object):String
+			{
+				var itemAsXML:XML = item as XML;
+				
+				var gioOption:String = itemAsXML.toString();
+				
+				var firstHalf:String = gioOption.substr(0, GIO_FIRST_NUMBER_OF_DIGITS);
+				var secondHalf:String = gioOption.substr(GIO_FIRST_NUMBER_OF_DIGITS);
+				
+				var displayString:String = firstHalf + "-" + secondHalf;
+				
+				return displayString;
+			}
+			
+			/**
+			 * Gets the list of possible GIO Options from the back-end based on the selected client.
+			 */
+			private function loadGIOOptions():void
+			{
+				CairngormEventDispatcher.getInstance().dispatchEvent(new SEGEvent(SEGController.EVENT_GET_GIO_OPTIONS, formData));
+				
+				var gioOptions:XMLListCollection = SEGModelLocator.getInstance().gioOptions;
+				
+				gioOptions.addEventListener(CollectionEvent.COLLECTION_CHANGE, preSelectGIOOption);
+			}
+			
+			/**
+			 *  Pre-selects the GIO option to the one in the clientSegment
+			 */
+			private function preSelectGIOOption(event:CollectionEvent):void
+			{
+				if (event.kind == CollectionEventKind.REFRESH)
+				{
+					var dataProvider:Object = gioOptionComboBox.dataProvider;
+					
+					for (var i:int=0; i < dataProvider.length; i++)
+					{
+						var dataProviderItem:XML = XML (gioOptionComboBox.dataProvider[i]);
+						
+						if (dataProviderItem.toString() == clientSegment.gioOption)
+						{
+							gioOptionComboBox.selectedItem = gioOptionComboBox.dataProvider[i];	
+						}
+					}
+				}
+			}
+			
+			/**
+			 * Sets data provider for the clientDataGrid.  Which clients are displayed
+			 * depends upon the rider type.  The selectedCandidateRiderVO has an AllowableRole
+			 * that tells this dialog which roles/clients should be displayed.
+			 */
+			private function loadClientDataProvider():void
+			{
+				var riderVO:XML = clientSegment.candidateRiderVO;
+				
+				var allowableRole:String = riderVO.AllowableRole.toString();
+				
+				var clientDetailUIVOs:XMLListCollection = SEGModelLocator.getInstance().appEntryClientDetailUIVOs;
+				
+				for each (var clientDetailUIVO:XML in clientDetailUIVOs)
+				{
+					var clientRoleUIVOs:XMLList = clientDetailUIVO.SelectedClientRoleUIVOs[0].ClientRoleUIVO;
+					
+					for each (var clientRoleUIVO:XML in clientRoleUIVOs)
+					{
+						if (clientRoleUIVO.RoleTypeCode.toString() == allowableRole)
+						{
+							var contractClient:ContractClient = new ContractClient(clientDetailUIVO, clientRoleUIVO);
+							
+							clientDataProvider.addItem(contractClient);
+						}
+					}	
+				}
+			}
+			
+			/**
+			 * Determines the client's name that will be displayed 
+			 */
+			private function determineClientName(item:Object, column:DataGridColumn):String 
+			{
+				var contractClient:ContractClient = ContractClient (item);
+				
+				return contractClient.getClientName();
+   			}
+   			
+   			/**
+			 * Sets the enabled status of the GIO option ComboBox.  Only certain riders
+			 * are allowed to have a gio option.  The GIOSelectionAllowed tag on the 
+			 * CandidateRiderVO determines the status.
+			 */
+			private function setGIOComboBoxEnableStatus():void
+			{
+				var riderVO:XML = clientSegment.candidateRiderVO;
+				
+				var gioSelectionAllowed:String = riderVO.GIOSelectionAllowed.toString();
+				
+				if (gioSelectionAllowed == "N")
+				{
+					gioComboBoxEnableStatus = false;
+				}
+			}
+			
+			/**
+			 * The user hit OK and wants to attach the selected clients to the rider
+			 */
+			private function attachClientsToRider():void
+			{
+				var contractClient:ContractClient = clientDataGrid.selectedItem as ContractClient;
+			
+				var gioOption:String = null;
+				
+				//	For certain types of riders, a gioOption may not be selected
+				if (gioOptionComboBox.selectedIndex > -1)
+				{
+					gioOption = gioOptionComboBox.selectedItem.toString();
+				}
+		
+				//	Set the selections			
+				clientSegment.gioOption = gioOption;
+				clientSegment.contractClient = contractClient;
+			}
+			
+		]]>
+	</mx:Script>	
+	
+	
+	<mx:Model id="formData">
+		<formData>
+			<gioOption>{gioOptionComboBox.selectedItem}</gioOption>
+			<contractClient>{clientDataGrid.selectedItem}</contractClient>
+		</formData>
+	</mx:Model>
+	
+	
+	
+	
+	<mx:Panel layout="absolute" left="10" right="10" bottom="10" top="20">
+		<mx:Form left="10" top="10" height="266" width="482">
+			<mx:FormItem label="Coverage:" width="100%">
+				<mx:TextInput text="{clientSegment.candidateRiderVO.Coverage}" editable="false"/>
+			</mx:FormItem>
+			<mx:FormItem label="Face Amount:" width="100%">
+				<mx:TextInput text="{clientSegment.candidateRiderVO.FaceAmount}" editable="false"/>
+			</mx:FormItem>
+			<mx:FormItem label="Clients:" width="100%" height="135">
+				<mx:DataGrid id="clientDataGrid"
+					height="100%" 
+					width="100%"
+					dataProvider="{clientDataProvider}"
+					labelFunction="determineClientName"
+					change="{loadGIOOptions()}" >
+					<mx:columns>
+						<mx:DataGridColumn headerText="Name" dataField="Name"/>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:FormItem>
+			<mx:FormItem label="Increase Option:">
+				<mx:ComboBox
+					id="gioOptionComboBox"
+					prompt="Please Select..."
+					labelFunction="formatGIOOption" 
+					dataProvider="{SEGModelLocator.getInstance().gioOptions}"
+					enabled="{gioComboBoxEnableStatus}"
+				/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:ControlBar horizontalAlign="right">
+			<mx:Button label="OK"
+				click=
+				"
+					attachClientsToRider();
+					mx.managers.PopUpManager.removePopUp(this)
+				"/>
+		</mx:ControlBar>				
+	</mx:Panel>
+
+</mx:TitleWindow>

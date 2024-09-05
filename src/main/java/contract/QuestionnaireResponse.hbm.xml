@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.QuestionnaireResponse" table="&quot;QuestionnaireResponse&quot;" lazy="true">
+        <id name="QuestionnaireResponsePK" column="&quot;QuestionnaireResponsePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ResponseCT" column="&quot;ResponseCT&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="FollowupDate" column="&quot;FollowupDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="FilteredQuestionnaireFK" column="&quot;FilteredQuestionnaireFK&quot;" insert="false" update="false"/>
+        <property name="ContractClientFK" column="&quot;ContractClientFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="FilteredQuestionnaire"
+            column="&quot;FilteredQuestionnaireFK&quot;"
+            class="productbuild.FilteredQuestionnaire"
+            cascade="none"/>
+
+        <many-to-one
+            name="ContractClient"
+            column="&quot;ContractClientFK&quot;"
+            class="contract.ContractClient"
+            cascade="none"/>
+    </class>
+</hibernate-mapping>
+

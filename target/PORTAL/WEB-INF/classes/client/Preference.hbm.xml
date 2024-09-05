@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="client.Preference" table="&quot;Preference&quot;"  >
+        <id name="PreferencePK" column="&quot;PreferencePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="PrintAs" column="&quot;PrintAs&quot;"/>
+        <property name="PrintAs2" column="&quot;PrintAs2&quot;"/>
+        <property name="DisbursementSourceCT" column="&quot;DisbursementSourceCT&quot;"/>
+
+        <property name="PaymentModeCT" column="&quot;PaymentModeCT&quot;"/>
+        <property name="MinimumCheck" column="&quot;MinimumCheck&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="OverrideStatus" column="&quot;OverrideStatus&quot;"/>
+        <property name="PreferenceTypeCT" column="&quot;PreferenceTypeCT&quot;"/>
+
+        <property name="BankAccountNumber" column="&quot;BankAccountNumber&quot;"/>
+        <property name="BankRoutingNumber" column="&quot;BankRoutingNumber&quot;"/>
+        <property name="BankAccountTypeCT" column="&quot;BankAccountTypeCT&quot;"/>
+
+        <property name="BankName" column="&quot;BankName&quot;"/>
+        <property name="BankAddressLine1" column="&quot;BankAddressLine1&quot;"/>
+        <property name="BankAddressLine2" column="&quot;BankAddressLine2&quot;"/>
+
+        <property name="BankCity" column="&quot;BankCity&quot;"/>
+        <property name="BankStateCT" column="&quot;BankStateCT&quot;"/>
+        <property name="BankZipCode" column="&quot;BankZipCode&quot;"/>
+
+        <property name="ClientDetailFK" column="&quot;ClientDetailFK&quot;" insert="false" update="false"/>
+        
+
+        <many-to-one
+            name="ClientDetail"
+            column="&quot;ClientDetailFK&quot;"
+            class="client.ClientDetail"
+            cascade="none"/>
+
+        <set name="Suspenses" table="&quot;Suspense&quot;" inverse="true"  cascade="all">
+            <key column="&quot;PreferenceFK&quot;"/>
+            <one-to-many class="event.Suspense"/>
+        </set>
+
+    </class>
+</hibernate-mapping>
+

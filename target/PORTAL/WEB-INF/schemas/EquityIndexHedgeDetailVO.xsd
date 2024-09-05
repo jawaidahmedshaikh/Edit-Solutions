@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group, LLC) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group) -->
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="./SubBucketDetailVO.xsd"/>
+	<xs:element name="EquityIndexHedgeDetailVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PolicyNumber">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PolicyDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+							<xs:minLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="NextAnniversaryDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="10"/>
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="IncomeDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="10"/>
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PolicyDuration" type="xs:int"/>
+				<xs:element name="OwnerIssueAge" type="xs:int"/>
+				<xs:element name="OwnerSex">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AnnuitantSex">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AnnuitantIssueAge" type="xs:int"/>
+				<xs:element name="JointAnnuitantSex">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="JointAnnuitantAge" type="xs:int"/>
+				<xs:element name="Account">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="GuarMinCashValueInterestRate" type="xs:decimal"/>
+				<xs:element name="CurrentInterestRate" type="xs:decimal"/>
+				<xs:element name="StartingMVAIndexRate" type="xs:decimal"/>
+				<xs:element name="PriorAnnivIndexValue" type="xs:decimal"/>
+				<xs:element name="PriorAnnivAccountValue" type="xs:decimal"/>
+				<xs:element name="WithdrawalsSincePriorAnniv" type="xs:decimal"/>
+				<xs:element name="CurrentAccountValue" type="xs:decimal"/>
+				<xs:element name="CurrentMinCashSurrenderValue" type="xs:decimal"/>
+				<xs:element name="IndexCapRate" type="xs:decimal"/>
+				<xs:element name="IndexCapRateGuarTerm" type="xs:int"/>
+				<xs:element name="IndexCapMinimum" type="xs:decimal"/>
+				<xs:element name="ParticipationRate" type="xs:decimal"/>
+				<xs:element name="IndexMargin" type="xs:decimal"/>
+				<xs:element name="FundNumber">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="6"/>
+							<xs:minLength value="6"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="BucketFK" type="xs:long"/>
+				<xs:element name="EffectiveDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10"/>
+							<xs:minLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PlannedAllocation" type="xs:decimal"/>
+				<xs:element name="QualifiedIndicator" type="xs:string"/>
+				<xs:element name="QualifiedType" type="xs:string"/>
+				<xs:element name="ResidentStateOfOwner" type="xs:string"/>
+				<xs:element name="InterestRateAsOf1231" type="xs:decimal"/>
+				<xs:element name="CurrentFixedInterestEndDate" type="xs:string"/>
+				<xs:element name="CurrentSurrenderCharge" type="xs:decimal"/>
+				<xs:element name="PremiumBonusAmount" type="xs:decimal"/>
+				<xs:element name="FirstYearBonus" type="xs:decimal"/>
+				<xs:element name="PriorYearSurrenderValue" type="xs:decimal"/>
+				<xs:element name="CurrentMVACharge" type="xs:decimal"/>
+				<xs:element name="CompanyName" type="xs:string"/>
+				<xs:element name="MarketingPackageName" type="xs:string"/>
+				<xs:element name="GroupProductName" type="xs:string"/>
+				<xs:element name="AreaName" type="xs:string"/>
+				<xs:element name="BusinessContractName" type="xs:string"/>
+				<xs:element name="GrossPremiumCollected" type="xs:decimal"/>
+				<xs:element name="BonusInterestRate" type="xs:decimal"/>
+				<xs:element name="BonusRateDuration" type="xs:int"/>
+				<xs:element name="ContractSurrValGuar" type="xs:decimal"/>
+				<xs:element name="IssueState" type="xs:string"/>
+				<xs:element name="IssueDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="10"/>
+							<xs:maxLength value="10"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PriorYearEndAcctValue" type="xs:decimal"/>
+				<xs:element name="PriorYearEndMinAcctValue" type="xs:decimal"/>
+				<xs:element name="PriorYearEndCashSurrenderValue" type="xs:decimal"/>
+				<xs:element name="TotalMinAccountValue" type="xs:decimal"/>
+				<xs:element name="RebalanceAmount" type="xs:decimal"/>
+				<xs:element name="MinGuarRate" type="xs:decimal"/>
+				<xs:element name="FreeAmountRemaining" type="xs:decimal"/>
+				<xs:element name="EquityIndexHedgeDetailPK" type="xs:long"/>
+				<xs:element name="CreateSubBucketInd" type="xs:string"/>
+				<xs:element name="RiderName" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SegmentStatus" type="xs:string"/>
+				<xs:element ref="SubBucketDetailVO" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

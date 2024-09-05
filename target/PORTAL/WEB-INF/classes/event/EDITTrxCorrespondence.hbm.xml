@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="event.EDITTrxCorrespondence" table="&quot;EDITTrxCorrespondence&quot;">
+        <id name="EDITTrxCorrespondencePK" column="&quot;EDITTrxCorrespondencePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="Status" column="&quot;Status&quot;"/>
+        <property name="CorrespondenceDate" column="&quot;CorrespondenceDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AddressTypeCT" column="&quot;AddressTypeCT&quot;"/>
+        <property name="NotificationAmount" column="&quot;NotificationAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="EDITTrxFK" column="&quot;EDITTrxFK&quot;" insert="false" update="false"/>
+        <property name="TransactionCorrespondenceFK" column="&quot;TransactionCorrespondenceFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="EDITTrx"
+            column="&quot;EDITTrxFK&quot;"
+            class="event.EDITTrx"
+            cascade="none"
+            />
+
+        <many-to-one
+            name="TransactionCorrespondence"
+            column="&quot;TransactionCorrespondenceFK&quot;"
+            class="event.TransactionCorrespondence"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

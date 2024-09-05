@@ -1,0 +1,326 @@
+/* Style sheet for the ENGINE System */
+
+/* Body Styles */
+body {
+    font:bold 10pt Verdana,Arial,sans-serif;
+    text-align: left;
+    margin-top: 5;
+    margin-left: 5;
+    color: #30548E;                  /* blue */
+    /*background-image: url(/ENGINE/images/bgrock.gif);*/
+}
+
+body.mainTheme{
+
+    background: #99BBBB;
+}
+
+span.contentArea {
+	/* background-color: #DCDCDC; */
+	background-color: #BBBBBB;
+	color : Black;
+}
+
+/********************************************************************* SPAN TABLE  HEADING *************************************************************/
+span.tableHeading  {
+	color : Black;
+	text-align : center;
+	font : normal normal;
+	font-size : small;
+	font-family : "Arial Black";
+	background : #99BBBB;
+	width : 100%;
+	height : 20px;
+}
+
+/********************************************************************* SPAN SCROLLABLE CONTENT  *************************************************************/
+span.scrollableContent  {
+	overflow : scroll;
+	height : 100%;
+	width : 100%;
+}
+
+
+
+/********************************************************************* CONTENT AREA *************************************************************/
+table.contentArea
+{
+	border: 1px solid Black;
+    font:bold 11pt Arial;
+	background: #BBBBBB;
+	padding : 3px 3px 3px 3px;
+}
+
+table.contentArea th
+{
+    text-align: center;
+    color: #FFFFFF;                /* white */
+    background-color: #30548E;     /* blue  */
+}
+
+/********************************************************************* SUMMARY AREA *************************************************************/
+table.summaryArea
+{
+	border: 1px solid Black;
+	background: #BBBBBB;
+	padding : 0px 0px 0px 0px;
+}
+
+table.summaryArea th
+{
+    color: #FFFFFF;                /* white */
+    font:bold 11pt Arial;
+    background-color: #30548E;     /* blue  */
+	text-align : left;
+}
+
+table.summaryArea tr.columnHeading
+{
+    background-color: #FFFFCC;
+	height: 15px;
+}
+
+table.summaryArea tr.highlighted
+{
+    background-color: #FFFFCC;
+    color: #000000;
+}
+
+table.summaryArea tr.mainEntry
+{
+    color: #000000;
+	height: 15px;
+}
+
+table.summaryArea.scrollableArea
+{
+	border : 0px;
+	font:bold 10pt Arial;
+	text-align : left;
+}
+
+
+/********************************************************************* DIALOG ******** *************************************************************/
+.dialog
+{
+	background-color: #DCDCDC;
+	border : medium groove #99BBBB;
+}
+
+/********************************************************************* BODY ***********************************************************************/
+
+body.withLogo {
+    font:bold 10pt Verdana,Arial,sans-serif;
+    text-align: left;
+    margin-top: 0;
+    margin-left: 0;
+    color: #30548E;	                /* blue */
+    background-image: url(/ENGINE/images/bgrock.gif);
+    /*background-attachment: fixed;*/
+    /*background-image:  url(/ENGINE/images/engine2.gif);
+    background-repeat: no-repeat;
+    background-position: right top;*/
+}
+
+body.withNoImage  {
+   font:bold 10pt Verdana,Arial,sans-serif;
+    text-align: left;
+    margin-top: 5;
+    margin-left: 5;
+    color: #30548E;                  /* blue */
+    background-color: #FFFFFF;
+    background-image: none;
+}
+
+div.copyRight {
+    font: 8pt Arial,sans-serif;
+    text-align: center;
+    color: #30548E;                 /* blue */
+}
+
+h1  {
+    color: #30548E;	                /* blue */
+}
+h1.help, h2.help, h4.help {
+    color: #006633;                 /* green */
+}
+
+/* Table Styles */
+table {
+	font:bold 8pt Verdana, Arial, sans-serif;
+	text-align: left;
+	color : Black;
+}
+
+table.toolbar {
+    text-align: center;
+    background-color: #30548E;      /* blue */
+}
+table.treeHeading  {
+    font-family: sans-serif;
+    font-Size: 9pt; font-weight: bold;
+    text-align: center;
+    color: #FFFFFF;                 /* white */
+    background-color: #006633;      /* green */
+}
+th.dataHeading {
+    text-align: center;
+    color: #FFFFFF;                 /* white */
+    background-color: #30548E;      /* blue  */
+}
+th.dataHeading2 {
+    text-align: left;
+    color: #FFFFFF;                /* white */
+    background-color: #30548E;     /* blue  */
+}
+
+th.dataHeading5 {
+	font-Size: 8pt;
+	font-weight: bold;
+	text-align: left;
+	color: #FFFFFF;
+	font : Arial;
+}
+
+th.dataHeading3 {
+	font-Size: 10pt;
+	font-weight: bold;
+	text-align: center;
+	color: #FFFFFF;
+	/* white */
+	background-color: #30548E;
+	/* blue */
+	height: 20px;
+}
+
+th.dataHeading4 {
+    font-Size: 10pt; font-weight: bold;
+    text-align: left;
+    color: #FFFFFF;                /* white */
+    background-color: #30548E;     /* blue  */
+}
+
+
+
+td.heading  {
+    font:bold 12pt Verdana, Arial, sans-serif;
+    text-align: center;
+    color: #30548E;                /* blue  */
+}
+td.dataHeading {
+    text-align: right;
+    color: #30548E;                /* blue */
+}
+td.buttons {
+    text-align: right;
+}
+td.bp  {    /* break point */
+    text-align: left;
+    color: #a0365b;                 /* FISSION red */
+    background-color: #A9A9A9;      /* dark grey */
+}
+td.ci  {   /* current instruction */
+    text-align: left;
+    background-color: #D3D3D3;      /* light grey */
+}
+td.ln  {   /* line number */
+    text-align: right;
+    background-color: #A9A9A9;      /* dark grey */
+}
+td.requiredField  {
+    text-align: left;
+    color: #FF0000;                 /* red */
+}
+td.productHeading  {
+    font-Size: 12pt;
+    font-weight: bold;
+    text-align: left;
+    color: #30548E;                 /* blue */
+}
+td.treeHeading  {
+    font:bold 9pt sans-serif;
+    text-align: center;
+    vertical-align: text-top;
+    color: #FFFFFF;                 /* white */
+    background-color:#006633;       /* green */
+}
+td.toolbar  {
+    text-align: center;
+    background-color: #30548E;      /* blue */
+}
+td.errorMessage  {
+    text-align: left;
+    color: #FF0000;                 /* red */
+}
+
+tr.link  {
+    color: #0000FF;                 /* blue */
+    text-decoration:none;
+}
+
+tr.linkHover  {
+    color: #FF0000;                 /* red */
+}
+
+a.logo.hover
+{
+    color: green;
+}
+
+
+/* Tree Styles */
+a:hover {
+    color: #FF0000;                 /* red */
+}
+a:visited {
+    color: #0000FF;                 /* blue */
+}
+a {
+    color: #0000FF;                 /* blue */
+    text-decoration:none;
+}
+.look {
+    font:bold 8pt Verdana, Arial, sans-serif;
+}
+.look2 {
+    font:bold 8pt Verdana, Arial, sans-serif;
+}
+.folding {
+    cursor:hand;
+}
+.hidden  {
+    visibility:hidden;
+}
+
+tr.highLighted{
+	color: #000000;
+	background-color: #FFFFCC;
+	height : 15px;
+}
+
+tr.mainEntry{
+    color: #000000;
+	height : 15px;
+}
+
+tr.errored{
+
+    color: #000000;
+    background-color: #FFFFCC;
+}
+
+
+
+tr.assocEntry {
+
+    color: #000000;
+    background-color: #00BB00;
+}
+
+.summaryTable{
+
+    background-color: #BBBBBB;
+    color: #000000;
+}
+
+@import url("/theme/css/environment.css");

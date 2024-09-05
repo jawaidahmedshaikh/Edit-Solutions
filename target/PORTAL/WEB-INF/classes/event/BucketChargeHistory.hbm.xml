@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="event.BucketChargeHistory" table="&quot;BucketChargeHistory&quot;"   >
+
+        <id name="BucketChargeHistoryPK" column="&quot;BucketChargeHistoryPK&quot;" type="long" >
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ChargeAmount" column="&quot;ChargeAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ChargeTypeCT" column="&quot;ChargeTypeCT&quot;" />
+
+        <property name="BucketHistoryFK" column="&quot;BucketHistoryFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="BucketHistory"
+            column="&quot;BucketHistoryFK&quot;"
+            class="event.BucketHistory"
+            cascade="none"
+            />
+    </class>
+</hibernate-mapping>

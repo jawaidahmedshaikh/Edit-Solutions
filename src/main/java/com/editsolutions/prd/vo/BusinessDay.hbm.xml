@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+     <class name="com.editsolutions.prd.vo.BusinessDay" table="BusinessDay"  >
+        <id name="businessDayPK" column="BusinessDayPK" type="long">
+              <generator class="identity"/>
+        </id>
+        <property name="businessDate" column="BusinessDate" type="date"/>
+        <property name="activeIndicator"  type="yes_no" column="ActiveInd" not-null="true"/>
+
+    </class>
+</hibernate-mapping>

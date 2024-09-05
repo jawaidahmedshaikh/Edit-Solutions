@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="contract.SegmentSecondary" table="&quot;SegmentSecondary&quot;"   >
+
+        <id name="SegmentSecondaryPK" column="&quot;SegmentSecondaryPK&quot;" type="long" >
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SegmentParentFK" column="&quot;SegmentParentFK&quot;" insert="false" update="false"/>
+        <property name="SegmentChildFK" column="&quot;SegmentChildFK&quot;" insert="false" update="false"/>
+        
+        <property name="AnnualPremium" column="&quot;AnnualPremium&quot;"  type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="Location" column="&quot;Location&quot;"/>
+        <property name="Sequence" column="&quot;Sequence&quot;"/>
+
+        <many-to-one
+            name="SegmentParent"
+            column="&quot;SegmentParentFK&quot;"
+            class="contract.Segment"
+            cascade="none"
+
+            />
+       
+       	<many-to-one
+            name="SegmentChild"
+            column="&quot;SegmentChildFK&quot;"
+            class="contract.Segment"
+            cascade="none"
+
+            />
+
+    </class>
+</hibernate-mapping>

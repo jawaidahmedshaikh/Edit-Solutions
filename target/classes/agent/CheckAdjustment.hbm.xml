@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="agent.CheckAdjustment" table="&quot;CheckAdjustment&quot;"  >
+        <id name="CheckAdjustmentPK" column="&quot;CheckAdjustmentPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="AdjustmentTypeCT" column="&quot;AdjustmentTypeCT&quot;"/>
+        <property name="AdjustmentPercent" column="&quot;AdjustmentPercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AdjustmentDollar" column="&quot;AdjustmentDollar&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TaxableStatusCT" column="&quot;TaxableStatusCT&quot;"/>
+        <property name="StartDate" column="&quot;StartDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="StopDate" column="&quot;StopDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AdjustmentStatusCT" column="&quot;AdjustmentStatusCT&quot;"/>
+        <property name="ModeCT" column="&quot;ModeCT&quot;"/>
+        <property name="NextDueDate" column="&quot;NextDueDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="Description" column="&quot;Description&quot;"/>
+        <property name="AdjustmentCompleteInd" column="&quot;AdjustmentCompleteInd&quot;"/>
+        <property name="AccumulatedDebitBalance" column="&quot;AccumulatedDebitBalance&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="AgentFK" column="&quot;AgentFK&quot;" insert="false" update="false"/>
+        <property name="PlacedAgentFK" column="&quot;PlacedAgentFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Agent"
+            column="&quot;AgentFK&quot;"
+            class="agent.Agent"
+            cascade="none"
+            />
+            
+        <many-to-one
+            name="PlacedAgent"
+            column="&quot;PlacedAgentFK&quot;"
+            class="agent.PlacedAgent"
+            cascade="none"
+            />
+
+        <set name="EDITTrxs" table="&quot;EDITTrx&quot;" inverse="true"  cascade="all">
+            <key column="&quot;CheckAdjustmentFK&quot;"/>
+            <one-to-many class="event.EDITTrx"/>
+        </set>
+
+    </class>
+</hibernate-mapping>
+

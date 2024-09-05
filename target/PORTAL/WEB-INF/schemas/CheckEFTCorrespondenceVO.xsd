@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Chris Gleason (Systems Engineering Group) -->
+<xs:schema   xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:include schemaLocation="./CheckEFTDetailVO.xsd"/>
+	<xs:element name="CheckEFTCorrespondenceVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="CheckEFTDetailVO" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="GrossAmountTotal" type="xs:double"/>
+				<xs:element name="CheckAmountTotal" type="xs:double"/>
+				<xs:element name="FederalWithholdingTotal" type="xs:double"/>
+				<xs:element name="StateWithholdingTotal" type="xs:double"/>
+				<xs:element name="NumberofTransactions" type="xs:int"/>
+				<xs:element name="CurrentDate" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

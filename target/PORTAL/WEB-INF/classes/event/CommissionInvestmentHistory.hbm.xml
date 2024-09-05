@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="event.CommissionInvestmentHistory" table="&quot;CommissionInvestmentHistory&quot;"   >
+
+        <id name="CommissionInvestmentHistoryPK" column="&quot;CommissionInvestmentHistoryPK&quot;" type="long" >
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="CommissionAmount" column="&quot;CommissionAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="CommissionHistoryFK" column="&quot;CommissionHistoryFK&quot;" insert="false" update="false"/>
+        <property name="InvestmentFK" column="&quot;InvestmentFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="Investment"
+            column="&quot;InvestmentFK&quot;"
+            class="contract.Investment"
+            cascade="none"
+
+            />
+
+        <many-to-one
+            name="CommissionHistory"
+            column="&quot;CommissionHistoryFK&quot;"
+            class="event.CommissionHistory"
+            cascade="none"
+
+            />
+
+    </class>
+</hibernate-mapping>

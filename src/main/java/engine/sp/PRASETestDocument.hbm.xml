@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.sp.PRASETestDocument" table="&quot;PRASETestDocument&quot;">
+        <id name="PRASETestDocumentPK" column="&quot;PRASETestDocumentPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="IsRoot" column="&quot;IsRoot&quot;"/>
+
+        <property name="PRASETestFK" column="&quot;PRASETestFK&quot;" insert="false" update="false"/>
+        <property name="PRASEDocumentFK" column="&quot;PRASEDocumentFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+             name="PRASETest"
+             column="&quot;PRASETestFK&quot;"
+             class="engine.sp.PRASETest"
+             cascade="none"/>
+             
+        <many-to-one
+             name="PRASEDocument"
+             column="&quot;PRASEDocumentFK&quot;"
+             class="engine.sp.PRASEDocument"
+             cascade="none"/>             
+
+    </class>
+</hibernate-mapping>

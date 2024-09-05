@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Jason (SEG) -->
+<xs:schema  xmlns:xs="http://www.w3.org/2001/XMLSchema"  elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:element name="CompanyStructureNameVO">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CompanyName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="MarketingPackageName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="GroupProductName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="AreaName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="BusinessContractName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

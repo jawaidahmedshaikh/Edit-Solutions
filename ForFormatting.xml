@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<calculateResponse
+	xmlns="http://xmlns.calcfocus.com/services/calc">
+	<header>
+		<refGUID>06U023212U-1655763816278-20220621-052253.176</refGUID>
+		<dateTime>2022-06-21T09:22:54.967</dateTime>
+		<async>true</async>
+	</header>
+</calculateResponse> 

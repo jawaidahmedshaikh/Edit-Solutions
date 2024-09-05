@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" 
+	height="100%" 
+	xmlns:custom="com.segsoftware.view.custom.*"
+	show="selectPRASETest()"	
+	>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.RadioButtonGroup;
+			import mx.managers.PopUpManager;
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.event.SEGEvent;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			private var _buildingParameter:XML;			
+			
+			/**
+			* Renders a dialog by which users can add a new PRASETest.
+			*/
+			public function addPRASETest():void
+			{
+				var addPRASETestDialog:AddPRASETestDialog = PopUpManager.createPopUp(this, com.segsoftware.view.prase.AddPRASETestDialog, true) as AddPRASETestDialog;	
+			
+				PopUpManager.centerPopUp(addPRASETestDialog);						
+			}
+			
+			/**
+			 * The ProductStructure dropdown needs a "calculated" label based
+			 * on the usual Product, ProductType, CompanyName, etc.
+			 */
+			private function formatProductStructureLabel(object:Object, column:DataGridColumn):String
+			{
+				var praseTestVO:XML = object as XML;
+				
+				var productStructureVO:XML = praseTestVO.ProductStructureVO[0];
+				
+				return Util.formatProductKey(productStructureVO);
+			}
+			
+			/**
+			* The displaying of Tests is done in two different tabs. If a
+			* PRASETest was selected in another tab, we try to select it here
+			* as well for consistency.
+			*/
+			private function selectPRASETest():void
+			{
+				if (SEGModelLocator.getInstance().selectedPRASETestVO)
+				{
+					praseTestsDataGrid.selectedItem = SEGModelLocator.getInstance().selectedPRASETestVO;					
+				}				
+			}			
+			
+			/**
+			* The selectedItem is XML. However, one of the Elements in the XML contains XML itself, but as a String.
+			* This makes sense in that the data was originally saved as a String. Flex is not going to recognize it
+			* as XML, it's just going to recognize it as the text within an Element. So, be able to use the
+			* 'String' XML as 'XML" XML, I had to explicitly grab the String text and convert it into XML.
+			*/
+			[Bindable]	
+			private function set buildingParameter(buildingParameterAsXML:XML):void
+			{
+				if (buildingParameterAsXML != null)
+				{
+					var buildingParameterAsString:String = buildingParameterAsXML.toString();
+				
+					_buildingParameter = new XML(buildingParameterAsString);					
+				}
+				else
+				{
+					_buildingParameter = null; // I am deliberately setting the "_buildingParameter" and not "documentContent"
+											 // to null because I can't find a way to clear the "buildingParameter" without
+											 // entering an infinite loop
+				}
+			}	
+			
+			private function get buildingParameter():XML
+			{
+				return this._buildingParameter;
+			}						
+		]]>
+	</mx:Script>
+	
+	<mx:Model id="formData">
+		<formData>
+			<highlightedCandidatePRASEDocumentWrapperVOs>{candidatePRASEDocumentsDataGrid.selectedItems}</highlightedCandidatePRASEDocumentWrapperVOs>
+			<highlightedSelectedPRASEDocumentWrapperVOs>{selectedPRASEDocumentsDataGrid.selectedItems}</highlightedSelectedPRASEDocumentWrapperVOs>		 
+			<PRASEDocumentWrapperVO>{selectedPRASEDocumentsDataGrid.selectedItem}</PRASEDocumentWrapperVO>
+		</formData>
+	</mx:Model>
+	
+	<mx:Binding source="praseTestsDataGrid.selectedItem as XML" destination="SEGModelLocator.getInstance().selectedPRASETestVO"/>
+	
+    <mx:Binding source="selectedPRASEDocumentsDataGrid.selectedItem as XML" destination="SEGModelLocator.getInstance().selectedPRASEDocumentWrapperVO"/>
+		
+	<mx:VBox right="10" left="10" horizontalAlign="center" top="10" bottom="10">
+
+		<mx:Panel width="100%" height="50%" layout="absolute" title="PRASE Tests">
+			<mx:DataGrid
+				id="praseTestsDataGrid" 
+				x="0" 
+				y="0" 
+				width="100%" 
+				height="100%"
+				dataProvider="{SEGModelLocator.getInstance().praseTestVOs}"
+   			    change=
+				"	
+					Util.dispatchEvent(SEGController.EVENT_GET_CANDIDATE_PRASEDOCUMENTS, null);
+					Util.dispatchEvent(SEGController.EVENT_GET_SELECTED_PRASEDOCUMENTS, null);
+
+				">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Creation Date/Time" dataField="CreationDateTime"/>
+					<mx:DataGridColumn headerText="Description" dataField="Description"/>
+					<mx:DataGridColumn headerText="Effective Date" dataField="DriverEffectiveDate"/>
+					<mx:DataGridColumn headerText="Process" dataField="DriverProcess"/>
+					<mx:DataGridColumn headerText="Event" dataField="DriverEvent"/>
+					<mx:DataGridColumn headerText="Event Type" dataField="DriverEventType"/>	
+					<mx:DataGridColumn headerText="Product Structure" labelFunction="formatProductStructureLabel"/>					
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:ControlBar horizontalAlign="right">
+				<mx:TextInput borderStyle="none" backgroundAlpha="0.0"/>
+				<mx:Button 
+					label="Add"
+					click="addPRASETest()"/>
+				<mx:VRule height="20"/>
+				<mx:Button 
+					label="Show All"
+					click=
+					"
+						Util.dispatchEvent(SEGController.EVENT_GET_ALL_PRASETESTS, null);
+						
+						Util.dispatchEvent(SEGController.EVENT_GET_ALL_PRODUCTSTRUCTURES, null);
+					"/>
+			</mx:ControlBar>
+		</mx:Panel>
+		<mx:HBox width="100%" height="50%">
+			<mx:Panel width="40%" height="100%" layout="absolute" title="Candidate PRASE Documents">
+				<mx:DataGrid 
+					editable="false"
+					id="candidatePRASEDocumentsDataGrid"
+					left="0" 
+					right="0" 
+					top="0" 
+					bottom="0"
+					allowMultipleSelection="true"
+					dataProvider="{SEGModelLocator.getInstance().candidatePRASEDocumentWrapperVOs}">
+					<mx:columns>
+						<mx:DataGridColumn headerText="Type" dataField="RootElementName" editable="false" width="25">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:TextInput borderStyle="none" editable="false" backgroundAlpha="0.0" text="{data.PRASEDocumentVO.RootElementName}"/>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+						<mx:DataGridColumn headerText="Description" dataField="Description" editable="false" wordWrap="false" width="25">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:TextInput borderStyle="none" editable="false" backgroundAlpha="0.0" text="{data.PRASEDocumentVO.Description}"/>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>											
+						<mx:DataGridColumn headerText="Creation Date/Time" dataField="CreationDateTime" editable="false" width="25">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:TextInput  borderStyle="none" editable="false" backgroundAlpha="0.0" text="{data.PRASEDocumentVO.CreationDateTime}"/>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>							
+						<mx:DataGridColumn headerText="Creation Driver" dataField="CreationDriverKey" editable="false" width="25">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:TextInput  borderStyle="none" editable="false" backgroundAlpha="0.0" text="{data.PRASEDocumentVO.CreationDriverKey}"/>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>							
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:Panel>
+			<mx:VBox height="100%" verticalAlign="middle">
+				<mx:Button y="527" horizontalCenter="-9" click="Util.selectAllRows(candidatePRASEDocumentsDataGrid);Util.dispatchEvent(SEGController.EVENT_SELECT_CANDIDATEPRASEDOCUMENTS, formData)" icon="@Embed('../assets/icons/arrow_DoubleRight.png')" width="49"/>
+				<mx:Button y="557" width="49" horizontalCenter="-9" click="Util.dispatchEvent(SEGController.EVENT_SELECT_CANDIDATEPRASEDOCUMENTS, formData)" icon="@Embed('../assets/icons/arrow_SingleRight.png')"/>
+				<mx:Button y="587" width="49" horizontalCenter="-9" click="Util.dispatchEvent(SEGController.EVENT_DESELECT_CANDIDATEPRASEDOCUMENTS, formData)" icon="@Embed('../assets/icons/arrow_SingleLeft.png')"/>
+				<mx:Button y="617" horizontalCenter="-9" click="Util.selectAllRows(selectedPRASEDocumentsDataGrid);Util.dispatchEvent(SEGController.EVENT_DESELECT_CANDIDATEPRASEDOCUMENTS, formData)" width="49" icon="@Embed('../assets/icons/arrow_DoubleLeft.png')"/>	
+			</mx:VBox>			
+			<mx:Panel width="40%" height="100%" layout="absolute" title="Selected PRASE Documents">
+				<mx:DataGrid 
+					editable="false"
+					id="selectedPRASEDocumentsDataGrid"
+					left="0" 
+					top="0" 
+					bottom="0"
+					allowMultipleSelection="true"
+					dataProvider="{SEGModelLocator.getInstance().selectedPRASEDocumentWrapperVOs}" width="100%">
+					<mx:columns>
+						<mx:DataGridColumn headerText="Type" dataField="RootElementName" editable="false" width="22">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:TextInput borderStyle="none" editable="false" backgroundAlpha="0.0" text="{data.PRASEDocumentVO.RootElementName}"/>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+						<mx:DataGridColumn headerText="Description" dataField="Description" editable="false" wordWrap="false" width="22">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:TextInput borderStyle="none" editable="false" backgroundAlpha="0.0" text="{data.PRASEDocumentVO.Description}"/>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>											
+						<mx:DataGridColumn headerText="Creation Date/Time" dataField="CreationDateTime" editable="false" width="22">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:TextInput  borderStyle="none" editable="false" backgroundAlpha="0.0" text="{data.PRASEDocumentVO.CreationDateTime}"/>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>							
+						<mx:DataGridColumn headerText="Creation Driver" dataField="CreationDriverKey" editable="false" width="22">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:TextInput  borderStyle="none" editable="false" backgroundAlpha="0.0" text="{data.PRASEDocumentVO.CreationDriverKey}"/>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>							
+						<mx:DataGridColumn headerText="Is Root?" dataField="" editable="false" width="12">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:HBox>
+										<mx:Script>
+											<![CDATA[
+												import com.segsoftware.control.SEGController;
+												import com.segsoftware.utility.Util;
+												import mx.controls.RadioButtonGroup;
+											]]>
+										</mx:Script>
+										<custom:SEGCheckBox
+											id="isRootRadioButton"
+											valueObjectVO="{data as XML}"
+											valueObjectVOField="IsRoot"
+											yesValue="Y"
+											noValue="N"
+										/>										
+									</mx:HBox>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:Panel>		
+			<mx:Panel width="20%" height="100%" layout="absolute" title="Building Parameters">
+				<custom:SEGTextArea 
+					id="buildingParameterTextArea"
+					left="0" 
+					right="0" 
+					top="0" 
+					bottom="0"
+					text="{(selectedPRASEDocumentsDataGrid.selectedItem as XML).PRASEDocumentVO[0].BuildingParameterXML}"
+					editable="false"
+					enabled="false"			
+					renderAsXML="true"							
+					/>	
+			</mx:Panel>
+		</mx:HBox>
+		<mx:ControlBar width="100%" horizontalAlign="right">
+			<mx:Button 
+				label="Edit Document" icon="@Embed('../assets/icons/goto.png')"
+				click=
+				"
+					if (selectedPRASEDocumentsDataGrid.selectedItem)
+					{
+						Util.dispatchEvent(SEGController.EVENT_EDIT_PRASEDOCUMENT, formData); 	
+					}
+				"
+				/>
+			<mx:Button 
+				label="Commit"
+				click=
+				"
+					Util.dispatchEvent(SEGController.EVENT_UPDATE_PRASETEST, null);
+				"/>
+		</mx:ControlBar>				
+	</mx:VBox>	
+	
+</mx:Canvas>

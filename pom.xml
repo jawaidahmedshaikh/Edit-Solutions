@@ -1,0 +1,1210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.editsolutions</groupId>
+	<artifactId>edit-solutions</artifactId>
+	<name>edit-solutions</name>
+	<packaging>war</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java-version>11</java-version>
+		<org.springframework-version>5.3.0</org.springframework-version>
+		<org.aspectj-version>1.9.20</org.aspectj-version>
+		<org.slf4j-version>1.6.1</org.slf4j-version>
+		<jersey.version>2.22.2</jersey.version>
+		<external-lib>C:\development\external_lib\</external-lib>
+		<!--<java.tools.path>C:\Program Files\Java\jdk-11\lib\</java.tools.path>-->
+	</properties>
+	<dependencies>
+
+
+
+
+		<!-- https://mvnrepository.com/artifact/wsdl4j/wsdl4j -->
+		<dependency>
+			<groupId>wsdl4j</groupId>
+			<artifactId>wsdl4j</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.bea.xml</groupId>
+			<artifactId>jsr173-ri</artifactId>
+			<version>1.0</version>
+			<systemPath>${external-lib}\jsr173-ri-1.0.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/dom4j/dom4j -->
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.1</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.maven.surefire/surefire-booter -->
+		<dependency>
+			<groupId>org.apache.maven.surefire</groupId>
+			<artifactId>surefire-booter</artifactId>
+			<version>2.12.4</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.maven.surefire/surefire-junit3 -->
+		<dependency>
+			<groupId>org.apache.maven.surefire</groupId>
+			<artifactId>surefire-junit3</artifactId>
+			<version>2.12.4</version>
+		</dependency>
+
+
+
+
+		<!-- https://mvnrepository.com/artifact/org.apache.maven.surefire/common-junit4 -->
+		<!-- <dependency> <groupId>org.apache.maven.surefire</groupId> <artifactId>common-junit4</artifactId> 
+			<version>2.12.4</version> </dependency> -->
+
+		<!-- https://mvnrepository.com/artifact/org.codehaus.plexus/plexus-utils -->
+		<dependency>
+			<groupId>org.codehaus.plexus</groupId>
+			<artifactId>plexus-utils</artifactId>
+			<version>3.0.8</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.0</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.glassfish.jersey</groupId>
+			<artifactId>jersey-bom</artifactId>
+			<version>${jersey.version}</version>
+			<type>pom</type>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.hk2</groupId>
+			<artifactId>hk2-api</artifactId>
+			<version>2.5.0-b05</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.hk2</groupId>
+			<artifactId>hk2-locator</artifactId>
+			<version>2.5.0-b05</version>
+		</dependency>
+
+
+
+		<!-- https://mvnrepository.com/artifact/org.eclipse.persistence/eclipselink -->
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>eclipselink</artifactId>
+			<version>2.4.2</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest-all -->
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+			<version>1.3</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-servlet-api</artifactId>
+			<version>7.0.30</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>aspectj-maven-plugin</artifactId>
+			<version>1.15.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>
+<!-- 		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>1.6.2</version>
+		</dependency> -->
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.13</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.13</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml-schemas</artifactId>
+			<version>3.13</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.xmlbeans</groupId>
+			<artifactId>xmlbeans</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.webflow</groupId>
+			<artifactId>spring-webflow</artifactId>
+			<version>2.4.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.15.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.15.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.15.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.5</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.17.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.4</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-email -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-email</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.16.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.3.3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.23.1</version>
+		</dependency>
+
+
+
+
+
+
+
+
+		<!-- SEG has coupled the PRASE engine byte code within this jar. They haven't 
+			decoupled the PRASE engine from EditSolutions, so there is overlap of stale 
+			pre-compiled byte code with our EditSolutions source. Will need to find out 
+			if there is a cyclic dependency between ES and PRASE code. -->
+
+
+		<!-- TODO: carefully replace all of the legacy jars -->
+
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-activation_1.1_spec</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>annogen</groupId>
+			<artifactId>annogen</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ws.commons.axiom</groupId>
+			<artifactId>axiom-api</artifactId>
+			<version>1.2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ws.commons.axiom</groupId>
+			<artifactId>axiom-dom</artifactId>
+			<version>1.2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ws.commons.axiom</groupId>
+			<artifactId>axiom-impl</artifactId>
+			<version>1.2.4</version>
+		</dependency>
+		<!-- <dependency> <groupId>seg.seg</groupId> <artifactId>SEGAxis2_axis2-xmlbeans-1.2</artifactId> 
+			<version>legacy</version> </dependency> -->
+		<dependency>
+			<groupId>backport-util-concurrent</groupId>
+			<artifactId>backport-util-concurrent</artifactId>
+			<version>2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>geronimo-spec</groupId>
+			<artifactId>geronimo-spec-jms</artifactId>
+			<version>1.1-rc4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>jakarta-httpcore</artifactId>
+			<version>4.0-alpha4</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-xjc</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jettison</groupId>
+			<artifactId>jettison</artifactId>
+			<version>1.0-RC1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jibx</groupId>
+			<artifactId>jibx-bind</artifactId>
+			<version>1.1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jibx</groupId>
+			<artifactId>jibx-run</artifactId>
+			<version>1.1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<!-- <dependency> <groupId>org.apache.ws.commons.neethi</groupId> <artifactId>neethi</artifactId> 
+			<version>2.0.1</version> </dependency> -->
+		<dependency>
+			<groupId>stax</groupId>
+			<artifactId>stax-api</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.stax-utils</groupId>
+			<artifactId>stax-utils</artifactId>
+			<version>20070216</version>
+		</dependency>
+		<!-- <dependency> <groupId>org.apache.woden</groupId> <artifactId>woden</artifactId> 
+			<version>1.0M10</version> </dependency> -->
+		<!-- <dependency> <groupId>seg.seg</groupId> <artifactId>SEGAxis2_wsdl4j-1.6.2</artifactId> 
+			<version>legacy</version> </dependency> -->
+	   
+
+		<!-- add SEG libs from system -->
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_wstx-asl-3.2.1</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_wstx-asl-3.2.1-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_xalan-2.7.0</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_xalan-2.7.0-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_xbean-2.2.0</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_xbean-2.2.0-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>seg.seg</groupId>-->
+<!--			<artifactId>SEGAxis2_xml-apis-1.3.03</artifactId>-->
+<!--			<version>legacy</version>-->
+<!--		    <systemPath>${external-lib}\SEGAxis2_xml-apis-1.3.03-legacy.jar</systemPath>-->
+<!--			<scope>system</scope>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
+			<version>1.4.01</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_XmlSchema-1.3.1</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_XmlSchema-1.3.1-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGCastor_castor-0.9.4.3-xml</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGCastor_castor-0.9.4.3-xml-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>seg.seg</groupId>-->
+<!--			<artifactId>SEGCommons_commons-codec-1.3</artifactId>-->
+<!--			<version>legacy</version>-->
+<!--		    <systemPath>${external-lib}\SEGCommons_commons-codec-1.3-legacy.jar</systemPath>-->
+<!--			<scope>system</scope>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGCommons_commons-collections-3.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGCommons_commons-collections-3.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGCommons_commons-dbcp-1.2.1</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGCommons_commons-dbcp-1.2.1-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>seg.seg</groupId>-->
+<!--			<artifactId>SEGCommons_commons-fileupload-1.1.1</artifactId>-->
+<!--			<version>legacy</version>-->
+<!--		    <systemPath>${external-lib}\SEGCommons_commons-fileupload-1.1.1-legacy.jar</systemPath>-->
+<!--			<scope>system</scope>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGCommons_commons-httpclient-3.0.1</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGCommons_commons-httpclient-3.0.1-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>seg.seg</groupId>-->
+<!--			<artifactId>SEGCommons_commons-io-1.2</artifactId>-->
+<!--			<version>legacy</version>-->
+<!--		    <systemPath>${external-lib}\SEGCommons_commons-io-1.2-legacy.jar</systemPath>-->
+<!--			<scope>system</scope>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>seg.seg</groupId>-->
+<!--			<artifactId>SEGCommons_commons-logging-1.1</artifactId>-->
+<!--			<version>legacy</version>-->
+<!--		    <systemPath>${external-lib}\SEGCommons_commons-logging-1.1-legacy.jar</systemPath>-->
+<!--			<scope>system</scope>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGCommons_commons-pool-1.3</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGCommons_commons-pool-1.3-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGCommons_commons-validator-1.3.0</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGCommons_commons-validator-1.3.0-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGExcel_poi-2.5.1-final-20040804</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGExcel_poi-2.5.1-final-20040804-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGExt_javaunderground</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGExt_javaunderground-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGExt_MillerUtils</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGExt_MillerUtils-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGExt_ServletUtils</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGExt_ServletUtils-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGGlue_glue</artifactId>
+			<version>legacy</version>
+			<systemPath>${external-lib}\SEGGlue_glue-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGHibernate_antlr-2.7.6</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGHibernate_antlr-2.7.6-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGHibernate_asm-attrs</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGHibernate_asm-attrs-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGHibernate_asm</artifactId>
+			<version>legacy</version>
+			<systemPath>${external-lib}\SEGHibernate_asm-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!-- The c3p0 jar provided by SEG (0.9.1.2) prevents Tomcat from loading 
+			the DriverClass from the Tomcat container. However the next version 0.9.2.1 
+			actually solves this major bug. So I've updated the jar. With this I'm able 
+			to remove the hard-coded C3P0 connection pool and simply reference it using 
+			the containers java:comp/env/jdbc/..... notation. But there continue to be 
+			more hurdles to overcome, So I'm moving forward with BoneCP. I'll remove 
+			this when all environments have been updated. -->
+		<!--dependency> <groupId>com.mchange</groupId> <artifactId>c3p0</artifactId> 
+			<version>0.9.2.1</version> </dependency -->
+		<dependency>
+			<groupId>com.jolbox</groupId>
+			<artifactId>bonecp</artifactId>
+			<version>0.8.0.RELEASE</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- add SEG libs directly from system -->
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGHibernate_cglib-2.1.3</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGHibernate_cglib-2.1.3-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGHibernate_ehcache-1.2.3</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGHibernate_ehcache-1.2.3-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGHibernate_hibernate3</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGHibernate_hibernate3-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGHibernate_jta</artifactId>
+			<version>legacy</version>
+			<systemPath>${external-lib}\SEGHibernate_jta-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGJdbc_jtds-1.2</artifactId>
+			<version>legacy</version>
+			<systemPath>${external-lib}\SEGJdbc_jtds-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGJdbc_ojdbc14</artifactId>
+			<version>legacy</version>
+			<systemPath>${external-lib}\SEGJdbc_ojdbc14-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGJmx_jmxtools</artifactId>
+			<version>legacy</version>
+			<systemPath>${external-lib}\SEGJmx_jmxtools-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>seg.seg</groupId>-->
+<!--			<artifactId>SEGLogging_log4j-1.2.14</artifactId>-->
+<!--			<version>legacy</version>-->
+<!--		    <systemPath>${external-lib}\SEGLogging_log4j-1.2.14-legacy.jar</systemPath>-->
+<!--			<scope>system</scope>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGMath_cjmath</artifactId>
+			<version>legacy</version>
+			<systemPath>${external-lib}\SEGMath_cjmath-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGTaglibs_taglibs-input</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGTaglibs_taglibs-input-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGTidy_Tidy</artifactId>
+			<version>legacy</version>
+			<systemPath>${external-lib}\SEGTidy_Tidy-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGUnitTest_junit-4.1</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGUnitTest_junit-4.1-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGXflat</artifactId>
+			<version>legacy</version>
+			<systemPath>${external-lib}\SEGXflat-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGXml_dom4j-1.6.1</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGXml_dom4j-1.6.1-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGXml_jdom</artifactId>
+			<version>legacy</version>
+			<systemPath>${external-lib}\SEGXml_jdom-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>2.11.0</version>
+			<scope>provided</scope>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>seg.seg</groupId>-->
+<!--			<artifactId>SEGXml_xercesImpl</artifactId>-->
+<!--			<version>legacy</version>-->
+<!--			<systemPath>${external-lib}\SEGXml_xercesImpl-legacy.jar</systemPath>-->
+<!--			<scope>system</scope>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGXmlUnit_xmlunit-1.1</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGXmlUnit_xmlunit-1.1-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.adobe.flex/flex-messaging-core -->
+		<dependency>
+			<groupId>com.adobe.flex</groupId>
+			<artifactId>flex-messaging-core</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.adobe.flex/flex-messaging-common -->
+		<dependency>
+			<groupId>com.adobe.flex</groupId>
+			<artifactId>flex-messaging-common</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.adobe.flex/flex-messaging-remoting -->
+		<dependency>
+			<groupId>com.adobe.flex</groupId>
+			<artifactId>flex-messaging-remoting</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.adobe.flex/flex-messaging-opt -->
+		<dependency>
+			<groupId>com.adobe.flex</groupId>
+			<artifactId>flex-messaging-opt</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.adobe.flex/flex-messaging-proxy -->
+		<dependency>
+			<groupId>com.adobe.flex</groupId>
+			<artifactId>flex-messaging-proxy</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+
+		<!-- add SEG libs directly from system -->
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_activation-1.1</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_activation-1.1-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_annogen-0.1.0</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_annogen-0.1.0-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axiom-api-1.2.4</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axiom-api-1.2.4-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+			<scope>provided</scope>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>seg.seg</groupId>-->
+<!--			<artifactId>SEGAxis2_axiom-dom-1.2.4</artifactId>-->
+<!--			<version>legacy</version>-->
+<!--		    <systemPath>${external-lib}\SEGAxis2_axiom-dom-1.2.4-legacy.jar</systemPath>-->
+<!--			<scope>system</scope>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axiom-impl-1.2.4</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axiom-impl-1.2.4-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axis2-adb-1.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axis2-adb-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axis2-adb-codegen-1.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axis2-adb-codegen-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axis2-codegen-1.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axis2-codegen-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axis2-fastinfoset-1.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axis2-fastinfoset-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axis2-java2wsdl-1.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axis2-java2wsdl-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axis2-jaxbri-1.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axis2-jaxbri-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axis2-jaxws-1.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axis2-jaxws-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axis2-jaxws-api-1.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axis2-jaxws-api-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axis2-jibx-1.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axis2-jibx-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axis2-json-1.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axis2-json-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axis2-kernel-1.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axis2-kernel-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axis2-metadata-1.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axis2-metadata-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axis2-saaj-1.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axis2-saaj-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axis2-saaj-api-1.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axis2-saaj-api-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axis2-soapmonitor-1.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axis2-soapmonitor-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>seg.seg</groupId>
+			<artifactId>SEGAxis2_axis2-tools-1.2</artifactId>
+			<version>legacy</version>
+		    <systemPath>${external-lib}\SEGAxis2_axis2-tools-1.2-legacy.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.axis</groupId>
+			<artifactId>axis</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/wsdl4j/wsdl4j -->
+<!-- 		<dependency>
+			<groupId>wsdl4j</groupId>
+			<artifactId>wsdl4j</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+ -->
+	</dependencies>
+
+
+	<!-- TODO: When we get a stabilized central maven repo, with lots of space. 
+		used by [mvn deploy] -->
+	<!--distributionManagement> <repository> <id>vision.financial</id> <name>Vision 
+		Financial</name> <url>http://p00-subversion:8080/nexus/content/repositories/snapshots/</url> 
+		</repository> </distributionManagement -->
+	<repositories>
+		<repository>
+			<id>vision.financial</id>
+			<name>Vision Financial</name>
+            <url>http://p10-subversion2019.vf1.local:8090/nexus/content/repositories/vision.financial/</url>
+			<!-- TODO: machine provided by Keene needs to have the hostname changed 
+				to something recognized as a repo. -->
+			<!--url>http://pc-ccb1m11:8080/nexus/content/repositories/vision.financial/</url -->
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<!--http://clojars.org/repo/ -->
+		<repository>
+			<id>clojars</id>
+			<url>http://clojars.org/repo/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>org.springframework.maven.snapshot</id>
+			<name>Spring Maven Snapshot Repository</name>
+			<url>https://maven.springframework.org/snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>repository.spring.milestone</id>
+			<name>Spring Milestone Repository</name>
+			<url>https://repo.spring.io/milestone</url>
+		</repository>
+		<!-- <repository> <id>org.springframework.maven.milestone</id> <name>Spring 
+			Maven Milestone Repository</name> <url>https://maven.springframework.org/milestone</url> 
+			<snapshots> <enabled>false</enabled> </snapshots> </repository> -->
+		<repository>
+			<id>maven.repository</id>
+			<name>Maven Repository</name>
+			<url>https://repo.clojars.org</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<!--<repository>
+			<id>spring-milestones</id>
+			<url>http://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>-->
+	</repositories>
+	<scm>
+        <connection>scm:svn:http://p10-subversion2019.vf1.local/svn/visfin/platforms/EditSolutions/trunk</connection>
+		<developerConnection>scm:svn:http://p10-subversion2019.vf1.local/svn/visfin/platforms/EditSolutions/trunk
+		</developerConnection>
+		<tag>HEAD</tag>
+        <url>svn:http://p10-subversion2019.vf1.local/svn/visfin/platforms/EditSolutions/trunk</url>
+	</scm>
+	<build>
+	    <finalName>PORTAL</finalName>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.8.0</version>
+					<configuration>
+						<source>${java-version}</source>
+						<target>${java-version}</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.3.0</version>
+					<executions>
+						<execution>
+							<id>copy-resources</id>
+							<phase>validate</phase>
+							<goals>
+								<goal>copy-resources</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>${basedir}/target/classes</outputDirectory>
+								<resources>
+									<resource>
+										<directory>src/main/java</directory>
+										<filtering>true</filtering>
+										<includes>
+											<include>**/*.xml</include>
+										</includes>
+									</resource>
+								</resources>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<!--plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-surefire-plugin</artifactId> 
+					<version>2.12</version> <configuration> <includes> <include>**/*Test.java</include> 
+					</includes> <excludes> <exclude>**/Abstract*.java</exclude> </excludes> <junitArtifactName>junit:junit</junitArtifactName> 
+					<argLine>-Xmx512m</argLine> </configuration> </plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.2.3</version>
+					<configuration>
+						<skipTests>true</skipTests>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>install</id>
+							<phase>install</phase>
+							<!--goals> <goal>sources</goal> </goals -->
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>aspectj-maven-plugin</artifactId>
+					<version>1.13.1</version>
+					<configuration>
+						<showWeaveInfo>false</showWeaveInfo>
+						<source>${java-version}</source>
+						<target>${java-version}</target>
+						<!-- Only uncomment when compiling with JDK 1.8 -->
+						<!--sources> <source> <basedir>.</basedir> <includes> <include>**/*.aj</include> 
+							</includes> </source> </sources -->
+						<Xlint>ignore</Xlint>
+						<complianceLevel>${java-version}</complianceLevel>
+						<encoding>UTF-8</encoding>
+						<verbose>false</verbose>
+						<aspectLibraries>
+							<aspectLibrary>
+								<groupId>org.springframework</groupId>
+								<artifactId>spring-aspects</artifactId>
+							</aspectLibrary>
+						</aspectLibraries>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>compile</goal>
+								<goal>test-compile</goal>
+							</goals>
+						</execution>
+					</executions>
+					<dependencies>
+						<dependency>
+							<groupId>org.aspectj</groupId>
+							<artifactId>aspectjrt</artifactId>
+							<version>${org.aspectj-version}</version>
+						</dependency>
+						<dependency>
+							<groupId>org.aspectj</groupId>
+							<artifactId>aspectjtools</artifactId>
+							<version>${org.aspectj-version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>buildnumber-maven-plugin</artifactId>
+					<version>1.3</version>
+					<executions>
+						<execution>
+							<phase>validate</phase>
+							<goals>
+								<goal>create</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<doCheck>false</doCheck>
+						<doUpdate>false</doUpdate>
+						<format>{0}</format>
+						<items>
+							<item>scmVersion</item>
+						</items>
+						<buildNumberPropertyName>scmVersion</buildNumberPropertyName>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>properties-maven-plugin</artifactId>
+					<version>1.0-alpha-2</version>
+					<executions>
+						<execution>
+							<phase>generate-resources</phase>
+							<goals>
+								<goal>write-project-properties</goal>
+							</goals>
+							<configuration>
+                                <outputFile>${project.build.outputDirectory}/venus-version.properties</outputFile>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>tomcat-maven-plugin</artifactId>
+					<version>1.1</version>
+					<configuration>
+						<url>http://127.0.0.1:8080/manager</url>
+						<server>TomcatServer</server>
+						<path>/PORTAL</path>
+					</configuration>
+				</plugin>
+				<plugin>
+		            <groupId>org.apache.maven.plugins</groupId>
+		            <artifactId>maven-war-plugin</artifactId>
+		            <version>3.3.1</version>
+		        </plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

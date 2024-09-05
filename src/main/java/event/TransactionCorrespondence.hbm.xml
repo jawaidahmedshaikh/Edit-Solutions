@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="event.TransactionCorrespondence" table="&quot;TransactionCorrespondence&quot;">
+        <id name="TransactionCorrespondencePK" column="&quot;TransactionCorrespondencePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="CorrespondenceTypeCT" column="&quot;CorrespondenceTypeCT&quot;"/>
+        <property name="NumberOfDays" column="&quot;NumberOfDays&quot;"/>
+        <property name="PriorPostCT" column="&quot;PriorPostCT&quot;"/>
+        <property name="TransactionTypeQualifierCT" column="&quot;TransactionTypeQualifierCT&quot;"/>
+        <property name="IncludeHistoryIndicator" column="&quot;IncludeHistoryIndicator&quot;"/>
+        <property name="StartDate" column="&quot;StartDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="StopDate" column="&quot;StopDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="TransactionPriorityFK" column="&quot;TransactionPriorityFK&quot;" insert="false" update="false"/>
+
+        <set name="EDITTrxCorrespondences" table="&quot;EDITTrxCorrespondence&quot;" inverse="true"   cascade="all" >
+            <key column="&quot;TransactionCorrespondenceFK&quot;"/>
+            <one-to-many class="event.EDITTrxCorrespondence"/>
+        </set>
+
+        <many-to-one
+            name="TransactionPriority"
+            column="&quot;TransactionPriorityFK&quot;"
+            class="event.TransactionPriority"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

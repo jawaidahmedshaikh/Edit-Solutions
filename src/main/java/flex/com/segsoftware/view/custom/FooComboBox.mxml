@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ComboBox xmlns:mx="http://www.adobe.com/2006/mxml" change="updateOutputCodeTableCode()">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.XMLListCollection;
+			
+			import com.segsoftware.model.CodeTable;
+			
+			private var _inputCodeTableCode:String;
+			
+			[Bindable]
+			public var outputCodeTableCode:String;
+			
+			public function get inputCodeTableCode():String
+			{				
+				return _inputCodeTableCode;	
+			}
+			
+			public function set inputCodeTableCode(inputCodeTableCode:String):void
+			{
+				_inputCodeTableCode = inputCodeTableCode;
+				
+				updateSelectedIndex();				
+			}
+			
+			private function updateSelectedIndex():void
+			{
+				var codeTableVOs:XMLListCollection = dataProvider as XMLListCollection;
+				
+				for each (var currentCodeTableVO:XML in codeTableVOs)
+				{
+					var currentCode:String = currentCodeTableVO.Code;
+					
+					if (currentCode == inputCodeTableCode)
+					{
+						selectedItem = currentCodeTableVO;
+						
+						break;
+					}
+				}	
+			}
+			
+			private function updateOutputCodeTableCode():void
+			{
+				var codeTableVO:XML = selectedItem as XML;
+				
+				outputCodeTableCode = codeTableVO.Code;
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:ComboBox>

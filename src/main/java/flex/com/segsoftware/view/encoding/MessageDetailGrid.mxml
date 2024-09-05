@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:AdvancedDataGrid xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Script>
+		<![CDATA[
+			override public function set data(value:Object):void
+			{
+				dataProvider = value;
+				this.rowCount = value.length+1;
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:columns>
+		<mx:AdvancedDataGridColumn dataField="messageIcon" headerText="" />
+		<mx:AdvancedDataGridColumn dataField="message" headerText="Message" />
+	</mx:columns>
+	
+</mx:AdvancedDataGrid>

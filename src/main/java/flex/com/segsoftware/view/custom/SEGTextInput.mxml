@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TextInput xmlns:mx="http://www.adobe.com/2006/mxml" initialize="init()">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.XMLListCollection;
+			import com.segsoftware.utility.Util;
+			
+			/**
+			* The VO from which the 'text' will be taken from or applied to.
+			*/			
+			private var _valueObjectVO:XML;
+			
+			/**
+			* The VO.TextField that will be read-from/written-to.
+			*/
+			private var _valueObjectVOField:String;
+			
+			/**
+			 * Core initialization.
+			 */
+			private function init():void
+			{
+				addEventListener(Event.CHANGE, updateValueObjectVO);
+			}
+			
+			/**
+			* @see #_valueObjectVOField
+			*/
+			[Bindable]
+			public function set valueObjectVOField(valueObjectVOField:String):void
+			{
+				_valueObjectVOField = valueObjectVOField;
+			}
+			
+			/**
+			* @see #_valueObjectVOField
+			*/
+			public function get valueObjectVOField():String
+			{
+				return _valueObjectVOField;	
+			}
+			
+			/**
+			* @see #_valueObjectVO
+			*/
+			[Bindable]
+			public function set valueObjectVO(valueObjectVO:XML):void
+			{
+				_valueObjectVO = valueObjectVO;
+			}
+			
+			/**
+			* @see #_valueObjectVO
+			*/
+			public function get valueObjectVO():XML
+			{
+				return _valueObjectVO;	
+			}
+			
+			/**
+			 * Changes to the TextInput need to be bidirectional. By
+			 * default, the TextField can 'read' from the VO, but can 
+			 * not apply changes to the VO. I had tried bidirectional
+			 * Bindings, but this did not work. I suspect it has something
+			 * to do with the fact that we are 'trying' to Bind to the
+			 * elements of an XML type as opposed to the properties of 
+			 * an actual object. We  try to mimic this bidirectional 
+			 * Binding with simple event handling.
+			 */
+			private function updateValueObjectVO(event:Event):void
+			{				
+				if ((valueObjectVO != null) && (valueObjectVOField != null))
+				{
+					Util.updateValueObjectVO(valueObjectVO, valueObjectVOField, text);					
+				}
+			}			
+		]]>
+	</mx:Script>
+	
+</mx:TextInput>

@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="group.Enrollment" table="&quot;Enrollment&quot;"  >
+        <id name="EnrollmentPK" column="&quot;EnrollmentPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="BeginningPolicyDate" column="&quot;BeginningPolicyDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="EndingPolicyDate" column="&quot;EndingPolicyDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="EnrollmentTypeCT" column="&quot;EnrollmentTypeCT&quot;"/>
+        <property name="NumberOfEligibles" column="&quot;NumberOfEligibles&quot;"/>
+
+        <property name="OfferDateNeeded" column="&quot;OfferDateNeeded&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AnticipatedEnrollmentDate" column="&quot;AnticipatedEnrollmentDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AnticipatedInhouseDate" column="&quot;AnticipatedInhouseDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="ContractGroupFK" column="&quot;ContractGroupFK&quot;" insert="false" update="false"/>
+
+        <set name="CaseProductUnderwritings" table="&quot;CaseProductUnderwriting&quot;" inverse="true"  cascade="all">
+            <key column="&quot;EnrollmentFK&quot;"/>
+            <one-to-many class="group.CaseProductUnderwriting"/>
+        </set>
+
+        <set name="ProjectedBusinessByMonths" table="&quot;ProjectedBusinessByMonth&quot;" inverse="true"  cascade="all">
+            <key column="&quot;EnrollmentFK&quot;"/>
+            <one-to-many class="group.ProjectedBusinessByMonth"/>
+        </set>
+
+        <set name="BatchContractSetups" table="&quot;BatchContractSetup&quot;" inverse="true"  cascade="all">
+            <key column="&quot;EnrollmentFK&quot;"/>
+            <one-to-many class="group.BatchContractSetup"/>
+        </set>
+
+        <set name="EnrollmentStates" table="&quot;EnrollmentState&quot;" inverse="true"  cascade="all">
+            <key column="&quot;EnrollmentFK&quot;"/>
+            <one-to-many class="group.EnrollmentState"/>
+        </set>
+
+        <set name="EnrollmentLeadServiceAgents" table="&quot;EnrollmentLeadServiceAgent&quot;" inverse="true"  cascade="all">
+            <key column="&quot;EnrollmentFK&quot;"/>
+            <one-to-many class="group.EnrollmentLeadServiceAgent"/>
+        </set>
+
+
+        <many-to-one
+            name="ContractGroup"
+            column="&quot;ContractGroupFK&quot;"
+            class="group.ContractGroup"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

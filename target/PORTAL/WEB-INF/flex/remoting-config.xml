@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="remoting-service"
+    class="flex.messaging.services.RemotingService">
+
+    <adapters>
+        <adapter-definition id="java-object" class="flex.messaging.services.remoting.adapters.JavaAdapter" default="true"/>
+    </adapters>
+
+    <default-channels>
+        <channel ref="my-amf"/>
+    </default-channels>
+
+    <destination id="caseSetupService">
+        <properties>
+            <source>com.editsolutions.prd.service.CaseSetupServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="groupSetupService">
+        <properties>
+            <source>com.editsolutions.prd.service.GroupSetupServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="codeTableService">
+        <properties>
+            <source>com.editsolutions.prd.service.CodeTableService</source>
+        </properties>
+    </destination>
+    <destination id="pRDSettingsService">
+        <properties>
+            <source>com.editsolutions.prd.service.PRDSettingsServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="headerDataService">
+        <properties>
+            <source>com.editsolutions.prd.service.DataHeaderServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="dataService">
+        <properties>
+            <source>com.editsolutions.prd.service.DataServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="dataIssuesService">
+        <properties>
+            <source>com.editsolutions.prd.service.DataIssuesServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="changeLogService">
+        <properties>
+            <source>com.editsolutions.prd.service.ChangeLogServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="setupContactService">
+        <properties>
+            <source>com.editsolutions.prd.service.SetupContactServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="messageTemplateService">
+        <properties>
+            <source>com.editsolutions.prd.service.MessageTemplateServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="messageTemplateFieldService">
+        <properties>
+            <source>com.editsolutions.prd.service.MessageTemplateFieldServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="repService">
+        <properties>
+            <source>com.editsolutions.prd.service.RepServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="transformationService">
+        <properties>
+            <source>com.editsolutions.prd.service.TransformationServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="messageService">
+        <properties>
+            <source>com.editsolutions.prd.service.MessageServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="importRecordService">
+        <properties>
+            <source>com.editsolutions.prd.service.ImportRecordServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="compareService">
+        <properties>
+            <source>com.editsolutions.prd.service.PRDCompareServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="notificationService">
+        <properties>
+            <source>com.editsolutions.prd.service.NotificationServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="noteService">
+        <properties>
+            <source>com.editsolutions.prd.service.NoteServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="caseNodeService">
+        <properties>
+            <source>com.editsolutions.prd.service.CaseNodeServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="sourceFieldService">
+        <properties>
+            <source>com.editsolutions.prd.service.SourceFieldServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="fileTemplateFieldService">
+        <properties>
+            <source>com.editsolutions.prd.service.FileTemplateFieldServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="fileTemplateService">
+        <properties>
+            <source>com.editsolutions.prd.service.FileTemplateServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="odsDataService">
+        <properties>
+            <source>com.editsolutions.prd.service.ODSDataServiceImpl</source>
+        </properties>
+    </destination>
+    <destination id="prdStatisticsService">
+        <properties>
+            <source>com.editsolutions.prd.service.PRDStatisticsServiceImpl</source>
+        </properties>
+    </destination>
+  </service>

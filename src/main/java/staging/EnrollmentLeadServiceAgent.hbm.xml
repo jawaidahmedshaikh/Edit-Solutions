@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="staging.EnrollmentLeadServiceAgent" table="&quot;ENROLLMENTLEADSERVICEAGENT&quot;"  >
+        <id name="EnrollmentLeadServiceAgentPK" column="&quot;ENROLLMENTLEADSERVICEAGENTPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="EnrollmentFK" column="&quot;ENROLLMENTFK&quot;" insert="false" update="false"/>
+
+        <property name="EffectiveDate" column="&quot;EFFECTIVEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="TerminationDate" column="&quot;TERMINATIONDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="Role" column="&quot;ROLE&quot;"/>
+
+        <property name="Region" column="&quot;REGION&quot;"/>
+        <property name="AgentNumber" column="&quot;AGENTNUMBER&quot;"/>
+        <property name="LastName" column="&quot;LASTNAME&quot;"/>
+
+        <property name="FirstName" column = "&quot;FIRSTNAME&quot;"/>
+        <property name="MiddleName" column="&quot;MIDDLENAME&quot;"/>
+        <property name="AddressLine1" column="&quot;ADDRESSLINE1&quot;"/>
+
+        <property name="AddressLine2" column="&quot;ADDRESSLINE2&quot;"/>
+        <property name="AddressLine3" column="&quot;ADDRESSLINE3&quot;"/>
+        <property name="AddressLine4" column="&quot;ADDRESSLINE4&quot;"/>
+
+        <property name="City" column="&quot;CITY&quot;"/>
+        <property name="State" column="&quot;STATE&quot;"/>
+        <property name="Zip" column="&quot;ZIP&quot;"/>
+
+        <property name="TaxIdentification" column="&quot;TAXIDENTIFICATION&quot;"/>
+        <property name="CorporateName" column="&quot;CORPORATENAME&quot;"/>
+        <property name="AgentPhoneNbr" column="&quot;AGENTPHONENBR&quot;"/>
+
+        <many-to-one
+            name="Enrollment"
+            column="&quot;ENROLLMENTFK&quot;"
+            class="staging.Enrollment"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute"
+	width="100%"
+	height="100%">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.collections.XMLListCollection;
+			import flash.events.*;
+		
+			import com.segsoftware.model.*;
+			import com.segsoftware.model.scriptProcessor.*;
+			
+		
+			[Bindable]
+            [Embed("/com/segsoftware/view/assets/icons/plusSign.gif")]
+            private var folderClosedIcon:Class;
+
+            [Bindable]
+            [Embed("/com/segsoftware/view/assets/icons/minusSign.gif")]
+            private var folderOpenIcon:Class;
+
+
+			private var _documents:XMLListCollection;
+			
+			[Bindable]
+			public function set documents(documents:XMLListCollection):void
+            {
+             	this._documents = documents; 
+             	
+             	initializeTreeData(); 
+            } 
+            
+			public function get documents():XMLListCollection
+            {
+             	return this._documents;  
+            } 
+            
+            /**
+             *  Initializes the tree data by setting the dataProvider and expanding the tree items
+             */
+            public function initializeTreeData():void
+            {
+            	docTree.dataProvider = documents;
+            	
+            	//	Must call the validateNow method before expanding the tree items.  
+            	//  API says can't expand right after setting the dataProvider and that validateNow() must be called.
+            	validateNow();
+            	
+            	//	Expand all tree items
+            	expandTree();
+            }
+            
+            /**
+             *	Determines the label to be displayed for the node in the tree
+             */
+            public function determineLabel(item:Object):String
+			{
+				var xml:XML = XML (item);	
+				var nodeKind:String = xml.nodeKind();
+				
+				var localName:String = String (xml.localName());
+				
+				//	The following will display like <Name>Type</Name> which is nice but can't seem to
+				//  turn off the display of the leaf node.  So would still get another line that says Type or
+				//	a blank line if return null.  That's because it still knows that the node is there 
+				//	regardless of the label you give it.  To solve this problem (if it needs to be solved),
+				//	would need to create a model behind the tree that dictated the nodes and label.  That
+				//	way could combine the leaf node and its parent into one node with the single line label.
+				/*
+				var elements:XMLList = xml.elements();
+				
+				if (elements == null || elements.length() <= 0)
+				{
+					if (nodeKind == "element")
+					{
+						return xml.toXMLString();
+					}
+					else
+					{
+						return null;
+					}
+				}
+				*/
+				
+				if (nodeKind == "text")
+				{
+					//	Leaf node, just return the value
+					return xml.toString();
+				}
+				else
+				{
+					return "<" + localName + ">";
+				}
+			}
+
+			/**
+			 *	Expands all items in the tree.  
+			 *
+			 *  The simple thing to do would have been to call docTree.expandChildrenOf on each document
+			 *  but the performance is awful on more than 20 nodes.  Instead, we go through all items
+			 *  and load them into an array.  We then set the openItems on the tree to that array.
+			 *  Of course, nothing is ever easy - when directly setting openItems, the scrollbars don't
+			 *  know to display because the tree doesn't know how many items are being shown (a bug 
+			 *  supposedly fixed in Flex 3.  As a work around, this method closes the top item and
+			 *  then re-opens it after setting the openItems.  The tree now knows how many items are
+			 *  being dislayed and the scrollbar appears!
+			 */			
+        	private function expandTree():void 
+			{
+				var openNodes:Array = new Array();
+				
+				for (var i:int = 0; i < documents.length; i++)
+				{
+					var item:XML = documents[i];
+					
+					openNodes.push(item);
+					
+					setOpenNodes(item, openNodes);
+				}
+				
+				docTree.openItems = openNodes;
+
+				//	Bug work around.  Close and open first item.  This causes the tree to know how many
+				//  items will be displayed and the vertical scrollbar appears appropriately.				
+				docTree.expandItem(documents.getItemAt(0), false);
+				docTree.expandItem(documents.getItemAt(0), true);
+        	}
+        	
+        	/**
+        	 *	Recursively sets all children tree elements into the openNodes array
+        	 */
+        	private function setOpenNodes(item:XML, openNodes:Array):void
+        	{
+        		var elements:XMLList = item.elements();
+					
+				for (var i:int = 0; i < elements.length(); i++)
+				{
+					var element:XML = elements[i];
+					
+					openNodes.push(element);
+					
+					setOpenNodes(element, openNodes);
+				}
+        	}
+            
+			]]>
+		
+	</mx:Script>
+<!--	
+	<mx:TextArea editable="false" width="100%" height="100%" text="{documents}">
+	</mx:TextArea>	
+-->
+
+    <mx:Tree id="docTree"   
+        height="100%" width="100%"
+        showRoot="true"
+        labelFunction="determineLabel"
+        iconField="@icon"
+        defaultLeafIcon="{null}"
+        folderClosedIcon="{null}" 
+        folderOpenIcon="{null}" 
+        disclosureClosedIcon="{folderClosedIcon}"
+    	disclosureOpenIcon="{folderOpenIcon}"
+       />
+
+</mx:Panel>

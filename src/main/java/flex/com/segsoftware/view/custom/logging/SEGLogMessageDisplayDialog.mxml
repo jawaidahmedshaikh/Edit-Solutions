@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:custom="com.segsoftware.view.custom.*"
+	layout="absolute" 
+	width="1022" 
+	height="592"
+	title="Log Message Display Dialog"
+	showCloseButton="true"	
+	close="mx.managers.PopUpManager.removePopUp(this)"
+	xmlns:logging="com.segsoftware.view.custom.logging.*"
+	>
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.logging.*;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.event.SEGEvent;
+			import mx.managers.PopUpManager;
+			import mx.collections.*;
+			import com.segsoftware.model.SEGModelLocator;
+	
+			/**
+			 * Gets all of the data to display for all of the accordion contents.
+			 * <P>
+			 * Creates a SEGLogAccordionEntry for each SEGLogEntry and adds it to AccordionIcons.  Each
+			 * entry has its own Container whose label is the command and timestamp and whose contents are
+			 * the list of messages.
+			 * <P>
+			 * The list of segLogEntries is navigated in reverse order so the newest message appears
+			 * first.
+			 */
+			private function layoutAccordion():void
+            {
+            	var segLogEntries:ArrayCollection = SEGLog.getInstance().segLogEntries;
+                
+                var length:int = segLogEntries.length;
+			
+				// 	Loop through backwards to display the newest message first
+				for (var i:int = length-1; i >= 0; i--)
+                {
+                	var segLogEntry:SEGLogEntry = segLogEntries[i];
+                	
+                    var segLogAccordionEntry:SEGLogAccordionEntry = new SEGLogAccordionEntry();
+                    
+                    segLogAccordionEntry.logEntry = segLogEntry;
+                    
+                    var dobj:DisplayObject  = segLogAccordionEntry as DisplayObject;
+                    
+                    accordion.addChild(dobj); 
+                }    
+            }
+            
+		]]>
+	</mx:Script>
+	
+	
+    <!-- Don't use AccordionIcons at this time because it sets the icons
+         on the Accordion for navigation and the log needs to display icons
+         for the message type.  Haven't been able to figure out how to have
+         more than 1 icon for a container 
+    -->
+<!--
+	<custom:AccordionIcons
+		id="accordion" 
+		upIcon="@Embed(source='/com/segsoftware/view/assets/icons/upIcon.gif')" 
+		downIcon="@Embed(source='/com/segsoftware/view/assets/icons/downIcon.gif')" 
+		selectedIcon="@Embed(source='/com/segsoftware/view/assets/icons/selectedIcon.gif')" 
+		width="100%" height="100%"
+	    selectedIndex="0"
+	    initialize="layoutAccordion()"
+	    >
+	</custom:AccordionIcons>	
+-->
+	
+	<!-- Place the Accordion within a Canvas to control scrolling.  
+	     The Accordion will automatically add scroll bars when necessary but
+	     it adds a horizontal one even though it is not needed here.
+	     Can't override the scrolling policy for an Accordion, therefore,
+	     a Canvas is used -->
+	<mx:Canvas width="100%" height="100%" verticalScrollPolicy="auto" horizontalScrollPolicy="off">
+		<mx:Accordion xmlns:mx="http://www.adobe.com/2006/mxml" 
+			width="100%" height="100%"
+			resizeToContent="true"
+			initialize="layoutAccordion()"
+			id="accordion"
+			>
+		</mx:Accordion>
+	</mx:Canvas>
+
+	
+	<mx:ControlBar>
+			<!-- Show legend for icons.  Set upSkin to null so it won't look like a button -->
+		    <mx:Button label="Success"
+		    	icon="{SEGLogMessageType.messageIcon_Success}"
+		        mouseEnabled="false"
+		        upSkin="{null}"
+		    />
+		    
+		    <mx:Button label="Warning"
+		        icon="{SEGLogMessageType.messageIcon_Warning}"
+		        mouseEnabled="false"
+		        upSkin="{null}"
+		    />
+		    
+		    <mx:Button label="Error"
+		        icon="{SEGLogMessageType.messageIcon_Error}"
+		        mouseEnabled="false"
+		        upSkin="{null}"
+		    />
+		            
+		    <!-- Use Spacer to push Button control to the right. -->
+            <mx:Spacer width="100%"/>
+
+			<mx:Button  
+				label="OK"
+				click="mx.managers.PopUpManager.removePopUp(this)"
+			/>
+		
+	</mx:ControlBar>
+	
+</mx:TitleWindow>
+

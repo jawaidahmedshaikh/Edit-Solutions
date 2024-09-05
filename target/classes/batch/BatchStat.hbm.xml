@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="batch.BatchStat" table="&quot;BatchStats&quot;" >
+        <id name="BatchStatPK" column="&quot;BatchStats_PK&quot;" type="long">
+        	<generator class="identity"/> 
+        </id> 
+      
+      	<property name="JobName" column="&quot;JobName&quot;"/>
+        <property name="FormattedStartTime" column="&quot;StartTime&quot;"/>
+        <property name="FormattedStopTime" column="&quot;StopTime&quot;"/>
+        <property name="BatchTime" column="&quot;TotalTime&quot;"/>
+
+        <property name="SuccessCount" column="&quot;SuccessCount&quot;"/>
+        <property name="FailureCount" column="&quot;FailureCount&quot;"/>
+        <property name="SkipCount" column="&quot;SkipCount&quot;"/>
+        <property name="FinalBatchStatus" column="&quot;JobStatus&quot;"/>
+
+    </class>
+</hibernate-mapping>

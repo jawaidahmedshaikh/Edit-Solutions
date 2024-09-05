@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+     <class name="com.editsolutions.prd.vo.Notification" table="PRD_Notification"  >
+        <id name="notificationPK" column="PRD_NotificationPK" type="long">
+              <generator class="identity"/>
+        </id>
+        <property name="prdSetupFK" column="PRD_SetupFK"/>
+        <property name="originalNotificationPK" column="OriginalPRD_NotificationPK"/>
+        <property name="dataHeaderFK" column="PRD_DataHeaderFK"/>
+        <property name="dateSent" column="DateSent" type="timestamp"/>
+        <property name="dueDate" column="dueDate" type="date"/>
+        <property name="emailTo" column="EmailTo"/>
+        <property name="emailCC" column="EmailCC"/>
+        <property name="emailBCC" column="EmailBCC"/>
+        <property name="ftpAddress" column="FTPAddress"/>
+        <property name="ftpUsername" column="FTPUsername"/>
+        <property name="ftpPassword" column="FTPPassword"/>
+        <property name="exportDirectory" column="ExportDirectory"/>
+        <property name="messageSubject" column="MessageSubject"/>
+        <property name="messageText" column="MessageText"/>
+        <property name="hasAttachment" column="HasAttachment"/>
+        <property name="fileAttachmentName" column="FileAttachmentName"/>
+        <property name="statusCT" column="StatusCT"/>
+        <property name="addDate" column="AddDate" type="date"/>
+        <property name="addUser" column="AddUser"/>
+        <property name="modDate" column="ModDate" type="date"/>
+        <property name="modUser" column="ModUser"/>
+
+    </class>
+</hibernate-mapping>

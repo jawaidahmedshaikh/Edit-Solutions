@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="accounting.AccountingDetail" table="&quot;AccountingDetail&quot;">
+        <id name="AccountingDetailPK" column="&quot;AccountingDetailPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="CompanyName" column="&quot;CompanyName&quot;"/>
+        <property name="MarketingPackageName" column="&quot;MarketingPackageName&quot;"/>
+        <property name="BusinessContractName" column="&quot;BusinessContractName&quot;"/>
+
+        <property name="ContractNumber" column="&quot;ContractNumber&quot;"/>
+        <property name="QualNonQualCT" column="&quot;QualNonQualCT&quot;"/>
+        <property name="OptionCodeCT" column="&quot;OptionCodeCT&quot;"/>
+
+        <property name="TransactionCode" column="&quot;TransactionCode&quot;"/>
+        <property name="ReversalInd" column="&quot;ReversalInd&quot;"/>
+        <property name="MemoCode" column="&quot;MemoCode&quot;"/>
+
+        <property name="StateCodeCT" column="&quot;StateCodeCT&quot;"/>
+        <property name="AccountNumber" column="&quot;AccountNumber&quot;"/>
+        <property name="AccountName" column="&quot;AccountName&quot;"/>
+
+        <property name="Amount" column="&quot;Amount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DebitCreditInd" column="&quot;DebitCreditInd&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="ProcessDate" column="&quot;ProcessDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="FundNumber" column="&quot;FundNumber&quot;"/>
+        <property name="OutOfBalanceInd" column="&quot;OutOfBalanceInd&quot;"/>
+
+        <property name="AccountingPendingStatus" column="&quot;AccountingPendingStatus&quot;"/>
+        <property name="QualifiedTypeCT" column="&quot;QualifiedTypeCT&quot;"/>
+        <property name="OriginalContractNumber" column="&quot;OriginalContractNumber&quot;"/>
+
+        <property name="AccountingProcessDate" column="&quot;AccountingProcessDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="AccountingPeriod" column="&quot;AccountingPeriod&quot;"/>
+        <property name="EDITTrxFK" column="&quot;EDITTrxFK&quot;" insert="false" update="false"/>
+
+        <property name="ChargeCode" column="&quot;ChargeCode&quot;"/>
+        <property name="DistributionCodeCT" column="&quot;DistributionCodeCT&quot;"/>
+        <property name="ReinsurerNumber" column="&quot;ReinsurerNumber&quot;"/>
+
+        <property name="TreatyGroupNumber" column="&quot;TreatyGroupNumber&quot;"/>
+        <property name="CertainDuration" column="&quot;CertainDuration&quot;"/>
+        <property name="BatchAmount" column="&quot;BatchAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="BatchControl" column="&quot;BatchControl&quot;"/>
+        <property name="VoucherSource" column="&quot;VoucherSource&quot;"/>
+        <property name="Description" column="&quot;Description&quot;"/>
+
+        <property name="AgentCode" column="&quot;AgentCode&quot;"/>
+        <property name="Source" column="&quot;Source&quot;"/>
+        <property name="ContractClientFK" column="&quot;ContractClientFK&quot;" insert="false" update="false"/>
+
+        <property name="PlacedAgentFK" column="&quot;PlacedAgentFK&quot;" insert="false" update="false"/>
+        
+        <many-to-one
+            name="EDITTrx"
+            column="&quot;EDITTrxFK&quot;"
+            class="event.EDITTrx"
+            cascade="none"
+            />        
+
+    </class>
+</hibernate-mapping>
+

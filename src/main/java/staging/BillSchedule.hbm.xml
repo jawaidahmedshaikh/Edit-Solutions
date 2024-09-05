@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="staging.BillSchedule" table="&quot;BILLSCHEDULE&quot;"  >
+        <id name="BillSchedulePK" column="&quot;BILLSCHEDULEPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="StagingFK" column="&quot;STAGINGFK&quot;" insert="false" update="false"/>
+
+        <property name="BillingCompany" column="&quot;BILLINGCOMPANY&quot;"/>
+        <property name="FirstBillDueDate" column="&quot;FIRSTBILLDUEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LeadDaysOR" column="&quot;LEADDAYSOR&quot;"/>
+
+        <property name="WeekDay" column="&quot;WEEKDAY&quot;"/>
+        <property name="EffectiveDate" column="&quot;EFFECTIVEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="TerminationDate" column="&quot;TERMINATIONDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="Status" column="&quot;STATUS&quot;"/>
+        <property name="SortOption" column="&quot;SORTOPTION&quot;"/>
+        <property name="BillingConsolidation" column="&quot;BILLINGCONSOLIDATION&quot;"/>
+
+        <property name="SocialSecurityMask" column="&quot;SOCIALSECURITYMASK&quot;"/>
+        <property name="NumberOfCopiesGroup" column="&quot;NUMBEROFCOPIESGROUP&quot;"/>
+        <property name="NumberOfCopiesAgent" column="&quot;NUMBEROFCOPIESAGENT&quot;"/>
+
+        <property name="NextBillExtractDate" column="&quot;NEXTBILLEXTRACTDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="NextBillDueDate" column="&quot;NEXTBILLDUEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LastBillDueDate" column="&quot;LASTBILLDUEDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="BillingMode" column="&quot;BILLINGMODE&quot;"/>
+        <property name="BillType" column="&quot;BILLTYPE&quot;"/>
+        <property name="CreationOperator" column="&quot;CREATIONOPERATOR&quot;"/>
+
+        <property name="CreationDate" column="&quot;CREATIONDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="RepName" column="&quot;REPNAME&quot;"/>
+        <property name="RepPhoneNumber" column="&quot;REPPHONENUMBER&quot;"/>
+
+        <property name="BillMethod" column="&quot;BILLMETHOD&quot;"/>
+        <property name="SkipMonthStart1" column="&quot;SKIPMONTHSTART1&quot;"/>
+        <property name="SkipNumberOfMonths1" column="&quot;SKIPNUMBEROFMONTHS1&quot;"/>
+
+        <property name="SkipMonthStart2" column="&quot;SKIPMONTHSTART2&quot;"/>
+        <property name="SkipNumberOfMonths2" column="&quot;SKIPNUMBEROFMONTHS2&quot;"/>
+        <property name="SkipMonthStart3" column="&quot;SKIPMONTHSTART3&quot;"/>
+
+        <property name="SkipNumberOfMonths3" column="&quot;SKIPNUMBEROFMONTHS3&quot;"/>
+        <property name="FirstDeductionDate" column="&quot;FIRSTDEDUCTIONDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LastDeductionDate" column="&quot;LASTDEDUCTIONDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="DeductionFrequency" column="&quot;DEDUCTIONFREQUENCY&quot;"/>
+        <property name="EFTDraftDay" column="&quot;EFTDRAFTDAY&quot;"/>
+        <property name="EFTDraftDayStartMonth" column="&quot;EFTDRAFTDAYSTARTMONTH&quot;"/>
+
+        <property name="RequiredPremiumAmount" column="&quot;REQUIREDPREMIUMAMOUNT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TransitionPeriodEndDate" column="&quot;TRANSITIONPERIODENDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ESBillScheduleKey" column="&quot;ESBILLSCHEDULEKEY&quot;"/>
+
+        <set name="SegmentBases" table="&quot;SEGMENTBASE&quot;" inverse="true"   cascade="all">
+            <key column="&quot;BILLSCHEDULEFK&quot;"/>
+            <one-to-many class="staging.SegmentBase"/>
+        </set>
+
+        <set name="Groups" table="&quot;GROUP&quot;" inverse="true"   cascade="all">
+            <key column="&quot;BILLSCHEDULEFK&quot;"/>
+            <one-to-many class="staging.Group"/>
+        </set>
+
+        <set name="BillGroups" table="&quot;BILLGROUP&quot;" inverse="true"   cascade="all">
+            <key column="&quot;BILLSCHEDULEFK&quot;"/>
+            <one-to-many class="staging.BillGroup"/>
+        </set>
+
+        <many-to-one
+            name="Staging"
+            column="&quot;STAGINGFK&quot;"
+            class="staging.Staging"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

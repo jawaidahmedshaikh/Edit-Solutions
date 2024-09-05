@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="staging.ProjectedBusinessByMonth" table="&quot;PROJECTEDBUSINESSBYMONTH&quot;"  >
+        <id name="ProjectedBusinessByMonthPK" column="&quot;PROJECTEDBUSINESSBYMONTHPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="EnrollmentFK" column="&quot;ENROLLMENTFK&quot;" insert="false" update="false"/>
+
+        <property name="Date" column="&quot;DATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="PercentExpected" column="&quot;PERCENTEXPECTED&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="NumberOfEligibles" column="&quot;NUMBEROFELIGIBLES&quot;"/>
+
+        <property name="EnrollmentStatus" column="&quot;ENROLLMENTSTATUS&quot;"/>
+        <property name="ClosedDate" column="&quot;CLOSEDDATE&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="ClosedUnpaidPercent" column="&quot;CLOSEDUNPAIDPERCENT&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <many-to-one
+            name="Enrollment"
+            column="&quot;ENROLLMENTFK&quot;"
+            class="staging.Enrollment"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>

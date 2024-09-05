@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:DataGrid 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="400" 
+	height="300"
+	backgroundColor="#b3c0c6"
+	borderStyle="solid" 
+	borderThickness="1" 
+	borderColor="#000000"
+	headerHeight="20">	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.model.conversion.ConversionTemplate;
+		/**
+		* Sorting algorithm for the ConversionTemplate.TemplateName column.
+		*/
+		private function sortNameCompareFunction(obj1:Object, obj2:Object):int 	
+		{
+			var conversionTemplate1:ConversionTemplate = obj1 as ConversionTemplate;
+			
+			var conversionTemplate2:ConversionTemplate = obj2 as ConversionTemplate;
+			
+			var conversionTemplate1Name:String = conversionTemplate1.templateName.toUpperCase();
+			
+			var converstionTemplate2Name:String = conversionTemplate2.templateName.toUpperCase();
+			
+			return Util.compareStrings(conversionTemplate1Name, converstionTemplate2Name);
+		}				
+		]]>
+	</mx:Script>
+	<mx:columns>
+		<mx:DataGridColumn 
+			headerText="Name" 
+			dataField="templateName" 
+			sortable="true"
+			sortCompareFunction="sortNameCompareFunction"/>						
+		<mx:DataGridColumn 
+			headerText="Description" 
+			dataField="templateDescription" 
+			sortable="false"/>
+	</mx:columns>	
+</mx:DataGrid>

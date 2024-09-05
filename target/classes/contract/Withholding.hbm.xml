@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.Withholding" table="&quot;Withholding&quot;"  >
+        <id name="WithholdingPK" column="&quot;WithholdingPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="FederalWithholdingTypeCT" column="&quot;FederalWithholdingTypeCT&quot;"/>
+        <property name="FederalWithholdingAmount" column="&quot;FederalWithholdingAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="FederalWithholdingPercent" column="&quot;FederalWithholdingPercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="StateWithholdingTypeCT" column="&quot;StateWithholdingTypeCT&quot;"/>
+        <property name="StateWithholdingAmount" column="&quot;StateWithholdingAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="StateWithholdingPercent" column="&quot;StateWithholdingPercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="CityWithholdingTypeCT" column="&quot;CityWithholdingTypeCT&quot;"/>
+        <property name="CityWithholdingAmount" column="&quot;CityWithholdingAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CityWithholdingPercent" column="&quot;CityWithholdingPercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="CountyWithholdingTypeCT" column="&quot;CountyWithholdingTypeCT&quot;"/>
+        <property name="CountyWithholdingAmount" column="&quot;CountyWithholdingAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CountyWithholdingPercent" column="&quot;CountyWithholdingPercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="ContractClientFK" column="&quot;ContractClientFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="ContractClient"
+            column="&quot;ContractClientFK&quot;"
+            class="contract.ContractClient"
+            cascade="none"/>
+
+        <set name="WithholdingOverrides" table="&quot;WithholdingOverride&quot;" inverse="true"   cascade="all">
+            <key column="&quot;WithholdingFK&quot;"/>
+            <one-to-many class="event.WithholdingOverride"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

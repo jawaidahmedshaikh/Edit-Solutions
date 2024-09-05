@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="group.ContractGroupRequirement" table="&quot;ContractGroupRequirement&quot;" lazy="true">
+        <id name="ContractGroupRequirementPK" column="&quot;ContractGroupRequirementPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ContractGroupFK" column="&quot;ContractGroupFK&quot;" insert="false" update="false"/>
+        <property name="FilteredRequirementFK" column="&quot;FilteredRequirementFK&quot;" insert="false" update="false"/>
+
+        <property name="RequirementStatusCT" column="&quot;RequirementStatusCT&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="FollowupDate" column="&quot;FollowupDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ReceivedDate" column="&quot;ReceivedDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ExecutedDate" column="&quot;ExecutedDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="BatchContractSetupFK" column="&quot;BatchContractSetupFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="ContractGroup"
+            column="&quot;ContractGroupFK&quot;"
+            class="group.ContractGroup"
+            cascade="none"/>
+            
+        <many-to-one
+            name="FilteredRequirement"
+            column="&quot;FilteredRequirementFK&quot;"
+            class="contract.FilteredRequirement"
+            cascade="none"/>   
+            
+        <many-to-one
+            name="BatchContractSetup"
+            column="&quot;BatchContractSetupFK&quot;"
+            class="group.BatchContractSetup"
+            cascade="none"/>              
+
+    </class>
+</hibernate-mapping>
+

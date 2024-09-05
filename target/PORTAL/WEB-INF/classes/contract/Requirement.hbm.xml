@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.Requirement" table="&quot;Requirement&quot;"  >
+        <id name="RequirementPK" column="&quot;RequirementPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="RequirementId" column="&quot;RequirementId&quot;"/>
+        <property name="RequirementDescription" column="&quot;RequirementDescription&quot;"/>
+        <property name="FollowupDays" column="&quot;FollowupDays&quot;"/>
+        <property name="AllowableStatusCT" column="&quot;AllowableStatusCT&quot;"/>
+        <property name="ManualInd" column="&quot;ManualInd&quot;"/>
+        <property name="AgentViewInd" column="&quot;AgentViewInd&quot;"/>
+        <property name="UpdatePolicyDeliveryDateInd" column="&quot;UpdatePolicyDeliveryDateInd&quot;"/>
+        <property name="FinalStatusCT" column="&quot;FinalStatusCT&quot;"/>
+        <property name="AutoReceipt" column="&quot;AutoReceipt&quot;"/>
+
+        <set name="FilteredRequirements" table="&quot;FilteredRequirement&quot;" inverse="true"  cascade="all">
+            <key column="&quot;RequirementFK&quot;"/>
+            <one-to-many class="contract.FilteredRequirement"/>
+        </set>
+
+    </class>
+</hibernate-mapping>
+

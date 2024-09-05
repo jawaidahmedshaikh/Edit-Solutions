@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="com.editsolutions.prd.vo.PRDSettings" table="vw_PRD_Setup"  >
+        <id name="prdSetupPK" column="PRD_SetupPK" type="long"/>
+
+        <property name="contractCaseFK" column="Case_ContractGroupFK" type="long"/>
+        <property name="contractGroupFK" column="Group_ContractGroupFK" type="long"/>
+        <property name="payrollDeductionScheduleFK" column="PayrollDeductionScheduleFK" type="long"/>
+        <property name="fileTemplateFK" column="PRD_FileTemplateFK" type="long"/>
+        <property name="headerTemplateFK" column="PRD_HeaderTemplateFK" type="long"/>
+        <property name="footerTemplateFK" column="PRD_FooterTemplateFK" type="long"/>
+        <property name="setupName" column="PRD_SetupName"/>
+        <property name="typeCT" column="PRD_TypeCT"/>
+        <property name="statusCT" column="StatusCT"/>
+        <property name="deliveryMethodCT" column="DeliveryMethodCT"/>
+        <property name="messageTemplateFK" column="PRD_MessageTemplateFK" type="long"/>
+        <property name="holdForReview" type="java.lang.Boolean">
+           <column name="HoldForReview" sql-type="tinyint"/>
+        </property>
+        <property name="maskSsn" type="java.lang.Boolean">
+           <column name="MaskSsn" sql-type="tinyint"/>
+        </property>
+        <property name="runningCount" column="RunningCount" type="int"/>
+        <property name="firstDeductionDate" column="FirstDeductionDate" type="date"/>
+        <property name="currentDateThru" column="CurrentDateThru" type="date"/>
+        <property name="firstDeductionLeadDays" column="FirstDeductionLeadDays"/>
+        <property name="subsequentDays" column="SubsequentDays"/>
+        <property name="effectiveDate" column="EffectiveDate" type="date"/>
+        <property name="terminationDate" column="TerminationDate" type="date"/>
+        <property name="changeEffectiveDate" column="ChangeEffectiveDate" type="date"/>
+        <property name="nextPRDExtractDate" column="NextPRDExtractDate" type="date"/>
+        <property name="nextPRDDueDate" column="NextPRDDueDate" type="date"/>
+        <property name="lastPRDExtractDate" column="LastPRDExtractDate" type="date"/>
+        <property name="emailSentFrom" column="EmailSentFromCT"/>
+        <property name="summaryCT" column="SummaryCT"/>
+        <property name="sortOptionCT" column="SortOptionCT"/>
+        <property name="reportTypeCT" column="ReportTypeCT"/>
+        <property name="repName" column="RepName"/>
+        <property name="repPhoneNumber" column="RepPhoneNumber"/>
+        <property name="ftpAddress" column="FTPAddress"/>
+        <property name="ftpUserName" column="FTPUserName"/>
+        <property name="ftpPassword" column="FTPPassword"/>
+        <property name="networkLocation" column="NetworkLocation"/>
+        <property name="networkLocationDirectory" column="NetworkLocationDirectory"/>
+        <property name="addDate" column="AddDate" type="date"/>
+        <property name="addUser" column="AddUser"/>
+        <property name="modDate" column="ModDate" type="date"/>
+        <property name="modUser" column="ModUser"/>
+        <property name="systemCT" column="SystemCT"/>
+        
+        <bag name="setupContacts" table="PRD_SetupContact"
+                inverse="true" lazy="false" fetch="select" cascade="none">
+            <key>
+                <column name="PRD_SetupFK" not-null="true" />
+            </key>
+            <one-to-many class="com.editsolutions.prd.vo.SetupContact" />
+        </bag>
+        
+        <bag name="prdExclusions" table="PRD_Exclusion"
+                inverse="true" lazy="false" fetch="select" cascade="none">
+            <key>
+                <column name="PRD_SetupFK" not-null="true" />
+            </key>
+            <one-to-many class="com.editsolutions.prd.vo.PRDExclusion" />
+        </bag>
+
+        <bag name="notifications" table="PRD_Notification"
+                inverse="true" lazy="false" fetch="select" cascade="none">
+            <key>
+                <column name="PRD_SetupFK" not-null="true" />
+            </key>
+            <one-to-many class="com.editsolutions.prd.vo.Notification" />
+        </bag>
+
+        <many-to-one name="headerTemplate" lazy="false" class="com.editsolutions.prd.vo.FileTemplate"
+                 column="PRD_HeaderTemplateFK" unique="true" insert="false" update="false" /> 
+
+        <many-to-one name="footerTemplate" lazy="false" class="com.editsolutions.prd.vo.FileTemplate"
+                 column="PRD_FooterTemplateFK" unique="true" insert="false" update="false"/> 
+
+        <many-to-one name="fileTemplate" lazy="false" class="com.editsolutions.prd.vo.FileTemplate"
+                 column="PRD_FileTemplateFK" unique="true" insert="false" update="false"/> 
+
+        <many-to-one name="messageTemplate" lazy="false" class="com.editsolutions.prd.vo.MessageTemplate"
+                 column="PRD_MessageTemplateFK" unique="true" insert="false" update="false"/> 
+
+        <many-to-one name="subjectTemplate" lazy="false" class="com.editsolutions.prd.vo.MessageTemplate"
+                 column="PRD_SubjectTemplateFK" unique="true" insert="false" update="false"/> 
+                 
+        <many-to-one name="initialMessageTemplate" lazy="false" class="com.editsolutions.prd.vo.MessageTemplate"
+                 column="PRD_InitialMessageTemplateFK" unique="true" insert="false" update="false"/> 
+
+        <many-to-one name="initialSubjectTemplate" lazy="false" class="com.editsolutions.prd.vo.MessageTemplate"
+                 column="PRD_InitialSubjectTemplateFK" unique="true" insert="false" update="false"/> 
+                 
+        <many-to-one name="groupSetup" lazy="false" class="com.editsolutions.prd.vo.GroupSetup"
+                column="Group_ContractGroupFK" unique="true" insert="false" update="false"/>
+        
+
+
+<!--
+        <many-to-one
+            name="PayrollDeductionSchedule"
+            column="&quot;PayrollDeductionScheduleFK&quot;"
+            class="group.PayrollDeductionSchedule"
+            cascade="none"/>
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"/> 
+  -->
+
+    </class>
+</hibernate-mapping>

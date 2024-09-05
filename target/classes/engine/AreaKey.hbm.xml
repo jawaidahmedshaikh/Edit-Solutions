@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="engine.AreaKey" table="&quot;AreaKey&quot;" lazy="true">
+    
+        <cache usage="read-write"/>
+        
+        <id name="AreaKeyPK" column="&quot;AreaKeyPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="Grouping" column="&quot;Grouping&quot;"/>
+        <property name="Field" column="&quot;Field&quot;"/>
+
+    </class>
+</hibernate-mapping>

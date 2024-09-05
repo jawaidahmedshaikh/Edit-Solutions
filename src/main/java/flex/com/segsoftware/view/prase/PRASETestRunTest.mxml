@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:custom="com.segsoftware.view.custom.*"	
+	width="100%" 
+	height="100%"
+	show="selectPRASETest()">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.utility.Util;
+			import com.segsoftware.model.SEGModelLocator;
+			import com.segsoftware.control.SEGController;
+			import com.segsoftware.event.SEGEvent;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			/**
+			 * The ProductStructure dropdown needs a "calculated" label based
+			 * on the usual Product, ProductType, CompanyName, etc.
+			 */
+			private function formatProductStructureLabel(object:Object, column:DataGridColumn):String
+			{
+				var praseTestVO:XML = object as XML;
+				
+				var productStructureVO:XML = praseTestVO.ProductStructureVO[0];
+				
+				return Util.formatProductKey(productStructureVO);
+			}	
+			
+			/**
+			* The displaying of Tests is done in two different tabs. If a
+			* PRASETest was selected in another tab, we try to select it here
+			* as well for consistency.
+			*/
+			private function selectPRASETest():void
+			{
+				if (SEGModelLocator.getInstance().selectedPRASETestVO)
+				{
+					praseTestsDataGrid.selectedItem = SEGModelLocator.getInstance().selectedPRASETestVO;					
+				}				
+			}		
+			
+			/**
+			* Moves the
+			*/
+			private function setActualAsExpected():void
+			{
+				var expected:Object = SEGModelLocator.getInstance().selectedPRASETestVO.ExpectedPRASEOutputXML;						
+				
+				SEGModelLocator.getInstance().selectedPRASETestVO.ExpectedPRASEOutputXML = actualResultsTextArea.text;
+			}
+			
+			/**
+			* Clears the actual and difference results.
+			*/
+			private function clearResults():void
+			{	
+				SEGModelLocator.getInstance().actualPRASEOutputXML = null;
+				
+				SEGModelLocator.getInstance().differenceXML = null;		
+				
+				expectedResultsTextArea.text = '';					
+				
+				praseTestsDataGrid.selectedItem = -1;
+			}
+			
+		]]>
+	</mx:Script>	
+	
+	<mx:Model id="formData">
+		<formData>
+			<PRASETestVO>{praseTestsDataGrid.selectedItem}</PRASETestVO>
+		</formData>
+	</mx:Model>	
+	
+	<mx:Binding source="praseTestsDataGrid.selectedItem as XML" destination="SEGModelLocator.getInstance().selectedPRASETestVO"/>	
+	
+	<mx:VBox left="10" right="10" top="10" bottom="10">
+		<mx:Panel width="100%" height="50%" layout="absolute" title="PRASE Tests">
+			<mx:DataGrid
+				id="praseTestsDataGrid" 
+				x="0" 
+				y="0" 
+				width="100%" 
+				height="100%"
+				dataProvider="{SEGModelLocator.getInstance().praseTestVOs}"
+				change=
+				"	
+					SEGModelLocator.getInstance().actualPRASEOutputXML = null;
+					
+					SEGModelLocator.getInstance().differenceXML = null;
+				">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Test Date/Time" dataField="CreationDateTime"/>
+					<mx:DataGridColumn headerText="Description" dataField="Description"/>
+					<mx:DataGridColumn headerText="Effective Date" dataField="DriverEffectiveDate"/>
+					<mx:DataGridColumn headerText="Process" dataField="DriverProcess"/>
+					<mx:DataGridColumn headerText="Event" dataField="DriverEvent"/>
+					<mx:DataGridColumn headerText="Event Type" dataField="DriverEventType"/>	
+					<mx:DataGridColumn headerText="Product Structure" labelFunction="formatProductStructureLabel"/>									
+				</mx:columns>
+			</mx:DataGrid>		
+			<mx:ControlBar horizontalAlign="right">
+			<mx:Button 
+				label="Edit Test" icon="@Embed('../assets/icons/goto.png')"
+				click=
+				"
+					if (praseTestsDataGrid.selectedItem)
+					{
+						Util.dispatchEvent(SEGController.EVENT_EDIT_ASSOCIATED_PRASETEST, formData);
+						
+						Util.dispatchEvent(SEGController.EVENT_GET_ALL_PRODUCTSTRUCTURES, null);
+					}	
+				"/>
+			<mx:VRule height="20"/>
+			<mx:Button 
+				label="Run"
+				click=
+				"
+					if (SEGModelLocator.getInstance().selectedPRASETestVO)
+					{
+						Util.dispatchEvent(SEGController.EVENT_RUN_PRASETEST, null);	
+					}					
+				"
+				/>
+				<mx:VRule height="20"/>
+				<mx:Button 
+					label="Show All"
+					click=
+					"
+						Util.dispatchEvent(SEGController.EVENT_GET_ALL_PRASETESTS, null);
+						
+						Util.dispatchEvent(SEGController.EVENT_GET_ALL_PRODUCTSTRUCTURES, null);						
+						
+						clearResults();
+					"/>
+			</mx:ControlBar>
+		</mx:Panel>
+		<mx:Panel width="100%" height="50%" layout="absolute" title="PRASE Test Results">
+			<mx:Grid x="0" y="0" width="100%" height="100%">
+				<mx:GridRow width="100%" height="23">
+					<mx:GridItem width="100%" height="100%">
+						<mx:Text text="Expected Results"/>
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<mx:Text text="Actual Results"/>
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<mx:Text text="Difference"/>
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%" height="100%">
+					<mx:GridItem width="100%" height="100%">
+						<custom:SEGTextArea 
+							id="expectedResultsTextArea" 
+							width="100%"
+							height="100%"
+							valueObjectVO="{SEGModelLocator.getInstance().selectedPRASETestVO}"
+							valueObjectVOField="ExpectedPRASEOutputXML"
+							left="0" 
+							right="0" 
+							top="0" 
+							bottom="0"
+							text="{SEGModelLocator.getInstance().selectedPRASETestVO.ExpectedPRASEOutputXML}"
+							renderAsXML="true"	
+							editable="true"				
+							/>	
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<custom:SEGTextArea  
+							width="100%"
+							height="100%"
+							id="actualResultsTextArea"
+							left="0" 
+							right="0" 
+							top="0" 
+							bottom="0"
+							text="{SEGModelLocator.getInstance().actualPRASEOutputXML}"
+							renderAsXML="true"		
+							editable="false"			
+							/>	
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<custom:SEGTextArea  
+							width="100%"
+							height="100%"
+							id="differenceTextArea"
+							left="0" 
+							right="0" 
+							top="0" 
+							bottom="0"
+							text="{SEGModelLocator.getInstance().differenceXML}"
+							renderAsXML="true"		
+							editable="false"			
+							/>	
+					</mx:GridItem>
+				</mx:GridRow>
+			</mx:Grid>
+			<mx:ControlBar horizontalAlign="center">
+				<mx:Button 
+					label="Set Actual as Expected" 
+					icon="@Embed('../assets/icons/arrow_SingleLeft.png')"
+					click=
+					"
+						setActualAsExpected();
+					"
+					/>
+				<mx:VRule height="20"/>
+				<mx:Button 
+					label="Commit"
+					click=
+					"
+						Util.dispatchEvent(SEGController.EVENT_SET_ACTUAL_AS_EXPECTED, null);
+					"
+					/>
+				<mx:VRule height="20"/>
+				<mx:Button 
+					label="Clear"
+					click=
+					"
+						clearResults();
+					"/>
+			</mx:ControlBar>
+		</mx:Panel>
+	</mx:VBox>
+	
+</mx:Canvas>

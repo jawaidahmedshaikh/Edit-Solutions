@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="com.editsolutions.prd.vo.PolicyHolder" table="PolicyHolder"  >
+        <id name="policyHolderID" column="PolicyHolderId" type="long">
+              <generator class="identity"/>
+        </id>
+
+        <property name="groupNumber" column="MarketCode"/>
+        <property name="policyNumber" column="PolicyNumber"/>
+        <property name="employerName" column="EmployerName"/>
+        <property name="department" column="Department"/>
+        <property name="insuredFirstName" column="InsuredFirstName"/>
+        <property name="insuredLastName" column="InsuredLastName"/>
+        <property name="insuredMiddleName" column="InsuredMiddle"/>
+        <property name="relation" column="Relation"/>
+        <property name="ownerFirstName" column="OwnerFirstName"/>
+        <property name="ownerLastName" column="OwnerLastName"/>
+        <property name="ownerMiddleName" column="OwnerMiddle"/>
+        <property name="ownerSSN" column="OwnerSSN"/>
+        <property name="policyStatus" column="PolicyStatus"/>
+        <property name="billMode" column="BillMode"/>
+        <property name="productCode" column="ProductCode"/>
+        <property name="issueDate" column="IssueDate" type="date"/>
+        <property name="issueAge" column="IssueAge"/>
+        <property name="terminationDate" column="TerminationDate" type="date"/>
+        <property name="issueState" column="IssueState"/>
+        <property name="residentState" column="residentState"/>
+        <property name="employeeId" column="EmployeeUniqueId"/>
+        <property name="paidToDate" column="PaidToDate" type="date"/>
+        <!--
+        <property name="dob" column="DateOfBirth"/>
+        -->
+        <property name="status" column="Status"/>
+        <property name="effectiveDate" column="EffectiveDate" type="date"/>
+        <property name="applicationDate" column="ApplicationDate" type="date"/>
+        <property name="lastTransactionDate" column="LastTransactionDate" type="date"/>
+        <property name="ratedGender" column="RatedGender"/>
+        <property name="sourceSystem" column="SourceSystem"/>
+
+        
+    </class>
+</hibernate-mapping>

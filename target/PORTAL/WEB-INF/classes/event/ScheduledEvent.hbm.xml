@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="event.ScheduledEvent" table="&quot;ScheduledEvent&quot;" lazy="true" node="ScheduledEventVO">
+        <id name="ScheduledEventPK" column="&quot;ScheduledEventPK&quot;" type="long" node="ScheduledEventPK">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="StartDate" column="&quot;StartDate&quot;" node="StartDate" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="StopDate" column="&quot;StopDate&quot;" node="StopDate" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LastDayOfMonthInd" column="&quot;LastDayOfMonthInd&quot;" node="LastDayOfMonthInd"/>
+        <property name="FrequencyCT" column="&quot;FrequencyCT&quot;" node="FrequencyCT"/>
+        <property name="LifeContingentCT" column="&quot;LifeContingentCT&quot;" node="LifeContingentCT"/>
+        <property name="CostOfLivingInd" column="&quot;CostOfLivingInd&quot;" node="CostOfLivingInd"/>
+
+		<property name="GroupSetupFK" column="&quot;GroupSetupFK&quot;" insert="false" update="false"/>
+
+        <many-to-one
+            name="GroupSetup"
+            column="&quot;GroupSetupFK&quot;"
+            class="event.GroupSetup"
+            cascade="none"
+            node="GroupSetupFK"
+            embed-xml="false"
+            />
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ComboBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+	initialize="init()"> 
+	
+	<mx:Script>
+		<![CDATA[
+			import com.segsoftware.event.SEGListEvent;
+			import mx.events.CollectionEvent;
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.events.DropdownEvent;
+			import mx.controls.Text;
+			import mx.collections.XMLListCollection;
+			import com.segsoftware.utility.Util;
+			
+			public static var PROMPT:String = "Please Select";
+			
+			/**
+			 * The field in the supplied VOs that should
+			 * be used to uniquely identify a VO. For example,
+			 * in the case of a CodeTable it would be CodeTableVO.Code, or
+			 * it might be CodeTableVO.CodeTablePK.
+			 */
+			private var _valueField:String;
+			
+			/**
+			* Flag to control updating of selectedItem.
+			*/
+	        private var _selectedValueSet:Boolean = false;
+    
+    		/**
+    		* Flag to control updating of selectedItem;
+    		*/
+    	    private var _dataProviderSet:Boolean = false;			
+		
+			/**
+			* The user may wish to modify/bind to an actual VO while
+			* making selections on the ComboBox. In a DataGrid, this
+			* happens automatically as long as the DataGridColumn is setup
+			* correctly. However, for a CombBox that is just sitting in a normal
+			* form, there is no clear way to modify the value of an Element in 
+			* the VO/XML.
+			*/
+			private var _valueObjectVO:XML;
+			
+			/**
+			 * This relates to the valueObjectVO. It is the
+			 * field on the VO that will be updated with the
+			 * ComboBox's change.
+			 */
+			private var _valueObjectVOField:String;
+			
+			/**
+			* Core initialization.
+			*/
+			private function init():void
+			{    							
+    			addEventListener(ListEvent.CHANGE, update);
+    			
+				prompt = PROMPT;
+			}
+			
+			/**
+			 * When the underlying collection changes, we need to update the selectedIndex
+			 * if there is a valueObjectVO set on this instance of the SEGComboBox.
+			 * 
+			 */
+			override public function set dataProvider(value:Object):void
+			{
+	            // invoke ComboBox version 
+	            super.dataProvider = value;
+	            
+	            if ((value != null) && (value is XMLList))
+	            {
+	            	value = new XMLListCollection(value as XMLList);
+	            }
+	
+	            // This may get called before dataProvider is set, so make sure not null and has entries 
+	            if ((value != null) && (value is XMLListCollection))
+	            {
+	               // Got it, set flag 
+	               _dataProviderSet = true;
+	               
+	               (dataProvider as XMLListCollection).addEventListener(CollectionEvent.COLLECTION_CHANGE, invalidateSEGComboBoxProperties);
+	            }		
+			}
+			
+			private function invalidateSEGComboBoxProperties(event:CollectionEvent):void
+			{
+				invalidateProperties();
+			}
+					
+			/**
+			 * @see #_valueObjectVO
+			 */
+			[Bindable] 
+			public function set valueObjectVO(valueObjectVO:XML):void
+			{
+				if (valueObjectVO)
+				{
+		            // Set flag 
+		            _selectedValueSet = true;
+		            
+		            // Save value 
+		            _valueObjectVO = valueObjectVO;
+		            
+		            // Invalidate to force commit 
+		            invalidateProperties();									
+				}
+				else
+				{
+					this.selectedIndex = -1;
+				}
+				
+				if ((valueObjectVO != null) && (valueObjectVOField != null))
+				{
+					var theSelectedItem:XML = selectedItem as XML;
+					
+					//	The value already selected in the pull down
+					var selectedValue:String = Util.getValueObjectVOValue(theSelectedItem, valueField);					
+					
+					//	The value on the valueObjectVO
+					var voValue:String = Util.getValueObjectVOValue(valueObjectVO, valueObjectVOField);
+				
+					if (selectedValue != voValue)
+					{
+						//	The selection has been changed, change the selectedItem to the new
+						//	value and trigger a change event.
+						//	Note: we change the selectedItem because it seems that flex doesn't do it
+						//	until a much later point.  That is too late since anything called as part of
+						//	the change event may be dependent upon the formData containing the new values.
+						//	(ex. GetFilteredCodeTableCommand called from productStructure on BatchSegment.mxml)
+						for each (var currentVO:XML in dataProvider)
+						{
+							var currentVOValue:String = Util.getValueObjectVOValue(currentVO, valueField);		
+							
+							if (currentVOValue == voValue)
+							{
+								selectedItem = currentVO;
+							}			
+						}
+						
+						var segListEvent:SEGListEvent = new SEGListEvent(ListEvent.CHANGE);
+						
+						dispatchEvent(segListEvent);
+					}
+				}
+			}
+			
+			/**
+			 * @see #_valueObjectVO
+			 */
+			public function get valueObjectVO():XML
+			{
+				return _valueObjectVO;	
+			}
+			
+			/**
+			 * @see #__valueObjectVOField
+			 */
+			[Bindable]
+			public function set valueObjectVOField(valueObjectVOField:String):void
+			{
+				_valueObjectVOField = valueObjectVOField;
+			}
+			
+			/**
+			 * @see #_valueObjectVOField
+			 */
+			public function get valueObjectVOField():String
+			{
+				return _valueObjectVOField;	
+			}
+			
+			/**
+			 * @see #_valueField
+			 */
+			[Bindable]
+			public function set valueField(valueField:String):void
+			{
+				_valueField = valueField;
+			}
+			
+			/**
+			 * @see #_valueField
+			 */
+			public function get valueField():String
+			{
+				return _valueField;
+			}
+			
+			/**
+			 * Sets the dropdown back to the prompt dislay.
+			 */
+			private function resetToPrompt():void
+			{
+				selectedIndex = -1; // set to prompt
+			}
+			
+			/**
+			 * If the user has supplied valueObjectVO and its related
+			 * valueObjectVOField, the valueObjectVO.valueObjectVOField
+			 * will be updated with changes to the ComboBox's selection
+			 * using the value of the ComboBox's selectedItem (as XML).
+			 */ 
+			private function update(event:ListEvent):void
+			{				
+				if ((valueObjectVO != null) && (valueObjectVOField != null))
+				{
+					if (! (event is SEGListEvent) )
+					{
+						var theSelectedItem:XML = selectedItem as XML;
+					
+						var newValueObjectVOValue:String = Util.getValueObjectVOValue(theSelectedItem, valueField);					
+					
+						Util.updateValueObjectVO(valueObjectVO, valueObjectVOField, newValueObjectVOValue);									
+					}
+				}	
+			}
+
+
+         // Override committ, this may be called repeatedly 
+         override protected function commitProperties():void
+         {
+            // invoke ComboBox version 
+            super.commitProperties();
+
+            // If value set and have dataProvider 
+            if (_selectedValueSet && _dataProviderSet)
+            {
+               // Set flag to false so code won't be called until selectedValue is set again 
+               //_selectedValueSet = false;
+               
+               var matchFound:Boolean = false;
+               
+               // Loop through dataProvider 
+               for (var i:int=0; i<this.dataProvider.length; i++)
+               {
+                  // Get this item's data 
+                  var dataProviderVO:XML = this.dataProvider[i] as XML;
+                  
+  				  var dataProviderVOValue:String = Util.getValueObjectVOValue(dataProviderVO, valueField);
+  				  
+  				  var selectedVOValue:String = Util.getValueObjectVOValue(valueObjectVO, valueObjectVOField);                  
+   
+                  // Check if is selectedValue 
+                  if(dataProviderVOValue == selectedVOValue)
+                  {
+                     // Yes, set selectedIndex 
+                     this.selectedIndex = i;
+                     
+                     matchFound = true;
+                     
+                     break;
+                  }
+               }
+               
+               if (!matchFound)
+               {
+               		this.selectedIndex = -1;
+               }
+            }
+         }
+		]]>
+	</mx:Script>
+	
+</mx:ComboBox>

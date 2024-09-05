@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.segsoftware.com"
+            targetNamespace="http://www.segsoftware.com"
+            elementFormDefault="qualified">
+  <xsd:element name="BillGroupSummaries">
+    <xsd:annotation>
+      <xsd:documentation>
+        A response document within Billing services that lists all of the
+        targeted BillGroups. BillGroups may be filtered by actor specifications, 
+        but the end-result(s) would still be represented in this document.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element name="BillGroupSummary">
+          <xsd:complexType>
+            <xsd:choice>
+              <xsd:element name="BillGroupPK" type="xsd:long"/>
+              <xsd:element name="GroupName" type="xsd:string" minOccurs="0"/><!-- GroupBill.BillSchedule.ContractGroup.ClientRole.ClientDetail.Name -->
+              <xsd:element name="ExtractDate" type="xsd:string"/><!-- BillGroup.ExtractDate -->
+              <xsd:element name="DueDate" type="xsd:string"/><!-- BillGroup.DueDate -->
+              <xsd:element name="Representative" type="xsd:string"/><!-- BillGroup.BillSchedule.Representative -->
+              <xsd:element name="TotalBilledAmount" type="xsd:decimal"/><!-- BillGroup.TotalBilledAmount -->
+              <xsd:element name="TotalPaidAmount" type="xsd:decimal"/><!-- BillGroup.TotalPaidAmount -->
+              <xsd:element name="Difference" type="xsd:decimal"/><!-- Calculated as (BillGroup.TotalPaidAmount - BillGroup.TotalBilledAmount) -->
+            </xsd:choice>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

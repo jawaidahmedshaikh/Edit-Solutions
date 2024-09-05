@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.PremiumDue" table="&quot;PremiumDue&quot;"  >
+        <id name="PremiumDuePK" column="&quot;PremiumDuePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;" insert="false" update="false"/>
+        <property name="EDITTrxFK" column="&quot;EDITTrxFK&quot;" insert="false" update="false"/>
+        
+        <property name="BillAmount" column="&quot;BillAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/> 
+        <property name="DeductionAmount" column="&quot;DeductionAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>                
+        <property name="NumberOfDeductions" column="&quot;NumberOfDeductions&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="PendingExtractIndicator" column="&quot;PendingExtractIndicator&quot;"/>
+
+        <property name="PriorBillAmount" column="&quot;PriorBillAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PriorDeductionAmount" column="&quot;PriorDeductionAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AdjustmentAmount" column="&quot;AdjustmentAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="DeductionAmountOverride" column="&quot;DeductionAmountOverride&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="BillAmountOverride" column="&quot;BillAmountOverride&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"
+            />
+
+        <many-to-one
+            name="EDITTrx"
+            column="&quot;EDITTrxFK&quot;"
+            class="event.EDITTrx"
+            cascade="none"
+            />
+
+        <set name="CommissionPhases" table="&quot;CommissionPhase&quot;" inverse="true"   cascade="all">
+            <key column="&quot;PremiumDueFK&quot;"/>
+            <one-to-many class="contract.CommissionPhase"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

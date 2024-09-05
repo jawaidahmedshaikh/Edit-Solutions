@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="agent.AgentLicense" table="&quot;AgentLicense&quot;" >
+        <id name="AgentLicensePK" column="&quot;AgentLicensePK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="AgentFK" column="&quot;AgentFK&quot;" insert="false" update="false"/>
+
+        <property name="NASD" column="&quot;NASD&quot;"/>
+        <property name="NASDEffectiveDate" column="&quot;NASDEffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="NASDRenewalDate" column="&quot;NASDRenewalDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="StateCT" column="&quot;StateCT&quot;"/>
+        <property name="ResidentCT" column="&quot;ResidentCT&quot;"/>
+        <property name="StateNASD" column="&quot;StateNASD&quot;"/>
+        <property name="ProductTypeCT" column="&quot;ProductTypeCT&quot;"/>
+        <property name="LicenseNumber" column="&quot;LicenseNumber&quot;"/>
+        <property name="LicenseTypeCT" column="&quot;LicenseTypeCT&quot;"/>
+        <property name="RenewTermStatusCT" column="&quot;RenewTermStatusCT&quot;"/>
+        <property name="StatusCT" column="&quot;StatusCT&quot;"/>
+        <property name="LicEffDate" column="&quot;LicEffDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LicExpDate" column="&quot;LicExpDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="LicTermDate" column="&quot;LicTermDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ErrorOmmissStatus" column="&quot;ErrorOmmissStatus&quot;"/>
+        <property name="ErrorOmmissExpDate" column="&quot;ErrorOmmissExpDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <many-to-one
+            name="Agent"
+            column="&quot;AgentFK&quot;"
+            class="agent.Agent"
+            cascade="none"
+          />
+
+    </class>
+</hibernate-mapping>

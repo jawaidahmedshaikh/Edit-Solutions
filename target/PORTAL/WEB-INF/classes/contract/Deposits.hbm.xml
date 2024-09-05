@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="contract.Deposits" table="&quot;Deposits&quot;"  >
+        <id name="DepositsPK" column="&quot;DepositsPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="SegmentFK" column="&quot;SegmentFK&quot;" insert="false" update="false"/>
+        <property name="DepositTypeCT" column="&quot;DepositTypeCT&quot;"/>
+        <property name="OldCompany" column="&quot;OldCompany&quot;"/>
+        <property name="OldPolicyNumber" column="&quot;OldPolicyNumber&quot;"/>
+
+        <property name="AnticipatedAmount" column="&quot;AnticipatedAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AmountReceived" column="&quot;AmountReceived&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="DateReceived" column="&quot;DateReceived&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        
+        <property name="CostBasis" column="&quot;CostBasis&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="TaxYear" column="&quot;TaxYear&quot;"/>
+        <property name="SuspenseFK" column="&quot;SuspenseFK&quot;" insert="false" update="false"/>
+
+        <property name="CashBatchContractFK" column="&quot;CashBatchContractFK&quot;"/>
+        <property name="EDITTrxFK" column="&quot;EDITTrxFK&quot;" insert="false" update="false"/>
+        <property name="PriorCompanyMECStatusCT" column="&quot;PriorCompanyMECStatusCT&quot;"/>
+
+        <property name="ExchangePolicyEffectiveDate" column="&quot;ExchangePolicyEffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="ExchangeIssueAge" column="&quot;ExchangeIssueAge&quot;"/>
+        <property name="ExchangeDuration" column="&quot;ExchangeDuration&quot;"/>
+
+        <property name="PreTEFRAGain" column="&quot;PreTEFRAGain&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PostTEFRAGain" column="&quot;PostTEFRAGain&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PreTEFRAAmount" column="&quot;PreTEFRAAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PostTEFRAAmount" column="&quot;PostTEFRAAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ExchangeLoanAmount" column="&quot;ExchangeLoanAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <many-to-one
+            name="Segment"
+            column="&quot;SegmentFK&quot;"
+            class="contract.Segment"
+            cascade="none"/>
+
+        <many-to-one
+            name="EDITTrx"
+            column="&quot;EDITTrxFK&quot;"
+            class="event.EDITTrx"
+            cascade="none"/>
+
+        <many-to-one
+            name="Suspense"
+            column="&quot;SuspenseFK&quot;"
+            class="event.Suspense"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>
+

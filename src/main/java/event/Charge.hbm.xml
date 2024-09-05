@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="event.Charge" table="&quot;Charge&quot;" lazy="true" node="ChargeVO">
+        <id name="ChargePK" column="&quot;ChargePK&quot;" type="long" node="ChargePK">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="ChargeAmount" column="&quot;ChargeAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="ChargeTypeCT" column="&quot;ChargeTypeCT&quot;" />
+        <property name="ChargePercent" column="&quot;ChargePercent&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="GroupSetupFK" column="&quot;GroupSetupFK&quot;"  insert="false" update="false"/>
+        <property name="OneTimeOnlyInd" column="&quot;OneTimeOnlyInd&quot;" node="OneTimeOnlyInd"/>
+        <property name="OneTimeOnlyDate" column="&quot;OneTimeOnlyDate&quot;" node="OneTimeOnlyDate" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <many-to-one
+            name="GroupSetup"
+            column="&quot;GroupSetupFK&quot;"
+            class="event.GroupSetup"
+            cascade="none"
+            />
+
+    </class>
+</hibernate-mapping>

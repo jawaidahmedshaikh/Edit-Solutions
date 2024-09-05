@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+     <class name="com.editsolutions.prd.vo.SampleImportRecord" table="PRD_SAMPLE_Record"  >
+        <id name="importRecordPK" column="PRD_RecordPK" type="long">
+              <generator class="identity"/>
+        </id>
+
+        <property name="accountNumber" column="AccountNumber"/>
+        <property name="groupNumber" column="GroupNumber"/>
+        <property name="deductionDate" column="DeductionDate" type="date"/>
+        <property name="billiblePremium" column="BilliblePremium"/>
+        <property name="billingCompany" column="BillingCompany"/>
+        <property name="billingFrequency" column="BillingFrequency"/>
+        <property name="deductionAmount" column="DeductionAmount"/>
+        <property name="departmentLocation" column="DepartmentLocation"/>
+        <property name="employeeID" column="EmployeeID"/>
+        <property name="employeeLastName" column="EmployeeLastName"/>
+        <property name="employeeFirstName" column="EmployeeFirstName"/>
+        <property name="employeeMI" column="EmployeeMI"/>
+        <property name="employeeGender" column="EmployeeGender"/>
+        <property name="employeeName" column="employeeName"/>
+        <property name="street1" column="Street1"/>
+        <property name="street2" column="Street2"/>
+        <property name="state" column="State"/>
+        <property name="zip" column="Zip"/>
+        <property name="insuredName" column="InsuredName"/>
+        <property name="relationshipCode" column="relationshipCode"/>
+        <property name="ssn" column="SSN"/>
+        <property name="smoker" column="Smoker"/>
+        <property name="policyCoverageEffectiveDate" column="PolicyCoverageEffectiveDate" type="date"/>
+        <property name="policyNumber" column="PolicyNumber"/>
+        <property name="policyTerminationEffectiveDate" column="PolicyTermEffectiveDate" type="date"/>
+        <property name="productType" column="ProductType"/>
+        <property name="status" column="Status"/>
+        <property name="system" column="System"/>
+        <property name="FILLER" column="FILLER"/>
+
+    </class>
+</hibernate-mapping>

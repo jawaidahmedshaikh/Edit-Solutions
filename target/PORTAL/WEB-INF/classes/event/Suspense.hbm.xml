@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="event.Suspense" table="&quot;Suspense&quot;"   >
+
+        <id name="SuspensePK" column="&quot;SuspensePK&quot;" type="long" >
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="UserDefNumber" column="&quot;UserDefNumber&quot;"/>
+        <property name="EffectiveDate" column="&quot;EffectiveDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="SuspenseAmount" column="&quot;SuspenseAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="MemoCode" column="&quot;MemoCode&quot;"/>
+        <property name="OriginalContractNumber" column="&quot;OriginalContractNumber&quot;"/>
+        <property name="OriginalAmount" column="&quot;OriginalAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="OriginalMemoCode" column="&quot;OriginalMemoCode&quot;"/>
+        <property name="PendingSuspenseAmount" column="&quot;PendingSuspenseAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="AccountingPendingInd" column="&quot;AccountingPendingInd&quot;"/>
+
+        <property name="MaintenanceInd" column="&quot;MaintenanceInd&quot;"/>
+        <property name="Operator" column="&quot;Operator&quot;"/>
+        <property name="MaintDateTime" column="&quot;MaintDateTime&quot;" type="edit.services.db.hibernate.customtype.EDITDateTimeUserType"/>
+
+        <property name="ProcessDate" column="&quot;ProcessDate&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+        <property name="DirectionCT" column="&quot;DirectionCT&quot;"/>
+        <property name="PremiumTypeCT" column="&quot;PremiumTypeCT&quot;"/>
+
+        <property name="SuspenseType" column="&quot;SuspenseType&quot;"/>
+        <property name="Status" column="&quot;Status&quot;"/>
+        <property name="TaxYear" column="&quot;TaxYear&quot;"/>
+
+        <property name="ContractPlacedFrom" column="&quot;ContractPlacedFrom&quot;" />
+        <property name="FilteredFundFK" column="&quot;FilteredFundFK&quot;"/>
+        <property name="PreTEFRAGain" column="&quot;PreTEFRAGain&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PostTEFRAGain" column="&quot;PostTEFRAGain&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PreTEFRAAmount" column="&quot;PreTEFRAAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="PostTEFRAAmount" column="&quot;PostTEFRAAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="GrossAmount" column="&quot;GrossAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+        <property name="CheckNumber" column="&quot;CheckNumber&quot;"/>
+
+        <property name="PlannedIndCT" column="&quot;PlannedIndCT&quot;"/>
+        <property name="LastName" column="&quot;LastName&quot;"/>
+        <property name="FirstName" column="&quot;FirstName&quot;"/>
+
+        <property name="ExchangeCompany" column="&quot;ExchangeCompany&quot;"/>
+        <property name="ExchangePolicy" column="&quot;ExchangePolicy&quot;"/>
+        <property name="CostBasis" column="&quot;CostBasis&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="DepositTypeCT" column="&quot;DepositTypeCT&quot;"/>
+        <property name="CorporateName" column="&quot;CorporateName&quot;"/>
+        <property name="RefundAmount" column="&quot;RefundAmount&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        <property name="RemovalReason" column="&quot;RemovalReason&quot;"/>
+        <property name="DateAppliedRemoved" column="&quot;DateAppliedRemoved&quot;" type="edit.services.db.hibernate.customtype.EDITDateUserType"/>
+
+        <property name="CashBatchContractFK" column="&quot;CashBatchContractFK&quot;" insert="false" update="false"/>
+        <property name="ReasonCodeCT" column="&quot;ReasonCodeCT&quot;"/>
+        <property name="AddressTypeCT" column="&quot;AddressTypeCT&quot;"/>
+        <property name="DisbursementSourceCT" column="&quot;DisbursementSourceCT&quot;"/>
+
+        <property name="ClientDetailFK" column="&quot;ClientDetailFK&quot;" insert="false" update="false"/>
+        <property name="ClientAddressFK" column="&quot;ClientAddressFK&quot;" insert="false" update="false"/>
+        <property name="PreferenceFK" column="&quot;PreferenceFK&quot;" insert="false" update="false"/>
+
+        <property name="CompanyFK" column="&quot;CompanyFK&quot;"/>
+
+        <set name="InSuspenses" table="&quot;InSuspense&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;SuspenseFK&quot;"/>
+            <one-to-many class="event.InSuspense"/>
+        </set>
+
+        <set name="OutSuspenses" table="&quot;OutSuspense&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;SuspenseFK&quot;"/>
+            <one-to-many class="event.OutSuspense"/>
+        </set>
+
+        <set name="Deposits" table="&quot;Deposits&quot;" inverse="true"  cascade="all" >
+            <key column="&quot;SuspenseFK&quot;"/>
+            <one-to-many class="contract.Deposits"/>
+        </set>
+
+        <many-to-one
+            name="CashBatchContract"
+            column="&quot;CashBatchContractFK&quot;"
+            class="event.CashBatchContract"
+            cascade="none" />        
+        <many-to-one
+            name="ClientDetail"
+            column="&quot;ClientDetailFK&quot;"
+            class="client.ClientDetail"
+            cascade="none"/>
+
+       <many-to-one
+            name="ClientAddress"
+            column="&quot;ClientAddressFK&quot;"
+            class="client.ClientAddress"
+            cascade="none"/>
+
+        <many-to-one
+            name="Preference"
+            column="&quot;PreferenceFK&quot;"
+            class="client.Preference"
+            cascade="none"/>
+    </class>
+</hibernate-mapping>

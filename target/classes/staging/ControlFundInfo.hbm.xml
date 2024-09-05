@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    
+    <class name="staging.ControlFundInfo" table="&quot;CONTROLFUNDINFO&quot;"  >
+        <id name="ControlFundInfoPK" column="&quot;CONTROLFUNDINFOPK&quot;" type="long">
+            <generator class="edit.services.db.hibernate.KeyGenerator"/>
+        </id>
+
+        <property name="StagingFK" column="&quot;STAGINGFK&quot;" insert="false" update="false"/>
+
+        <property name="FundNumber" column="&quot;FUNDNUMBER&quot;"/>
+        <property name="TotalCurrentAccountValue" column="&quot;TOTALCURRENTACCOUNTVALUE&quot;" type="edit.services.db.hibernate.customtype.EDITBigDecimalUserType"/>
+
+        
+        <many-to-one
+            name="Staging"
+            column="&quot;STAGINGFK&quot;"
+            class="staging.Staging"
+            cascade="none"/>
+
+    </class>
+</hibernate-mapping>
